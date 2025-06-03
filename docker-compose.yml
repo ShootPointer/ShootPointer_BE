@@ -1,8 +1,6 @@
 version: '3.8'
-
 services:
   # Redis
-  ##
   redis:
     image: redis:7
     container_name: redis
@@ -41,8 +39,6 @@ services:
       timeout: 5s
       retries: 5
 
-
-
   # MongoDB
   mongo:
     image: mongo:8
@@ -71,14 +67,29 @@ services:
       redis:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shootpointer
+      # 포트 통일
+      SERVER_PORT: 9000
+      
+      # 데이터베이스
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shootpointer?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       SPRING_DATASOURCE_USERNAME: myuser
       SPRING_DATASOURCE_PASSWORD: rlaehdus00
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      
+      # JPA
+      SPRING_JPA_HIBERNATE_DDL-AUTO: update
+      SPRING_JPA_SHOW-SQL: true
+      SPRING_JPA_DATABASE-PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      
+      # Redis 
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
+      
+      # MongoDB 
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/shootpointer
     ports:
-      - "9000:8082"
+      - "9000:9000"  # 포트 통일
     networks:
       - spring-network
     restart: always
