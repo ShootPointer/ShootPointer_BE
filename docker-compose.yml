@@ -1,32 +1,89 @@
 version: '3.8'
+
 services:
+  # Redis
   redis:
     image: redis:7
+    container_name: redis
     ports:
       - "6378:6379"
     volumes:
       - redis-data:/data
+    networks:
+      - spring-network
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  # PostgreSQL
   postgres:
     image: postgres:17
+    container_name: postgres
     environment:
-      POSTGRES_DB:
-      POSTGRES_USER:
-      POSTGRES_PASSWORD:
+      POSTGRES_DB: qampus
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: rlaehdus00
+      TZ: Asia/Seoul
     ports:
       - "5431:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    networks:
+      - spring-network
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  # MongoDB
   mongo:
     image: mongo:8
+    container_name: mongo
     environment:
-      MONGO_INITDB_DATABASE:
+      MONGO_INITDB_DATABASE: qampus
     ports:
       - "27016:27017"
     volumes:
       - mongo-data:/data/db
       - mongo-config:/data/configdb
+    networks:
+      - spring-network
+    restart: always
+
+  # Spring Boot Application
+  shootpointer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shootpointer
+    command: ["java", "-Xmx2g", "-jar", "/app.jar"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shootpointer
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: rlaehdus00
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/shootpointer
+    ports:
+      - "9000:8082"
+    networks:
+      - spring-network
+    restart: always
+
+networks:
+  spring-network:
+    driver: bridge
+
 volumes:
   redis-data:
   postgres-data:
