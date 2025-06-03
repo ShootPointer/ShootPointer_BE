@@ -23,7 +23,7 @@ services:
     image: postgres:17
     container_name: postgres
     environment:
-      POSTGRES_DB: qampus
+      POSTGRES_DB: shootpointer
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: rlaehdus00
       TZ: Asia/Seoul
