@@ -28,7 +28,7 @@ services:
       POSTGRES_PASSWORD: rlaehdus00
       TZ: Asia/Seoul
     ports:
-      - "5431:5432"
+      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
@@ -40,12 +40,14 @@ services:
       timeout: 5s
       retries: 5
 
+
+
   # MongoDB
   mongo:
     image: mongo:8
     container_name: mongo
     environment:
-      MONGO_INITDB_DATABASE: qampus
+      MONGO_INITDB_DATABASE: shootpointer
     ports:
       - "27016:27017"
     volumes:
