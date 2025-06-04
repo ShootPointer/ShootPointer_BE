@@ -42,3 +42,4 @@ src/main/resources/application-dev.properties
 src/main/resources/mongo-data
 src/main/resources/postgres-data
 src/main/resources/redis-data
+src/main/resources/docker-compose.yml
