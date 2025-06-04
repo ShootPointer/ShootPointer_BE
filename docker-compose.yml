@@ -1,22 +1,5 @@
 version: '3.8'
 services:
-  # Redis
-  redis:
-    image: redis:7
-    container_name: redis
-    ports:
-      - "6378:6379"
-    volumes:
-      - redis-data:/data
-    networks:
-      - spring-network
-    restart: always
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   # PostgreSQL
   postgres:
     image: postgres:17
@@ -34,10 +17,29 @@ services:
       - spring-network
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U myuser"]
+      test: ["CMD-SHELL", "pg_isready -U myuser -d shootpointer"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
+
+  # Redis
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"  # 포트 통일
+    volumes:
+      - redis-data:/data
+    networks:
+      - spring-network
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   # MongoDB
   mongo:
@@ -46,13 +48,19 @@ services:
     environment:
       MONGO_INITDB_DATABASE: shootpointer
     ports:
-      - "27016:27017"
+      - "27017:27017"  # 포트 통일
     volumes:
       - mongo-data:/data/db
       - mongo-config:/data/configdb
     networks:
       - spring-network
     restart: always
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   # Spring Boot Application
   shootpointer:
@@ -66,33 +74,56 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      mongo:
+        condition: service_healthy
     environment:
-      # 포트 통일
+      # 서버 포트
       SERVER_PORT: 9000
       
-      # 데이터베이스
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shootpointer?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      # 데이터베이스 - 연결 문자열 단순화
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shootpointer
       SPRING_DATASOURCE_USERNAME: myuser
       SPRING_DATASOURCE_PASSWORD: rlaehdus00
-      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       
-      # JPA
-      SPRING_JPA_HIBERNATE_DDL-AUTO: update
-      SPRING_JPA_SHOW-SQL: true
-      SPRING_JPA_DATABASE-PLATFORM: org.hibernate.dialect.PostgreSQLDialect
-      HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      # JPA 설정
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: true
       
-      # Redis 
+      # 연결 풀 설정 추가
+      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: 20
+      SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: 5
+      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: 30000
+      SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT: 600000
+      SPRING_DATASOURCE_HIKARI_MAX_LIFETIME: 1800000
+      
+      # Redis
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
       
-      # MongoDB 
+      # MongoDB
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/shootpointer
+      
+      # 타임존 설정
+      TZ: Asia/Seoul
+      
+      # 로깅 레벨 조정
+      LOGGING_LEVEL_ORG_HIBERNATE_SQL: DEBUG
+      LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: TRACE
     ports:
-      - "9000:9000"  # 포트 통일
+      - "9000:9000"
     networks:
       - spring-network
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
 networks:
   spring-network:
