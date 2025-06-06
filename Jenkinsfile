@@ -25,7 +25,7 @@ pipeline {
                       steps{
                           script{
                               withCredentials([file(credentialsId: 'SECRET_FILE2', variable: 'secretFile')]){
-                                  sh 'cp $secretFile ./src/main/resources/application.properties'
+                                  sh 'cp $secretFile ./src/main/resources/application.yml'
                               }
                           }
                       }
