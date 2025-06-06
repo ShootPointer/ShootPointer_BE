@@ -24,8 +24,6 @@ repositories {
 }
 
 dependencies {
-	// PostgreSQL JDBC Driver
-	implementation 'org.postgresql:postgresql'
 	// OAuth2-client, Security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
