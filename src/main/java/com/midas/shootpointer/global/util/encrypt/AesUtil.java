@@ -1,5 +1,6 @@
 package com.midas.shootpointer.global.util.encrypt;
 
+import com.midas.shootpointer.global.annotation.CustomLog;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +26,7 @@ public class AesUtil {
         return data;
     }
 
+    @CustomLog("== AES 암호화 ==")
     public String encrypt(String plainText) throws Exception {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         SecretKeySpec keySpec = new SecretKeySpec(hexStringToByteArray(keyHex), ALGORITHM);
@@ -35,6 +37,7 @@ public class AesUtil {
         return Base64.getEncoder().encodeToString(encrypted);
     }
 
+    @CustomLog("== AES 복호화 ==")
     public String decrypt(String encrypted) throws Exception {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         SecretKeySpec keySpec = new SecretKeySpec(hexStringToByteArray(keyHex), ALGORITHM);

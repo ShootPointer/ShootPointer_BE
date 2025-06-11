@@ -1,5 +1,8 @@
 package com.midas.shootpointer.global.util.jwt;
 
+import com.midas.shootpointer.global.annotation.CustomLog;
+import com.midas.shootpointer.global.common.ErrorCode;
+import com.midas.shootpointer.global.exception.CustomException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,26 +27,38 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
+    @CustomLog("== JWT 생성 ==")
     public String createToken(String email, String nickname) {
-        String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
-        String encodedNickname = Base64.getEncoder().encodeToString(nickname.getBytes(StandardCharsets.UTF_8));
+        try {
+            String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
+            String encodedNickname = Base64.getEncoder().encodeToString(nickname.getBytes(StandardCharsets.UTF_8));
 
-        return Jwts.builder()
-                .setSubject(UUID.randomUUID().toString())
-                .claim("email", encodedEmail)
-                .claim("nickname", encodedNickname)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_EXP))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+            return Jwts.builder()
+                    .setSubject(UUID.randomUUID().toString())
+                    .claim("email", encodedEmail)
+                    .claim("nickname", encodedNickname)
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(System.currentTimeMillis() + ACCESS_EXP))
+                    .signWith(key, SignatureAlgorithm.HS256)
+                    .compact();
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.JWT_CREATE_FAIL);
+        }
+
     }
 
+    @CustomLog("== JWT 파싱 ==")
     public Claims parseToken(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.JWT_PARSE_FAIL);
+        }
+
     }
 
     public String decodeBase64(String encoded) {

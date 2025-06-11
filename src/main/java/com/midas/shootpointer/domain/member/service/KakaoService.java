@@ -3,6 +3,9 @@ package com.midas.shootpointer.domain.member.service;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
 import com.midas.shootpointer.domain.member.repository.MemberRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.global.annotation.CustomLog;
+import com.midas.shootpointer.global.common.ErrorCode;
+import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -10,11 +13,9 @@ import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -42,6 +43,7 @@ public class KakaoService {
     private final static String KAKAO_AUTH_URI = "https://kauth.kakao.com"; // 카카오 계정 인증을 위한 URI
     private final static String KAKAO_API_URI = "https://kapi.kakao.com"; // 카카오 API에 접근할 때 사용되는 URI
 
+    @CustomLog("== 카카오 로그인 oauth/authorize URL 반환 ==")
     public String getKakaoLogin() {
         return KAKAO_AUTH_URI + "/oauth/authorize"
                 + "?client_id=" + KAKAO_CLIENT_ID
@@ -55,9 +57,11 @@ public class KakaoService {
      * 신규 가입자면 eamil, nickname 암호화해서 저장
      * 기존에 있었다면 JWT만 발급해서 return
      */
+    @Transactional
+    @CustomLog("== 카카오 로그인 Process Start ==")
     public KakaoDTO getKakaoInfo(String code) throws Exception {
         if (code == null || code.isBlank()) {
-            throw new IllegalArgumentException("인증 코드가 유효하지 않습니다.");
+            throw new CustomException(ErrorCode.INVALID_KAKAO_AUTH_CODE);
         }
 
         // 카카오에 액세스 토큰 요청
@@ -68,10 +72,9 @@ public class KakaoService {
 
         // 회원 중복 확인해야 함
         Optional<Member> existingMember = memberRepository.findByEmail(kakaoDTO.getEmail());
-
-        if (existingMember.isEmpty()) { // 신규 회원이라면?
-            // 신규 회원은 DB에 저장
-            Member member = Member.builder()
+        Member member;
+        if (existingMember.isEmpty()) {
+            member = Member.builder()
                     .email(kakaoDTO.getEmail())
                     .username(kakaoDTO.getNickname())
                     .build();
@@ -87,69 +90,93 @@ public class KakaoService {
     }
 
     // 카카오 AccessToken 요청
-    private String getKakaoAccessToken(String code) throws Exception {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/x-www-form-urlencoded");
+    @CustomLog("== 카카오 Access Token 발급 ==")
+    private String getKakaoAccessToken(String code){
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", KAKAO_CLIENT_ID);
-        params.add("client_secret", KAKAO_CLIENT_SECRET);
-        params.add("code", code);
-        params.add("redirect_uri", KAKAO_REDIRECT_URI);
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            params.add("grant_type", "authorization_code");
+            params.add("client_id", KAKAO_CLIENT_ID);
+            params.add("client_secret", KAKAO_CLIENT_SECRET);
+            params.add("code", code);
+            params.add("redirect_uri", KAKAO_REDIRECT_URI);
 
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
+            HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(
-                KAKAO_AUTH_URI + "/oauth/token",
-                HttpMethod.POST,
-                httpEntity,
-                String.class
-        );
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.exchange(
+                    KAKAO_AUTH_URI + "/oauth/token",
+                    HttpMethod.POST,
+                    httpEntity,
+                    String.class
+            );
 
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new Exception("카카오 토큰 요청 실패");
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                throw new CustomException(ErrorCode.KAKAO_TOKEN_REQUEST_FAIL);
+            }
+
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObj = (JSONObject) jsonParser.parse(response.getBody());
+            String accessToken = (String) jsonObj.get("access_token");
+
+            if (accessToken == null || accessToken.isBlank()) {
+                throw new CustomException(ErrorCode.KAKAO_TOKEN_RESPONSE_INVALID);
+            }
+            return accessToken;
+        } catch (CustomException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.KAKAO_TOKEN_REQUEST_FAIL);
         }
-
-        JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObj = (JSONObject) jsonParser.parse(response.getBody());
-        return (String) jsonObj.get("access_token");
     }
 
-    // AccessToken으로 회원 정보 획득
-    private KakaoDTO getUserInfoWithToken(String accessToken) throws Exception {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + accessToken);
+    // Access Token으로 회원 정보 획득
+    @CustomLog("== 카카오에 사용자 정보 요청하기 ==")
+    private KakaoDTO getUserInfoWithToken(String accessToken) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", "Bearer " + accessToken);
 
-        RestTemplate rt = new RestTemplate();
-        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+            RestTemplate rt = new RestTemplate();
+            HttpEntity<?> httpEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = rt.exchange(
-                KAKAO_API_URI + "/v2/user/me",
-                HttpMethod.GET,
-                httpEntity,
-                String.class
-        );
+            ResponseEntity<String> response = rt.exchange(
+                    KAKAO_API_URI + "/v2/user/me",
+                    HttpMethod.GET,
+                    httpEntity,
+                    String.class
+            );
 
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new Exception("카카오 사용자 정보 요청 실패");
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                throw new CustomException(ErrorCode.KAKAO_USERINFO_FAIL);
+            }
+
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObj = (JSONObject) jsonParser.parse(response.getBody());
+            JSONObject account = (JSONObject) jsonObj.get("kakao_account");
+            JSONObject profile = (JSONObject) account.get("profile");
+
+            long id = (long) jsonObj.get("id");
+            String email = String.valueOf(account.get("email"));
+            String nickname = String.valueOf(profile.get("nickname"));
+
+            if (email == null || email.isBlank() || nickname == null || nickname.isBlank()) {
+                throw new CustomException(ErrorCode.KAKAO_USERINFO_FAIL);
+            }
+
+            return KakaoDTO.builder()
+                    .id(id)
+                    .email(email)
+                    .nickname(nickname)
+                    .build();
+
+        } catch (CustomException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.KAKAO_USERINFO_FAIL);
         }
 
-        JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObj = (JSONObject) jsonParser.parse(response.getBody());
-        JSONObject account = (JSONObject) jsonObj.get("kakao_account");
-        JSONObject profile = (JSONObject) account.get("profile");
-
-        // 회원 정보 추출
-        long id = (long) jsonObj.get("id");
-        String email = String.valueOf(account.get("email"));
-        String nickname = String.valueOf(profile.get("nickname"));
-
-        return KakaoDTO.builder()
-                .id(id)
-                .email(email)
-                .nickname(nickname)
-                .build();
     }
 }
