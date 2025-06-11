@@ -16,8 +16,8 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memberId")
-    private Long member_id;
+    @Column(name = "member_id")
+    private Long memberId;
 
     @Column(name = "member_name")
     @Convert(converter = EncryptConverter.class)
