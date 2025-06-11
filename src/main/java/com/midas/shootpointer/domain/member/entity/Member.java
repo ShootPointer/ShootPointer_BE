@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.member.entity;
 
+import com.midas.shootpointer.global.entity.BaseTimeEntity;
 import com.midas.shootpointer.global.util.encrypt.EncryptConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Member {
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
