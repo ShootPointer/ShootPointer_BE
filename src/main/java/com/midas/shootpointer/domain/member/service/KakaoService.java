@@ -50,6 +50,11 @@ public class KakaoService {
     }
     // https://kauth.kakao.com/oauth/authorize?client_id=KAKAO_CLIENT_ID&redirect_uri=KAKAO_REDIRECT_URI&response_type=code
 
+    /**
+     * code로 카카오 로그인 후 사용자 정보 받아오기
+     * 신규 가입자면 eamil, nickname 암호화해서 저장
+     * 기존에 있었다면 JWT만 발급해서 return
+     */
     public KakaoDTO getKakaoInfo(String code) throws Exception {
         if (code == null || code.isBlank()) {
             throw new IllegalArgumentException("인증 코드가 유효하지 않습니다.");
@@ -122,7 +127,7 @@ public class KakaoService {
 
         ResponseEntity<String> response = rt.exchange(
                 KAKAO_API_URI + "/v2/user/me",
-                HttpMethod.POST,
+                HttpMethod.GET,
                 httpEntity,
                 String.class
         );
@@ -147,6 +152,4 @@ public class KakaoService {
                 .nickname(nickname)
                 .build();
     }
-
-
 }
