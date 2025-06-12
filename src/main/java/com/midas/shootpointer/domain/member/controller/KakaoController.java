@@ -20,7 +20,7 @@ public class KakaoController {
 
     @CustomLog("카카오 소셜 로그인 및 JWT 발급")
     @GetMapping("/callback")
-    public ResponseEntity<MsgEntity> callback(HttpServletRequest request) throws Exception {
+    public ResponseEntity<MsgEntity> callback(HttpServletRequest request) {
         KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
 
         return ResponseEntity.ok()

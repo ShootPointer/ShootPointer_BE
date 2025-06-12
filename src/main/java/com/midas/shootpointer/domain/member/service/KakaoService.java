@@ -30,6 +30,7 @@ public class KakaoService {
 
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
+    private final RefreshTokenService refreshTokenService;
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String KAKAO_CLIENT_ID;
@@ -59,7 +60,7 @@ public class KakaoService {
      */
     @Transactional
     @CustomLog("== 카카오 로그인 Process Start ==")
-    public KakaoDTO getKakaoInfo(String code) throws Exception {
+    public KakaoDTO getKakaoInfo(String code) {
         if (code == null || code.isBlank()) {
             throw new CustomException(ErrorCode.INVALID_KAKAO_AUTH_CODE);
         }
@@ -72,20 +73,25 @@ public class KakaoService {
 
         // 회원 중복 확인해야 함
         Optional<Member> existingMember = memberRepository.findByEmail(kakaoDTO.getEmail());
-        Member member;
         if (existingMember.isEmpty()) {
-            member = Member.builder()
+            Member member = Member.builder()
                     .email(kakaoDTO.getEmail())
                     .username(kakaoDTO.getNickname())
                     .build();
             memberRepository.save(member);
         }
 
-        // JWT 발급하고
-        String jwt = jwtUtil.createToken(kakaoDTO.getEmail(), kakaoDTO.getNickname());
+        // AccessToken, RefreshToken 발급하고
+        String redisAccessToken = jwtUtil.createToken(kakaoDTO.getEmail(), kakaoDTO.getNickname());
+        String redisRefreshToken = jwtUtil.createRefreshToken(kakaoDTO.getEmail());
 
-        // DTO에 JWT 포함하여 반환하기
-        kakaoDTO.setJwt(jwt);
+        // 해당 리프레시 토큰 저장
+        refreshTokenService.save(kakaoDTO.getEmail(), redisRefreshToken);
+
+        // DTO에 토큰 포함해서 반환
+        kakaoDTO.setAccessToken(redisAccessToken);
+        kakaoDTO.setRefreshToken(redisRefreshToken);
+
         return kakaoDTO;
     }
 

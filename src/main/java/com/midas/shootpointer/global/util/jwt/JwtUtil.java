@@ -20,8 +20,12 @@ import java.util.UUID;
 public class JwtUtil {
 
     private final Key key;
-    @Value("${jwt.expiration_time}")
-    protected long ACCESS_EXP;
+
+    @Value("${jwt.access_expiration_time}")
+    private long ACCESS_EXP;
+
+    @Value("${jwt.refresh_expiration_time}")
+    private long REFRESH_EXP;
 
     public JwtUtil(@Value("${jwt.secret}") String secretKey) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -60,6 +64,23 @@ public class JwtUtil {
         }
 
     }
+
+    @CustomLog("== 리프레시 토큰 생성 ==")
+    public String createRefreshToken(String email) {
+        try {
+            String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
+            return Jwts.builder()
+                    .setSubject(UUID.randomUUID().toString())
+                    .claim("email", encodedEmail)
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(System.currentTimeMillis() + REFRESH_EXP))
+                    .signWith(key, SignatureAlgorithm.HS256)
+                    .compact();
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.JWT_CREATE_FAIL);
+        }
+    }
+
 
     public String decodeBase64(String encoded) {
         return new String(Base64.getDecoder().decode(encoded), StandardCharsets.UTF_8);

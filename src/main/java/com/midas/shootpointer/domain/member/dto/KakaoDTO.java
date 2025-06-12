@@ -10,5 +10,6 @@ public class KakaoDTO {
     private long id;
     private String email;
     private String nickname;
-    private String jwt;
+    private String accessToken;
+    private String refreshToken;
 }
