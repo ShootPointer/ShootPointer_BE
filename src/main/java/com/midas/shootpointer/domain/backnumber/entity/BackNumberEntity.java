@@ -1,16 +1,20 @@
 package com.midas.shootpointer.domain.backnumber.entity;
 
+import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Slf4j
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "member_back_number")
+@Table(name = "Member_BackNumber")
 public class BackNumberEntity extends BaseEntity {
     @Column(name = "meber_back_number_id",unique = true,nullable = false)
     @Id
@@ -21,8 +25,8 @@ public class BackNumberEntity extends BaseEntity {
     private BackNumber backNumber;
 
 
-    //member와 다대다 중간테이블 필요
+   @OneToMany(mappedBy = "highlight_video_id",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<HighlightEntity> highlights=new ArrayList<>();
 
-    //하이라이트 엔티티와 일대다
 
 }
