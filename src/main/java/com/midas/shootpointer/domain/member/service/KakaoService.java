@@ -41,10 +41,10 @@ public class KakaoService {
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String KAKAO_REDIRECT_URI;
 
-    @Value("kakao.auth.uri")
+    @Value("${kakao.auth.uri}")
     private String KAKAO_AUTH_URI;
 
-    @Value("kakao.api.uri")
+    @Value("${kakao.api.uri}")
     private String KAKAO_API_URI;
 
     @CustomLog("== 카카오 로그인 oauth/authorize URL 반환 ==")
