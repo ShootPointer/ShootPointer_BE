@@ -41,11 +41,14 @@ public class KakaoService {
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String KAKAO_REDIRECT_URI;
 
-    private final static String KAKAO_AUTH_URI = "https://kauth.kakao.com"; // 카카오 계정 인증을 위한 URI
-    private final static String KAKAO_API_URI = "https://kapi.kakao.com"; // 카카오 API에 접근할 때 사용되는 URI
+    @Value("kakao.auth.uri")
+    private String KAKAO_AUTH_URI;
+
+    @Value("kakao.api.uri")
+    private String KAKAO_API_URI;
 
     @CustomLog("== 카카오 로그인 oauth/authorize URL 반환 ==")
-    public String getKakaoLogin() {
+    private String getKakaoLogin() {
         return KAKAO_AUTH_URI + "/oauth/authorize"
                 + "?client_id=" + KAKAO_CLIENT_ID
                 + "&redirect_uri=" + KAKAO_REDIRECT_URI
@@ -179,10 +182,9 @@ public class KakaoService {
                     .build();
 
         } catch (CustomException e) {
-            throw e;
-        } catch (Exception e) {
             throw new CustomException(ErrorCode.KAKAO_USERINFO_FAIL);
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.JSON_OBJECT_PARSE_FAIL);
         }
-
     }
 }

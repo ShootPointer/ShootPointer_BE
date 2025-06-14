@@ -40,6 +40,7 @@ public enum ErrorCode {
     KAKAO_TOKEN_REQUEST_FAIL(30202, HttpStatus.BAD_REQUEST, "카카오 토큰 응답 파싱 실패"),
     KAKAO_TOKEN_RESPONSE_INVALID(30203, HttpStatus.BAD_REQUEST, "카카오 사용자 정보 요청 실패"),
     KAKAO_USERINFO_FAIL(30204, HttpStatus.BAD_REQUEST, "카카오 인증 코드가 유효하지 않음"),
+    JSON_OBJECT_PARSE_FAIL(30205, HttpStatus.INTERNAL_SERVER_ERROR, "Json 파싱 실패"),
 
     // 404(global - util) part
     AES_ENCRYPT_FAIL(40401, HttpStatus.INTERNAL_SERVER_ERROR, "AES 암호화 실패"),
