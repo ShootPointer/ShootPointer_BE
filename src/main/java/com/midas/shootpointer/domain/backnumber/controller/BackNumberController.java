@@ -1,0 +1,40 @@
+package com.midas.shootpointer.domain.backnumber.controller;
+
+import com.midas.shootpointer.domain.backnumber.dto.BackNumberRequest;
+import com.midas.shootpointer.domain.backnumber.dto.BackNumberResponse;
+import com.midas.shootpointer.domain.backnumber.service.BackNumberService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/backNumber")
+@RequiredArgsConstructor
+@Tag(name = "등 번호", description = "등 번호 API")
+public class BackNumberController {
+    private final BackNumberService backNumberService;
+    @Operation(
+            summary = "등 번호 등록 API - [담당자 : 김도연]",
+            responses = {
+                    @ApiResponse(responseCode = "200",description = "등 번호 등록 성공",
+                        content = @Content(mediaType="application/json",
+                        schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+                    @ApiResponse(responseCode = "4XX",description = "등 번호 등록 실패",
+                        content = @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+            }
+    )
+    @PostMapping("/")
+    public ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<BackNumberResponse>> create(
+            @RequestBody BackNumberRequest request
+    ){
+        BackNumberResponse response=backNumberService.create(request);
+        return ResponseEntity.ok(com.midas.shootpointer.global.dto.ApiResponse.created(response));
+    }
+}
