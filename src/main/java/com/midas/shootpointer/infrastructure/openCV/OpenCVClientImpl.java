@@ -23,7 +23,7 @@ import java.util.UUID;
 public class OpenCVClientImpl implements OpenCVClient {
     private final GenerateFileName generateFileName;
     private final WebClient.Builder builder;
-    private  WebClient webClient;
+    private WebClient webClient;
 
     /**
      * openCV 서버 주소
@@ -44,8 +44,8 @@ public class OpenCVClientImpl implements OpenCVClient {
     private String openCVGetApiUrl;
 
     @PostConstruct
-    public void initWebClient(){
-        this.webClient=builder.baseUrl(openCVUrl).build();
+    public void initWebClient() {
+        this.webClient = builder.baseUrl(openCVUrl).build();
     }
 
     @Override
@@ -54,24 +54,21 @@ public class OpenCVClientImpl implements OpenCVClient {
         //이미지 이름 생성
         String fileName = generateFileName.generate(FileType.IMAGE, image);
 
-        try {
-            webClient.post()
-                    .uri(openCVPostApiUrl)
-                    .contentType(MediaType.MULTIPART_FORM_DATA)
-                    .body(BodyInserters.fromMultipartData("image", new ByteArrayResource(image.getBytes()) {
-                                @Override
-                                public String getFilename() {
-                                    return fileName;
-                                }
-                            })
-                            .with("userId", userId.toString())
-                            .with("backNumber", backNumber.toString()))
-                    .retrieve()
-                    .bodyToMono(Void.class)
-                    .block();
+        webClient.post()
+                .uri(openCVPostApiUrl)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData("image", new ByteArrayResource(image.getBytes()) {
+                            @Override
+                            public String getFilename() {
+                                return fileName;
+                            }
+                        })
+                        .with("userId", userId.toString())
+                        .with("backNumber", backNumber.toString()))
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
 
-        } catch (Exception e) {
-            throw new CustomException(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
-        }
+
     }
 }

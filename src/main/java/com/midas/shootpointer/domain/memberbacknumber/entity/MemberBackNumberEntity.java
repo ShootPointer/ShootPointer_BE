@@ -25,4 +25,8 @@ public class MemberBackNumberEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meber_back_number_id",nullable = false)
     private BackNumberEntity backNumber;
+
+    public static MemberBackNumberEntity of(Member member,BackNumberEntity backNumber){
+        return new MemberBackNumberEntity(null,member,backNumber);
+    }
 }

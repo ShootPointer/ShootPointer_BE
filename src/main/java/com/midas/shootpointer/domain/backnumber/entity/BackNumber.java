@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class BackNumber {
-    @Column(name = "back_number",nullable = false)
+    @Column(name = "back_number",nullable = false,unique = true)
     private Integer number;
 
     public static BackNumber of(Integer backNumber){
