@@ -1,4 +1,4 @@
-package com.midas.shootpointer.global.util;
+package com.midas.shootpointer.global.util.file;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
