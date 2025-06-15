@@ -1,0 +1,7 @@
+# Settings
+spring:
+  application:
+    name: shootpointer
+spring:
+  profiles:
+    active: dev
