@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.backnumber.entity;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.memberbacknumber.entity.MemberBackNumberEntity;
 import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "Member_BackNumber")
+@Table(name = "member_back_number")
 @Getter
 public class BackNumberEntity extends BaseEntity {
     @Column(name = "meber_back_number_id",unique = true,nullable = false)
@@ -29,8 +30,10 @@ public class BackNumberEntity extends BaseEntity {
     private BackNumber backNumber;
 
 
-   @OneToMany(mappedBy = "highlight_video_id",cascade = CascadeType.ALL,orphanRemoval = true)
+   @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<HighlightEntity> highlights=new ArrayList<>();
 
+   @OneToMany(mappedBy ="member_back_number",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<MemberBackNumberEntity> memberBackNumbers=new ArrayList<>();
 
 }
