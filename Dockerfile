@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM openjdk:17-slim
 
 ARG JAR_FILE=build/libs/shootpointer-0.0.1-SNAPSHOT.jar
 
