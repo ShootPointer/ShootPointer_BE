@@ -5,6 +5,7 @@ import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.file.FileType;
 import com.midas.shootpointer.global.util.file.GenerateFileName;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -21,7 +22,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OpenCVClientImpl implements OpenCVClient {
     private final GenerateFileName generateFileName;
-    private final WebClient webClient;
+    private final WebClient.Builder builder;
+    private  WebClient webClient;
 
     /**
      * openCV 서버 주소
@@ -41,6 +43,10 @@ public class OpenCVClientImpl implements OpenCVClient {
     @Value("${openCV.api.get.fetch-video}")
     private String openCVGetApiUrl;
 
+    @PostConstruct
+    public void initWebClient(){
+        this.webClient=builder.baseUrl(openCVUrl).build();
+    }
 
     @Override
     @CustomLog

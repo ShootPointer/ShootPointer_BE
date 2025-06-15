@@ -98,4 +98,7 @@ public class JwtUtil {
         return decodeBase64(encodedNickname);
     }
 
+    public UUID getUserId() {
+        return null;
+    }
 }
