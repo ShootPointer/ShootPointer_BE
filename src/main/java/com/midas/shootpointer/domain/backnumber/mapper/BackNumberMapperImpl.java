@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class BackNumberMapperImpl implements BackNumberMapper{
     @Override
-    public BackNumberEntity dtoToEntity(BackNumberRequest response) {
+    public BackNumberEntity dtoToEntity(BackNumberRequest request) {
         return BackNumberEntity.builder()
-                .backNumber(BackNumber.of(response.getBackNumber()))
+                .backNumber(BackNumber.of(request.getBackNumber()))
                 .build();
     }
 

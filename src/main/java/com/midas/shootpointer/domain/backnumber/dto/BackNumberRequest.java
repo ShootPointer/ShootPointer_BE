@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -17,7 +18,11 @@ public class BackNumberRequest {
     @Getter
     private Integer backNumber;
 
-    public static BackNumberRequest of(Integer backNumber){
-        return new BackNumberRequest(backNumber);
+    //등 번호 이미지
+    @Getter
+    private MultipartFile image;
+
+    public static BackNumberRequest of(Integer backNumber,MultipartFile image){
+        return new BackNumberRequest(backNumber,image);
     }
 }
