@@ -1,5 +1,6 @@
 package com.midas.shootpointer.global.util.file;
 
+import com.midas.shootpointer.global.util.uuid.UUIDHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,8 +13,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class GenerateFileName {
-    private FileType fileType;
-
+    private final UUIDHandler uuidHandler;
     public String generate(FileType fileType, MultipartFile file){
         StringBuilder sb = new StringBuilder();
         String originalFileName = file.getOriginalFilename();
@@ -23,7 +23,7 @@ public class GenerateFileName {
             fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
         }
 
-        sb.append(UUID.randomUUID()) // 고유값으로 충돌 방지
+        sb.append(uuidHandler.generate()) // 고유값으로 충돌 방지
                 .append("_")
                 .append(fileType.name().toLowerCase())
                 .append(fileExtension);

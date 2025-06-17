@@ -19,6 +19,17 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "등 번호", description = "등 번호 API")
 public class BackNumberController {
     private final BackNumberService backNumberService;
+    /*==========================
+    *
+    *BackNumberController
+    *
+    * @parm 등번호 request dto
+    * @return ApiResponseDto
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 6/16/25
+    *
+    ==========================**/
     @Operation(
             summary = "등 번호 등록 API - [담당자 : 김도연]",
             responses = {
