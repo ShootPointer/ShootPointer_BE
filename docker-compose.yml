@@ -26,7 +26,6 @@ services:
   # Redis
   redis:
     image: redis:7
-    host: redis
     container_name: redis
     ports:
       - "6379:6379"  # 포트 통일
