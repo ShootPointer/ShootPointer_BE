@@ -19,12 +19,16 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Component
-@RequiredArgsConstructor
 public class OpenCVClientImpl implements OpenCVClient {
     private final GenerateFileName generateFileName;
-    private final WebClient.Builder builder;
-    private WebClient webClient;
 
+    private final WebClient webClient;
+
+    public OpenCVClientImpl(GenerateFileName generateFileName,
+                            @Value("${openCV.url}")String openCVUrl){
+        this.webClient= WebClient.builder().baseUrl(openCVUrl).build();
+        this.generateFileName=generateFileName;
+    }
     /**
      * openCV 서버 주소
      */
@@ -43,10 +47,6 @@ public class OpenCVClientImpl implements OpenCVClient {
     @Value("${openCV.api.get.fetch-video}")
     private String openCVGetApiUrl;
 
-    @PostConstruct
-    public void initWebClient() {
-        this.webClient = builder.baseUrl(openCVUrl).build();
-    }
 
     /*==========================
     *
