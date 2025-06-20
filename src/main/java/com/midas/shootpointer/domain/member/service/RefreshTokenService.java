@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class RefreshTokenService {
 
-    private final StringRedisTemplate redisTemplate;
+    private final RedisTemplate<String,String> redisTemplate;
 
     @Value("${jwt.refresh_expiration_time}")
     private long refreshExpireMs;
