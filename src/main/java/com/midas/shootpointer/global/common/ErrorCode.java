@@ -48,7 +48,14 @@ public enum ErrorCode {
     JWT_CREATE_FAIL(40403, HttpStatus.INTERNAL_SERVER_ERROR, "JWT 생성 실패"),
     JWT_PARSE_FAIL(40404, HttpStatus.INTERNAL_SERVER_ERROR, "JWT 파싱 실패"),
     JWT_DECODE_FAIL(40405, HttpStatus.INTERNAL_SERVER_ERROR, "JWT 디코딩 실패"),
-    SPRING_CONTEXT_BEAN_NOT_FOUND(40406, HttpStatus.INTERNAL_SERVER_ERROR, "스프링 빈을 찾을 수 없음");
+    SPRING_CONTEXT_BEAN_NOT_FOUND(40406, HttpStatus.INTERNAL_SERVER_ERROR, "스프링 빈을 찾을 수 없음"),
+
+
+    //5XX
+    FAILED_SEND_IMAGE_TO_OPENCV(20501,HttpStatus.GATEWAY_TIMEOUT,"OpenCV 등 번호 이미지 전송 실패")
+    ;
+
+
 
 
     private final Integer code;

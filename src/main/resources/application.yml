@@ -4,3 +4,15 @@ spring:
     name: shootpointer
   profiles:
     active: dev
+
+
+# -------------------------
+# [OpenCV Settings]
+# -------------------------
+openCV:
+  url: http://localhost:8888
+  api:
+    post:
+      send-img: back-number
+    get:
+      fetch-video: highlight
