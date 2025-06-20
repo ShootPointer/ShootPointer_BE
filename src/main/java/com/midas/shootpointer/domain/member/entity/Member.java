@@ -32,9 +32,9 @@ public class Member extends BaseTimeEntity {
     @Convert(converter = EncryptConverter.class)
     private String email;
 
-    @OneToMany(mappedBy = "higlight_video",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<HighlightEntity> highlights=new ArrayList<>();
 
-    @OneToMany(mappedBy = "member_back_number",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<MemberBackNumberEntity> memberBackNumbers=new ArrayList<>();
 }

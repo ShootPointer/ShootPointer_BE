@@ -10,6 +10,7 @@ import lombok.Getter;
 
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 /*
  * 등번호 등록 반환 dto
  */

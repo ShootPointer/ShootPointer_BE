@@ -21,7 +21,7 @@ import java.util.List;
 @Table(name = "member_back_number")
 @Getter
 public class BackNumberEntity extends BaseEntity {
-    @Column(name = "meber_back_number_id",unique = true,nullable = false)
+    @Column(name = "member_back_number_id",unique = true,nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long backNumberId;
@@ -30,10 +30,10 @@ public class BackNumberEntity extends BaseEntity {
     private BackNumber backNumber;
 
 
-   @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+   @OneToMany(mappedBy = "backNumber",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<HighlightEntity> highlights=new ArrayList<>();
 
-   @OneToMany(mappedBy ="member_back_number",cascade = CascadeType.ALL,orphanRemoval = true)
+   @OneToMany(mappedBy ="backNumber",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<MemberBackNumberEntity> memberBackNumbers=new ArrayList<>();
 
 }

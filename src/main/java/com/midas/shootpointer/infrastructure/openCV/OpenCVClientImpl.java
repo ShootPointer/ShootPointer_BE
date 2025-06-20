@@ -48,6 +48,17 @@ public class OpenCVClientImpl implements OpenCVClient {
         this.webClient = builder.baseUrl(openCVUrl).build();
     }
 
+    /*==========================
+    *
+    *OpenCVClientImpl
+    *
+    * @parm userId : 멤버 ID , backNumber : 등 번호 , image : 등 번호 이미지
+    * @return void
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 6/17/25
+    *
+    ==========================**/
     @Override
     @CustomLog
     public void sendBackNumberInformation(UUID userId, Integer backNumber, MultipartFile image) throws IOException {
@@ -68,7 +79,5 @@ public class OpenCVClientImpl implements OpenCVClient {
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();
-
-
     }
 }
