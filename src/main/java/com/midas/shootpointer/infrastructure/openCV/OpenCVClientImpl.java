@@ -23,29 +23,19 @@ public class OpenCVClientImpl implements OpenCVClient {
     private final GenerateFileName generateFileName;
 
     private final WebClient webClient;
+    private final String openCVGetApiUrl;
+    private final String openCVPostApiUrl;
 
     public OpenCVClientImpl(GenerateFileName generateFileName,
-                            @Value("${openCV.url}")String openCVUrl){
+                            @Value("${openCV.url}")String openCVUrl,
+                            @Value("${openCV.api.post.send-img}") String openCVPostApiUrl,
+                            @Value("${openCV.api.get.fetch-video}")String openCVGetApiUrl
+                            ){
         this.webClient= WebClient.builder().baseUrl(openCVUrl).build();
         this.generateFileName=generateFileName;
+        this.openCVGetApiUrl=openCVGetApiUrl;
+        this.openCVPostApiUrl=openCVPostApiUrl;
     }
-    /**
-     * openCV 서버 주소
-     */
-    @Value("${openCV.url}")
-    private String openCVUrl;
-
-    /**
-     * openCV 사진 전송 api 주소
-     */
-    @Value("${openCV.api.post.send-img}")
-    private String openCVPostApiUrl;
-
-    /**
-     * openCV 비디오 api 주소
-     */
-    @Value("${openCV.api.get.fetch-video}")
-    private String openCVGetApiUrl;
 
 
     /*==========================
