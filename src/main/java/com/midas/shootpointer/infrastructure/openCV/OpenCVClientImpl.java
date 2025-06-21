@@ -5,6 +5,7 @@ import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.file.FileType;
 import com.midas.shootpointer.global.util.file.GenerateFileName;
+import com.midas.shootpointer.infrastructure.openCV.dto.OpenCVResponse;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,9 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.TimeoutException;
 
 @Component
 public class OpenCVClientImpl implements OpenCVClient {
@@ -58,7 +62,7 @@ public class OpenCVClientImpl implements OpenCVClient {
         //이미지 이름 생성
         String fileName = generateFileName.generate(FileType.IMAGE, image);
 
-        webClient.post()
+        OpenCVResponse<?> response=webClient.post()
                 .uri(openCVPostApiUrl)
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData("image", new ByteArrayResource(image.getBytes()) {
@@ -70,11 +74,39 @@ public class OpenCVClientImpl implements OpenCVClient {
                         .with("userId", userId.toString())
                         .with("backNumber", backNumber.toString()))
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError,response ->
-                        response.bodyToMono(String.class)
-                                .flatMap(body->Mono.error(new CustomException(ErrorCode.INTERNAL_ERROR_OF_PYTHON_SERVER,body))))
-                .bodyToMono(Void.class)
-                .retryWhen()
+                .bodyToMono(OpenCVResponse.class)
+                //최대 5초 연결 시간
+                .timeout(Duration.ofSeconds(5))
+                //최대 3번 실행
+                //1초 간격
+                .retryWhen(Retry.backoff(3,Duration.ofSeconds(1))
+                        //읽기 예외 혹은 시간초과 예외에 대해서 재시도 실행
+                        .filter(e->
+                                e instanceof IOException ||
+                                e instanceof TimeoutException)
+                        .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) ->
+                                new CustomException(ErrorCode.FAILED_POST_API_RETRY_TO_OPENCV))
+                )
                 .block();
+
+        //openCV 응답값 예외 처리
+        validateOpenCVResponse(response);
+    }
+
+    /*==========================
+    *
+    *OpenCVClientImpl
+    *
+    * @parm OpenCVResponse : OpenCV 서버 응답 json
+    * @return void
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 6/21/25
+    *
+    ==========================**/
+    private void validateOpenCVResponse(OpenCVResponse<?> response){
+        if(response == null || !response.isSuccess()){
+            throw new CustomException(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
+        }
     }
 }

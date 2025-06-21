@@ -53,7 +53,8 @@ public enum ErrorCode {
     INTERNAL_ERROR_OF_PYTHON_SERVER(40501,HttpStatus.BAD_REQUEST,"파이썬 서버 내부 오류입니다."),
 
     //5XX
-    FAILED_SEND_IMAGE_TO_OPENCV(20501,HttpStatus.GATEWAY_TIMEOUT,"OpenCV 등 번호 이미지 전송 실패")
+    FAILED_SEND_IMAGE_TO_OPENCV(20501,HttpStatus.GATEWAY_TIMEOUT,"OpenCV 등 번호 이미지 전송 실패"),
+    FAILED_POST_API_RETRY_TO_OPENCV(20502,HttpStatus.REQUEST_TIMEOUT,"OpenCV 파일 전송 횟수가 초과했습니다.")
     ;
 
 
