@@ -32,17 +32,15 @@ public class OpenCVClientImpl implements OpenCVClient {
     private final String openCVGetApiUrl;
     private final String openCVPostApiUrl;
 
-    public OpenCVClientImpl(GenerateFileName generateFileName,
-                            @Value("${openCV.url}")String openCVUrl,
-                            @Value("${openCV.api.post.send-img}") String openCVPostApiUrl,
-                            @Value("${openCV.api.get.fetch-video}")String openCVGetApiUrl
-    ){
-        this.webClient= WebClient.builder().baseUrl(openCVUrl).build();
-        this.generateFileName=generateFileName;
-        this.openCVGetApiUrl=openCVGetApiUrl;
-        this.openCVPostApiUrl=openCVPostApiUrl;
+    public OpenCVClientImpl(
+            GenerateFileName generateFileName,
+            OpenCVProperties openCVProperties
+    ) {
+        this.webClient = WebClient.builder().baseUrl(openCVProperties.getUrl()).build();
+        this.generateFileName = generateFileName;
+        this.openCVGetApiUrl = openCVProperties.getApi().getGet().getFetchVideo();
+        this.openCVPostApiUrl = openCVProperties.getApi().getPost().getSendImage();
     }
-
 
 
     /*==========================
@@ -62,7 +60,7 @@ public class OpenCVClientImpl implements OpenCVClient {
         //이미지 이름 생성
         String fileName = generateFileName.generate(FileType.IMAGE, image);
 
-        OpenCVResponse<?> response=webClient.post()
+        OpenCVResponse<?> response = webClient.post()
                 .uri(openCVPostApiUrl)
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData("image", new ByteArrayResource(image.getBytes()) {
@@ -79,14 +77,15 @@ public class OpenCVClientImpl implements OpenCVClient {
                 .timeout(Duration.ofSeconds(5))
                 //최대 3번 실행
                 //1초 간격
-                .retryWhen(Retry.backoff(3,Duration.ofSeconds(1))
+                .retryWhen(Retry.backoff(3, Duration.ofSeconds(1))
                         //읽기 예외 혹은 시간초과 예외에 대해서 재시도 실행
-                        .filter(e->
+                        .filter(e ->
                                 e instanceof IOException ||
-                                e instanceof TimeoutException)
+                                        e instanceof TimeoutException)
                         .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) ->
                                 new CustomException(ErrorCode.FAILED_POST_API_RETRY_TO_OPENCV))
                 )
+                //동기식 처리
                 .block();
 
         //openCV 응답값 예외 처리
@@ -104,8 +103,8 @@ public class OpenCVClientImpl implements OpenCVClient {
     * @date 6/21/25
     *
     ==========================**/
-    private void validateOpenCVResponse(OpenCVResponse<?> response){
-        if(response == null || !response.isSuccess()){
+    private void validateOpenCVResponse(OpenCVResponse<?> response) {
+        if (response == null || !response.isSuccess()) {
             throw new CustomException(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
         }
     }
