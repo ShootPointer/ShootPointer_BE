@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.IOException;
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class OpenCVClientTest {
@@ -28,8 +31,9 @@ class OpenCVClientTest {
 
     @Test
     @DisplayName("OpenCV 서버로 이미지와 유저 정보를 전송합니다.-SUCCESS")
-    void sendBackNumberInformation_SUCCESS(){
+    void sendBackNumberInformation_SUCCESS() throws IOException {
         //given
+        UUID userId=UUID.randomUUID();
         /*
          * Mock 이미지
          */
@@ -41,9 +45,9 @@ class OpenCVClientTest {
         );
 
         String mockImageFileName=generateFileName.generate(FileType.IMAGE,mockMultipartFile);
-
+        Integer mockBackNumber=1;
         //when
-
+        openCVClient.sendBackNumberInformation(userId,mockBackNumber,mockMultipartFile);
         //then
     }
 }

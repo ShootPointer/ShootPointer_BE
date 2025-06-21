@@ -9,11 +9,13 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -30,7 +32,7 @@ public class OpenCVClientImpl implements OpenCVClient {
                             @Value("${openCV.url}")String openCVUrl,
                             @Value("${openCV.api.post.send-img}") String openCVPostApiUrl,
                             @Value("${openCV.api.get.fetch-video}")String openCVGetApiUrl
-                            ){
+    ){
         this.webClient= WebClient.builder().baseUrl(openCVUrl).build();
         this.generateFileName=generateFileName;
         this.openCVGetApiUrl=openCVGetApiUrl;
@@ -68,7 +70,11 @@ public class OpenCVClientImpl implements OpenCVClient {
                         .with("userId", userId.toString())
                         .with("backNumber", backNumber.toString()))
                 .retrieve()
+                .onStatus(HttpStatus::is4xxClientError,response ->
+                        response.bodyToMono(String.class)
+                                .flatMap(body->Mono.error(new CustomException(ErrorCode.INTERNAL_ERROR_OF_PYTHON_SERVER,body))))
                 .bodyToMono(Void.class)
+                .retryWhen()
                 .block();
     }
 }

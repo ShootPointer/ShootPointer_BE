@@ -50,6 +50,7 @@ public enum ErrorCode {
     JWT_DECODE_FAIL(40405, HttpStatus.INTERNAL_SERVER_ERROR, "JWT 디코딩 실패"),
     SPRING_CONTEXT_BEAN_NOT_FOUND(40406, HttpStatus.INTERNAL_SERVER_ERROR, "스프링 빈을 찾을 수 없음"),
 
+    INTERNAL_ERROR_OF_PYTHON_SERVER(40501,HttpStatus.BAD_REQUEST,"파이썬 서버 내부 오류입니다."),
 
     //5XX
     FAILED_SEND_IMAGE_TO_OPENCV(20501,HttpStatus.GATEWAY_TIMEOUT,"OpenCV 등 번호 이미지 전송 실패")
