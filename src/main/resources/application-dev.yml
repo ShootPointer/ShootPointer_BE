@@ -16,7 +16,8 @@ jwt:
 spring:
   application:
     name: shootpointer
-
+  main:
+    allow-bean-definition-overriding: true
   # 데이터소스 설정
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/shootpointer}
@@ -37,21 +38,22 @@ spring:
         use_sql_comments: true
         show-sql: true
 
-  # Redis 설정
-  redis:
-    host: ${SPRING_REDIS_HOST:localhost}
-    port: ${SPRING_REDIS_PORT:6379}
-    timeout: 2000ms
-    jedis:
-      pool:
-        max-active: 8
-        max-idle: 8
-        min-idle: 0
 
   # MongoDB 설정
   data:
     mongodb:
       uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/shootpointer}
+
+    # Redis 설정
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
+      timeout: 2000ms
+      jedis:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
 
   # kakao
   security:
@@ -101,3 +103,11 @@ kakao:
     uri: https://kauth.kakao.com
   api:
     uri: https://kapi.kakao.com
+
+opencv:
+  url: http://localhost:8888
+  api:
+    post:
+      send-img: back-number
+    get:
+      fetch-video: highlight

@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > BackNumberServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.domain.backnumber.service</a>
+</div>
+
+<h1>Coverage Summary for Class: BackNumberServiceImpl (com.midas.shootpointer.domain.backnumber.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BackNumberServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/16)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">BackNumberServiceImpl$$SpringCGLIB$$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/16)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.domain.backnumber.service;
+&nbsp;
+&nbsp;import com.midas.shootpointer.domain.backnumber.dto.BackNumberRequest;
+&nbsp;import com.midas.shootpointer.domain.backnumber.dto.BackNumberResponse;
+&nbsp;import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
+&nbsp;import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
+&nbsp;import com.midas.shootpointer.domain.backnumber.mapper.BackNumberMapper;
+&nbsp;import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
+&nbsp;import com.midas.shootpointer.domain.member.entity.Member;
+&nbsp;import com.midas.shootpointer.domain.member.repository.MemberRepository;
+&nbsp;import com.midas.shootpointer.domain.memberbacknumber.entity.MemberBackNumberEntity;
+&nbsp;import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
+&nbsp;import com.midas.shootpointer.global.annotation.CustomLog;
+&nbsp;import com.midas.shootpointer.global.common.ErrorCode;
+&nbsp;import com.midas.shootpointer.global.exception.CustomException;
+&nbsp;import com.midas.shootpointer.global.util.jwt.JwtUtil;
+&nbsp;import com.midas.shootpointer.infrastructure.openCV.service.OpenCVClient;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;@Service
+&nbsp;@RequiredArgsConstructor
+&nbsp;public class BackNumberServiceImpl implements BackNumberService{
+&nbsp;    private final BackNumberRepository backNumberRepository;
+&nbsp;    private final MemberRepository memberRepository;
+&nbsp;    private final MemberBackNumberRepository memberBackNumberRepository;
+&nbsp;    private final OpenCVClient openCVClient;
+&nbsp;    private final BackNumberMapper mapper;
+&nbsp;    private final JwtUtil jwtUtil;
+&nbsp;
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *BackNumberServiceImpl
+&nbsp;    *
+&nbsp;    * @parm 등 번호 response dto
+&nbsp;    * @return 등 번호 request dto
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 6/16/25
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;    @Override
+&nbsp;    @Transactional
+&nbsp;    @CustomLog
+&nbsp;    public BackNumberResponse create(BackNumberRequest request) {
+<b class="fc">&nbsp;        UUID userId=jwtUtil.getUserId();</b>
+&nbsp;        //TODO: 임의로 멤버 id값 지정 및 예외처리 수정
+<b class="fc">&nbsp;        Long memberId=1L;</b>
+<b class="fc">&nbsp;        Member member=memberRepository.findByMemberId(memberId)</b>
+<b class="fc">&nbsp;                .orElseThrow();</b>
+&nbsp;
+&nbsp;        //1. 요청 등 번호가 있는지 확인
+<b class="fc">&nbsp;        BackNumber requestBackNumber=BackNumber.of(request.getBackNumber());</b>
+<b class="fc">&nbsp;        BackNumberEntity backNumber=backNumberRepository.findByBackNumber(requestBackNumber)</b>
+<b class="fc">&nbsp;                .orElseGet(()-&gt;{</b>
+<b class="fc">&nbsp;                    BackNumberEntity newEntity = mapper.dtoToEntity(request);</b>
+<b class="fc">&nbsp;                    return backNumberRepository.save(newEntity);</b>
+&nbsp;                });
+&nbsp;
+&nbsp;        //2. 중간 테이블 저장
+<b class="fc">&nbsp;        MemberBackNumberEntity memberBackNumber=MemberBackNumberEntity.of(</b>
+&nbsp;                member,
+&nbsp;                backNumber
+&nbsp;        );
+<b class="fc">&nbsp;        memberBackNumberRepository.save(memberBackNumber);</b>
+&nbsp;
+&nbsp;        //3. OpenCV 사진 전송
+&nbsp;        try {
+<b class="fc">&nbsp;            openCVClient.sendBackNumberInformation(userId, requestBackNumber.getNumber(), request.getImage());</b>
+<b class="fc">&nbsp;        }catch (Exception e){</b>
+<b class="fc">&nbsp;            throw new CustomException(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return mapper.entityToDto(backNumber);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-06-22 17:36</div>
+</div>
+</body>
+</html>

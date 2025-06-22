@@ -2,13 +2,12 @@ package com.midas.shootpointer.infrastructure.openCV;
 
 import com.midas.shootpointer.global.util.file.FileType;
 import com.midas.shootpointer.global.util.file.GenerateFileName;
+import com.midas.shootpointer.infrastructure.openCV.service.OpenCVClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class OpenCVClientTest {
     private static final String OPENCV_URL="http://localhost:8888";

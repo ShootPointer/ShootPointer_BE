@@ -1,12 +1,8 @@
-package com.midas.shootpointer.infrastructure.openCV;
+package com.midas.shootpointer.infrastructure.openCV.service;
 
 import com.midas.shootpointer.global.annotation.CustomLog;
-import com.midas.shootpointer.global.common.ErrorCode;
-import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.file.FileType;
 import com.midas.shootpointer.global.util.file.GenerateFileName;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;

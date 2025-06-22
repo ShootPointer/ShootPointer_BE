@@ -1,0 +1,162 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > HighlightEntity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.domain.highlight.entity</a>
+</div>
+
+<h1>Coverage Summary for Class: HighlightEntity (com.midas.shootpointer.domain.highlight.entity)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">HighlightEntity</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">HighlightEntity$HibernateInstantiator</td>
+  </tr>
+  <tr>
+    <td class="name">HighlightEntity$HibernateProxy</td>
+  </tr>
+  <tr>
+    <td class="name">HighlightEntity$HighlightEntityBuilder</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.domain.highlight.entity;
+&nbsp;
+&nbsp;import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
+&nbsp;import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
+&nbsp;import com.midas.shootpointer.domain.member.entity.Member;
+&nbsp;import com.midas.shootpointer.global.entity.BaseEntity;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import lombok.AllArgsConstructor;
+&nbsp;import lombok.Builder;
+&nbsp;import lombok.NoArgsConstructor;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;
+&nbsp;@Entity
+<b class="fc">&nbsp;@Slf4j</b>
+&nbsp;@AllArgsConstructor
+&nbsp;@NoArgsConstructor
+&nbsp;@Builder
+&nbsp;@Table(name = &quot;higlight_video&quot;)
+&nbsp;public class HighlightEntity extends BaseEntity {
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    @Column(name = &quot;highlight_video_id&quot;,unique = true,nullable = false)
+&nbsp;    private Long highlightId;
+&nbsp;
+&nbsp;    @Column(name = &quot;highlight_url&quot;,nullable = false)
+&nbsp;    private String highlightURL;
+&nbsp;
+&nbsp;    @Column(name = &quot;is_selected&quot;)
+&nbsp;    private Boolean isSelected=false;
+&nbsp;
+&nbsp;    @ManyToOne(cascade = CascadeType.ALL)
+&nbsp;    @JoinColumn(name = &quot;member_id&quot;,nullable = false)
+&nbsp;    private Member member;
+&nbsp;
+&nbsp;    @ManyToOne(cascade = CascadeType.ALL)
+&nbsp;    @JoinColumn(name = &quot;meber_back_number_id&quot;,nullable = false)
+&nbsp;    private BackNumberEntity backNumber;
+&nbsp;
+&nbsp;    public void select(){
+<b class="nc">&nbsp;        this.isSelected=true;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-06-22 17:36</div>
+</div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.midas.shootpointer.infrastructure.openCV;
+package com.midas.shootpointer.infrastructure.openCV.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
