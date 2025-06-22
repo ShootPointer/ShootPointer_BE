@@ -56,7 +56,7 @@ class BackNumberServiceImplTest {
     @DisplayName("등 번호 이미지를 OpenCVClient를 통해 openCV서버로 전송하고 회원의 등 번호와 회원 정보를 저장합니다._SUCCESS " +
             "case1 : 등 번호가 이미 존재 하는 경우")
     @Test
-    void create_SUCCESS() throws IOException {
+    void create_existed_backNumber_SUCCESS() throws IOException {
         //given
         BackNumberRequest request = mockBackNumberRequest();
         UUID mockUserId = UUID.randomUUID();
@@ -88,6 +88,46 @@ class BackNumberServiceImplTest {
         verify(memberBackNumberRepository).save(any());
     }
 
+    @DisplayName("등 번호 이미지를 OpenCVClient를 통해 openCV서버로 전송하고 회원의 등 번호와 회원 정보를 저장합니다._SUCCESS " +
+            "case2 : 등 번호가 존재하지 않는 경우")
+    @Test
+    void create_no_existed_backNumber_SUCCESS() throws IOException {
+        //given
+        BackNumberRequest request = mockBackNumberRequest();
+        UUID mockUserId = UUID.randomUUID();
+        Member mockMember = mockMember();
+        BackNumber mockBackNumber = BackNumber.of(request.getBackNumber());
+        BackNumberEntity mockBackNumberEntity = mockBackNumberEntity(mockBackNumber);
+        BackNumberResponse expectedResponse = BackNumberResponse.of(100);
+
+        when(jwtUtil.getUserId())
+                .thenReturn(mockUserId);
+        when(memberRepository.findByMemberId(1L))
+                .thenReturn(Optional.of(mockMember));
+        //등 번호가 존재하지 않음
+        when(backNumberRepository.findByBackNumber(mockBackNumber))
+                .thenReturn(Optional.empty());
+        when(backNumberMapper.dtoToEntity(request))
+                .thenReturn(mockBackNumberEntity);
+        when(backNumberRepository.save(mockBackNumberEntity))
+                .thenReturn(mockBackNumberEntity);
+
+        when(backNumberMapper.entityToDto(mockBackNumberEntity))
+                .thenReturn(expectedResponse);
+
+        //when
+        BackNumberResponse response = backNumberService.create(request);
+
+        //then
+        assertThat(response).isNotNull();
+        assertThat(response.getBackNumber()).isEqualTo(100);
+
+        verify(openCVClient).sendBackNumberInformation(eq(mockUserId)
+                , eq(100),
+                any()
+        );
+        verify(memberBackNumberRepository).save(any());
+    }
     /**
      * Mock Member
      */
