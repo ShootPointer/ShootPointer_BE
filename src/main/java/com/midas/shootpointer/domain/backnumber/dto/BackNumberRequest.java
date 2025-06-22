@@ -7,7 +7,9 @@ import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@Getter
+@NoArgsConstructor
 /*
  * 등번호 등록  dto
  */

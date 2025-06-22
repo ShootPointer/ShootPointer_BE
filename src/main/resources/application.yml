@@ -9,12 +9,4 @@ spring:
 # -------------------------
 # [OpenCV Settings]
 # -------------------------
-opencv:
-  url: http://localhost:8888
-  api:
-    post:
-      send-img: back-number
-    get:
-      fetch-video: highlight
-  proxy:
-    upload-video: upload
+

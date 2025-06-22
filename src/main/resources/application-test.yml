@@ -1,0 +1,7 @@
+opencv:
+  url: https://localhost:8888
+  api:
+    post:
+      send-image: /api/send-img
+    get:
+      fetch-video: /api/fetch-video
