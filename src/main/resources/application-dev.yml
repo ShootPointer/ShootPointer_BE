@@ -109,8 +109,8 @@ opencv:
   url: http://localhost:8888
   api:
     post:
-      send-img: back-number
+      send-image: back-number
     get:
       fetch-video: highlight
-  proxy:
-    upload-video: upload
+    proxy:
+      upload-video: upload
