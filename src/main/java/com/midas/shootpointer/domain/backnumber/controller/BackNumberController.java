@@ -41,9 +41,9 @@ public class BackNumberController {
                         schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
             }
     )
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<BackNumberResponse>> create(
-            @RequestBody BackNumberRequest request
+            @ModelAttribute BackNumberRequest request
     ){
         BackNumberResponse response=backNumberService.create(request);
         return ResponseEntity.ok(com.midas.shootpointer.global.dto.ApiResponse.created(response));
