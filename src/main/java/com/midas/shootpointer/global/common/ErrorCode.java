@@ -17,6 +17,7 @@ public enum ErrorCode {
      * highlight:                  20
      * member:                     30
      * global:                     40
+     * backnumber :                50
 
      * <p>
      * - Package
@@ -49,15 +50,20 @@ public enum ErrorCode {
     JWT_PARSE_FAIL(40404, HttpStatus.INTERNAL_SERVER_ERROR, "JWT 파싱 실패"),
     JWT_DECODE_FAIL(40405, HttpStatus.INTERNAL_SERVER_ERROR, "JWT 디코딩 실패"),
     SPRING_CONTEXT_BEAN_NOT_FOUND(40406, HttpStatus.INTERNAL_SERVER_ERROR, "스프링 빈을 찾을 수 없음"),
+    JWT_MEMBER_ID_INVALID(40407, HttpStatus.INTERNAL_SERVER_ERROR, "JWT에서 memberId(UUID) 추출 실패"),
+    JWT_REQUEST_NOT_FOUND(40408, HttpStatus.NOT_FOUND, "요청 Context를 찾을 수 없음"),
+    JWT_HEADER_NOT_FOUND(40409, HttpStatus.NOT_FOUND, "Authorization 헤더가 없음"),
 
     INTERNAL_ERROR_OF_PYTHON_SERVER(40501,HttpStatus.BAD_REQUEST,"파이썬 서버 내부 오류입니다."),
 
     //5XX
     FAILED_SEND_IMAGE_TO_OPENCV(20501,HttpStatus.GATEWAY_TIMEOUT,"OpenCV 등 번호 이미지 전송 실패"),
-    FAILED_POST_API_RETRY_TO_OPENCV(20502,HttpStatus.REQUEST_TIMEOUT,"OpenCV 파일 전송 횟수가 초과했습니다.")
-    ;
+    FAILED_POST_API_RETRY_TO_OPENCV(20502, HttpStatus.REQUEST_TIMEOUT, "OpenCV 파일 전송 횟수가 초과했습니다."),
 
 
+    // 502(backnumber - service) part
+    //* TODO : 현재 멤버 관련 로직이 Kakao 밖에 없어서 Member 도메인에 예외처리가 처음 생긴게 BackNumber 도메인임. << 이 부분은 추후에 Member 도메인에 로직 생기면 바꿀게요~
+    MEMBER_NOT_FOUND(50201, HttpStatus.NOT_FOUND, "Member를 찾을 수 없음");
 
 
     private final Integer code;
