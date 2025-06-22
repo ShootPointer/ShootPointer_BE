@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 import reactor.util.retry.Retry;
 
 import java.io.IOException;
@@ -77,7 +78,9 @@ public class OpenCVClientImpl implements OpenCVClient {
                         //읽기 예외 혹은 시간초과 예외에 대해서 재시도 실행
                         .filter(e ->
                                 e instanceof IOException ||
-                                        e instanceof TimeoutException)
+                                        e instanceof TimeoutException ||
+                                        e instanceof WebClientRequestException
+                        )
                         .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) ->
                                 new CustomException(ErrorCode.FAILED_POST_API_RETRY_TO_OPENCV))
                 )
