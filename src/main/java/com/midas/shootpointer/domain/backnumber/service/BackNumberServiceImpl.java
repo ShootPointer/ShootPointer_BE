@@ -14,7 +14,7 @@ import com.midas.shootpointer.global.annotation.CustomLog;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
-import com.midas.shootpointer.infrastructure.openCV.OpenCVClient;
+import com.midas.shootpointer.infrastructure.openCV.service.OpenCVClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
