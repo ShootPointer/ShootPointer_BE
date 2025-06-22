@@ -9,6 +9,8 @@ import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberRepository;
 import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
+import com.midas.shootpointer.global.common.ErrorCode;
+import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
 import com.midas.shootpointer.infrastructure.openCV.service.OpenCVClient;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.ArgumentMatchers.any;
 
 import org.mockito.Mock;
@@ -127,6 +130,36 @@ class BackNumberServiceImplTest {
                 any()
         );
         verify(memberBackNumberRepository).save(any());
+    }
+
+    @DisplayName("등 번호 이미지를 OpenCVClient를 통해 openCV서버로 전송 중 실패 시 CustomException를 반환합니다._FAIL")
+    @Test
+    void create_openCVClient_error_FAIL() throws IOException {
+        //given
+        BackNumberRequest request = mockBackNumberRequest();
+        UUID mockUserId = UUID.randomUUID();
+        Member mockMember = mockMember();
+        BackNumber mockBackNumber = BackNumber.of(request.getBackNumber());
+        BackNumberEntity mockBackNumberEntity = mockBackNumberEntity(mockBackNumber);
+
+        when(jwtUtil.getUserId())
+                .thenReturn(mockUserId);
+        when(memberRepository.findByMemberId(1L))
+                .thenReturn(Optional.of(mockMember));
+        when(backNumberRepository.findByBackNumber(mockBackNumber))
+                .thenReturn(Optional.of(mockBackNumberEntity));
+
+
+        //when & then
+        doThrow(new IOException())
+                .when(openCVClient)
+                .sendBackNumberInformation(any(),anyInt(),any());
+        CustomException customException= catchThrowableOfType(() ->
+                        backNumberService.create(request),
+                CustomException.class
+        );
+        assertThat(customException).isNotNull();
+        assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
     }
     /**
      * Mock Member
