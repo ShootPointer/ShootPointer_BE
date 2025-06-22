@@ -19,7 +19,7 @@ public class MemberBackNumberEntity {
     private Long memberBackNumberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id",nullable = false, columnDefinition = "BINARY(16)")
+    @JoinColumn(name = "member_id",nullable = false, columnDefinition = "uuid")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)

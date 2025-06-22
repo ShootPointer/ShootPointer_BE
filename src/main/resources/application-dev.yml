@@ -38,6 +38,8 @@ spring:
         format_sql: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL:true}
         use_sql_comments: true
         show-sql: true
+        type:
+          preferred_uuid_jdbc_type: uuid
 
   # MongoDB 설정
 

@@ -23,7 +23,7 @@ public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "member_id", columnDefinition = "BINARY(16)")
+    @Column(name = "member_id", columnDefinition = "uuid")
     private UUID memberId;
 
     @Column(name = "member_name")
