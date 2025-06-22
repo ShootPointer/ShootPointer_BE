@@ -17,6 +17,5 @@ public class OpenCVResponse<T> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<T> data;
 
-    @JsonIgnore
-    private HttpStatus status;
+    private Integer status;
 }

@@ -1,22 +1,18 @@
-package com.midas.shootpointer.infrastructure.openCV;
+package com.midas.shootpointer.infrastructure.openCV.service;
 
 import com.midas.shootpointer.global.annotation.CustomLog;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.file.FileType;
 import com.midas.shootpointer.global.util.file.GenerateFileName;
+import com.midas.shootpointer.infrastructure.openCV.OpenCVProperties;
 import com.midas.shootpointer.infrastructure.openCV.dto.OpenCVResponse;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
 import java.io.IOException;
@@ -48,7 +44,7 @@ public class OpenCVClientImpl implements OpenCVClient {
     *OpenCVClientImpl
     *
     * @parm userId : 멤버 ID , backNumber : 등 번호 , image : 등 번호 이미지
-    * @return void
+    * @return OpenCVResponse 응답값
     * @author kimdoyeon
     * @version 1.0.0
     * @date 6/17/25
@@ -56,7 +52,7 @@ public class OpenCVClientImpl implements OpenCVClient {
     ==========================**/
     @Override
     @CustomLog
-    public void sendBackNumberInformation(UUID userId, Integer backNumber, MultipartFile image) throws IOException {
+    public OpenCVResponse<?> sendBackNumberInformation(UUID userId, Integer backNumber, MultipartFile image) throws IOException {
         //이미지 이름 생성
         String fileName = generateFileName.generate(FileType.IMAGE, image);
 
@@ -90,6 +86,8 @@ public class OpenCVClientImpl implements OpenCVClient {
 
         //openCV 응답값 예외 처리
         validateOpenCVResponse(response);
+
+        return response;
     }
 
     /*==========================

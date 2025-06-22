@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties(prefix = "openCV")
+@ConfigurationProperties(prefix = "opencv")
 public class OpenCVProperties {
     private String url;
     private Api api;
