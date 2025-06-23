@@ -43,9 +43,11 @@ public class BackNumberController {
     )
     @PostMapping
     public ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<BackNumberResponse>> create(
-            @ModelAttribute BackNumberRequest request
+            @ModelAttribute BackNumberRequest request,
+            @RequestHeader("Authorization") String jwtToken
     ){
-        BackNumberResponse response=backNumberService.create(request);
+        String token = jwtToken.substring(7);
+        BackNumberResponse response=backNumberService.create(token, request);
         return ResponseEntity.ok(com.midas.shootpointer.global.dto.ApiResponse.created(response));
     }
 }
