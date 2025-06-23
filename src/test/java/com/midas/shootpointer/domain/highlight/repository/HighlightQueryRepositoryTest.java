@@ -63,6 +63,33 @@ class HighlightQueryRepositoryTest {
         assertThat(isExistedHighlight2).isTrue();
     }
 
+    @Test
+    @DisplayName("멤버id와 하이라이트id가 일치하는 하이라이트 존재 하지 않을시 false를 반환하는 쿼리입니다.")
+    void isMemberHighlight_FALSE() {
+        //given
+        Member savedMember1= memberRepository.save(mockMember());
+        Member savedMember2= memberRepository.save(mockMember());
+
+        BackNumberEntity savedBackNumber= backNumberRepository.save(mockBackNumber());
+        MemberBackNumberEntity memberBackNumberEntity=mockMemberBackNumber(savedMember1,savedBackNumber);
+        memberBackNumberRepository.save(memberBackNumberEntity);
+
+        HighlightEntity highlight1=highlightCommandRepository.save(mockHighlight(savedMember1,savedBackNumber));
+        HighlightEntity highlight2=highlightCommandRepository.save(mockHighlight(savedMember2,savedBackNumber));
+
+        //when
+        boolean isExistedHighlight1= highlightQueryRepository.isMembersHighlight(
+                savedMember2.getMemberId(),highlight1.getHighlightId()
+        );
+        boolean isExistedHighlight2= highlightQueryRepository.isMembersHighlight(
+                savedMember1.getMemberId(),highlight2.getHighlightId()
+        );
+
+
+        //then
+        assertThat(isExistedHighlight1).isFalse();
+        assertThat(isExistedHighlight2).isFalse();
+    }
     /**
      * Mock Member
      */
