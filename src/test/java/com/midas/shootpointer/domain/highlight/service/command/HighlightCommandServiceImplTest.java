@@ -5,6 +5,8 @@ import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
+import com.midas.shootpointer.global.common.ErrorCode;
+import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -56,7 +59,6 @@ class HighlightCommandServiceImplTest {
         when(highlightQueryRepository.isMembersHighlight(any(),any())).thenReturn(true);
         when(highlightQueryRepository.isMembersHighlight(any(),any())).thenReturn(true);
 
-
         //when
         HighlightSelectResponse response=highlightCommandService.selectHighlight(mockRequest,mockToken);
 
@@ -65,7 +67,30 @@ class HighlightCommandServiceImplTest {
         verify(highlight2).select();
         verify(highlightCommandRepository).saveAll(List.of(highlight1,highlight2));
 
-        Assertions.assertThat(response.getSelectedHighlightIds()).isEqualTo(mockRequest.getSelectedHighlightIds());
+        assertThat(response.getSelectedHighlightIds()).isEqualTo(mockRequest.getSelectedHighlightIds());
+    }
+
+    @Test
+    @DisplayName("하이라이트 영상 선택 시 존재하지 않는 하이라이트 영상이면 예외를 반환합니다._FAIL")
+    void selectHighlight_FAIL() {
+        //given
+        UUID mockMemberId=UUID.randomUUID();
+        UUID highlightId1=UUID.randomUUID();
+        UUID highlightId2=UUID.randomUUID();
+
+        HighlightSelectRequest mockRequest=mockHighlightSelectRequest(List.of(highlightId1,highlightId2));
+        String mockToken="test-token";
+
+        when(jwtUtil.getMemberId()).thenReturn(mockMemberId);
+        when(highlightQueryRepository.findByHighlightId(highlightId1)).thenReturn(Optional.empty());
+
+        //when & then
+        CustomException customException=catchThrowableOfType(()->
+                highlightCommandService.selectHighlight(mockRequest,mockToken),
+                CustomException.class
+        );
+        assertThat(customException).isNotNull();
+        assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.NOT_FOUND_HIGHLIGHT_ID);
     }
     /**
      * Mock HighlightSelectRequest
