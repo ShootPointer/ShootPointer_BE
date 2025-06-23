@@ -50,7 +50,7 @@ class BackNumberControllerTest {
         String url = "/api/backNumber";
         BackNumberResponse mockResponse = expectedResponse();
 
-        given(backNumberService.create(any(BackNumberRequest.class)))
+        given(backNumberService.create(anyString(), any(BackNumberRequest.class)))
                 .willReturn(mockResponse);
 
         MockMultipartFile jsonPart = new MockMultipartFile(
@@ -73,7 +73,7 @@ class BackNumberControllerTest {
                 .andExpect(jsonPath("$.data.backNumber").value(mockResponse.getBackNumber()))
                 .andDo(print());
 
-        verify(backNumberService).create(any(BackNumberRequest.class));
+        verify(backNumberService).create(anyString(), any(BackNumberRequest.class));
     }
     /**
      * Mock MultipartFile
