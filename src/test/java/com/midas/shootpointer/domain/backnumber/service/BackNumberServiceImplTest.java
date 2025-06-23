@@ -68,9 +68,9 @@ class BackNumberServiceImplTest {
         BackNumberEntity mockBackNumberEntity = mockBackNumberEntity(mockBackNumber);
         BackNumberResponse expectedResponse = BackNumberResponse.of(100);
 
-        when(jwtUtil.getUserId())
+        when(jwtUtil.getMemberId())
                 .thenReturn(mockUserId);
-        when(memberRepository.findByMemberId(1L))
+        when(memberRepository.findByMemberId(mockUserId))
                 .thenReturn(Optional.of(mockMember));
         when(backNumberRepository.findByBackNumber(mockBackNumber))
                 .thenReturn(Optional.of(mockBackNumberEntity));
@@ -103,9 +103,9 @@ class BackNumberServiceImplTest {
         BackNumberEntity mockBackNumberEntity = mockBackNumberEntity(mockBackNumber);
         BackNumberResponse expectedResponse = BackNumberResponse.of(100);
 
-        when(jwtUtil.getUserId())
+        when(jwtUtil.getMemberId())
                 .thenReturn(mockUserId);
-        when(memberRepository.findByMemberId(1L))
+        when(memberRepository.findByMemberId(mockUserId))
                 .thenReturn(Optional.of(mockMember));
         //등 번호가 존재하지 않음
         when(backNumberRepository.findByBackNumber(mockBackNumber))
@@ -142,9 +142,9 @@ class BackNumberServiceImplTest {
         BackNumber mockBackNumber = BackNumber.of(request.getBackNumber());
         BackNumberEntity mockBackNumberEntity = mockBackNumberEntity(mockBackNumber);
 
-        when(jwtUtil.getUserId())
+        when(jwtUtil.getMemberId())
                 .thenReturn(mockUserId);
-        when(memberRepository.findByMemberId(1L))
+        when(memberRepository.findByMemberId(mockUserId))
                 .thenReturn(Optional.of(mockMember));
         when(backNumberRepository.findByBackNumber(mockBackNumber))
                 .thenReturn(Optional.of(mockBackNumberEntity));
@@ -166,7 +166,7 @@ class BackNumberServiceImplTest {
      */
     private Member mockMember() {
         return Member.builder()
-                .memberId(1L)
+                .memberId(UUID.randomUUID())
                 .email("test@naver.com")
                 .username("test")
                 .build();

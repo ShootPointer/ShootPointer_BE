@@ -9,9 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -21,9 +23,9 @@ import java.util.List;
 public class Member extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
-    private Long memberId;
+    @UuidGenerator
+    @Column(name = "member_id", columnDefinition = "uuid")
+    private UUID memberId;
 
     @Column(name = "member_name")
     @Convert(converter = EncryptConverter.class)
