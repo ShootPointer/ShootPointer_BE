@@ -29,7 +29,7 @@ public class HighlightEntity extends BaseEntity {
     private Boolean isSelected=false;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "member_id",nullable = false)
+    @JoinColumn(name = "member_id",nullable = false, columnDefinition = "uuid")
     private Member member;
 
     @ManyToOne(cascade = CascadeType.ALL)
