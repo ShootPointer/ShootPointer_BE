@@ -18,6 +18,7 @@ import com.midas.shootpointer.infrastructure.openCV.service.OpenCVClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -45,7 +46,7 @@ public class BackNumberServiceImpl implements BackNumberService{
     @Override
     @Transactional
     @CustomLog
-    public BackNumberResponse create(String token, BackNumberRequest request) {
+    public BackNumberResponse create(String token, BackNumberRequest request, MultipartFile image) {
         UUID memberId = jwtUtil.getMemberId(token);
         //TODO: 임의로 멤버 id값 지정 및 예외처리 수정
 
@@ -69,7 +70,7 @@ public class BackNumberServiceImpl implements BackNumberService{
 
         //3. OpenCV 사진 전송
         try {
-            openCVClient.sendBackNumberInformation(memberId, requestBackNumber.getNumber(), request.getImage());
+            openCVClient.sendBackNumberInformation(memberId, requestBackNumber.getNumber(), image);
         }catch (Exception e){
             throw new CustomException(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
         }

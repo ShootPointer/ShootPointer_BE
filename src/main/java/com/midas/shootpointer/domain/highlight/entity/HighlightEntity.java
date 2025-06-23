@@ -15,11 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "higlight_video")
+@Table(name = "higlight")
 public class HighlightEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "highlight_video_id",unique = true,nullable = false)
+    @Column(name = "highlight_id",unique = true,nullable = false)
     private Long highlightId;
 
     @Column(name = "highlight_url",nullable = false)
@@ -28,12 +28,12 @@ public class HighlightEntity extends BaseEntity {
     @Column(name = "is_selected")
     private Boolean isSelected=false;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id",nullable = false, columnDefinition = "uuid")
     private Member member;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "meber_back_number_id",nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "back_number_id",nullable = false)
     private BackNumberEntity backNumber;
 
     public void select(){

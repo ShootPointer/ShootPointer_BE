@@ -80,7 +80,7 @@ class BackNumberServiceImplTest {
                 .thenReturn(expectedResponse);
 
         //when
-        BackNumberResponse response = backNumberService.create(token, request);
+        BackNumberResponse response = backNumberService.create(token, request,mockMultipartFile());
 
         //then
         assertThat(response).isNotNull();
@@ -123,7 +123,7 @@ class BackNumberServiceImplTest {
                 .thenReturn(expectedResponse);
 
         //when
-        BackNumberResponse response = backNumberService.create(token, request);
+        BackNumberResponse response = backNumberService.create(token, request,mockMultipartFile());
 
         //then
         assertThat(response).isNotNull();
@@ -161,7 +161,7 @@ class BackNumberServiceImplTest {
                 .when(openCVClient)
                 .sendBackNumberInformation(any(),anyInt(),any());
         CustomException customException= catchThrowableOfType(() ->
-                        backNumberService.create(token, request),
+                        backNumberService.create(token, request,mockMultipartFile()),
                 CustomException.class
         );
         assertThat(customException).isNotNull();
@@ -182,7 +182,7 @@ class BackNumberServiceImplTest {
      * Mock BackNumber Request
      */
     private BackNumberRequest mockBackNumberRequest() {
-        return BackNumberRequest.of(100, mockMultipartFile());
+        return BackNumberRequest.of(100);
     }
 
     /**
