@@ -2,7 +2,8 @@ package com.midas.shootpointer.domain.highlight.service.command;
 
 import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
+import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
 
 public interface HighlightCommandService {
-    HighlightResponse selectHighlight(HighlightSelectRequest request,String token);
+    HighlightSelectResponse selectHighlight(HighlightSelectRequest request, String token);
 }
