@@ -1,4 +1,4 @@
-package com.midas.shootpointer.adapter.in.web;
+package com.midas.shootpointer;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

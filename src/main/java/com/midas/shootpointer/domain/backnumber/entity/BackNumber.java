@@ -14,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 public class BackNumber {
-    @Column(name = "back_number",nullable = false,unique = true)
+    @Column(name = "back_number_value",nullable = false,unique = true)
     private Integer number;
 
     @Override

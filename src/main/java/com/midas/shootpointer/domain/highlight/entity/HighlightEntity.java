@@ -30,6 +30,9 @@ public class HighlightEntity extends BaseEntity {
     @Column(name = "highlight_url",nullable = false)
     private String highlightURL;
 
+    @Column(name = "highlight_key",nullable = false)
+    private UUID highlightKey;
+
     @Column(name = "is_selected")
     private Boolean isSelected=false;
 

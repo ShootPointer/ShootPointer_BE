@@ -19,6 +19,13 @@ spring:
   application:
     name: shootpointer
 
+  # Data 크기
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5000MB
+      max-request-size: 5000MB
+      file-size-threshold:
   # 데이터소스 설정
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/shootpointer}
@@ -30,7 +37,7 @@ spring:
   jpa:
     show-sql: ${SPRING_JPA_SHOW_SQL:true}
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create}
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create-drop}
     database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
     properties:
       hibernate:

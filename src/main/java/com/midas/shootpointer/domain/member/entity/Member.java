@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "member")
 public class Member extends BaseEntity {
 
     @Id
