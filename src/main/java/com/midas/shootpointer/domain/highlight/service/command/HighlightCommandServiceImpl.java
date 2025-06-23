@@ -22,7 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class HighlightCommandServiceImpl implements HighlightCommandService{
     private final HighlightCommandRepository highlightCommandRepository;
-    private final HighlightQueryRepository highlightFetchRepository;
+    private final HighlightQueryRepository highlightQueryRepository;
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
     /*==========================
@@ -45,7 +45,7 @@ public class HighlightCommandServiceImpl implements HighlightCommandService{
 
         //1. 하이라이트Id로 하이라이트 엔티티 가져오기
         List<HighlightEntity> findByHighlightEntities = selectedHighlights.stream()
-                .map(id -> highlightFetchRepository.findByHighlightId(id)
+                .map(id -> highlightQueryRepository.findByHighlightId(id)
                         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HIGHLIGHT_ID))).toList();
 
         //2. 선택한 하이라이트 영상이 요청자의 하이라이트 영상 확인
@@ -74,7 +74,7 @@ public class HighlightCommandServiceImpl implements HighlightCommandService{
     *
     ==========================**/
     private void isHighlightVideoSameMember(UUID highlightId,UUID memberId){
-        if(!highlightFetchRepository.isMembersHighlight(memberId,highlightId)){
+        if(!highlightQueryRepository.isMembersHighlight(memberId,highlightId)){
             throw new CustomException(ErrorCode.NOT_MATCH_HIGHLIGHT_VIDEO);
         }
     }
