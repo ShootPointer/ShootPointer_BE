@@ -61,11 +61,15 @@ public class BackNumberServiceImpl implements BackNumberService{
                 });
 
         //2. 중간 테이블 저장
-        MemberBackNumberEntity memberBackNumber=MemberBackNumberEntity.of(
-                member,
-                backNumber
-        );
-        memberBackNumberRepository.save(memberBackNumber);
+        memberBackNumberRepository.findByBackNumberAndMember(backNumber,member)
+                .orElseGet(()->{
+                    MemberBackNumberEntity newMemberBackNumber=MemberBackNumberEntity.of(
+                            member,
+                            backNumber
+                    );
+                    return memberBackNumberRepository.save(newMemberBackNumber);
+                });
+
 
         //3. OpenCV 사진 전송
         try {
