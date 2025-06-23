@@ -48,8 +48,7 @@ public class BackNumberController {
             @RequestPart (value = "image") MultipartFile image,
             @RequestHeader("Authorization") String jwtToken
     ){
-        String token = jwtToken.substring(7);
-        BackNumberResponse response=backNumberService.create(token, request,image);
+        BackNumberResponse response=backNumberService.create(jwtToken, request,image);
         return ResponseEntity.ok(com.midas.shootpointer.global.dto.ApiResponse.created(response));
     }
 }
