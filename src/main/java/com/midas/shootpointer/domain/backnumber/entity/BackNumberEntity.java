@@ -27,6 +27,7 @@ public class BackNumberEntity extends BaseEntity {
     private Long backNumberId;
 
     @Embedded
+    @AttributeOverride(name = "number", column = @Column(name = "back_number_value", nullable = false))
     private BackNumber backNumber;
 
 
