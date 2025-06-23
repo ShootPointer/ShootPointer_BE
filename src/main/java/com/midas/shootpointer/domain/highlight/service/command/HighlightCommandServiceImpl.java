@@ -61,10 +61,12 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
                         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HIGHLIGHT_ID))).toList();
 
         //2. 선택한 하이라이트 영상이 요청자의 하이라이트 영상 확인
-        findByHighlightEntities.forEach(h -> isHighlightVideoSameMember(h.getHighlightId(), memberId));
-
-        //3. 가져온 하이라이트의 is_selected를 true로 변환
-        findByHighlightEntities.forEach(HighlightEntity::select);
+        findByHighlightEntities.forEach(h -> {
+            isHighlightVideoSameMember(h.getHighlightId(), memberId);
+            //3. 가져온 하이라이트의 is_selected를 true로 변환
+            h.select();
+            highlightCommandRepository.save(h);
+        });
 
         //4. 변경 사항 저장
         highlightCommandRepository.saveAll(findByHighlightEntities);
