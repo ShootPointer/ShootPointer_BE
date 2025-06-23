@@ -32,7 +32,7 @@ spring:
     type:
       preferred_uuid_jdbc_type: uuid
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create-drop}
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
     database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
     properties:
       hibernate:
@@ -109,3 +109,6 @@ opencv:
       fetch-video: /api/fetch-video
     proxy:
       upload-video: upload
+
+video:
+  path: /home/ubuntu/shoot-pointer/videos

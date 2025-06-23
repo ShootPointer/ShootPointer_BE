@@ -120,3 +120,4 @@ opencv:
       send-image: /api/send-img
     get:
       fetch-video: /api/fetch-video
+

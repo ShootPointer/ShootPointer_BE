@@ -9,6 +9,7 @@ import com.midas.shootpointer.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,10 +30,11 @@ public class HighlightController {
 
     @PostMapping("/upload-result")
     public ResponseEntity<ApiResponse<List<HighlightResponse>>> uploadHighlights(
-            @RequestHeader("X-Member-Id") UUID memberId,
+            @RequestHeader("X-Member-Id") String memberId,
             @RequestHeader("Authorization") String token,
-            @RequestBody UploadHighlight request
+            @RequestPart(value = "uploadHighlightDto") UploadHighlight request,
+            @RequestPart(value = "highlights") List<MultipartFile> highlights
     ) {
-        return ResponseEntity.ok(ApiResponse.ok(highlightCommandService.uploadHighlights(memberId,token,request)));
+        return ResponseEntity.ok(ApiResponse.ok(highlightCommandService.uploadHighlights(memberId,token,request,highlights)));
     }
 }

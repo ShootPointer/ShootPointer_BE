@@ -13,11 +13,14 @@ import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +30,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class HighlightCommandServiceImpl implements HighlightCommandService {
     private final HighlightCommandRepository highlightCommandRepository;
     private final HighlightQueryRepository highlightQueryRepository;
@@ -36,6 +40,10 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
     영상 크기 제한 100MB
      */
     private static final long MAX_FILE_SIZE = 100L * 1024L * 1024L;
+
+    //영상 저장 경로
+    @Value("${video.path}")
+    private String videoPath;
 
     /*==========================
     *
@@ -90,30 +98,62 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
     @Override
     @CustomLog
     @Transactional
-    public List<HighlightResponse> uploadHighlights(UUID memberId, String token, UploadHighlight request) {
+    public List<HighlightResponse> uploadHighlights(String memberId, String token, UploadHighlight request,List<MultipartFile> highlights) {
         /**
          *   1.OpenCV에서 받은 하이라이트 영상을 저장.
          */
         //파일 크기 및 파일 형식 검사
-        request.getHighlights().forEach(highlight -> {
+        highlights.forEach(highlight -> {
                     isValidFileSize(highlight);
                     isValidFileType(highlight);
                 }
         );
-        List<HighlightEntity> highlights=new ArrayList<>();
+        List<HighlightEntity> highlightEntities = new ArrayList<>();
+        String highlightKey = request.getHighlightKey();
+        String directoryPath = getDirectoryPath(highlightKey);
 
+        highlights.forEach(h -> {
+            String fileName = UUID.randomUUID() + ".mp4";
+            Path filePath = Paths.get(directoryPath, fileName);
+            try (OutputStream os = Files.newOutputStream(filePath)) {
+                os.write(h.getBytes());
+                highlightEntities.add(
+                        HighlightEntity.builder()
+                                .highlightURL(fileName)
+                                .highlightKey(UUID.fromString(highlightKey))
+                                .build()
+                );
+            } catch (IOException e) {
+                log.error("uploadHighlights : method {} : message",e.getMessage());
+                throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED);
+            }
+        });
+
+        List<HighlightEntity> savedHighlights = highlightCommandRepository.saveAll(highlightEntities);
 
         //2. 하이라이트 저장 시 멤버 및 키값을 통해 매핑.
+        List<HighlightResponse> responses = new ArrayList<>();
 
+        savedHighlights
+                .forEach(r -> {
+                    HighlightResponse response=HighlightResponse.builder()
+                            .highlightId(r.getHighlightId())
+                            .highlightIdentifier(r.getHighlightKey())
+                            .highlightUrl(r.getHighlightURL())
+                            .build();
+
+                    responses.add(response);
+                });
 
         //3. 저장한 하이라이트 영상 URL 반환.
-        return null;
+        return responses;
     }
 
     /**
      * 유저의 하이라이트 영상인지 확인 메서드
+     *
      * @param highlightId 하이라이트 id
-     * @param memberId 유저의 Id
+     * @param memberId    유저의 Id
      */
     private void isHighlightVideoSameMember(UUID highlightId, UUID memberId) {
         if (!highlightQueryRepository.isMembersHighlight(memberId, highlightId)) {
@@ -123,6 +163,7 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
 
     /**
      * 파일 타입 체크 메서드
+     *
      * @param file 파일
      */
     private void isValidFileType(MultipartFile file) {
@@ -136,6 +177,7 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
 
     /**
      * 파일 사이즈 체크 메서드
+     *
      * @param file 파일
      */
 
@@ -147,13 +189,14 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
         }
     }
 
-    private String getDirectoryPath(String highlightKey){
-        String directory="";
-        Path directoryPath= Paths.get(directory);
-        if(!Files.exists(directoryPath)){
+    private String getDirectoryPath(String highlightKey) {
+        String directory = videoPath + "/" + highlightKey;
+        Path directoryPath = Paths.get(directory);
+        if (!Files.exists(directoryPath)) {
             try {
                 Files.createDirectories(directoryPath);
-            }catch (IOException e){
+            } catch (IOException e) {
+                log.error("method : getDirectoryPath message : {}",e.getMessage());
                 throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED);
             }
         }
