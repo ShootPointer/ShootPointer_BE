@@ -44,3 +44,4 @@ src/main/resources/postgres-data
 src/main/resources/redis-data
 src/main/resources/docker-compose.yml
 src/main/resources/application-dev.yml
+src/main/resources/application.yml

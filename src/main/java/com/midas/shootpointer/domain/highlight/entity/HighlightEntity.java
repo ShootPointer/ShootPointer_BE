@@ -7,33 +7,41 @@ import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.UuidGenerator;
+
+import java.util.UUID;
 
 @Entity
 @Slf4j
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "higlight_video")
+@Getter
+@Table(name = "higlight")
 public class HighlightEntity extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "highlight_video_id",unique = true,nullable = false)
-    private Long highlightId;
+    @UuidGenerator
+    @Column(name = "highlight_id",unique = true,nullable = false,columnDefinition = "uuid")
+    private UUID highlightId;
 
     @Column(name = "highlight_url",nullable = false)
     private String highlightURL;
 
+    @Column(name = "highlight_key",nullable = false)
+    private UUID highlightKey;
+
     @Column(name = "is_selected")
     private Boolean isSelected=false;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id",nullable = false, columnDefinition = "uuid")
     private Member member;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "meber_back_number_id",nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "back_number_id",nullable = false)
     private BackNumberEntity backNumber;
 
     public void select(){

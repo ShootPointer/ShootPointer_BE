@@ -18,6 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.UUID;
+
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -50,12 +54,17 @@ class BackNumberControllerTest {
         String url = "/api/backNumber";
         BackNumberResponse mockResponse = expectedResponse();
 
-        given(backNumberService.create(anyString(), any(BackNumberRequest.class)))
+        given(backNumberService.create(anyString(), any(BackNumberRequest.class),any(MultipartFile.class)))
                 .willReturn(mockResponse);
 
+        BackNumberRequest request = BackNumberRequest.of(100);
         MockMultipartFile jsonPart = new MockMultipartFile(
-                "backNumber", "", "text/plain", "100".getBytes()
+                "backNumberRequestDto",
+                "",
+                "application/json",
+                objectMapper.writeValueAsBytes(request)
         );
+
 
 
         MockMultipartFile imagePart = new MockMultipartFile(
@@ -66,6 +75,7 @@ class BackNumberControllerTest {
         mockMvc.perform(multipart(url)
                         .file(jsonPart)
                         .file(imagePart)
+                        .header("Authorization", "Bearer fake-jwt-token")
                         .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("CREATED"))
@@ -73,7 +83,7 @@ class BackNumberControllerTest {
                 .andExpect(jsonPath("$.data.backNumber").value(mockResponse.getBackNumber()))
                 .andDo(print());
 
-        verify(backNumberService).create(anyString(), any(BackNumberRequest.class));
+        verify(backNumberService).create(anyString(), any(BackNumberRequest.class),any(MultipartFile.class));
     }
     /**
      * Mock MultipartFile

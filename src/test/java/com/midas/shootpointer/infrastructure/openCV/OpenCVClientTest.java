@@ -76,16 +76,17 @@ class OpenCVClientTest {
          * Mock 이미지
          */
         MockMultipartFile mockMultipartFile = new MockMultipartFile(
-                "file",
-                "test.img",
+                "image",
+                "test-image.png",
                 "image/png",
                 "fake img".getBytes()
         );
         Integer mockBackNumber = 1;
         UUID mockUserId = UUID.randomUUID();
+        String mockToken="test-token";
 
         //when
-        OpenCVResponse<?> response = openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile);
+        OpenCVResponse<?> response = openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile,mockToken);
 
         //then
         assertThat(response.isSuccess()).isTrue();
@@ -97,19 +98,19 @@ class OpenCVClientTest {
         RecordedRequest request = mockWebServer.takeRequest(1, TimeUnit.SECONDS);
         assertThat(request).isNotNull();
         assertThat(request.getMethod()).isEqualTo("POST");
-        assertThat(request.getPath()).isEqualTo("/api/send-image");
+        assertThat(request.getPath()).contains("/api/send-image");
+
+        assertThat(request.getHeader("Authorization")).isEqualTo("test-token");
+        assertThat(request.getHeader("X-Member-Id")).isEqualTo(mockUserId.toString());
+
         assertThat(request.getHeader("Content-Type")).startsWith("multipart/form-data");
 
-        /**
-         * 요청 값 일치
-         */
-        String requestBody = request.getBody().readUtf8();
-        assertThat(requestBody).contains("name=\"userId\"");
-        assertThat(requestBody).contains(mockUserId.toString());
-        assertThat(requestBody).contains("name=\"backNumber\"");
-        assertThat(requestBody).contains("1");
-        assertThat(requestBody).contains("filename=\"test-image.png\"");
-        assertThat(requestBody).contains("fake img");
+        String body = request.getBody().readUtf8();
+        assertThat(body).contains("name=\"image\"");
+        assertThat(body).contains("filename=\"test-image.png\"");
+        assertThat(body).contains("fake img");
+        assertThat(body).contains("name=\"backNumber\"");
+        assertThat(body).contains("1");
     }
 
     @Test
@@ -125,10 +126,10 @@ class OpenCVClientTest {
                 "file", "test.img", "image/png", "fake img".getBytes()
         );
         UUID mockUserId = UUID.randomUUID();
-
+        String mockToken="test-token";
         // when
         CustomException exception = catchThrowableOfType(() ->
-                        openCVClient.sendBackNumberInformation(mockUserId, 1, mockMultipartFile),
+                        openCVClient.sendBackNumberInformation(mockUserId, 1, mockMultipartFile,mockToken),
                 CustomException.class);
 
         // then
@@ -162,10 +163,10 @@ class OpenCVClientTest {
         );
         Integer mockBackNumber = 1;
         UUID mockUserId = UUID.randomUUID();
-
+        String mockToken="test-token";
         //when & then
         CustomException customException=catchThrowableOfType(()->
-                openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile),
+                openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile,mockToken),
                 CustomException.class
         );
         assertThat(customException).isNotNull();
@@ -197,10 +198,11 @@ class OpenCVClientTest {
         );
         Integer mockBackNumber = 1;
         UUID mockUserId = UUID.randomUUID();
+        String mockToken="test-token";
 
         //when & then
         CustomException customException=catchThrowableOfType(()->
-                        openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile),
+                        openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile,mockToken),
                 CustomException.class
         );
         assertThat(customException).isNotNull();
