@@ -13,6 +13,6 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
 
     @Query("SELECT COUNT (H.highlightId)>0 " +
             "FROM HighlightEntity AS H " +
-            "WHERE H.highlightId =: highlightId AND H.member.memberId =: memberId")
+            "WHERE H.highlightId = :highlightId AND H.member.memberId = :memberId")
     boolean isMembersHighlight(@Param("memberId") UUID memberId, @Param("highlightId") UUID highlightId);
 }

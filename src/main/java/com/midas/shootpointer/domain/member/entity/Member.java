@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.member.entity;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.memberbacknumber.entity.MemberBackNumberEntity;
+import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import com.midas.shootpointer.global.entity.BaseTimeEntity;
 import com.midas.shootpointer.global.util.encrypt.EncryptConverter;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +21,11 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Member extends BaseTimeEntity {
+public class Member extends BaseEntity {
 
     @Id
-    @GeneratedValue
-    @Column(name = "member_id", columnDefinition = "uuid")
+    @UuidGenerator
+    @Column(name = "member_id", columnDefinition = "BINARY(16)")
     private UUID memberId;
 
     @Column(name = "member_name")

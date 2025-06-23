@@ -16,3 +16,8 @@ openCV:
       send-img: back-number
     get:
       fetch-video: highlight
+
+
+---
+spring:
+  config.activate.on-profile: test

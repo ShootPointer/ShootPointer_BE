@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface BackNumberRepository extends JpaRepository<BackNumberEntity,Long> {
     Optional<BackNumberEntity> findByBackNumber(BackNumber backNumber);
+    Optional<BackNumberEntity> findByBackNumberId(Long backNumberId);
 }
