@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.UuidGenerator;
+
+import java.util.UUID;
 
 @Entity
 @Slf4j
@@ -18,9 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 @Table(name = "higlight_video")
 public class HighlightEntity extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @UuidGenerator
     @Column(name = "highlight_video_id",unique = true,nullable = false)
-    private Long highlightId;
+    private UUID highlightId;
 
     @Column(name = "highlight_url",nullable = false)
     private String highlightURL;
