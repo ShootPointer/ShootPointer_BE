@@ -28,6 +28,7 @@ public class OpenCVClientImpl implements OpenCVClient {
     private final WebClient webClient;
     private final String openCVGetApiUrl;
     private final String openCVPostApiUrl;
+    private final String openCVBaseUrl;
 
     public OpenCVClientImpl(
             GenerateFileName generateFileName,
@@ -37,6 +38,7 @@ public class OpenCVClientImpl implements OpenCVClient {
         this.generateFileName = generateFileName;
         this.openCVGetApiUrl = openCVProperties.getApi().getGet().getFetchVideo();
         this.openCVPostApiUrl = openCVProperties.getApi().getPost().getSendImage();
+        this.openCVBaseUrl=openCVProperties.getUrl();
     }
 
 
@@ -53,12 +55,14 @@ public class OpenCVClientImpl implements OpenCVClient {
     ==========================**/
     @Override
     @CustomLog
-    public OpenCVResponse<?> sendBackNumberInformation(UUID userId, Integer backNumber, MultipartFile image) throws IOException {
+    public OpenCVResponse<?> sendBackNumberInformation(UUID memberId, Integer backNumber, MultipartFile image,String token) throws IOException {
         //이미지 이름 생성
         String fileName = generateFileName.generate(FileType.IMAGE, image);
 
         OpenCVResponse<?> response = webClient.post()
-                .uri(openCVPostApiUrl)
+                .uri(openCVBaseUrl+openCVPostApiUrl)
+                .header("Authorization",token)
+                .header("X-Member-Id", String.valueOf(memberId))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData("image", new ByteArrayResource(image.getBytes()) {
                             @Override
@@ -66,7 +70,6 @@ public class OpenCVClientImpl implements OpenCVClient {
                                 return fileName;
                             }
                         })
-                        .with("userId", userId.toString())
                         .with("backNumber", backNumber.toString()))
                 .retrieve()
                 .bodyToMono(OpenCVResponse.class)

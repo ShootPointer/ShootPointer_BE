@@ -74,7 +74,7 @@ public class BackNumberServiceImpl implements BackNumberService{
 
         //3. OpenCV 사진 전송
         try {
-            openCVClient.sendBackNumberInformation(memberId, requestBackNumber.getNumber(), image);
+            openCVClient.sendBackNumberInformation(memberId, requestBackNumber.getNumber(), image,token);
         }catch (Exception e){
             throw new CustomException(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
         }

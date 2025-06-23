@@ -53,11 +53,11 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
     @Transactional
     public HighlightSelectResponse selectHighlight(HighlightSelectRequest request, String token) {
         List<UUID> selectedHighlights = request.getSelectedHighlightIds();
-        UUID memberId = jwtUtil.getMemberId();
+        UUID memberId = jwtUtil.getMemberId(token);
 
         //1. 하이라이트Id로 하이라이트 엔티티 가져오기
         List<HighlightEntity> findByHighlightEntities = selectedHighlights.stream()
-                .map(id -> highlightQueryRepository.findByHighlightId(id)
+                .map(h -> highlightQueryRepository.findByHighlightId(h)
                         .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_HIGHLIGHT_ID))).toList();
 
         //2. 선택한 하이라이트 영상이 요청자의 하이라이트 영상 확인

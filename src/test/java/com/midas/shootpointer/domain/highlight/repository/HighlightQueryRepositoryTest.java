@@ -16,6 +16,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.*;
 @DataJpaTest
 @ActiveProfiles("test")
@@ -106,6 +108,7 @@ class HighlightQueryRepositoryTest {
      */
     private HighlightEntity mockHighlight(Member member, BackNumberEntity backNumber){
         return HighlightEntity.builder()
+                .highlightKey(UUID.randomUUID())
                 .highlightURL("testURL")
                 .backNumber(backNumber)
                 .member(member)

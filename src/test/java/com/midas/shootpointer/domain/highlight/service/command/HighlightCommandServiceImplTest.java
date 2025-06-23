@@ -52,7 +52,7 @@ class HighlightCommandServiceImplTest {
         HighlightSelectRequest mockRequest=mockHighlightSelectRequest(List.of(highlightId1,highlightId2));
         String mockToken="test-token";
 
-        when(jwtUtil.getMemberId()).thenReturn(mockMemberId);
+        when(jwtUtil.getMemberId(any(String.class))).thenReturn(mockMemberId);
         when(highlightQueryRepository.findByHighlightId(highlightId1)).thenReturn(Optional.of(highlight1));
         when(highlightQueryRepository.findByHighlightId(highlightId2)).thenReturn(Optional.of(highlight2));
 
@@ -81,7 +81,7 @@ class HighlightCommandServiceImplTest {
         HighlightSelectRequest mockRequest=mockHighlightSelectRequest(List.of(highlightId1,highlightId2));
         String mockToken="test-token";
 
-        when(jwtUtil.getMemberId()).thenReturn(mockMemberId);
+        when(jwtUtil.getMemberId(any(String.class))).thenReturn(mockMemberId);
         when(highlightQueryRepository.findByHighlightId(highlightId1)).thenReturn(Optional.empty());
 
         //when & then
@@ -106,7 +106,7 @@ class HighlightCommandServiceImplTest {
         HighlightSelectRequest mockRequest=mockHighlightSelectRequest(List.of(highlightId1,highlightId2));
         String mockToken="test-token";
 
-        when(jwtUtil.getMemberId()).thenReturn(mockMemberId);
+        when(jwtUtil.getMemberId(any(String.class))).thenReturn(mockMemberId);
         when(highlightQueryRepository.findByHighlightId(highlightId1)).thenReturn(Optional.of(highlight1));
         when(highlightQueryRepository.findByHighlightId(highlightId2)).thenReturn(Optional.of(highlight2));
 

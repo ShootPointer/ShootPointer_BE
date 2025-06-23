@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -56,14 +58,14 @@ class BackNumberControllerTest {
                 .willReturn(mockResponse);
 
         BackNumberRequest request = BackNumberRequest.of(100);
-        String json=objectMapper.writeValueAsString(request);
-
-        MockMultipartFile requestPart = new MockMultipartFile(
-                "request",
+        MockMultipartFile jsonPart = new MockMultipartFile(
+                "backNumberRequestDto",
                 "",
                 "application/json",
-                json.getBytes()
+                objectMapper.writeValueAsBytes(request)
         );
+
+
 
         MockMultipartFile imagePart = new MockMultipartFile(
                 "image", "test.img", "image/png", "fake image".getBytes()
@@ -71,7 +73,7 @@ class BackNumberControllerTest {
 
         // when & then
         mockMvc.perform(multipart(url)
-                        .file(requestPart)
+                        .file(jsonPart)
                         .file(imagePart)
                         .header("Authorization", "Bearer fake-jwt-token")
                         .contentType(MediaType.MULTIPART_FORM_DATA))

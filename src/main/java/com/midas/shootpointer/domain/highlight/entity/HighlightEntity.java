@@ -7,6 +7,7 @@ import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.UuidGenerator;
@@ -18,12 +19,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
 @Table(name = "higlight")
 public class HighlightEntity extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "highlight_id",unique = true,nullable = false)
-    private Long highlightId;
+    @UuidGenerator
+    @Column(name = "highlight_id",unique = true,nullable = false,columnDefinition = "uuid")
+    private UUID highlightId;
 
     @Column(name = "highlight_url",nullable = false)
     private String highlightURL;
