@@ -19,9 +19,6 @@ public class UploadHighlight {
             message = "UUID 형식이 아닙니다.")
     private String highlightKey;
 
-    @Size(min = 3,max = 3,message = "동영상 파일은 3개를 업로드해주세요.")
-    private List<MultipartFile> highlights;
-
     @PastOrPresent(message = "생성일자는 과거 또는 현재여야 합니다.")
     private LocalDateTime createAt;
 }
