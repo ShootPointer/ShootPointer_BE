@@ -45,8 +45,8 @@ public class BackNumberServiceImpl implements BackNumberService{
     @Override
     @Transactional
     @CustomLog
-    public BackNumberResponse create(BackNumberRequest request) {
-        UUID memberId = jwtUtil.getMemberId();
+    public BackNumberResponse create(String token, BackNumberRequest request) {
+        UUID memberId = jwtUtil.getMemberId(token);
         //TODO: 임의로 멤버 id값 지정 및 예외처리 수정
 
         Member member = memberRepository.findByMemberId(memberId)

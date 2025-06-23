@@ -31,17 +31,18 @@ public class JwtUtil {
     private long REFRESH_EXP;
 
     public JwtUtil(@Value("${jwt.secret}") String secretKey) {
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        byte[] decodedKey = Base64.getDecoder().decode(secretKey);
+        this.key = Keys.hmacShaKeyFor(decodedKey);
     }
 
     @CustomLog("== JWT 생성 ==")
-    public String createToken(String email, String nickname) {
+    public String createToken(UUID memberId, String email, String nickname) {
         try {
             String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
             String encodedNickname = Base64.getEncoder().encodeToString(nickname.getBytes(StandardCharsets.UTF_8));
 
             return Jwts.builder()
-                    .setSubject(UUID.randomUUID().toString())
+                    .setSubject(memberId.toString())
                     .claim("email", encodedEmail)
                     .claim("nickname", encodedNickname)
                     .setIssuedAt(new Date())
@@ -101,11 +102,9 @@ public class JwtUtil {
         return decodeBase64(encodedNickname);
     }
 
-    public UUID getMemberId() {
+    public UUID getMemberId(String token) {
         try {
-            String token = getString();
             Claims claims = parseToken(token);
-
             String subject = claims.getSubject();
             return UUID.fromString(subject);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -117,20 +116,4 @@ public class JwtUtil {
         }
     }
 
-    private static String getString() {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attributes == null) {
-            throw new CustomException(ErrorCode.JWT_REQUEST_NOT_FOUND);
-        }
-
-        HttpServletRequest request = attributes.getRequest();
-        String bearerToken = request.getHeader("Authorization");
-
-        if (bearerToken == null || !bearerToken.startsWith("Bearer ")) { // Bearer 토큰인지 체크해야함
-            throw new CustomException(ErrorCode.JWT_HEADER_NOT_FOUND);
-        }
-
-        String token = bearerToken.substring(7); // 토큰 추출하기
-        return token;
-    }
 }

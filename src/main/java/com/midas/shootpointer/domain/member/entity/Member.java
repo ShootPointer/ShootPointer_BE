@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,7 +26,7 @@ public class Member extends BaseEntity {
 
     @Id
     @UuidGenerator
-    @Column(name = "member_id", columnDefinition = "BINARY(16)")
+    @Column(name = "member_id", columnDefinition = "uuid")
     private UUID memberId;
 
     @Column(name = "member_name")

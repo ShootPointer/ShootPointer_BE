@@ -1,10 +1,16 @@
 package com.midas.shootpointer.global.util.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.util.Base64;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,9 +54,10 @@ class JwtUtilTest {
         // given
         String email = "test1234@naver.com";
         String nickname = "홍길동";
+        UUID adminId = UUID.fromString("11111111-1111-1111-1111-111111111111");
 
         // when
-        String accessToken = jwtUtil.createToken(email, nickname);
+        String accessToken = jwtUtil.createToken(adminId, email, nickname);
         String refreshToken = jwtUtil.createRefreshToken(email);
 
         // then
@@ -67,6 +74,15 @@ class JwtUtilTest {
         System.out.println("refreshToken: " + refreshToken);
 
     }
+
+
+    @Test
+    void testGetMemberIdFromToken() {
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiNjI5NDk3ZS0zYzVkLTQ0ZDEtYjJlNy1lZGMxNWIyY2FlYzUiLCJlbWFpbCI6ImRHdDJNREJBYm1GMlpYSXVZMjl0Iiwibmlja25hbWUiOiI2cm1BNjQrRTdKZXciLCJpYXQiOjE3NTA2OTQyMzksImV4cCI6MTc1MDc4MDYzOX0.gxxETNxzOapb2JoW4YH3J0-8bSPAYh04Np-bF7w-yZU";
+        UUID memberId = jwtUtil.getMemberId(token);
+        System.out.println("memberId = " + memberId);
+    }
+
 
 
 }
