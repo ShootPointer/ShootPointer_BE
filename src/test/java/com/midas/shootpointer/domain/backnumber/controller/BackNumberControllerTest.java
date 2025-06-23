@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.multipart.MultipartFile;
+
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -50,13 +52,18 @@ class BackNumberControllerTest {
         String url = "/api/backNumber";
         BackNumberResponse mockResponse = expectedResponse();
 
-        given(backNumberService.create(anyString(), any(BackNumberRequest.class)))
+        given(backNumberService.create(anyString(), any(BackNumberRequest.class),any(MultipartFile.class)))
                 .willReturn(mockResponse);
 
-        MockMultipartFile jsonPart = new MockMultipartFile(
-                "backNumber", "", "text/plain", "100".getBytes()
-        );
+        BackNumberRequest request = BackNumberRequest.of(100);
+        String json=objectMapper.writeValueAsString(request);
 
+        MockMultipartFile requestPart = new MockMultipartFile(
+                "request",
+                "",
+                "application/json",
+                json.getBytes()
+        );
 
         MockMultipartFile imagePart = new MockMultipartFile(
                 "image", "test.img", "image/png", "fake image".getBytes()
@@ -64,8 +71,9 @@ class BackNumberControllerTest {
 
         // when & then
         mockMvc.perform(multipart(url)
-                        .file(jsonPart)
+                        .file(requestPart)
                         .file(imagePart)
+                        .header("Authorization", "Bearer fake-jwt-token")
                         .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("CREATED"))
@@ -73,7 +81,7 @@ class BackNumberControllerTest {
                 .andExpect(jsonPath("$.data.backNumber").value(mockResponse.getBackNumber()))
                 .andDo(print());
 
-        verify(backNumberService).create(anyString(), any(BackNumberRequest.class));
+        verify(backNumberService).create(anyString(), any(BackNumberRequest.class),any(MultipartFile.class));
     }
     /**
      * Mock MultipartFile
