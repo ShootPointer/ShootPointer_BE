@@ -28,11 +28,11 @@ public class HighlightEntity extends BaseEntity {
     @Column(name = "is_selected")
     private Boolean isSelected=false;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id",nullable = false, columnDefinition = "uuid")
     private Member member;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "back_number_id",nullable = false)
     private BackNumberEntity backNumber;
 

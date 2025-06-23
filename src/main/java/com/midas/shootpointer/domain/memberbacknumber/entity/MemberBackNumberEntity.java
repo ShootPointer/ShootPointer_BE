@@ -26,6 +26,7 @@ public class MemberBackNumberEntity {
     @JoinColumn(name = "back_number_id",nullable = false)
     private BackNumberEntity backNumber;
 
+
     public static MemberBackNumberEntity of(Member member,BackNumberEntity backNumber){
         return new MemberBackNumberEntity(null,member,backNumber);
     }

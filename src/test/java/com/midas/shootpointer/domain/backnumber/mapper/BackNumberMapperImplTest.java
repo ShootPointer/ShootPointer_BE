@@ -29,7 +29,7 @@ class BackNumberMapperImplTest {
                 "image/png",
                 "fake img".getBytes()
         );
-        BackNumberRequest requestDto=BackNumberRequest.of(mockBackNumber,mockMultipartFile);
+        BackNumberRequest requestDto=BackNumberRequest.of(mockBackNumber);
 
         //when
         BackNumberEntity backNumberEntity=backNumberMapper.dtoToEntity(requestDto);

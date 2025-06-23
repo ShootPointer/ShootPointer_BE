@@ -20,11 +20,7 @@ public class BackNumberRequest {
     @Getter
     private Integer backNumber;
 
-    //등 번호 이미지
-    @Getter
-    private MultipartFile image;
-
-    public static BackNumberRequest of(Integer backNumber,MultipartFile image){
-        return new BackNumberRequest(backNumber,image);
+    public static BackNumberRequest of(Integer backNumber){
+        return new BackNumberRequest(backNumber);
     }
 }

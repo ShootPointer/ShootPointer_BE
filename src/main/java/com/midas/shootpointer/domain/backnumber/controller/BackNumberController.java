@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/backNumber")
@@ -43,11 +44,12 @@ public class BackNumberController {
     )
     @PostMapping
     public ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<BackNumberResponse>> create(
-            @ModelAttribute BackNumberRequest request,
+            @RequestPart BackNumberRequest request,
+            @RequestPart MultipartFile image,
             @RequestHeader("Authorization") String jwtToken
     ){
         String token = jwtToken.substring(7);
-        BackNumberResponse response=backNumberService.create(token, request);
+        BackNumberResponse response=backNumberService.create(token, request,image);
         return ResponseEntity.ok(com.midas.shootpointer.global.dto.ApiResponse.created(response));
     }
 }
