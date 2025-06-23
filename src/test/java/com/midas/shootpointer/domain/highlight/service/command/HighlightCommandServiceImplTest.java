@@ -72,7 +72,7 @@ class HighlightCommandServiceImplTest {
 
     @Test
     @DisplayName("하이라이트 영상 선택 시 존재하지 않는 하이라이트 영상이면 예외를 반환합니다._FAIL")
-    void selectHighlight_FAIL() {
+    void selectHighlight_of_notExisted_highlight_FAIL() {
         //given
         UUID mockMemberId=UUID.randomUUID();
         UUID highlightId1=UUID.randomUUID();
@@ -91,6 +91,34 @@ class HighlightCommandServiceImplTest {
         );
         assertThat(customException).isNotNull();
         assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.NOT_FOUND_HIGHLIGHT_ID);
+    }
+
+    @Test
+    @DisplayName("하이라이트 영상을 선택시 유저의 하이라이트 영상이 아니면 예외를 반환합니다._FAIL")
+    void selectHighlight_not_same_highlightVideo_FAIL() {
+        //given
+        UUID mockMemberId=UUID.randomUUID();
+        UUID highlightId1=UUID.randomUUID();
+        UUID highlightId2=UUID.randomUUID();
+
+        HighlightEntity highlight1=mock(HighlightEntity.class);
+        HighlightEntity highlight2=mock(HighlightEntity.class);
+        HighlightSelectRequest mockRequest=mockHighlightSelectRequest(List.of(highlightId1,highlightId2));
+        String mockToken="test-token";
+
+        when(jwtUtil.getMemberId()).thenReturn(mockMemberId);
+        when(highlightQueryRepository.findByHighlightId(highlightId1)).thenReturn(Optional.of(highlight1));
+        when(highlightQueryRepository.findByHighlightId(highlightId2)).thenReturn(Optional.of(highlight2));
+
+        when(highlightQueryRepository.isMembersHighlight(any(),any())).thenReturn(false);
+
+        //when & then
+        CustomException customException=catchThrowableOfType(()->
+                    highlightCommandService.selectHighlight(mockRequest,mockToken),
+                    CustomException.class
+        );
+        assertThat(customException).isNotNull();
+        assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.NOT_MATCH_HIGHLIGHT_VIDEO);
     }
     /**
      * Mock HighlightSelectRequest
