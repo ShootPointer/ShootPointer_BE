@@ -1,4 +1,4 @@
-package com.midas.shootpointer.adapter.in.web;
+package com.midas.shootpointer;
 
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberRepository;

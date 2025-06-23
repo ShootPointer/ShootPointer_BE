@@ -23,7 +23,7 @@ import java.util.List;
 public class BackNumberEntity extends BaseEntity {
     @Column(name = "back_number_id",unique = true,nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long backNumberId;
 
     @Embedded
