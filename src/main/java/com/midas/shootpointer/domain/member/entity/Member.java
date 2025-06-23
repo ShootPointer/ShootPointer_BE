@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.member.entity;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.memberbacknumber.entity.MemberBackNumberEntity;
+import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import com.midas.shootpointer.global.entity.BaseTimeEntity;
 import com.midas.shootpointer.global.util.encrypt.EncryptConverter;
@@ -20,7 +21,8 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Member extends BaseTimeEntity {
+@Table(name = "member")
+public class Member extends BaseEntity {
 
     @Id
     @UuidGenerator
