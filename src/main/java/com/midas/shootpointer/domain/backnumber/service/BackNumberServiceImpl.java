@@ -46,11 +46,11 @@ public class BackNumberServiceImpl implements BackNumberService{
     @Transactional
     @CustomLog
     public BackNumberResponse create(BackNumberRequest request) {
-        UUID userId=jwtUtil.getUserId();
+        UUID memberId = jwtUtil.getMemberId();
         //TODO: 임의로 멤버 id값 지정 및 예외처리 수정
-        Long memberId=1L;
-        Member member=memberRepository.findByMemberId(memberId)
-                .orElseThrow();
+
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         //1. 요청 등 번호가 있는지 확인
         BackNumber requestBackNumber=BackNumber.of(request.getBackNumber());
@@ -69,7 +69,7 @@ public class BackNumberServiceImpl implements BackNumberService{
 
         //3. OpenCV 사진 전송
         try {
-            openCVClient.sendBackNumberInformation(userId, requestBackNumber.getNumber(), request.getImage());
+            openCVClient.sendBackNumberInformation(memberId, requestBackNumber.getNumber(), request.getImage());
         }catch (Exception e){
             throw new CustomException(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
         }

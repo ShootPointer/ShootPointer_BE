@@ -167,7 +167,6 @@ public class KakaoService {
             JSONObject account = (JSONObject) jsonObj.get("kakao_account");
             JSONObject profile = (JSONObject) account.get("profile");
 
-            long id = (long) jsonObj.get("id");
             String email = String.valueOf(account.get("email"));
             String nickname = String.valueOf(profile.get("nickname"));
 
@@ -176,7 +175,6 @@ public class KakaoService {
             }
 
             return KakaoDTO.builder()
-                    .id(id)
                     .email(email)
                     .nickname(nickname)
                     .build();
