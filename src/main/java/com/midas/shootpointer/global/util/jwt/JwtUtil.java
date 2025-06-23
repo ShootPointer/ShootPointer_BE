@@ -101,11 +101,9 @@ public class JwtUtil {
         return decodeBase64(encodedNickname);
     }
 
-    public UUID getMemberId() {
+    public UUID getMemberId(String token) {
         try {
-            String token = getString();
             Claims claims = parseToken(token);
-
             String subject = claims.getSubject();
             return UUID.fromString(subject);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -117,20 +115,4 @@ public class JwtUtil {
         }
     }
 
-    private static String getString() {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attributes == null) {
-            throw new CustomException(ErrorCode.JWT_REQUEST_NOT_FOUND);
-        }
-
-        HttpServletRequest request = attributes.getRequest();
-        String bearerToken = request.getHeader("Authorization");
-
-        if (bearerToken == null || !bearerToken.startsWith("Bearer ")) { // Bearer 토큰인지 체크해야함
-            throw new CustomException(ErrorCode.JWT_HEADER_NOT_FOUND);
-        }
-
-        String token = bearerToken.substring(7); // 토큰 추출하기
-        return token;
-    }
 }

@@ -68,7 +68,9 @@ class BackNumberServiceImplTest {
         BackNumberEntity mockBackNumberEntity = mockBackNumberEntity(mockBackNumber);
         BackNumberResponse expectedResponse = BackNumberResponse.of(100);
 
-        when(jwtUtil.getMemberId())
+        String token = "test_token"; //* 일단 임시 토큰
+
+        when(jwtUtil.getMemberId(token))
                 .thenReturn(mockUserId);
         when(memberRepository.findByMemberId(mockUserId))
                 .thenReturn(Optional.of(mockMember));
@@ -78,7 +80,7 @@ class BackNumberServiceImplTest {
                 .thenReturn(expectedResponse);
 
         //when
-        BackNumberResponse response = backNumberService.create(request);
+        BackNumberResponse response = backNumberService.create(token, request);
 
         //then
         assertThat(response).isNotNull();
@@ -103,7 +105,9 @@ class BackNumberServiceImplTest {
         BackNumberEntity mockBackNumberEntity = mockBackNumberEntity(mockBackNumber);
         BackNumberResponse expectedResponse = BackNumberResponse.of(100);
 
-        when(jwtUtil.getMemberId())
+        String token = "test_token"; //* 일단 임시 토큰
+
+        when(jwtUtil.getMemberId(token))
                 .thenReturn(mockUserId);
         when(memberRepository.findByMemberId(mockUserId))
                 .thenReturn(Optional.of(mockMember));
@@ -119,7 +123,7 @@ class BackNumberServiceImplTest {
                 .thenReturn(expectedResponse);
 
         //when
-        BackNumberResponse response = backNumberService.create(request);
+        BackNumberResponse response = backNumberService.create(token, request);
 
         //then
         assertThat(response).isNotNull();
@@ -142,7 +146,9 @@ class BackNumberServiceImplTest {
         BackNumber mockBackNumber = BackNumber.of(request.getBackNumber());
         BackNumberEntity mockBackNumberEntity = mockBackNumberEntity(mockBackNumber);
 
-        when(jwtUtil.getMemberId())
+        String token = "test_token"; //* 일단 임시 토큰
+
+        when(jwtUtil.getMemberId(token))
                 .thenReturn(mockUserId);
         when(memberRepository.findByMemberId(mockUserId))
                 .thenReturn(Optional.of(mockMember));
@@ -155,7 +161,7 @@ class BackNumberServiceImplTest {
                 .when(openCVClient)
                 .sendBackNumberInformation(any(),anyInt(),any());
         CustomException customException= catchThrowableOfType(() ->
-                        backNumberService.create(request),
+                        backNumberService.create(token, request),
                 CustomException.class
         );
         assertThat(customException).isNotNull();
