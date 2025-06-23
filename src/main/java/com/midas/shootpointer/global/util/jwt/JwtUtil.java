@@ -35,13 +35,13 @@ public class JwtUtil {
     }
 
     @CustomLog("== JWT 생성 ==")
-    public String createToken(String email, String nickname) {
+    public String createToken(UUID memberId, String email, String nickname) {
         try {
             String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
             String encodedNickname = Base64.getEncoder().encodeToString(nickname.getBytes(StandardCharsets.UTF_8));
 
             return Jwts.builder()
-                    .setSubject(UUID.randomUUID().toString())
+                    .setSubject(memberId.toString())
                     .claim("email", encodedEmail)
                     .claim("nickname", encodedNickname)
                     .setIssuedAt(new Date())

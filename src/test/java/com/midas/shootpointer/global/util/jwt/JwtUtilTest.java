@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,9 +50,10 @@ class JwtUtilTest {
         // given
         String email = "test1234@naver.com";
         String nickname = "홍길동";
+        UUID adminId = UUID.fromString("11111111-1111-1111-1111-111111111111");
 
         // when
-        String accessToken = jwtUtil.createToken(email, nickname);
+        String accessToken = jwtUtil.createToken(adminId, email, nickname);
         String refreshToken = jwtUtil.createRefreshToken(email);
 
         // then
@@ -68,5 +71,12 @@ class JwtUtilTest {
 
     }
 
+
+    @Test
+    void testGetMemberIdFromToken() {
+        String token = "여기에jwt_access_token넣으면됩니다!";
+        UUID memberId = jwtUtil.getMemberId(token);
+        System.out.println("memberId = " + memberId);
+    }
 
 }

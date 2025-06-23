@@ -75,23 +75,21 @@ public class KakaoService {
         KakaoDTO kakaoDTO = getUserInfoWithToken(accessToken);
 
         // 회원 중복 확인해야 함
-        Optional<Member> existingMember = memberRepository.findByEmail(kakaoDTO.getEmail());
-        if (existingMember.isEmpty()) {
-            Member member = Member.builder()
-                    .email(kakaoDTO.getEmail())
-                    .username(kakaoDTO.getNickname())
-                    .build();
-            memberRepository.save(member);
-        }
+        Member member = memberRepository.findByEmail(kakaoDTO.getEmail())
+                .orElseGet(() -> {
+                    Member newMember = Member.builder()
+                            .email(kakaoDTO.getEmail())
+                            .username(kakaoDTO.getNickname())
+                            .build();
+                    return memberRepository.save(newMember);
+                });
 
-        // AccessToken, RefreshToken 발급하고
-        String redisAccessToken = jwtUtil.createToken(kakaoDTO.getEmail(), kakaoDTO.getNickname());
-        String redisRefreshToken = jwtUtil.createRefreshToken(kakaoDTO.getEmail());
+        // UUID(memberId) 기반 JWT AccessToken / RefreshToken 생성하는 로직
+        String redisAccessToken = jwtUtil.createToken(member.getMemberId(), member.getEmail(), member.getUsername());
+        String redisRefreshToken = jwtUtil.createRefreshToken(member.getEmail());
 
-        // 해당 리프레시 토큰 저장
-        refreshTokenService.save(kakaoDTO.getEmail(), redisRefreshToken);
+        refreshTokenService.save(member.getEmail(), redisRefreshToken);
 
-        // DTO에 토큰 포함해서 반환
         kakaoDTO.setAccessToken(redisAccessToken);
         kakaoDTO.setRefreshToken(redisRefreshToken);
 
