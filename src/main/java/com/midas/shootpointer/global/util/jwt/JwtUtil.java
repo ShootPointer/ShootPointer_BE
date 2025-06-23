@@ -31,7 +31,8 @@ public class JwtUtil {
     private long REFRESH_EXP;
 
     public JwtUtil(@Value("${jwt.secret}") String secretKey) {
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        byte[] decodedKey = Base64.getDecoder().decode(secretKey);
+        this.key = Keys.hmacShaKeyFor(decodedKey);
     }
 
     @CustomLog("== JWT 생성 ==")
