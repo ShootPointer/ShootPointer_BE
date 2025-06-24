@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
-
+@Slf4j
 @Component
 public class OpenCVClientImpl implements OpenCVClient {
     private final GenerateFileName generateFileName;
@@ -58,7 +58,7 @@ public class OpenCVClientImpl implements OpenCVClient {
     public OpenCVResponse<?> sendBackNumberInformation(UUID memberId, Integer backNumber, MultipartFile image,String token) throws IOException {
         //이미지 이름 생성
         String fileName = generateFileName.generate(FileType.IMAGE, image);
-
+        log.info("openCVServerUrl {}",openCVBaseUrl+openCVPostApiUrl);
         OpenCVResponse<?> response = webClient.post()
                 .uri(openCVBaseUrl+openCVPostApiUrl)
                 .header("Authorization",token)
