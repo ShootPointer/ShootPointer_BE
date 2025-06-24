@@ -122,14 +122,30 @@ public class KakaoService {
                     String.class
             );
 
-            System.out.println("Kakao Token Response Body : " + response.getBody());
+            System.err.println("=== KAKAO TOKEN REQUEST DEBUG ===");
+            System.err.println("Status Code: " + response.getStatusCode());
+            System.err.println("Response Body: " + response.getBody());
+            System.err.println("================================");
 
             if (!response.getStatusCode().is2xxSuccessful()) {
                 throw new CustomException(ErrorCode.KAKAO_TOKEN_REQUEST_FAIL);
             }
 
+            String responseBody = response.getBody();
+            if (responseBody == null || responseBody.trim().isEmpty()) {
+                throw new CustomException(ErrorCode.KAKAO_TOKEN_RESPONSE_INVALID);
+            }
+
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(response.getBody());
+            JsonNode jsonNode = mapper.readTree(responseBody);
+
+            if (jsonNode.has("error")) {
+                String error = jsonNode.get("error").asText();
+                String errorDescription = jsonNode.has("error_description") ?
+                        jsonNode.get("error_description").asText() : "No description";
+                System.err.println("Kakao API Error: " + error + " - " + errorDescription);
+                throw new CustomException(ErrorCode.KAKAO_TOKEN_REQUEST_FAIL);
+            }
 
             if (!jsonNode.has("access_token")) {
                 throw new CustomException(ErrorCode.KAKAO_TOKEN_RESPONSE_INVALID);
