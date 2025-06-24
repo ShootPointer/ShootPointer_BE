@@ -1,7 +1,19 @@
-opencv:
-  url: https://localhost:8888
-  api:
-    post:
-      send-image: /api/send-img
-    get:
-      fetch-video: /api/fetch-video
+encrypt:
+  key: dafd6bef1f363a1ba1a32623aa8f0b8741b0736e11b898febaceb58b7bcedcf8
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  sql:
+    init:
+      mode: always

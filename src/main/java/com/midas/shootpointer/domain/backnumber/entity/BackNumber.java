@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 import java.util.Objects;
 
 @Embeddable
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class BackNumber {
-    @Column(name = "back_number",nullable = false,unique = true)
+    @Column(name = "back_number_value",nullable = false,unique = true)
     private Integer number;
 
     @Override
