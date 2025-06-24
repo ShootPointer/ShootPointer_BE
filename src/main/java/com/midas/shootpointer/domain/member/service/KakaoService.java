@@ -1,5 +1,7 @@
 package com.midas.shootpointer.domain.member.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
 import com.midas.shootpointer.domain.member.repository.MemberRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -120,18 +122,20 @@ public class KakaoService {
                     String.class
             );
 
+            System.out.println("Kakao Token Response Body : " + response.getBody());
+
             if (!response.getStatusCode().is2xxSuccessful()) {
                 throw new CustomException(ErrorCode.KAKAO_TOKEN_REQUEST_FAIL);
             }
 
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObj = (JSONObject) jsonParser.parse(response.getBody());
-            String accessToken = (String) jsonObj.get("access_token");
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(response.getBody());
 
-            if (accessToken == null || accessToken.isBlank()) {
+            if (!jsonNode.has("access_token")) {
                 throw new CustomException(ErrorCode.KAKAO_TOKEN_RESPONSE_INVALID);
             }
-            return accessToken;
+
+            return jsonNode.get("access_token").asText();
         } catch (CustomException e) {
             throw e;
         } catch (Exception e) {
@@ -156,17 +160,20 @@ public class KakaoService {
                     String.class
             );
 
+            System.out.println("Kakao Token Response Body : " + response.getBody());
+
             if (!response.getStatusCode().is2xxSuccessful()) {
                 throw new CustomException(ErrorCode.KAKAO_USERINFO_FAIL);
             }
 
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObj = (JSONObject) jsonParser.parse(response.getBody());
-            JSONObject account = (JSONObject) jsonObj.get("kakao_account");
-            JSONObject profile = (JSONObject) account.get("profile");
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(response.getBody());
 
-            String email = String.valueOf(account.get("email"));
-            String nickname = String.valueOf(profile.get("nickname"));
+            JsonNode kakaoAccount = root.path("kakao_account");
+            JsonNode profile = kakaoAccount.path("profile");
+
+            String email = kakaoAccount.path("email").asText(null);
+            String nickname = profile.path("nickname").asText(null);
 
             if (email == null || email.isBlank() || nickname == null || nickname.isBlank()) {
                 throw new CustomException(ErrorCode.KAKAO_USERINFO_FAIL);
