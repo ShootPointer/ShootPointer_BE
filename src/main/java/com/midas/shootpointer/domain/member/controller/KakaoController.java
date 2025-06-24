@@ -28,11 +28,28 @@ public class KakaoController {
     @GetMapping("/callback")
     public ResponseEntity<MsgEntity> callback(HttpServletRequest request) {
         String code = request.getParameter("code");
+        String error = request.getParameter("error");
+
+        System.err.println("=== KAKAO CALLBACK DEBUG ===");
+        System.err.println("Code: " + code);
+        System.err.println("Error: " + error);
+        System.err.println("All parameters: " + request.getParameterMap());
+        System.err.println("Request URL: " + request.getRequestURL());
+        System.err.println("Query String: " + request.getQueryString());
+        System.err.println("===========================");
+
+        // 카카오에서 에러를 반환한 경우
+        if (error != null) {
+            String errorDescription = request.getParameter("error_description");
+            System.err.println("Kakao OAuth Error: " + error + " - " + errorDescription);
+            throw new RuntimeException("카카오 에러 반환");
+        }
+
 
         if (code == null || code.isBlank()) {
             throw new CustomException(ErrorCode.INVALID_KAKAO_AUTH_CODE);
         }
-        
+
         if (!processingCodes.add(code)) {
             throw new CustomException(ErrorCode.DUPLICATE_REQUEST);
         }
