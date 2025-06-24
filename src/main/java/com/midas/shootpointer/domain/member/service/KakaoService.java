@@ -101,6 +101,13 @@ public class KakaoService {
     // 카카오 AccessToken 요청
     @CustomLog("== 카카오 Access Token 발급 ==")
     private String getKakaoAccessToken(String code){
+
+        System.err.println("=== KAKAO ACCESS TOKEN REQUEST START ===");
+        System.err.println("Code: " + code);
+        System.err.println("KAKAO_CLIENT_ID: " + KAKAO_CLIENT_ID);
+        System.err.println("KAKAO_REDIRECT_URI: " + KAKAO_REDIRECT_URI);
+        System.err.println("KAKAO_AUTH_URI: " + KAKAO_AUTH_URI);
+
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -112,9 +119,14 @@ public class KakaoService {
             params.add("code", code);
             params.add("redirect_uri", KAKAO_REDIRECT_URI);
 
+            System.err.println("Request Params: " + params);
+
             HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
 
             RestTemplate restTemplate = new RestTemplate();
+
+            System.err.println("Making request to: " + KAKAO_AUTH_URI + "/oauth/token");
+
             ResponseEntity<String> response = restTemplate.exchange(
                     KAKAO_AUTH_URI + "/oauth/token",
                     HttpMethod.POST,
@@ -122,22 +134,29 @@ public class KakaoService {
                     String.class
             );
 
-            System.err.println("=== KAKAO TOKEN REQUEST DEBUG ===");
+            System.err.println("=== KAKAO TOKEN RESPONSE ===");
             System.err.println("Status Code: " + response.getStatusCode());
             System.err.println("Response Body: " + response.getBody());
-            System.err.println("================================");
+            System.err.println("Headers: " + response.getHeaders());
+            System.err.println("==========================");
 
             if (!response.getStatusCode().is2xxSuccessful()) {
+                System.err.println("Non-2xx status code received: " + response.getStatusCode());
                 throw new CustomException(ErrorCode.KAKAO_TOKEN_REQUEST_FAIL);
             }
 
             String responseBody = response.getBody();
             if (responseBody == null || responseBody.trim().isEmpty()) {
+                System.err.println("Response body is null or empty");
                 throw new CustomException(ErrorCode.KAKAO_TOKEN_RESPONSE_INVALID);
             }
 
+            System.err.println("Parsing JSON response...");
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(responseBody);
+
+            System.err.println("JSON parsed successfully");
+            System.err.println("JSON Node: " + jsonNode);
 
             if (jsonNode.has("error")) {
                 String error = jsonNode.get("error").asText();
@@ -148,14 +167,25 @@ public class KakaoService {
             }
 
             if (!jsonNode.has("access_token")) {
+                System.err.println("No access_token field in response");
+                System.err.println("Available fields: " + jsonNode.fieldNames());
                 throw new CustomException(ErrorCode.KAKAO_TOKEN_RESPONSE_INVALID);
             }
 
-            return jsonNode.get("access_token").asText();
+            String accessToken = jsonNode.get("access_token").asText();
+            System.err.println("Access token extracted successfully: " + accessToken.substring(0, 10) + "...");
+
+            return accessToken;
         } catch (CustomException e) {
+            System.err.println("CustomException in getKakaoAccessToken: " + e.getMessage());
+            System.err.println("ErrorCode: " + e.getErrorCode());
             throw e;
         } catch (Exception e) {
+            System.err.println("Exception in getKakaoAccessToken: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            e.printStackTrace();
             throw new CustomException(ErrorCode.KAKAO_TOKEN_REQUEST_FAIL);
+        } finally {
+            System.err.println("=== KAKAO ACCESS TOKEN REQUEST END ===");
         }
     }
 
