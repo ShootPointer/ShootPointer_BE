@@ -80,7 +80,7 @@ class BackNumberServiceImplTest {
                 .thenReturn(expectedResponse);
 
         //when
-        BackNumberResponse response = backNumberService.create(token, request);
+        BackNumberResponse response = backNumberService.create(token, request,mockMultipartFile());
 
         //then
         assertThat(response).isNotNull();
@@ -88,7 +88,8 @@ class BackNumberServiceImplTest {
 
         verify(openCVClient).sendBackNumberInformation(eq(mockUserId)
                 , eq(100),
-                any()
+                any(),
+                any(String.class)
         );
         verify(memberBackNumberRepository).save(any());
     }
@@ -123,7 +124,7 @@ class BackNumberServiceImplTest {
                 .thenReturn(expectedResponse);
 
         //when
-        BackNumberResponse response = backNumberService.create(token, request);
+        BackNumberResponse response = backNumberService.create(token, request,mockMultipartFile());
 
         //then
         assertThat(response).isNotNull();
@@ -131,7 +132,8 @@ class BackNumberServiceImplTest {
 
         verify(openCVClient).sendBackNumberInformation(eq(mockUserId)
                 , eq(100),
-                any()
+                any(),
+                any(String.class)
         );
         verify(memberBackNumberRepository).save(any());
     }
@@ -159,9 +161,9 @@ class BackNumberServiceImplTest {
         //when & then
         doThrow(new IOException())
                 .when(openCVClient)
-                .sendBackNumberInformation(any(),anyInt(),any());
+                .sendBackNumberInformation(any(),anyInt(),any(),any(String.class));
         CustomException customException= catchThrowableOfType(() ->
-                        backNumberService.create(token, request),
+                        backNumberService.create(token, request,mockMultipartFile()),
                 CustomException.class
         );
         assertThat(customException).isNotNull();
@@ -182,7 +184,7 @@ class BackNumberServiceImplTest {
      * Mock BackNumber Request
      */
     private BackNumberRequest mockBackNumberRequest() {
-        return BackNumberRequest.of(100, mockMultipartFile());
+        return BackNumberRequest.of(100);
     }
 
     /**

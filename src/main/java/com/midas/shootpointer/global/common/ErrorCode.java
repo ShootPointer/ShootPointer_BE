@@ -39,6 +39,12 @@ public enum ErrorCode {
     // 301(member - controller) part
     DUPLICATE_REQUEST(30101, HttpStatus.BAD_REQUEST, "Authorization 중복 요청"),
 
+    NOT_FOUND_HIGHLIGHT_ID(20201,HttpStatus.NOT_FOUND,"해당 하이라이트 영상을 찾을 수 없습니다."),
+    NOT_MATCH_HIGHLIGHT_VIDEO(20202,HttpStatus.BAD_REQUEST,"잘못된 요청입니다."),
+    INVALID_FILE_TYPE(20203,HttpStatus.BAD_REQUEST,"지원하지 않는 파일 형식입니다."),
+    FILE_SIZE_EXCEEDED(20204,HttpStatus.BAD_REQUEST,"파일의 크기가 초과했습니다.(제한 : 100MB)"),
+    FILE_UPLOAD_FAILED(20205,HttpStatus.BAD_REQUEST,"파일 업로드에 실패했습니다."),
+  
     // 302(member - service) part
     INVALID_KAKAO_AUTH_CODE(30201, HttpStatus.BAD_REQUEST, "카카오 토큰 요청 실패"),
     KAKAO_TOKEN_REQUEST_FAIL(30202, HttpStatus.BAD_REQUEST, "카카오 토큰 응답 파싱 실패"),
