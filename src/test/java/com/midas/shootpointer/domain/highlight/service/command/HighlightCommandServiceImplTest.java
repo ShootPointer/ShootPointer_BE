@@ -2,27 +2,27 @@ package com.midas.shootpointer.domain.highlight.service.command;
 
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
+import com.midas.shootpointer.domain.highlight.dto.UploadHighlight;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import org.springframework.mock.web.MockMultipartFile;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -120,6 +120,7 @@ class HighlightCommandServiceImplTest {
         assertThat(customException).isNotNull();
         assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.NOT_MATCH_HIGHLIGHT_VIDEO);
     }
+
     /**
      * Mock HighlightSelectRequest
      */
@@ -127,6 +128,48 @@ class HighlightCommandServiceImplTest {
         return HighlightSelectRequest
                 .builder()
                 .selectedHighlightIds(highlightIds)
+                .build();
+    }
+
+    /**
+     * Mock MultiPartFile
+     */
+    private MockMultipartFile mockMultipartFile() throws IOException {
+        String path="/home/ubuntu/shoot-pointer/videos/test.mp4";
+        FileInputStream fileInputStream = new FileInputStream(path);
+        return new MockMultipartFile(
+                "uploadHighlightDto",
+                "test.mp4",
+                "/video/mp4",
+                fileInputStream
+                );
+    }
+
+    /**
+     * Mock wrongMultiPartFile
+     */
+    private MockMultipartFile wrongMockMultipartFile() throws IOException {
+        String path="/home/ubuntu/shoot-pointer/videos/test.mp4";
+        FileInputStream fileInputStream = new FileInputStream(path);
+        return new MockMultipartFile(
+                "uploadHighlightDto",
+                "test.mp3",
+                "/video/mp3",
+                fileInputStream
+        );
+    }
+
+    /**
+     * Mock UploadHighlightRequest
+     */
+    private UploadHighlight mockUploadHighlight(){
+        String highlightKey= String.valueOf(UUID.randomUUID());
+        LocalDateTime createAt=LocalDateTime.now();
+
+        return UploadHighlight
+                .builder()
+                .createAt(createAt)
+                .highlightKey(highlightKey)
                 .build();
     }
 

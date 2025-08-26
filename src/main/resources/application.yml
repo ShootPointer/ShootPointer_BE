@@ -112,3 +112,4 @@ opencv:
 
 video:
   path: /home/ubuntu/shoot-pointer/videos
+  type: mp4

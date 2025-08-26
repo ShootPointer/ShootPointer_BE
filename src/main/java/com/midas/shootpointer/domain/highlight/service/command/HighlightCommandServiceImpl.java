@@ -6,6 +6,7 @@ import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
 import com.midas.shootpointer.domain.highlight.dto.UploadHighlight;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.highlight.helper.FileHelper;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.domain.member.repository.MemberRepository;
@@ -35,17 +36,8 @@ import java.util.UUID;
 public class HighlightCommandServiceImpl implements HighlightCommandService {
     private final HighlightCommandRepository highlightCommandRepository;
     private final HighlightQueryRepository highlightQueryRepository;
-    private final MemberRepository memberRepository;
+    private final FileHelper fileHelper;
     private final JwtUtil jwtUtil;
-    /*
-    영상 크기 제한 100MB
-     */
-    private static final long MAX_FILE_SIZE = 100L * 1024L * 1024L;
-
-    //영상 저장 경로
-    @Value("${video.path}")
-    private String videoPath;
-
     /*==========================
     *
     *HighlightCommandServiceImpl
@@ -71,7 +63,7 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
 
         //2. 선택한 하이라이트 영상이 요청자의 하이라이트 영상 확인
         findByHighlightEntities.forEach(h -> {
-            isHighlightVideoSameMember(h.getHighlightId(), memberId);
+            fileHelper.isHighlightVideoSameMember(h.getHighlightId(), memberId);
             //3. 가져온 하이라이트의 is_selected를 true로 변환
             h.select();
             highlightCommandRepository.save(h);
@@ -105,13 +97,13 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
          */
         //파일 크기 및 파일 형식 검사
         highlights.forEach(highlight -> {
-                    isValidFileSize(highlight);
-                    isValidFileType(highlight);
+                    fileHelper.isValidFileSize(highlight);
+                    fileHelper.isValidFileType(highlight);
                 }
         );
         List<HighlightEntity> highlightEntities = new ArrayList<>();
         String highlightKey = request.getHighlightKey();
-        String directoryPath = getDirectoryPath(highlightKey);
+        String directoryPath = fileHelper.getDirectoryPath(highlightKey);
 
         highlights.forEach(h -> {
             String fileName = UUID.randomUUID() + ".mp4";
@@ -148,59 +140,5 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
 
         //3. 저장한 하이라이트 영상 URL 반환.
         return responses;
-    }
-
-    /**
-     * 유저의 하이라이트 영상인지 확인 메서드
-     *
-     * @param highlightId 하이라이트 id
-     * @param memberId    유저의 Id
-     */
-    private void isHighlightVideoSameMember(UUID highlightId, UUID memberId) {
-        if (!highlightQueryRepository.isMembersHighlight(memberId, highlightId)) {
-            throw new CustomException(ErrorCode.NOT_MATCH_HIGHLIGHT_VIDEO);
-        }
-    }
-
-    /**
-     * 파일 타입 체크 메서드
-     *
-     * @param file 파일
-     */
-    private void isValidFileType(MultipartFile file) {
-        String contentType = file.getContentType();
-
-        //mp4 파일 형식 검사.
-        if (!contentType.equals("video/mp4")) {
-            throw new CustomException(ErrorCode.INVALID_FILE_TYPE);
-        }
-    }
-
-    /**
-     * 파일 사이즈 체크 메서드
-     *
-     * @param file 파일
-     */
-
-    private void isValidFileSize(MultipartFile file) {
-        long fileSize = file.getSize();
-        //파일 사이즈 제한 - 500MB
-        if (fileSize >= MAX_FILE_SIZE) {
-            throw new CustomException(ErrorCode.FILE_SIZE_EXCEEDED);
-        }
-    }
-
-    private String getDirectoryPath(String highlightKey) {
-        String directory = videoPath + "/" + highlightKey;
-        Path directoryPath = Paths.get(directory);
-        if (!Files.exists(directoryPath)) {
-            try {
-                Files.createDirectories(directoryPath);
-            } catch (IOException e) {
-                log.error("method : getDirectoryPath message : {}",e.getMessage());
-                throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED);
-            }
-        }
-        return directoryPath.toString();
     }
 }
