@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.Objects;
 
 @Embeddable
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class BackNumber {

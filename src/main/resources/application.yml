@@ -101,7 +101,7 @@ kakao:
     uri: https://kapi.kakao.com
 
 opencv:
-  url: http://localhost:8888
+  url: http://172.20.10.2:8888
   api:
     post:
       send-image: /api/send-img

@@ -10,11 +10,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@Slf4j
 @RequestMapping("/api/backNumber")
 @RequiredArgsConstructor
 @Tag(name = "등 번호", description = "등 번호 API")
@@ -48,8 +50,8 @@ public class BackNumberController {
             @RequestPart (value = "image") MultipartFile image,
             @RequestHeader("Authorization") String jwtToken
     ){
-        String token = jwtToken.substring(7);
-        BackNumberResponse response=backNumberService.create(token, request,image);
+        //String token = jwtToken.substring(7);
+        BackNumberResponse response=backNumberService.create(jwtToken, request,image);
         return ResponseEntity.ok(com.midas.shootpointer.global.dto.ApiResponse.created(response));
     }
 }

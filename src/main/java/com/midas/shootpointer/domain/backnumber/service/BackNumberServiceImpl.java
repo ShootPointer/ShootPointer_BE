@@ -16,6 +16,7 @@ import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
 import com.midas.shootpointer.infrastructure.openCV.service.OpenCVClient;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class BackNumberServiceImpl implements BackNumberService{
     private final BackNumberRepository backNumberRepository;
