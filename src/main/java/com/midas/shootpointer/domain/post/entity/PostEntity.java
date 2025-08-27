@@ -4,22 +4,24 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
 @Table(name = "post")
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Entity
-public class Post extends BaseEntity {
+@Builder
+public class PostEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id",unique = true,nullable = false)
     private Long postId;
 
-    @Column(name = "title",nullable = false)
+    @Column(name = "title",nullable = false,length = 20)
     private String title;
 
-    @Column(name = "description",columnDefinition = "TEXT")
+    @Column(name = "description",columnDefinition = "TEXT",length = 1000)
     private String description;
 
     @Enumerated(EnumType.STRING)
