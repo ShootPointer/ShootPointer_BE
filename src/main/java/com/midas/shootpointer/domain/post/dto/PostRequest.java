@@ -37,4 +37,12 @@ public class PostRequest {
     //해시 태그
     private HashTag hashTag;
 
+    public static PostRequest of(String highlightId,
+                                 String title,
+                                 String content,
+                                 HashTag hashTag
+    ){
+        return new PostRequest(highlightId,title,content,hashTag);
+    }
+
 }
