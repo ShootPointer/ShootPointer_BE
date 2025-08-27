@@ -18,8 +18,8 @@ public class PostEntity extends BaseEntity {
     @Column(name = "post_id",unique = true,nullable = false)
     private Long postId;
 
-    @Column(name = "title",nullable = false,length = 20)
-    private String title;
+    @Column(name = "content",length = 20)
+    private String content;
 
     @Column(name = "description",columnDefinition = "TEXT",length = 1000)
     private String description;
