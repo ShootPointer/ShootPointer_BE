@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.post.dto;
 
+import com.midas.shootpointer.domain.post.entity.HashTag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,5 +33,8 @@ public class PostRequest {
     @NotBlank(message = "내용은 공백일 수 없습니다.")
     @Max(value = 1000,message = "내용은 1000자 이하만 입력가능합니다.")
     private String content;
+
+    //해시 태그
+    private HashTag hashTag;
 
 }

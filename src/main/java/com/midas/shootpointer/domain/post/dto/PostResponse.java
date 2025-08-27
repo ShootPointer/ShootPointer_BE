@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.post.dto;
 
 import com.midas.shootpointer.domain.comment.dto.CommentResponse;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
+@Builder
 /**
  * 게시물 조회 dto
  */

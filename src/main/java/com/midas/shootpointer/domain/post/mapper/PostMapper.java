@@ -6,5 +6,4 @@ import com.midas.shootpointer.domain.post.entity.PostEntity;
 
 public interface PostMapper {
     PostEntity dtoToEntity(PostRequest postRequest);
-    PostResponse entityToDto(PostEntity postEntity);
 }

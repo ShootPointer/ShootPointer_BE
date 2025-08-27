@@ -9,11 +9,10 @@ import org.springframework.stereotype.Component;
 public class PostMapperImpl implements PostMapper{
     @Override
     public PostEntity dtoToEntity(PostRequest postRequest) {
-        return null;
-    }
-
-    @Override
-    public PostResponse entityToDto(PostEntity postEntity) {
-        return null;
+        return PostEntity.builder()
+                .content(postRequest.getContent())
+                .title(postRequest.getTitle())
+                .hashTag(postRequest.getHashTag())
+                .build();
     }
 }

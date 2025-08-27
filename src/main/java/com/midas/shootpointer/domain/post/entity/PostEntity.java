@@ -18,11 +18,11 @@ public class PostEntity extends BaseEntity {
     @Column(name = "post_id",unique = true,nullable = false)
     private Long postId;
 
-    @Column(name = "content",length = 20)
-    private String content;
+    @Column(name = "title",length = 20)
+    private String title;
 
-    @Column(name = "description",columnDefinition = "TEXT",length = 1000)
-    private String description;
+    @Column(name = "content",columnDefinition = "TEXT",length = 1000)
+    private String content;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "hash_tag")
