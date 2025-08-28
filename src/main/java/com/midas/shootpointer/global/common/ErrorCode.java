@@ -77,7 +77,7 @@ public enum ErrorCode {
 
 
     //206(highlight - helper) part
-    IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_URL(20601,HttpStatus.BAD_REQUEST,"유저의 하이라이트 영상이 아닙니다."),
+    IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID(20601,HttpStatus.BAD_REQUEST,"유저의 하이라이트 영상이 아닙니다."),
     IS_NOT_CORRECT_HASH_TAG(20601,HttpStatus.BAD_REQUEST,"잘못된 카테고리 입력입니다.")
     ;
 

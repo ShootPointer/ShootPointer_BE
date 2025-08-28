@@ -20,7 +20,7 @@ public class PostValidationImpl implements PostValidation{
     *
     *PostValidationImpl
     *
-    * @parm member : 멤버 객체 , highlightUrl : 하이라이트 주소
+    * @parm member : 멤버 객체 , highlightId : 하이라이트 Id
     * @return 유저의 하이라이트 영상이면 true, 아니면 CustomException 발생.
     * @author kimdoyeon
     * @version 1.0.0
@@ -30,7 +30,7 @@ public class PostValidationImpl implements PostValidation{
     @Override
     public void isValidateHighlightId(Member member, UUID highlightId) {
         boolean isValid=highlightQueryRepository.existsByHighlightIdAndMember(highlightId,member.getMemberId());
-        if(!isValid) throw new CustomException(ErrorCode.IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_URL);
+        if(!isValid) throw new CustomException(ErrorCode.IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID);
     }
 
     /*==========================
