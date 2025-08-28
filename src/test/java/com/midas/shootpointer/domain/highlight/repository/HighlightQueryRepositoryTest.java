@@ -102,7 +102,7 @@ class HighlightQueryRepositoryTest {
         HighlightEntity mockHighlight=highlightCommandRepository.save(mockHighlight(mockMember,mockBackNumber));
 
         //when
-        boolean existsByHighlightUrlAndMember=highlightQueryRepository.existsByHighlightUrlAndMember(mockHighlight.getHighlightURL(),mockMember.getMemberId());
+        boolean existsByHighlightUrlAndMember=highlightQueryRepository.existsByHighlightIdAndMember(mockHighlight.getHighlightId(),mockMember.getMemberId());
 
         //then
         assertThat(existsByHighlightUrlAndMember).isTrue();
@@ -118,7 +118,7 @@ class HighlightQueryRepositoryTest {
         HighlightEntity mockHighlight=highlightCommandRepository.save(mockHighlight(mockMember,mockBackNumber));
 
         //when
-        boolean existsByHighlightUrlAndMember=highlightQueryRepository.existsByHighlightUrlAndMember("test",mockMember.getMemberId());
+        boolean existsByHighlightUrlAndMember=highlightQueryRepository.existsByHighlightIdAndMember(UUID.randomUUID(),mockMember.getMemberId());
 
         //then
         assertThat(existsByHighlightUrlAndMember).isFalse();

@@ -10,8 +10,4 @@ public enum HashTag {
     TREE_POINT("3점슛");
 
     private final String name;
-
-    public boolean isValidHashTag(Object object){
-        return getClass()==object.getClass();
-    }
 }

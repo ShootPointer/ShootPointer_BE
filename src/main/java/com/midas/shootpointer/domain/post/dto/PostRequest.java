@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
@@ -22,7 +24,7 @@ public class PostRequest {
     @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
             message = "하이라이트 영상 id가 유효하지 않습니다."
     )
-    private String highlightId;
+    private UUID highlightId;
 
     //제목
     @NotBlank(message = "제목은 공백일 수 없습니다.")
@@ -37,7 +39,7 @@ public class PostRequest {
     //해시 태그
     private HashTag hashTag;
 
-    public static PostRequest of(String highlightId,
+    public static PostRequest of(UUID highlightId,
                                  String title,
                                  String content,
                                  HashTag hashTag

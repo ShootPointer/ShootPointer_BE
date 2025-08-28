@@ -26,7 +26,7 @@ class PostMapperImplTest {
         String title="title";
         HashTag hashTag=HashTag.TREE_POINT;
         UUID highlightId=UUID.randomUUID();
-        PostRequest request=PostRequest.of(highlightId.toString(),title,content,hashTag);
+        PostRequest request=PostRequest.of(highlightId,title,content,hashTag);
 
 
         //when

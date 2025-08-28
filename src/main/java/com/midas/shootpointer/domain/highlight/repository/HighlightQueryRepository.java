@@ -22,6 +22,6 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
 
     @Query(value = "SELECT EXISTS(SELECT * FROM member AS M left join highlight AS H " +
                    "WHERE M.member_id=:memberId " +
-                   "AND H.highlight_url=:highlightUrl ) ",nativeQuery = true)
-    boolean existsByHighlightUrlAndMember(@Param("highlightUrl") String highlightUrl, @Param("memberId") UUID memberId);
+                   "AND H.highlight_id=:highlightId ) ",nativeQuery = true)
+    boolean existsByHighlightIdAndMember(@Param("highlightId") UUID highlightId, @Param("memberId") UUID memberId);
 }

@@ -1,8 +1,8 @@
 package com.midas.shootpointer.domain.post.controller;
 
+import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
-import com.midas.shootpointer.domain.post.dto.PostResponse;
-import com.midas.shootpointer.domain.post.service.PostCommandService;
+import com.midas.shootpointer.domain.post.business.PostCommandService;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -47,6 +47,8 @@ public class PostCommandController {
             @RequestBody PostRequest request,
             @RequestHeader("Authorization") String token
     ) {
-        return ResponseEntity.ok(ApiResponse.created(postCommandService.create(request,token)));
+        //TODO: member -> 현재 로그인한 멤버 가져오기.
+        Member member=null;
+        return ResponseEntity.ok(ApiResponse.created(postCommandService.create(request,member)));
     }
 }

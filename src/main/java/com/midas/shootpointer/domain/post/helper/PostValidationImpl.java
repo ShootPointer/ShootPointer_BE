@@ -1,17 +1,53 @@
 package com.midas.shootpointer.domain.post.helper;
 
+import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
+import com.midas.shootpointer.global.common.ErrorCode;
+import com.midas.shootpointer.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class PostValidationImpl implements PostValidation{
-    private final PostQueryRepository queryRepository;
+    private final HighlightQueryRepository highlightQueryRepository;
 
+    /*==========================
+    *
+    *PostValidationImpl
+    *
+    * @parm member : 멤버 객체 , highlightUrl : 하이라이트 주소
+    * @return 유저의 하이라이트 영상이면 true, 아니면 CustomException 발생.
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 8. 28.
+    *
+    ==========================**/
     @Override
-    public boolean isValidateHighlightUrl(Member member, String highlightUrl) {
-        return false;
+    public void isValidateHighlightId(Member member, UUID highlightId) {
+        boolean isValid=highlightQueryRepository.existsByHighlightIdAndMember(highlightId,member.getMemberId());
+        if(!isValid) throw new CustomException(ErrorCode.IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_URL);
     }
+
+    /*==========================
+    *
+    *PostValidationImpl
+    *
+    * @parm Object 값
+    * @return 기존 설정한 HashTag ENUM의 형태가 아니면 CustomException 발생
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 8. 28.
+    *
+    ==========================**/
+    @Override
+    public void isValidPostHashTag(Object o) {
+        if(o.getClass() != HashTag.class) throw new CustomException(ErrorCode.IS_NOT_CORRECT_HASH_TAG);
+    }
+
+
 }
