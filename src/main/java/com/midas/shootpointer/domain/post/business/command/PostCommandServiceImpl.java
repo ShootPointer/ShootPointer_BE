@@ -1,11 +1,10 @@
-package com.midas.shootpointer.domain.post.business;
+package com.midas.shootpointer.domain.post.business.command;
 
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
+import com.midas.shootpointer.domain.post.business.PostManager;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
-import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +18,7 @@ public class PostCommandServiceImpl implements PostCommandService{
     @Override
     public Long create(PostRequest request, Member member) {
         PostEntity postEntity=mapper.dtoToEntity(request);
-        postManager.save(member,postEntity,request.getHighlightId());
-        return null;
+        return postManager.save(member,postEntity,request.getHighlightId());
     }
 
 
