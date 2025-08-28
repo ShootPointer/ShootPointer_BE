@@ -11,4 +11,7 @@ public enum HashTag {
 
     private final String name;
 
+    public boolean isValidHashTag(Object object){
+        return getClass()==object.getClass();
+    }
 }

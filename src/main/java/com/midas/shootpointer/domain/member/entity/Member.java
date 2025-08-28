@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.member.entity;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.memberbacknumber.entity.MemberBackNumberEntity;
+import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import com.midas.shootpointer.global.entity.BaseTimeEntity;
@@ -41,4 +42,9 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<MemberBackNumberEntity> memberBackNumbers=new ArrayList<>();
+
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<PostEntity> postEntities=new ArrayList<>();
+
+
 }

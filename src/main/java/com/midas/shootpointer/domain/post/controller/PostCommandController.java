@@ -43,7 +43,7 @@ public class PostCommandController {
     )
 
     @PostMapping
-    public ResponseEntity<ApiResponse<PostResponse>> create(
+    public ResponseEntity<ApiResponse<Long>> create(
             @RequestBody PostRequest request,
             @RequestHeader("Authorization") String token
     ) {

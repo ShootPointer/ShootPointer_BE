@@ -20,7 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Getter
-@Table(name = "higlight")
+@Table(name = "highlight")
 public class HighlightEntity extends BaseEntity {
     @Id
     @UuidGenerator

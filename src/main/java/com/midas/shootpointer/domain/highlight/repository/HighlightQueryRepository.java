@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.highlight.repository;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +19,9 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
     boolean isMembersHighlight(@Param("memberId") UUID memberId, @Param("highlightId") UUID highlightId);
 
     Optional<HighlightEntity> findByHighlightKey(UUID highlightKey);
+
+    @Query(value = "SELECT EXISTS(SELECT * FROM member AS M left join highlight AS H " +
+                   "WHERE M.member_id=:memberId " +
+                   "AND H.highlight_url=:highlightUrl ) ",nativeQuery = true)
+    boolean existsByHighlightUrlAndMember(@Param("highlightUrl") String highlightUrl, @Param("memberId") UUID memberId);
 }
