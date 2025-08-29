@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.post.mapper;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
+import com.midas.shootpointer.domain.post.dto.PostResponse;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,18 @@ public class PostMapperImpl implements PostMapper{
                 .title(postRequest.getTitle())
                 .hashTag(postRequest.getHashTag())
                 .member(member)
+                .build();
+    }
+
+    @Override
+    public PostResponse entityToDto(PostEntity postEntity) {
+        return PostResponse.builder()
+                .content(postEntity.getContent())
+                .createdAt(postEntity.getCreatedAt())
+                .postId(postEntity.getPostId())
+                //.highlightUrl(postEntity.getHighlight().getHighlightURL())
+                .modifiedAt(postEntity.getModifiedAt())
+                .title(postEntity.getTitle())
                 .build();
     }
 }

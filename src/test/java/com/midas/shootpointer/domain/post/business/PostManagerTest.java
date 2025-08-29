@@ -93,7 +93,6 @@ class PostManagerTest {
         Long postId = 111L;
 
         when(postQueryRepository.findByPostId(postId)).thenReturn(Optional.of(mockPostEntity));
-        doNothing().when(postHelper).isDeleted(mockPostEntity);
         doNothing().when(postHelper).isMembersPost(mockPostEntity, mockMember);
         when(highlightHelper.findHighlightByHighlightId(highlightId)).thenReturn(mockHighlight);
         doNothing().when(postHelper).isValidateHighlightId(mockMember, highlightId);
@@ -107,7 +106,6 @@ class PostManagerTest {
         //then
         assertThat(updatedPostId).isEqualTo(mockPostEntity.getPostId());
         verify(postQueryRepository, times(1)).findByPostId(postId);
-        verify(postHelper, times(1)).isDeleted(mockPostEntity);
         verify(postHelper, times(1)).isMembersPost(mockPostEntity, mockMember);
         verify(postHelper, times(1)).isValidateHighlightId(mockMember, highlightId);
         verify(postHelper, times(1)).isValidPostHashTag(postRequest.getHashTag());

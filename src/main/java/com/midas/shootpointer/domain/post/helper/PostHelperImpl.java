@@ -22,10 +22,6 @@ public class PostHelperImpl implements PostHelper{
         postValidation.isValidPostHashTag(o);
     }
 
-    @Override
-    public void isDeleted(PostEntity postEntity) {
-        postValidation.isDeleted(postEntity);
-    }
 
     @Override
     public void isMembersPost(PostEntity postEntity, Member member) {

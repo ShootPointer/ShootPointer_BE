@@ -79,25 +79,6 @@ class PostValidationImplTest {
     }
 
     @Test
-    @DisplayName("게시물이 삭제된 상태이면 DELETED_POST 예외가 발생합니다.")
-    public void isDeleted(){
-        //given
-        Member member=mockMember();
-        HighlightEntity highlightEntity=mockHighlight();
-        PostEntity postEntity=mockPost(member,highlightEntity);
-
-        //when
-        CustomException customException=catchThrowableOfType(()->
-                postValidation.isDeleted(postEntity),
-                CustomException.class
-        );
-
-        //then
-        assertThat(customException).isNotNull();
-        assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.DELETED_POST);
-    }
-
-    @Test
     @DisplayName("유저의 게시물이 아닌 경우 IS_NOT_MEMBERS_POST 예외가 발생합니다.")
     public void isMembersPost() {
         //given

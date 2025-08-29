@@ -54,24 +54,6 @@ public class PostValidationImpl implements PostValidation{
     *
     *PostValidationImpl
     *
-    * @parm postEntity 게시물 엔티티
-    * @return 삭제된 게시물 접근 시 CustomException 발생
-    * @author kimdoyeon
-    * @version 1.0.0
-    * @date 25. 8. 29.
-    *
-    ==========================**/
-    @Override
-    public void isDeleted(PostEntity postEntity) {
-        boolean deleted=postEntity.getIsDeleted();
-        if(deleted) throw new CustomException(ErrorCode.DELETED_POST);
-    }
-
-
-    /*==========================
-    *
-    *PostValidationImpl
-    *
     * @parm postEntity 게시물 엔티티 member 멤버 엔티티
     * @return 멤버의 게시물 접근 시 CustomException 발생
     * @author kimdoyeon

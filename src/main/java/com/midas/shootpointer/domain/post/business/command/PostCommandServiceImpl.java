@@ -12,18 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class PostCommandServiceImpl implements PostCommandService{
     private final PostManager postManager;
     private final PostMapper mapper;
 
-
+    @Transactional
     @Override
     public Long create(PostRequest request, Member member) {
         PostEntity postEntity=mapper.dtoToEntity(request,member);
         return postManager.save(member,postEntity,request.getHighlightId());
     }
 
+    @Transactional
     @Override
     public Long update(PostRequest request, Member member,Long postId) {
         return postManager.update(request,member,postId);

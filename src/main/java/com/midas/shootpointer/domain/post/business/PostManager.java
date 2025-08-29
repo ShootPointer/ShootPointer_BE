@@ -55,32 +55,27 @@ public class PostManager {
                 .orElseThrow(()->new CustomException(ErrorCode.IS_NOT_EXIST_POST));
 
         /**
-         * 2. 게시물의 삭제 여부
-         */
-        postHelper.isDeleted(postEntity);
-
-        /**
-         * 3. 게시물이 멤버의 게시물인지 확인
+         * 2. 게시물이 멤버의 게시물인지 확인
          */
         postHelper.isMembersPost(postEntity,member);
 
         /**
-         * 4.하이라이트 영상 불러오기.
+         * 3.하이라이트 영상 불러오기.
          */
         HighlightEntity highlightEntity=highlightHelper.findHighlightByHighlightId(request.getHighlightId());
 
         /**
-         * 5. Highlight URL이 유저의 영상으로 일치 여부.
+         * 4. Highlight URL이 유저의 영상으로 일치 여부.
          */
         postHelper.isValidateHighlightId(member,request.getHighlightId());
 
         /**
-         * 6. 해시태그가 올바른 지 여부.
+         * 5. 해시태그가 올바른 지 여부.
          */
         postHelper.isValidPostHashTag(request.getHashTag());
 
         /**
-         * 7. 수정 진행
+         * 6. 수정 진행
          */
         postEntity.update(
                 request.getTitle(),
@@ -90,6 +85,26 @@ public class PostManager {
         );
         postEntity=postCommandRepository.save(postEntity);
 
+        return postEntity.getPostId();
+    }
+
+    public Long delete(Long postId,Member member){
+        /**
+         * 1. 게시물이 존재하는 지 여부
+         */
+        PostEntity postEntity=postQueryRepository.findByPostId(postId)
+                .orElseThrow(()->new CustomException(ErrorCode.IS_NOT_EXIST_POST));
+
+
+        /**
+         * 2. 게시물이 멤버의 게시물인지 확인
+         */
+        postHelper.isMembersPost(postEntity,member);
+
+        /**
+         * 3. 삭제 처리
+         */
+        postEntity.delete();
         return postEntity.getPostId();
     }
 }

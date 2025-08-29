@@ -5,6 +5,7 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 @Table(name = "post")
 @AllArgsConstructor
@@ -12,6 +13,7 @@ import lombok.*;
 @Entity
 @Builder
 @Getter
+@SQLRestriction("is_deleted <> 'true'")
 public class PostEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +36,7 @@ public class PostEntity extends BaseEntity {
 
     @Setter
     @OneToOne
-    @JoinColumn(name = "highlight_id",unique = true,nullable = false)
+    @JoinColumn(name = "highlight_id",unique = true)
     private HighlightEntity highlight;
 
     public void update(String title,String content,HashTag hashTag,HighlightEntity highlight){

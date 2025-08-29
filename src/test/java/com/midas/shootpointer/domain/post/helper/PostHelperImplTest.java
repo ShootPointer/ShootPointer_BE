@@ -57,19 +57,6 @@ class PostHelperImplTest {
     }
 
     @Test
-    @DisplayName("게시물이 삭제되었는지 확인합니다-postValidation.isDeleted 메서드가 실행되는지 확인합니다.")
-    void isDeleted(){
-        //given
-        doNothing().when(postValidation).isDeleted(postEntity);
-
-        //when
-        postHelper.isDeleted(postEntity);
-
-        //then
-        verify(postValidation,times(1)).isDeleted(postEntity);
-    }
-
-    @Test
     @DisplayName("유저의 게시물인지 확인합니다-postValidation.isMembersPost 메서드가 실행되는지 확인합니다.")
     void isMembersPost(){
         //given
