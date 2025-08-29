@@ -31,6 +31,15 @@ class PostValidationImplTest {
     @Mock
     private HighlightQueryRepository highlightQueryRepository;
 
+    @Mock
+    private PostEntity postEntity;
+
+    @Mock
+    private Member member1;
+
+    @Mock
+    private Member member2;
+
     @Test
     @DisplayName("멤버의 하이라이트가 아니면 IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID 에외가 발생합니다.")
     void isValidateHighlightId() {
@@ -71,7 +80,7 @@ class PostValidationImplTest {
 
     @Test
     @DisplayName("게시물이 삭제된 상태이면 DELETED_POST 예외가 발생합니다.")
-    public void PostValidationImplTest() throws Exception{
+    public void isDeleted(){
         //given
         Member member=mockMember();
         HighlightEntity highlightEntity=mockHighlight();
@@ -86,6 +95,28 @@ class PostValidationImplTest {
         //then
         assertThat(customException).isNotNull();
         assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.DELETED_POST);
+    }
+
+    @Test
+    @DisplayName("유저의 게시물이 아닌 경우 IS_NOT_MEMBERS_POST 예외가 발생합니다.")
+    public void isMembersPost() {
+        //given
+        UUID memberId=UUID.randomUUID();
+        UUID differentId=UUID.randomUUID();
+       when(postEntity.getMember()).thenReturn(member1);
+       when(member1.getMemberId()).thenReturn(memberId);
+
+       when(member2.getMemberId()).thenReturn(differentId);
+
+        //when
+        CustomException customException=catchThrowableOfType(()->
+                        postValidation.isMembersPost(postEntity,member2),
+                CustomException.class
+        );
+
+        //then
+        assertThat(customException).isNotNull();
+        assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.IS_NOT_MEMBERS_POST);
     }
 
     /**
