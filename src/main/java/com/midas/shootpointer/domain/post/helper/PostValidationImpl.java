@@ -63,7 +63,7 @@ public class PostValidationImpl implements PostValidation{
     ==========================**/
     @Override
     public void isDeleted(PostEntity postEntity) {
-        boolean deleted=postEntity.isDeleted();
+        boolean deleted=postEntity.getIsDeleted();
         if(deleted) throw new CustomException(ErrorCode.DELETED_POST);
     }
 

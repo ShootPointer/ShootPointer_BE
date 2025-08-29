@@ -4,10 +4,7 @@ import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Table(name = "post")
 @AllArgsConstructor
@@ -35,17 +32,10 @@ public class PostEntity extends BaseEntity {
     @JoinColumn(name = "member_id",nullable = false)
     private Member member;
 
+    @Setter
     @OneToOne
     @JoinColumn(name = "highlight_id",unique = true,nullable = false)
     private HighlightEntity highlight;
-
-    public boolean isDeleted(){
-        return this.isDeleted();
-    }
-
-    public void delete(){
-        this.delete();
-    }
 
     public void update(String title,String content,HashTag hashTag,HighlightEntity highlight){
         this.title=title;
@@ -54,7 +44,4 @@ public class PostEntity extends BaseEntity {
         this.highlight=highlight;
     }
 
-    public void saveHighlight(HighlightEntity highlight){
-        this.highlight=highlight;
-    }
 }

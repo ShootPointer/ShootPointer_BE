@@ -24,19 +24,25 @@ public class PostManager {
     private final PostQueryRepository postQueryRepository;
 
     public Long save(Member member, PostEntity postEntity, UUID highlightId){
+        /**
+         * 1.하이라이트 영상 불러오기.
+         */
+        HighlightEntity highlightEntity=highlightHelper.findHighlightByHighlightId(highlightId);
+
         /*
-         * 1. Highlight URL이 유저의 영상으로 일치 여부.
+         * 2. Highlight URL이 유저의 영상으로 일치 여부.
          */
         postHelper.isValidateHighlightId(member,highlightId);
+
         /*
-         * 2. 해시태그가 올바른 지 여부.
+         * 3. 해시태그가 올바른 지 여부.
          */
         postHelper.isValidPostHashTag(postEntity.getHashTag());
 
         /**
-         * 3. 하이라이트 저장.
+         * 4. 하이라이트 저장.
          */
-        postEntity.saveHighlight(highlightHelper.findHighlightByHighlightId(highlightId));
+        postEntity.setHighlight(highlightEntity);
 
         return postCommandRepository.save(postEntity).getPostId();
     }
