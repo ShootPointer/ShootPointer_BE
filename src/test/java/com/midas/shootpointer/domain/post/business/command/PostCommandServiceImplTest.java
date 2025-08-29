@@ -68,6 +68,22 @@ class PostCommandServiceImplTest {
         assertThat(createdPostId).isEqualTo(111L);
     }
 
+    @Test
+    @DisplayName("게시물 삭제 시 postManager-delete 호출 여부를 확인합니다.")
+    void delete(){
+        //given
+        Member mockMember=mockMember();
+        Long postId=111L;
+
+        //when
+        when(postManager.delete(postId,mockMember)).thenReturn(111L);
+
+        //then
+        Long deletedPostId=postCommandService.delete(mockMember,postId);
+        verify(postManager,times(1)).delete(postId,mockMember);
+        assertThat(deletedPostId).isEqualTo(111L);
+    }
+
     /**
      * mock PostRequest
      */

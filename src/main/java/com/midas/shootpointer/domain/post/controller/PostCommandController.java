@@ -72,7 +72,7 @@ public class PostCommandController {
     *
     *PostCommandController
     *
-    * @parm [request, postId]
+    * @parm [request : 수정 요청 dto, postId : 게시글 Id]
     * @return org.springframework.http.ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<java.lang.Long>>
     * @author kimdoyeon
     * @version 1.0.0
@@ -82,7 +82,7 @@ public class PostCommandController {
     @PutMapping("{postId}")
     public ResponseEntity<ApiResponse<Long>> update(
           @RequestBody PostRequest request,
-          @PathVariable(name = "postId") String postId
+          @PathVariable(value = "postId") String postId
     ){
         //TODO: member -> 현재 로그인한 멤버 가져오기.
         Member member=Member.builder()
@@ -92,5 +92,42 @@ public class PostCommandController {
                 .build();
         return ResponseEntity.ok(ApiResponse.ok(postCommandService.update(request,member,Long.decode(postId))));
     }
+
+
+    @Operation(
+            summary = "게시물 삭제 API - [담당자 : 김도연]",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "게시물 삭제 성공",
+                            content = @Content(mediaType="application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX",description = "게시물 삭제 실패",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+            }
+    )
+    /*==========================
+    *
+    *PostCommandController
+    *
+    * @parm 게시글 Id
+    * @return org.springframework.http.ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<java.lang.Long>>
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 8. 29.
+    *
+    ==========================**/
+    @DeleteMapping("{postId}")
+    public ResponseEntity<ApiResponse<Long>> delete(
+            @PathVariable(value = "postId") String postId
+    ){
+        //TODO: member -> 현재 로그인한 멤버 가져오기.
+        Member member=Member.builder()
+                .memberId(UUID.randomUUID())
+                .email("test@naver.com")
+                .username("test")
+                .build();
+        return ResponseEntity.ok(ApiResponse.ok(postCommandService.delete(member,Long.decode(postId))));
+    }
+
 
 }

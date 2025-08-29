@@ -20,7 +20,7 @@ public class PostEntity extends BaseEntity {
     @Column(name = "post_id",unique = true,nullable = false)
     private Long postId;
 
-    @Column(name = "title",length = 20)
+    @Column(name = "title",length = 20,nullable = false)
     private String title;
 
     @Column(name = "content",columnDefinition = "TEXT",length = 1000)
@@ -36,7 +36,7 @@ public class PostEntity extends BaseEntity {
 
     @Setter
     @OneToOne
-    @JoinColumn(name = "highlight_id",unique = true)
+    @JoinColumn(name = "highlight_id",unique = true,nullable = false)
     private HighlightEntity highlight;
 
     public void update(String title,String content,HashTag hashTag,HighlightEntity highlight){

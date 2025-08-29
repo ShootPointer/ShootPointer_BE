@@ -29,9 +29,10 @@ public class PostCommandServiceImpl implements PostCommandService{
         return postManager.update(request,member,postId);
     }
 
+    @Transactional
+    @Override
+    public Long delete(Member member, Long postId) {
+        return postManager.delete(postId,member);
+    }
 
-    //TODO:jwt 유효성 검사 필요! -> 박재성.
-   /* private Member getMember(String token){
-        if(jwtUtil.getMemberId(token))
-    }*/
 }
