@@ -51,6 +51,23 @@ class PostCommandServiceImplTest {
         assertThat(createdPostId).isEqualTo(111L);
     }
 
+    @Test
+    @DisplayName("게시물 수정 시 postManager-update 호출 여부를 확인합니다.")
+    void update(){
+        //given
+        PostRequest request=mockPostRequest();
+        Long postId=111L;
+        Member member=mockMember();
+
+        //when
+        when(postManager.update(request,member,postId)).thenReturn(111L);
+
+        //then
+        Long createdPostId=postCommandService.update(request,member,postId);
+        verify(postManager,times(1)).update(request,member,postId);
+        assertThat(createdPostId).isEqualTo(111L);
+    }
+
     /**
      * mock PostRequest
      */
