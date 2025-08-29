@@ -52,7 +52,7 @@ class PostCommandServiceImplTest {
     }
 
     /**
-     * mock Member
+     * mock PostRequest
      */
     private PostRequest mockPostRequest(){
         return PostRequest.of(UUID.randomUUID(),"title","content", HashTag.TREE_POINT);
@@ -69,7 +69,7 @@ class PostCommandServiceImplTest {
     }
 
     /**
-     * mock PostRequest
+     * mock Member
      */
     private Member mockMember() {
         return Member.builder()

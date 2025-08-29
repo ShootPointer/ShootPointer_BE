@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/post")
@@ -44,11 +46,14 @@ public class PostCommandController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> create(
-            @RequestBody PostRequest request,
-            @RequestHeader("Authorization") String token
+            @RequestBody PostRequest request
     ) {
         //TODO: member -> 현재 로그인한 멤버 가져오기.
-        Member member=null;
+        Member member=Member.builder()
+                .memberId(UUID.randomUUID())
+                .email("test@naver.com")
+                .username("test")
+                .build();;
         return ResponseEntity.ok(ApiResponse.created(postCommandService.create(request,member)));
     }
 }
