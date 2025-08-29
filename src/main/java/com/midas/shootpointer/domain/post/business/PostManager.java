@@ -24,6 +24,7 @@ public class PostManager {
          * 2. 해시태그가 올바른 지 여부.
          */
         postHelper.isValidPostHashTag(postEntity.getHashTag());
+
         return postCommandRepository.save(postEntity).getPostId();
     }
 }

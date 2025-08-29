@@ -17,7 +17,7 @@ public class PostCommandServiceImpl implements PostCommandService{
 
     @Override
     public Long create(PostRequest request, Member member) {
-        PostEntity postEntity=mapper.dtoToEntity(request);
+        PostEntity postEntity=mapper.dtoToEntity(request,member);
         return postManager.save(member,postEntity,request.getHighlightId());
     }
 

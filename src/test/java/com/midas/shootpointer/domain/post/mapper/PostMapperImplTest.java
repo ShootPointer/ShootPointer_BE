@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.post.mapper;
 
+import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
@@ -27,15 +28,28 @@ class PostMapperImplTest {
         HashTag hashTag=HashTag.TREE_POINT;
         UUID highlightId=UUID.randomUUID();
         PostRequest request=PostRequest.of(highlightId,title,content,hashTag);
+        Member mock=makeMockMember();
 
 
         //when
-        PostEntity postEntity=postMapper.dtoToEntity(request);
+        PostEntity postEntity=postMapper.dtoToEntity(request,mock);
 
         //then
         assertThat(postEntity.getContent()).isEqualTo(content);
         assertThat(postEntity.getHashTag()).isEqualTo(hashTag);
         assertThat(postEntity.getTitle()).isEqualTo(title);
+        assertThat(postEntity.getMember()).isEqualTo(mock);
+    }
+
+    /**
+     * Mock Member
+     */
+    private Member makeMockMember(){
+        return Member.builder()
+                .email("test@naver.com")
+                .memberId(UUID.randomUUID())
+                .username("teest")
+                .build();
     }
 
 }
