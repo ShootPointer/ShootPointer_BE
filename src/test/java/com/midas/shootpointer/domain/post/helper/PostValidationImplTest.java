@@ -1,8 +1,10 @@
 package com.midas.shootpointer.domain.post.helper;
 
+import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.HashTag;
+import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import org.assertj.core.api.Assertions;
@@ -67,11 +69,62 @@ class PostValidationImplTest {
         assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.IS_NOT_CORRECT_HASH_TAG);
     }
 
+    @Test
+    @DisplayName("게시물이 삭제된 상태이면 DELETED_POST 예외가 발생합니다.")
+    public void PostValidationImplTest() throws Exception{
+        //given
+        Member member=mockMember();
+        HighlightEntity highlightEntity=mockHighlight();
+        PostEntity postEntity=mockPost(member,highlightEntity);
+
+        //when
+        CustomException customException=catchThrowableOfType(()->
+                postValidation.isDeleted(postEntity),
+                CustomException.class
+        );
+
+        //then
+        assertThat(customException).isNotNull();
+        assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.DELETED_POST);
+    }
+
+    /**
+     * mockMember
+     * @return Member
+     */
     private Member mockMember() {
         return Member.builder()
                 .memberId(UUID.randomUUID())
                 .email("test@naver.com")
                 .username("test")
+                .build();
+    }
+
+    /**
+     * @param member 유저 엔티티
+     * @param highlight 하이라이트 엔티티
+     * @return PostEntity
+     */
+    private PostEntity mockPost(Member member, HighlightEntity highlight){
+        PostEntity postEntity= PostEntity.builder()
+                .highlight(highlight)
+                .member(member)
+                .hashTag(HashTag.TWO_POINT)
+                .title("title")
+                .content("content")
+                .build();
+        postEntity.delete();
+        return postEntity;
+    }
+
+    /**
+     *
+     * @return 하이라이트 엔티티
+     */
+    private HighlightEntity mockHighlight(){
+        return HighlightEntity.builder()
+                .highlightKey(UUID.randomUUID())
+                .highlightURL("test")
                 .build();
     }
 }
