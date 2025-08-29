@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.post.helper;
 
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.post.entity.PostEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,11 @@ class PostHelperImplTest {
     @Mock
     private PostValidation postValidation;
 
+    @Mock
+    private PostEntity postEntity;
+
+    @Mock
+    private Member member;
 
     @Test
     @DisplayName("유저의 하이라이트 영상인지 확인합니다-postValidation.isValidateHighlightId 메서드가 실행되는지 확인합니다.")
@@ -48,5 +54,31 @@ class PostHelperImplTest {
 
         //then
         verify(postValidation,times(1)).isValidPostHashTag(mockObject);
+    }
+
+    @Test
+    @DisplayName("게시물이 삭제되었는지 확인합니다-postValidation.isDeleted 메서드가 실행되는지 확인합니다.")
+    void isDeleted(){
+        //given
+        doNothing().when(postValidation).isDeleted(postEntity);
+
+        //when
+        postHelper.isDeleted(postEntity);
+
+        //then
+        verify(postValidation,times(1)).isDeleted(postEntity);
+    }
+
+    @Test
+    @DisplayName("유저의 게시물인지 확인합니다-postValidation.isMembersPost 메서드가 실행되는지 확인합니다.")
+    void isMembersPost(){
+        //given
+        doNothing().when(postValidation).isMembersPost(postEntity,member);
+
+        //when
+        postHelper.isMembersPost(postEntity,member);
+
+        //then
+        verify(postValidation,times(1)).isMembersPost(postEntity,member);
     }
 }
