@@ -117,6 +117,27 @@ class PostManagerTest {
         );
         verify(postCommandRepository, times(1)).save(mockPostEntity);
     }
+
+    @Test
+    @DisplayName("postHelper의 다양한 유효성 검증을 진행하고 게시물을 삭제하고 성공 시 postId를 반환합니다.")
+    void delete(){
+        Member mockMember = mockMember();
+        PostEntity mockPostEntity = spy(mockPostEntity());
+        Long postId = 111L;
+
+        when(postQueryRepository.findByPostId(postId)).thenReturn(Optional.of(mockPostEntity));
+        doNothing().when(postHelper).isMembersPost(mockPostEntity, mockMember);
+
+        //when
+        Long deletedPostId = postManager.delete(postId, mockMember);
+
+        //then
+        assertThat(deletedPostId).isEqualTo(mockPostEntity.getPostId());
+        verify(postQueryRepository, times(1)).findByPostId(postId);
+        verify(postHelper, times(1)).isMembersPost(mockPostEntity, mockMember);
+        verify(mockPostEntity, times(1)).delete();
+
+    }
     /**
      * mock 하이라이트 영상
      * @return HighlightEntity
