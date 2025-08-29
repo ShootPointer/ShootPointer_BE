@@ -69,6 +69,30 @@ class PostCommandControllerTest {
         verify(postCommandService,times(1)).create(any(PostRequest.class),any(Member.class));
     }
 
+    @Test
+    @DisplayName("게시물 수정 PUT 요청 성공시 수정된 postId를 반환합니다._SUCCESS")
+    void update() throws Exception {
+        //given
+        String postId="111";
+        PostRequest postRequest=mockPostRequest();
+        //when
+        when(postCommandService.update(any(PostRequest.class),any(Member.class),anyLong()))
+                .thenReturn(Long.decode(postId));
+
+        //then
+        mockMvc.perform(put(baseUrl+"/"+postId)
+                        .content(objectMapper.writeValueAsString(postRequest))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data").value(111L))
+                .andDo(print());
+
+        verify(postCommandService,times(1)).update(any(PostRequest.class),any(Member.class),anyLong());
+    }
+
+
     /**
      * mock PostRequest
      */

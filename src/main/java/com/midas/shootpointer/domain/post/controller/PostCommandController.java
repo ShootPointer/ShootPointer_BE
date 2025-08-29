@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,21 +18,9 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/post")
-@Tag(name = "게시판 - 등록,삭제,업데이트",description = "게시물 CUD API")
+@Tag(name = "게시판 - 등록,삭제,업데이트",description = "게시물 C(CREATE) U(UPDATE) D(DELETE) API")
 public class PostCommandController {
     private final PostCommandService postCommandService;
-
-    /*==========================
-    *
-    *PostCommandController
-    *
-    * @parm request : 게시물 생성 dto
-    * @return ApiResponseDto
-    * @author kimdoyeon
-    * @version 1.0.0
-    * @date 25. 8. 27.
-    *
-    ==========================**/
     @Operation(
             summary = "게시물 등록 API - [담당자 : 김도연]",
             responses = {
@@ -79,18 +68,30 @@ public class PostCommandController {
                                     schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
             }
     )
-    @PutMapping
+    
+    /*==========================
+    *
+    *PostCommandController
+    *
+    * @parm [request, postId]
+    * @return org.springframework.http.ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<java.lang.Long>>
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 8. 29.
+    *
+    ==========================**/
+    @PutMapping("{postId}")
     public ResponseEntity<ApiResponse<Long>> update(
           @RequestBody PostRequest request,
-          @RequestParam("postId") Long postId
+          @PathVariable(name = "postId") String postId
     ){
         //TODO: member -> 현재 로그인한 멤버 가져오기.
         Member member=Member.builder()
                 .memberId(UUID.randomUUID())
                 .email("test@naver.com")
                 .username("test")
-                .build();;
-        return ResponseEntity.ok(ApiResponse.ok(postCommandService.update(request,member,postId)));
+                .build();
+        return ResponseEntity.ok(ApiResponse.ok(postCommandService.update(request,member,Long.decode(postId))));
     }
 
 }
