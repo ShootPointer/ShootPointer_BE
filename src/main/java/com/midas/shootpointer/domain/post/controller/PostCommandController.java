@@ -44,6 +44,17 @@ public class PostCommandController {
             }
     )
 
+    /*==========================
+    *
+    *PostCommandController
+    *
+    * @parm 게시물 request dto
+    * @return org.springframework.http.ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<java.lang.Long>>
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 8. 29.
+    *
+    ==========================**/
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> create(
             @RequestBody PostRequest request
@@ -56,4 +67,30 @@ public class PostCommandController {
                 .build();;
         return ResponseEntity.ok(ApiResponse.created(postCommandService.create(request,member)));
     }
+
+    @Operation(
+            summary = "게시물 수정 API - [담당자 : 김도연]",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "게시물 등록 성공",
+                            content = @Content(mediaType="application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX",description = "게시물 등록 실패",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+            }
+    )
+    @PutMapping
+    public ResponseEntity<ApiResponse<Long>> update(
+          @RequestBody PostRequest request,
+          @RequestParam("postId") Long postId
+    ){
+        //TODO: member -> 현재 로그인한 멤버 가져오기.
+        Member member=Member.builder()
+                .memberId(UUID.randomUUID())
+                .email("test@naver.com")
+                .username("test")
+                .build();;
+        return ResponseEntity.ok(ApiResponse.ok(postCommandService.update(request,member,postId)));
+    }
+
 }

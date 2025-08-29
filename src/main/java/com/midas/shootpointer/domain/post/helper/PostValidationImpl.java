@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.post.helper;
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.HashTag;
+import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
@@ -47,6 +48,42 @@ public class PostValidationImpl implements PostValidation{
     @Override
     public void isValidPostHashTag(Object o) {
         if(o.getClass() != HashTag.class) throw new CustomException(ErrorCode.IS_NOT_CORRECT_HASH_TAG);
+    }
+
+    /*==========================
+    *
+    *PostValidationImpl
+    *
+    * @parm postEntity 게시물 엔티티
+    * @return 삭제된 게시물 접근 시 CustomException 발생
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 8. 29.
+    *
+    ==========================**/
+    @Override
+    public void isDeleted(PostEntity postEntity) {
+        boolean deleted=postEntity.isDeleted();
+        if(deleted) throw new CustomException(ErrorCode.DELETED_POST);
+    }
+
+
+    /*==========================
+    *
+    *PostValidationImpl
+    *
+    * @parm postEntity 게시물 엔티티 member 멤버 엔티티
+    * @return 멤버의 게시물 접근 시 CustomException 발생
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 8. 29.
+    *
+    ==========================**/
+    @Override
+    public void isMembersPost(PostEntity postEntity, Member member) {
+        if(!postEntity.getMember().getMemberId().equals(member.getMemberId())){
+            throw new CustomException(ErrorCode.IS_NOT_MEMBERS_POST);
+        }
     }
 
 

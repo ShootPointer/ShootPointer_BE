@@ -21,6 +21,11 @@ public class PostCommandServiceImpl implements PostCommandService{
         return postManager.save(member,postEntity,request.getHighlightId());
     }
 
+    @Override
+    public Long update(PostRequest request, Member member,Long postId) {
+        return postManager.update(request,member,postId);
+    }
+
 
     //TODO:jwt 유효성 검사 필요! -> 박재성.
    /* private Member getMember(String token){

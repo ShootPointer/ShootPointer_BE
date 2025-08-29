@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.post.helper;
 
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.post.entity.PostEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,5 +20,15 @@ public class PostHelperImpl implements PostHelper{
     @Override
     public void isValidPostHashTag(Object o) {
         postValidation.isValidPostHashTag(o);
+    }
+
+    @Override
+    public void isDeleted(PostEntity postEntity) {
+        postValidation.isDeleted(postEntity);
+    }
+
+    @Override
+    public void isMembersPost(PostEntity postEntity, Member member) {
+        postValidation.isMembersPost(postEntity,member);
     }
 }

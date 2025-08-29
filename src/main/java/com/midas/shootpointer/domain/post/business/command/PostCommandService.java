@@ -5,4 +5,6 @@ import com.midas.shootpointer.domain.post.dto.PostRequest;
 
 public interface PostCommandService {
     Long create(PostRequest request, Member member);
+
+    Long update(PostRequest request, Member member,Long postId);
 }

@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.post.entity;
 
+import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -34,4 +35,26 @@ public class PostEntity extends BaseEntity {
     @JoinColumn(name = "member_id",nullable = false)
     private Member member;
 
+    @OneToOne
+    @JoinColumn(name = "highlight_id",unique = true,nullable = false)
+    private HighlightEntity highlight;
+
+    public boolean isDeleted(){
+        return this.isDeleted();
+    }
+
+    public void delete(){
+        this.delete();
+    }
+
+    public void update(String title,String content,HashTag hashTag,HighlightEntity highlight){
+        this.title=title;
+        this.content=content;
+        this.hashTag=hashTag;
+        this.highlight=highlight;
+    }
+
+    public void saveHighlight(HighlightEntity highlight){
+        this.highlight=highlight;
+    }
 }

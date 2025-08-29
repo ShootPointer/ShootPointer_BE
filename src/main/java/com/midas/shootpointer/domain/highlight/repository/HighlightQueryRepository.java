@@ -18,7 +18,6 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
             "WHERE H.highlightId = :highlightId AND H.member.memberId = :memberId")
     boolean isMembersHighlight(@Param("memberId") UUID memberId, @Param("highlightId") UUID highlightId);
 
-    Optional<HighlightEntity> findByHighlightKey(UUID highlightKey);
 
     @Query(value = "SELECT EXISTS(SELECT * FROM member AS M left join highlight AS H " +
                    "WHERE M.member_id=:memberId " +

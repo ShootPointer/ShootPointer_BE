@@ -17,7 +17,8 @@ public enum ErrorCode {
      * highlight:                  20
      * member:                     30
      * global:                     40
-     * backnumber :                50
+     * backNumber:                 50
+     * post:                       60
 
      * <p>
      * - Package
@@ -27,6 +28,7 @@ public enum ErrorCode {
      * global:                     4
      * infrastructure:             5
      * helper                      6
+     * business                    7
      * <p>
      * - Error Num
      * 01 ~ 99 (Increasing Num From 01)
@@ -77,8 +79,16 @@ public enum ErrorCode {
 
 
     //206(highlight - helper) part
-    IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID(20601,HttpStatus.BAD_REQUEST,"유저의 하이라이트 영상이 아닙니다."),
-    IS_NOT_CORRECT_HASH_TAG(20601,HttpStatus.BAD_REQUEST,"잘못된 카테고리 입력입니다.")
+    IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID(20601,HttpStatus.FORBIDDEN,"유저의 하이라이트 영상이 아닙니다."),
+    IS_NOT_CORRECT_HASH_TAG(20602,HttpStatus.BAD_REQUEST,"잘못된 카테고리 입력입니다."),
+    NOT_EXIST_HIGHLIGHT(20603,HttpStatus.FORBIDDEN,"존재하지 않는 하이라이트 영상입니다."),
+
+    //606(post-helper) part
+    DELETED_POST(60601,HttpStatus.FORBIDDEN,"삭제된 게시물입니다."),
+    IS_NOT_MEMBERS_POST(60602,HttpStatus.FORBIDDEN,"유저의 게시물이 아닙니다."),
+
+    //607(post-business) part
+    IS_NOT_EXIST_POST(60701,HttpStatus.FORBIDDEN,"존재하지 않는 게시물입니다.")
     ;
 
     private final Integer code;
