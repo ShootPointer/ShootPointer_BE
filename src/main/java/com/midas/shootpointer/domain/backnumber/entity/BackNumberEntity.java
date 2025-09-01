@@ -31,9 +31,11 @@ public class BackNumberEntity extends BaseEntity {
 
 
    @OneToMany(mappedBy = "backNumber",cascade = CascadeType.ALL,orphanRemoval = true)
+   @Builder.Default
     private List<HighlightEntity> highlights=new ArrayList<>();
 
    @OneToMany(mappedBy ="backNumber",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<MemberBackNumberEntity> memberBackNumbers=new ArrayList<>();
+   @Builder.Default
+   private List<MemberBackNumberEntity> memberBackNumbers=new ArrayList<>();
 
 }

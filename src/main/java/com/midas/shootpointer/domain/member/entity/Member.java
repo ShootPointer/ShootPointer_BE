@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,8 +36,10 @@ public class Member extends BaseEntity {
     private String email;
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+    @Builder.Default
     private List<HighlightEntity> highlights=new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+    @Builder.Default
     private List<MemberBackNumberEntity> memberBackNumbers=new ArrayList<>();
 }
