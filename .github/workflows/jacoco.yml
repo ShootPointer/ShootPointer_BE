@@ -1,12 +1,12 @@
-// 1단계
+name: Jacoco Test Coverage Check
 on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-// 2단계
+
 permissions: write-all
 
-// 3단계
+
 jobs:
   test:
     runs-on: ubuntu-latest
