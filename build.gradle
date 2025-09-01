@@ -26,7 +26,7 @@ jacocoTestReport{
 	afterEvaluate {
 		classDirectories.setFrom(
 				files(classDirectories.files.collect{
-					fileTree(dir: it, excludes: [
+					fileTree(dir: it, exclude: [
 					        "**/global/config/**",
 							"**/global/exception/**",
 							"**/global/dto/**",
