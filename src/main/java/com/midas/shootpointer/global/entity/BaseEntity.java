@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
 public abstract class BaseEntity extends BaseTimeEntity{
-    @Column(name = "is_deleted")
-    private Boolean isDeleted=false;
+    @Column(name = "is_deleted",nullable = false)
+    private Boolean isDeleted;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;

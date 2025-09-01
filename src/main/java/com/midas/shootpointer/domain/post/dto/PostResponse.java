@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.post.dto;
 
 import com.midas.shootpointer.domain.comment.dto.CommentResponse;
+import com.midas.shootpointer.domain.post.entity.HashTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,4 +35,7 @@ public class PostResponse {
 
     //수정 시간
     LocalDateTime modifiedAt;
+
+    //해시 태그
+    HashTag hashTag;
 }

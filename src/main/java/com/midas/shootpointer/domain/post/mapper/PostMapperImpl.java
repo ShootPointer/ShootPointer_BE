@@ -25,6 +25,7 @@ public class PostMapperImpl implements PostMapper{
                 .content(postEntity.getContent())
                 .createdAt(postEntity.getCreatedAt())
                 .postId(postEntity.getPostId())
+                .hashTag(postEntity.getHashTag())
                 //.highlightUrl(postEntity.getHighlight().getHighlightURL())
                 .modifiedAt(postEntity.getModifiedAt())
                 .title(postEntity.getTitle())

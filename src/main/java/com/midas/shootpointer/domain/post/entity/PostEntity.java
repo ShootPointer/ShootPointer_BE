@@ -13,7 +13,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @Builder
 @Getter
-@SQLRestriction("is_deleted <> 'true'")
+@SQLRestriction("is_deleted = false")
 public class PostEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
