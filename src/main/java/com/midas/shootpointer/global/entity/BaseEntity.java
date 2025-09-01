@@ -4,7 +4,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.MappedSuperclass;
+import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -14,7 +16,8 @@ import java.time.LocalDateTime;
 @Getter
 public abstract class BaseEntity extends BaseTimeEntity{
     @Column(name = "is_deleted",nullable = false)
-    private Boolean isDeleted;
+    @ColumnDefault("false")
+    private Boolean isDeleted=false;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
