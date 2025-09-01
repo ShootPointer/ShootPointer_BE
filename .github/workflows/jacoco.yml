@@ -24,7 +24,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Test with Gradle
-        run: ./gradlew test jacocoTestReport -Dspring.profiles.active=dev
+        run: ./gradlew test jacocoTestReport -Dspring.profiles.active=test
 
 
       - name: Upload JUnit Test Report
