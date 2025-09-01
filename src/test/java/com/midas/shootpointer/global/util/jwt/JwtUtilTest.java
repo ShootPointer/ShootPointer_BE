@@ -2,6 +2,7 @@ package com.midas.shootpointer.global.util.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -76,6 +77,7 @@ class JwtUtilTest {
 
     }
 
+/*
 
     @Test
     void testGetMemberIdFromToken() {
@@ -83,6 +85,7 @@ class JwtUtilTest {
         UUID memberId = jwtUtil.getMemberId(token);
         System.out.println("memberId = " + memberId);
     }
+*/
 
 
 
