@@ -18,6 +18,8 @@ public enum ErrorCode {
      * member:                     30
      * global:                     40
      * backnumber :                50
+     * post:                       60
+     * like:                       70
 
      * <p>
      * - Package
@@ -26,6 +28,8 @@ public enum ErrorCode {
      * repository:                 3
      * global:                     4
      * infrastructure:             5
+     * helper                      6
+     * business                    7
      * <p>
      * - Error Num
      * 01 ~ 99 (Increasing Num From 01)
@@ -72,9 +76,18 @@ public enum ErrorCode {
 
     // 502(backnumber - service) part
     //* TODO : 현재 멤버 관련 로직이 Kakao 밖에 없어서 Member 도메인에 예외처리가 처음 생긴게 BackNumber 도메인임. << 이 부분은 추후에 Member 도메인에 로직 생기면 바꿀게요~
-    MEMBER_NOT_FOUND(50201, HttpStatus.NOT_FOUND, "Member를 찾을 수 없음");
+    MEMBER_NOT_FOUND(50201, HttpStatus.NOT_FOUND, "Member를 찾을 수 없음"),
 
 
+
+
+
+
+    //706(like - helper)
+    INVALID_CREATE_LIKE(70601,HttpStatus.BAD_REQUEST,"이미 좋아요한 게시글입니다."),
+    INVALID_DELETE_LIKE(70602,HttpStatus.BAD_REQUEST,"잘못된 좋아요 요청입니다.")
+
+    ;
     private final Integer code;
     private final HttpStatus httpStatus;
     private final String message;
