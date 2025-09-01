@@ -72,6 +72,7 @@ class JwtUtilTest {
         System.out.println("디코딩 닉네임: " + decodedNickname);
         System.out.println("accessToken: " + accessToken);
         System.out.println("refreshToken: " + refreshToken);
+        //
 
     }
 
