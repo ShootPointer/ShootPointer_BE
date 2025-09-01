@@ -29,9 +29,8 @@ jobs:
         run: chmod +x gradlew
 
       - name: Test with Gradle
-        run: |
-          export ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }}
-          ./gradlew --info test jacocoTestReport
+        run: ./gradlew test jacocoTestReport -Dspring.profiles.active=dev
+
 
       - name: Upload JUnit Test Report
         if: always()   # 실패해도 업로드되도록
