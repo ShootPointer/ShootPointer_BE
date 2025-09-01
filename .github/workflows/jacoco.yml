@@ -50,5 +50,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 30
           min-coverage-changed-files: 50
-          include-branches: true
-          include-classes: true
+  
