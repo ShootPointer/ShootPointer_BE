@@ -14,4 +14,4 @@ public interface HighlightCommandService {
 
     List<HighlightResponse> uploadHighlights(String memberId, String token, UploadHighlight request, List<MultipartFile> highlights);
 }
-//
+////
