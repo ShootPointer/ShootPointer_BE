@@ -27,12 +27,12 @@ jacocoTestReport{
 		classDirectories.setFrom(
 				files(classDirectories.files.collect{
 					fileTree(dir: it, excludes: [
-					        "**/global/config",
-							"**/global/exception",
-							"**/global/dto",
-							"**/global/aop",
-							"**/global/entity",
-							"**/global/common"
+					        "**/global/config/**",
+							"**/global/exception/**",
+							"**/global/dto/**",
+							"**/global/aop/**",
+							"**/global/entity/**",
+							"**/global/common/**"
 					])
 				})
 		)
