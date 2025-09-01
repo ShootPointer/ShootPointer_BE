@@ -3,9 +3,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-
 permissions: write-all
-
 
 jobs:
   test:
@@ -14,30 +12,41 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
           java-version: '17'
 
-     
       - name: Create and inject jasypt secret into application-secret.properties
         run: |
           touch ./src/main/resources/application-secret.yml
           echo "ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }}" > ./src/main/resources/application-secret.yml
           cat ./src/main/resources/application-secret.yml
 
-      
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      
       - name: Test with Gradle
         run: |
           export ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }}
-          ./gradlew --info test
+          ./gradlew --info test jacocoTestReport
 
-      
+      - name: Upload JUnit Test Report
+        if: always()   # 실패해도 업로드되도록
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-test-report
+          path: build/reports/tests/test
+
+      - name: Upload JaCoCo HTML Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-html-report
+          path: build/reports/jacoco/test/html
+
       - name: Test Coverage Report
         id: jacoco
         uses: madrapps/jacoco-report@v1.7.1
