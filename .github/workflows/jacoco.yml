@@ -19,11 +19,6 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
-      - name: Create and inject jasypt secret into application-dev.yml
-        run: |
-          touch ./src/main/resources/application-dev.yml
-          echo "ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }}" > ./src/main/resources/application-dev.yml
-          cat ./src/main/resources/application-dev.yml
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
