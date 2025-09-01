@@ -6,10 +6,7 @@ import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import com.midas.shootpointer.global.entity.BaseTimeEntity;
 import com.midas.shootpointer.global.util.encrypt.EncryptConverter;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.ArrayList;
@@ -17,10 +14,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Table(name = "member")
 public class Member extends BaseEntity {
 
@@ -37,8 +34,10 @@ public class Member extends BaseEntity {
     private String email;
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+    @Builder.Default
     private List<HighlightEntity> highlights=new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
+    @Builder.Default
     private List<MemberBackNumberEntity> memberBackNumbers=new ArrayList<>();
 }
