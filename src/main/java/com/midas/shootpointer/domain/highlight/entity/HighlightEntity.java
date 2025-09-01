@@ -34,6 +34,7 @@ public class HighlightEntity extends BaseEntity {
     private UUID highlightKey;
 
     @Column(name = "is_selected")
+    @Builder.Default
     private Boolean isSelected=false;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,19 +1,126 @@
+server:
+  port: ${SERVER_PORT:9000}
+
 encrypt:
   key: dafd6bef1f363a1ba1a32623aa8f0b8741b0736e11b898febaceb58b7bcedcf8
 
+# -------------------------
+# [JWT Settings]
+# -------------------------
+
+jwt:
+  secret: 4qmZKqt8Kwd2MCbGj39akXECPZr9hPUlgxYq2L6e9ho=
+  access_expiration_time: 86400000
+  refresh_expiration_time: 259200000
+
 spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: shootpointer
+  # Data 크기
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5000MB
+      max-request-size: 5000MB
+
+
+  # 데이터소스 설정
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
     username: sa
     password:
-    driver-class-name: org.h2.Driver
+
+  # JPA 설정
   jpa:
+    show-sql: ${SPRING_JPA_SHOW_SQL:true}
+    type:
+      preferred_uuid_jdbc_type: uuid
     hibernate:
-      ddl-auto: create
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
     properties:
       hibernate:
-        format_sql: true
-    show-sql: true
-  sql:
-    init:
-      mode: always
+        dialect: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
+        format_sql: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL:true}
+        use_sql_comments: true
+        show-sql: true
+
+  # MongoDB 설정
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/shootpointer}
+
+    # Redis 설정
+    redis:
+      host: redis
+      port: 6379
+      timeout: 2000ms
+      jedis:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+  # kakao
+  security:
+    oauth2:
+      client:
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kauth.kakao.com/v2/user/me
+            user-name-attribute: id
+        registration:
+          kakao:
+            client-id: 2d02b80c257c10b0bcd5f762ba607f0d
+            client-secret: 7dv7lab9zTDrD4ag27NEeLY3ZMBbPcJo
+            redirect-uri: http://localhost:8081
+            authorization-grant-type: authorization_code
+            client-authentication-method: POST
+            client-name: Kakao
+            scope:
+              - profile_nickname
+              - account_email
+
+# 로깅 설정
+logging:
+  level:
+    org.hibernate.SQL: ${LOGGING_LEVEL_ORG_HIBERNATE_SQL:DEBUG}
+    org.hibernate.type.descriptor.sql.BasicBinder: ${LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER:TRACE}
+    org.springframework.data.mongodb: DEBUG
+    redis.clients.jedis: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Actuator 설정 (헬스체크용)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+#Kakao
+kakao:
+  auth:
+    uri: https://kauth.kakao.com
+  api:
+    uri: https://kapi.kakao.com
+
+opencv:
+  url: http://localhost:8888
+  api:
+    post:
+      send-image: /api/send-img
+    get:
+      fetch-video: /api/fetch-video
+    proxy:
+      upload-video: upload
+
+video:
+  path: /home/ubuntu/shoot-pointer/videos
