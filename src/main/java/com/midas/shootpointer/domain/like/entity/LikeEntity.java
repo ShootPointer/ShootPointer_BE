@@ -6,12 +6,14 @@ import com.midas.shootpointer.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Entity
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Getter
 @Table(name = "like_table")
 public class LikeEntity extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

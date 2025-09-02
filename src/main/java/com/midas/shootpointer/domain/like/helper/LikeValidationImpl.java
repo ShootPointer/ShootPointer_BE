@@ -1,6 +1,9 @@
 package com.midas.shootpointer.domain.like.helper;
 
+import com.midas.shootpointer.domain.like.entity.LikeEntity;
 import com.midas.shootpointer.domain.like.repository.LikeQueryRepository;
+import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +27,10 @@ public class LikeValidationImpl implements LikeValidation{
     ==========================**/
     @Override
     public void isValidCreateLike(UUID memberId, Long postId) {
+        boolean isValid=likeQueryRepository.existByMemberIdAndPostId(memberId,postId);
         /**
          * 이미 좋아요를 누른 경우
          */
-        boolean isValid=likeQueryRepository.existByMemberIdAndPostId(memberId,postId);
         if(isValid) throw new CustomException(ErrorCode.INVALID_CREATE_LIKE);
     }
 
@@ -43,8 +46,9 @@ public class LikeValidationImpl implements LikeValidation{
     *
     ==========================**/
     @Override
-    public void isValidDeleteLike(UUID memberId, Long postId) {
-        boolean isValid=likeQueryRepository.existByMemberIdAndPostId(memberId,postId);
+    public void isValidDeleteLike(LikeEntity like, PostEntity post, Member member) {
+        boolean isValid=like.getMember().getMemberId().equals(member.getMemberId())
+                            && like.getPost().getPostId().equals(post.getPostId());
         /**
          * 좋아요를 누르지 않았는데 삭제하려는 경우
          */

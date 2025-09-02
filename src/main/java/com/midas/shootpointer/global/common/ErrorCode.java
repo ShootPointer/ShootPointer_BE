@@ -84,6 +84,7 @@ public enum ErrorCode {
     //706(like - helper)
     INVALID_CREATE_LIKE(70601,HttpStatus.BAD_REQUEST,"이미 좋아요한 게시글입니다."),
     INVALID_DELETE_LIKE(70602,HttpStatus.BAD_REQUEST,"잘못된 좋아요 요청입니다."),
+    NOT_FOUND_LIKE(70603,HttpStatus.NOT_FOUND,"좋아요를 찾을 수 없습니다."),
 
 
     //206(highlight - helper) part

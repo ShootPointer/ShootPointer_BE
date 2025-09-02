@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface LikeCommandService {
-    Long create(Long postId, Long memberId);
-    Long delete(Long postId,Long memberId);
+    Long create(Long postId, Member member);
+    Long delete(Long postId,Member member);
 }
