@@ -30,8 +30,10 @@ public class PostEntity extends BaseEntity {
     @Column(name = "hash_tag")
     private HashTag hashTag;
 
+
     @Column(name = "like_cnt",nullable = false,columnDefinition = "0")
     private Integer likeCnt=0;
+
 
     @ManyToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "member_id",nullable = false)

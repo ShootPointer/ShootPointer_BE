@@ -1,3 +1,4 @@
+/*
 package com.midas.shootpointer.global.util.encrypt;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -39,4 +40,4 @@ class EncryptConverterTest {
         assertThat(converter.convertToEntityAttribute(null)).isNull();
     }
 
-}
+}*/

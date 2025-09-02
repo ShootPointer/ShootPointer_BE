@@ -92,6 +92,37 @@ class HighlightQueryRepositoryTest {
         assertThat(isExistedHighlight1).isFalse();
         assertThat(isExistedHighlight2).isFalse();
     }
+
+    @Test
+    @DisplayName("유저의 하이라이트 영상이면 TRUE를 반환합니다.")
+    void existsByHighlightUrlAndMember_TRUE(){
+        //given
+        Member mockMember=memberRepository.save(mockMember());
+        BackNumberEntity mockBackNumber=backNumberRepository.save(mockBackNumber());
+        HighlightEntity mockHighlight=highlightCommandRepository.save(mockHighlight(mockMember,mockBackNumber));
+
+        //when
+        boolean existsByHighlightUrlAndMember=highlightQueryRepository.existsByHighlightIdAndMember(mockHighlight.getHighlightId(),mockMember.getMemberId());
+
+        //then
+        assertThat(existsByHighlightUrlAndMember).isTrue();
+    }
+
+
+    @Test
+    @DisplayName("유저의 하이라이트 영상이 아니면 FALSE를 반환합니다.")
+    void existsByHighlightUrlAndMember_FALSE(){
+        //given
+        Member mockMember=memberRepository.save(mockMember());
+        BackNumberEntity mockBackNumber=backNumberRepository.save(mockBackNumber());
+        HighlightEntity mockHighlight=highlightCommandRepository.save(mockHighlight(mockMember,mockBackNumber));
+
+        //when
+        boolean existsByHighlightUrlAndMember=highlightQueryRepository.existsByHighlightIdAndMember(UUID.randomUUID(),mockMember.getMemberId());
+
+        //then
+        assertThat(existsByHighlightUrlAndMember).isFalse();
+    }
     /**
      * Mock Member
      */

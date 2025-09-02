@@ -1,4 +1,4 @@
-package com.midas.shootpointer.domain.highlight.service.command;
+package com.midas.shootpointer.domain.highlight.business.command;
 
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
@@ -8,13 +8,11 @@ import com.midas.shootpointer.domain.highlight.repository.HighlightQueryReposito
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -22,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

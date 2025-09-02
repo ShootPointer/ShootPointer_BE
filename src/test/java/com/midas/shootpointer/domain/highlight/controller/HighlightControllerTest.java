@@ -3,22 +3,20 @@ package com.midas.shootpointer.domain.highlight.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
-import com.midas.shootpointer.domain.highlight.service.command.HighlightCommandService;
+import com.midas.shootpointer.domain.highlight.business.command.HighlightCommandService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.assertj.MockMvcTester;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

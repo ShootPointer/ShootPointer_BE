@@ -4,6 +4,7 @@ import com.midas.shootpointer.domain.backnumber.dto.BackNumberRequest;
 import com.midas.shootpointer.domain.backnumber.dto.BackNumberResponse;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component

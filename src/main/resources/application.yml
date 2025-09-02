@@ -18,6 +18,13 @@ spring:
     allow-bean-definition-overriding: true
   application:
     name: shootpointer
+  # Data 크기
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5000MB
+      max-request-size: 5000MB
+
 
   # 데이터소스 설정
   datasource:
@@ -32,7 +39,7 @@ spring:
     type:
       preferred_uuid_jdbc_type: uuid
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create-drop}
     database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
     properties:
       hibernate:
@@ -51,6 +58,11 @@ spring:
       host: redis
       port: 6379
       timeout: 2000ms
+      jedis:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
   # kakao
   security:
     oauth2:

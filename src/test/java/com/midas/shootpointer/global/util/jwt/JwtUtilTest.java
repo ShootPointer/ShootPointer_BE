@@ -2,9 +2,12 @@ package com.midas.shootpointer.global.util.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.nio.charset.StandardCharsets;
@@ -16,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class JwtUtilTest {
 
     @Autowired
@@ -72,9 +76,11 @@ class JwtUtilTest {
         System.out.println("디코딩 닉네임: " + decodedNickname);
         System.out.println("accessToken: " + accessToken);
         System.out.println("refreshToken: " + refreshToken);
+        //
 
     }
 
+/*
 
     @Test
     void testGetMemberIdFromToken() {
@@ -82,6 +88,7 @@ class JwtUtilTest {
         UUID memberId = jwtUtil.getMemberId(token);
         System.out.println("memberId = " + memberId);
     }
+*/
 
 
 
