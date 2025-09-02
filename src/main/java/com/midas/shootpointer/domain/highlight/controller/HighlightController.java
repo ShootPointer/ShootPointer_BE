@@ -4,7 +4,7 @@ import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
 import com.midas.shootpointer.domain.highlight.dto.UploadHighlight;
-import com.midas.shootpointer.domain.highlight.service.command.HighlightCommandService;
+import com.midas.shootpointer.domain.highlight.business.command.HighlightCommandService;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/highlight")

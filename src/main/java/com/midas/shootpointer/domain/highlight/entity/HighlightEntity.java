@@ -20,7 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Getter
-@Table(name = "higlight")
+@Table(name = "highlight")
 public class HighlightEntity extends BaseEntity {
     @Id
     @UuidGenerator
@@ -30,7 +30,7 @@ public class HighlightEntity extends BaseEntity {
     @Column(name = "highlight_url",nullable = false)
     private String highlightURL;
 
-    @Column(name = "highlight_key",nullable = false)
+    @Column(name = "highlight_key",nullable = false,unique = true,columnDefinition = "uuid")
     private UUID highlightKey;
 
     @Column(name = "is_selected")
