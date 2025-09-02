@@ -31,7 +31,8 @@ public class PostEntity extends BaseEntity {
     private HashTag hashTag;
 
 
-    @Column(name = "like_cnt",nullable = false,columnDefinition = "0")
+    @Column(name = "like_cnt")
+    @Builder.Default
     private Integer likeCnt=0;
 
 
@@ -41,7 +42,7 @@ public class PostEntity extends BaseEntity {
 
     @Setter
     @OneToOne
-    @JoinColumn(name = "highlight_id",unique = true,nullable = false)
+    @JoinColumn(name = "highlight_id",unique = true)
     private HighlightEntity highlight;
 
     public void update(String title,String content,HashTag hashTag,HighlightEntity highlight){

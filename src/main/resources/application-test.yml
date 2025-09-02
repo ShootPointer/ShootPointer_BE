@@ -35,18 +35,12 @@ spring:
 
   # JPA 설정
   jpa:
-    show-sql: ${SPRING_JPA_SHOW_SQL:true}
-    type:
-      preferred_uuid_jdbc_type: uuid
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
-    database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
-        dialect: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
-        format_sql: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL:true}
-        use_sql_comments: true
-        show-sql: true
+        dialect: org.hibernate.dialect.H2Dialect
 
   # MongoDB 설정
   data:

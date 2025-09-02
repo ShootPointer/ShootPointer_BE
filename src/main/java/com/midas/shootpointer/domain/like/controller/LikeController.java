@@ -17,15 +17,16 @@ public class LikeController {
     public ResponseEntity<ApiResponse<Long>> create(
             @PathVariable(value = "postId") String postId
     ) {
-        Long memberId = 10L;
-        return ResponseEntity.ok(ApiResponse.ok(likeCommandService.create(Long.parseLong(postId), memberId)));
+
+        Member member=new Member();
+        return ResponseEntity.ok(ApiResponse.ok(likeCommandService.create(Long.parseLong(postId), member)));
     }
 
     @DeleteMapping("{postId}")
     public ResponseEntity<ApiResponse<Long>> delete(
             @PathVariable(value = "postId") String postId
     ) {
-        Long memberId = 10L;
-        return ResponseEntity.ok(ApiResponse.ok(likeCommandService.delete(Long.parseLong(postId), memberId)));
+        Member member=new Member();
+        return ResponseEntity.ok(ApiResponse.ok(likeCommandService.delete(Long.parseLong(postId), member)));
     }
 }

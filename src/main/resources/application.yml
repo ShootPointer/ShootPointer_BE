@@ -35,9 +35,6 @@ spring:
 
   # JPA 설정
   jpa:
-    show-sql: ${SPRING_JPA_SHOW_SQL:true}
-    type:
-      preferred_uuid_jdbc_type: uuid
     hibernate:
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create-drop}
     database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
