@@ -19,7 +19,7 @@ public class LikeController {
     ) {
 
         Member member=new Member();
-        return ResponseEntity.ok(ApiResponse.ok(likeCommandService.create(Long.parseLong(postId), member)));
+        return ResponseEntity.ok(ApiResponse.created(likeCommandService.create(Long.parseLong(postId), member)));
     }
 
     @DeleteMapping("{postId}")
