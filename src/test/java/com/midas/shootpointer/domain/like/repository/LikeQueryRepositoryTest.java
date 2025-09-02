@@ -74,6 +74,22 @@ class LikeQueryRepositoryTest {
         assertThat(exist).isFalse();
     }
 
+    @Test
+    @DisplayName("게시물Id와 유저Id로 좋아요를 조회합니다.")
+    void findByPostIdAndMemberId(){
+        //given
+        Member savedMember=memberRepository.save(makeMockMember());
+        PostEntity savedPost=postCommandRepository.save(makeMockPost(savedMember));
+        LikeEntity savedLike=likeCommandRepository.save(makeLike(savedMember,savedPost));
+
+        //when
+        LikeEntity findLikeEntity=likeQueryRepository.findByPostIdAndMemberId(savedPost.getPostId(),savedMember.getMemberId())
+                .orElseGet(null);
+
+        //then
+        assertThat(findLikeEntity).isNotNull();
+        assertThat(findLikeEntity).isEqualTo(savedLike);
+    }
     private Member makeMockMember(){
         return Member.builder()
                 .username("tkv00")
