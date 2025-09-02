@@ -72,13 +72,8 @@ class LikeManagerTest {
         Member savedMember_2=memberRepository.save(makeMockMember());
         Member savedMember_3=memberRepository.save(makeMockMember());
         Member savedMember_4=memberRepository.save(makeMockMember());
-        List<Member> list=List.of(savedMember_1,savedMember_2,savedMember_3,savedMember_4);
         PostEntity savedPost=postCommandRepository.save(makePostEntity(savedMember_1));
-        //LikeEntity savedLike=likeCommandRepository.save(makeMockLike(savedPost,savedMember));
 
-        for (Member member:list){
-            System.out.println("memberId = "+member.getMemberId());
-        }
         //when
         Long likeId_1=likeManager.increase(savedPost.getPostId(),savedMember_1);
         Long likeId_2=likeManager.increase(savedPost.getPostId(),savedMember_2);
@@ -87,11 +82,40 @@ class LikeManagerTest {
 
         //then
         assertThat(savedPost.getLikeCnt()).isEqualTo(4);
+
     }
 
 
     @Test
+    @DisplayName("postHelper와 likeHelper의 유효성을 검증한 후 좋아요 객체를 삭제 및 감소 시킵니다.")
     void decrease() {
+        //given
+        Member savedMember_1=memberRepository.save(makeMockMember());
+        Member savedMember_2=memberRepository.save(makeMockMember());
+        PostEntity savedPost=postCommandRepository.save(makePostEntity(savedMember_1));
+
+        savedPost.createLike();
+        savedPost.createLike();
+        savedPost.createLike();
+        savedPost.createLike();
+        savedPost.createLike();
+        LikeEntity likeEntity_1=makeMockLike(savedPost,savedMember_1);
+        LikeEntity likeEntity_2=makeMockLike(savedPost,savedMember_2);
+        likeCommandRepository.saveAll(List.of(likeEntity_1,likeEntity_2));
+
+        /**
+         * 좋아요 처음 개수 = 5
+         */
+
+        //when
+        /**
+         * 좋아요 2개 감소
+         */
+        likeManager.decrease(savedPost.getPostId(),savedMember_1);
+        likeManager.decrease(savedPost.getPostId(),savedMember_2);
+
+        //then
+        assertThat(savedPost.getLikeCnt()).isEqualTo(3);
     }
 
     private LikeEntity makeMockLike(PostEntity post,Member member){
