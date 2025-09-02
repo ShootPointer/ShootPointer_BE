@@ -19,18 +19,51 @@ public class LikeUtilImpl implements LikeUtil {
     private final LikeQueryRepository likeQueryRepository;
     private final LikeCommandRepository likeCommandRepository;
 
+    /*==========================
+    *
+    *LikeUtilImpl
+    * 게시물의 좋아요 개수 증가.
+    * @parm post : 게시물 객체
+    * @return void
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 9. 2.
+    *
+    ==========================**/
     @Override
     public void increaseLikeCnt(PostEntity post) {
         post.createLike();
         postCommandRepository.save(post);
     }
-
+    
+    /*==========================
+    *
+    *LikeUtilImpl
+    * 게시물의 좋아요 개수 감소.
+    * @parm post : 게시물 객체
+    * @return void
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 9. 2.
+    *
+    ==========================**/
     @Override
     public void decreaseLikeCnt(PostEntity post) {
         post.deleteLike();
         postCommandRepository.save(post);
     }
 
+    /*==========================
+    *
+    *LikeUtilImpl
+    * 좋아요 객체를 저장.
+    * @parm post : 게시물 객체 / member : 유저 객체
+    * @return 저장된 좋아요 객체
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 9. 2.
+    *
+    ==========================**/
     @Override
     public LikeEntity createLike(PostEntity post, Member member) {
         LikeEntity likeEntity=LikeEntity.builder()
@@ -40,11 +73,33 @@ public class LikeUtilImpl implements LikeUtil {
         return likeCommandRepository.save(likeEntity);
     }
 
+    /*==========================
+    *
+    *LikeUtilImpl
+    * like를 삭제.
+    * @parm like : 좋아요 객체
+    * @return void
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 9. 2.
+    *
+    ==========================**/
     @Override
     public void deleteLike(LikeEntity like) {
         likeCommandRepository.delete(like);
     }
 
+    /*==========================
+    *
+    *LikeUtilImpl
+    * memberId와 postId로 like 객체 조회.
+    * @parm memberId : 유저Id / postId : 게시판 Id
+    * @return like 객체.
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 9. 2.
+    *
+    ==========================**/
     @Override
     public LikeEntity findByPostIdAndMemberId(UUID memberId, Long postId) {
         return likeQueryRepository.findByPostIdAndMemberId(postId,memberId)
