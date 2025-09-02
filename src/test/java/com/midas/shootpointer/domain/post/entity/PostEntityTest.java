@@ -51,6 +51,78 @@ class PostEntityTest {
 
     }
 
+    @Test
+    @DisplayName("createLike() 실행 시 게시물의 좋아요 개수가 1씩 증가합니다.")
+    void createLike(){
+        //given
+        String content="content_content";
+        String title="title_title";
+
+        PostEntity mockPost=PostEntity.builder()
+                .content(content)
+                .hashTag(HashTag.TREE_POINT)
+                .title(title)
+                .likeCnt(0)
+                .build();
+
+        //when
+        mockPost.createLike();
+        mockPost.createLike();
+
+        //then
+        assertThat(mockPost.getLikeCnt()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("deleteLike() 실행 시 좋아요 개수가 0개 이하 시 게시물의 좋아요 개수가 0으로 유지됩니다.")
+    void deleteLike_under_zero(){
+        //given
+        String content="content_content";
+        String title="title_title";
+
+        PostEntity mockPost=PostEntity.builder()
+                .content(content)
+                .hashTag(HashTag.TREE_POINT)
+                .title(title)
+                .likeCnt(1)
+                .build();
+
+        //when
+        mockPost.deleteLike();
+        mockPost.deleteLike();
+        mockPost.deleteLike();
+        mockPost.deleteLike();
+        mockPost.deleteLike();
+
+        //then
+        assertThat(mockPost.getLikeCnt()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("deleteLike() 실행 시 좋아요 개수가 1씩 감소합니다.")
+    void deleteLike(){
+        //given
+        String content="content_content";
+        String title="title_title";
+
+        PostEntity mockPost=PostEntity.builder()
+                .content(content)
+                .hashTag(HashTag.TREE_POINT)
+                .title(title)
+                .likeCnt(10)
+                .build();
+
+        //when
+        mockPost.deleteLike();
+        mockPost.deleteLike();
+        mockPost.deleteLike();
+        mockPost.deleteLike();
+        mockPost.deleteLike();
+
+        //then
+        assertThat(mockPost.getLikeCnt()).isEqualTo(5);
+    }
+
 
     /**
      * mock Highlight

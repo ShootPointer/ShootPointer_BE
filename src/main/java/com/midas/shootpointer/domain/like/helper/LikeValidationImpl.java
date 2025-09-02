@@ -24,6 +24,9 @@ public class LikeValidationImpl implements LikeValidation{
     ==========================**/
     @Override
     public void isValidCreateLike(UUID memberId, Long postId) {
+        /**
+         * 이미 좋아요를 누른 경우
+         */
         boolean isValid=likeQueryRepository.existByMemberIdAndPostId(memberId,postId);
         if(isValid) throw new CustomException(ErrorCode.INVALID_CREATE_LIKE);
     }
@@ -42,6 +45,9 @@ public class LikeValidationImpl implements LikeValidation{
     @Override
     public void isValidDeleteLike(UUID memberId, Long postId) {
         boolean isValid=likeQueryRepository.existByMemberIdAndPostId(memberId,postId);
+        /**
+         * 좋아요를 누르지 않았는데 삭제하려는 경우
+         */
         if(!isValid) throw new CustomException(ErrorCode.INVALID_DELETE_LIKE);
     }
 }
