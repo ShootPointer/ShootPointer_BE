@@ -78,8 +78,8 @@ spring:
             user-name-attribute: id
         registration:
           kakao:
-            client-id:
-            client-secret:
+            client-id: test
+            client-secret: test
             redirect-uri: http://localhost:8081
             authorization-grant-type: authorization_code
             client-authentication-method: POST
