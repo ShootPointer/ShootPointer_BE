@@ -1,0 +1,160 @@
+package com.midas.shootpointer.domain.like.helper;
+
+import com.midas.shootpointer.domain.like.entity.LikeEntity;
+import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
+import com.midas.shootpointer.domain.like.repository.LikeQueryRepository;
+import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.member.repository.MemberRepository;
+import com.midas.shootpointer.domain.post.entity.HashTag;
+import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
+import jdk.jfr.MemoryAddress;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@SpringBootTest
+@ActiveProfiles("test")
+class LikeUtilImplTest {
+    @Autowired
+    private LikeUtilImpl likeUtil;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private PostCommandRepository postCommandRepository;
+
+    @Autowired
+    private LikeQueryRepository likeQueryRepository;
+
+    @Autowired
+    private LikeCommandRepository likeCommandRepository;
+
+
+    @Test
+    @DisplayName("좋아요의 개수가 1씩 증가합니다.")
+    void increaseLikeCnt() {
+        //given
+        Member savedMember=memberRepository.save(makeMockMember());
+        PostEntity savedPost=postCommandRepository.save(makeMockPostEntity(savedMember));
+
+        //when
+        likeUtil.increaseLikeCnt(savedPost);
+        likeUtil.increaseLikeCnt(savedPost);
+
+        //then
+        assertThat(savedPost.getLikeCnt()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("좋아요의 개수가 1씩 감소합니다.")
+    void decreaseLikeCnt() {
+        //given
+        Member savedMember=memberRepository.save(makeMockMember());
+        PostEntity savedPost=postCommandRepository.save(makeMockPostEntity(savedMember));
+        likeUtil.increaseLikeCnt(savedPost);
+        likeUtil.increaseLikeCnt(savedPost);
+        likeUtil.increaseLikeCnt(savedPost);
+        likeUtil.increaseLikeCnt(savedPost);
+
+        //when
+        likeUtil.decreaseLikeCnt(savedPost);
+        likeUtil.decreaseLikeCnt(savedPost);
+
+        //then
+
+        assertThat(savedPost.getLikeCnt()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("좋아요 객체를 생성하고 저장합니다.")
+    void createLike() {
+        //given
+        Member savedMember=memberRepository.save(makeMockMember());
+        PostEntity savedPost=postCommandRepository.save(makeMockPostEntity(savedMember));
+
+        //when
+        LikeEntity savedLike=likeUtil.createLike(savedPost,savedMember);
+
+        //then
+        assertThat(savedLike).isNotNull();
+        assertThat(savedLike.getMember()).isEqualTo(savedMember);
+        assertThat(savedLike.getPost()).isEqualTo(savedPost);
+    }
+
+    @Test
+    @DisplayName("좋아요 객체를 삭제합니다.")
+    void deleteLike() {
+        //given
+        Member savedMember=memberRepository.save(makeMockMember());
+        PostEntity savedPost=postCommandRepository.save(makeMockPostEntity(savedMember));
+        LikeEntity likeEntity=LikeEntity.builder()
+                .post(savedPost)
+                .member(savedMember)
+                .build();
+        likeEntity=likeCommandRepository.save(likeEntity);
+        Long likeId=likeEntity.getLikeId();
+
+        //when
+        likeUtil.deleteLike(likeEntity);
+
+        //then
+        assertThat(likeQueryRepository.findById(likeId)).isEmpty();
+    }
+
+    @Test
+    @DisplayName("게시물 Id와 유저 Id를 이용하여 좋아요 객체를 찾습니다.")
+    void findByPostIdAndMemberId() {
+        //given
+        Member savedMember=memberRepository.save(makeMockMember());
+        PostEntity savedPost=postCommandRepository.save(makeMockPostEntity(savedMember));
+        LikeEntity likeEntity=LikeEntity.builder()
+                .post(savedPost)
+                .member(savedMember)
+                .build();
+        likeEntity=likeCommandRepository.save(likeEntity);
+
+        //when
+        LikeEntity findLike=likeUtil.findByPostIdAndMemberId(savedMember.getMemberId(),savedPost.getPostId());
+
+        //then
+        assertThat(likeEntity.getLikeId()).isEqualTo(findLike.getLikeId());
+        assertThat(likeEntity.getPost().getPostId()).
+                isEqualTo(findLike.getPost().getPostId());
+        assertThat(likeEntity.getMember().getMemberId()).
+                isEqualTo(findLike.getMember().getMemberId());
+    }
+
+    private PostEntity makeMockPostEntity(Member member){
+        return PostEntity.builder()
+                .member(member)
+                .title("title")
+                .content("content")
+                .hashTag(HashTag.TREE_POINT)
+                .build();
+    }
+
+    private Member makeMockMember(){
+        return Member.builder()
+                .email("test@naver.com")
+                .username("test")
+                .build();
+    }
+
+
+}
