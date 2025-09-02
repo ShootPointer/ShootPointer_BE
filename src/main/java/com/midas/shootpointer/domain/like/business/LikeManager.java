@@ -61,12 +61,7 @@ public class LikeManager {
         LikeEntity likeEntity=likeHelper.findByPostIdAndMemberId(member.getMemberId(),postId);
 
         /**
-         * 3. 좋아요 유효성 검증 - 사용자가 이전에 좋아요를 누르지 않았는지 확인.
-         */
-        likeHelper.isValidDeleteLike(likeEntity,postEntity,member);
-
-        /**
-         * 4. 좋아요 감소.
+         * 3. 좋아요 감소.
          */
         likeHelper.decreaseLikeCnt(postEntity);
         likeHelper.deleteLike(likeEntity);

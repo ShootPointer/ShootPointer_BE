@@ -19,11 +19,6 @@ public class LikeHelperImpl implements LikeHelper {
     }
 
     @Override
-    public void isValidDeleteLike(LikeEntity like, PostEntity post, Member member) {
-        likeValidation.isValidDeleteLike(like,post,member);
-    }
-
-    @Override
     public void increaseLikeCnt(PostEntity post) {
         likeUtil.increaseLikeCnt(post);
     }
