@@ -5,8 +5,9 @@ import com.midas.shootpointer.domain.like.helper.LikeValidation;
 import com.midas.shootpointer.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class LikeCommandServiceImpl implements LikeCommandService {
     private final LikeManager likeManager;
