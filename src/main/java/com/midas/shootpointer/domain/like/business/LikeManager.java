@@ -5,10 +5,6 @@ import com.midas.shootpointer.domain.like.helper.LikeHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
-import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
-import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
-import com.midas.shootpointer.global.common.ErrorCode;
-import com.midas.shootpointer.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,19 +24,15 @@ public class LikeManager {
          */
         PostEntity postEntity=postHelper.findPostByPostId(postId);
 
-        /**
-         * 2. 게시물이 멤버의 게시물인지 확인
-         */
-        postHelper.isMembersPost(postEntity,member);
 
         /**
-         * 3. 좋아요 유효성 검증 - 사용자가 이전에 좋아요를 누르지 않았는지 확인.
+         * 2. 좋아요 유효성 검증 - 사용자가 이전에 좋아요를 누르지 않았는지 확인.
          */
         likeHelper.isValidCreateLike(member.getMemberId(),postId);
 
 
         /**
-         * 4. 좋아요 생성 및 증가.
+         * 3. 좋아요 생성 및 증가.
          */
         likeHelper.increaseLikeCnt(postEntity);
         LikeEntity savedLike=likeHelper.createLike(postEntity,member);
