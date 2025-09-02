@@ -24,6 +24,9 @@ class PostHelperImplTest {
     private PostValidation postValidation;
 
     @Mock
+    private PostUtil postUtil;
+
+    @Mock
     private PostEntity postEntity;
 
     @Mock
@@ -67,5 +70,18 @@ class PostHelperImplTest {
 
         //then
         verify(postValidation,times(1)).isMembersPost(postEntity,member);
+    }
+
+    @Test
+    @DisplayName("게시물을 저장합니다. - postUtil.save(postEntity) 메서드가 실행되는지 확인합니다.")
+    void save(){
+        //given
+       when(postUtil.save(postEntity)).thenReturn(postEntity);
+
+        //when
+        postHelper.save(postEntity);
+
+        //then
+        verify(postUtil,times(1)).save(postEntity);
     }
 }
