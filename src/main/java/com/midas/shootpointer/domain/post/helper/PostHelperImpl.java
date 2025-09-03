@@ -11,6 +11,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PostHelperImpl implements PostHelper{
     private final PostValidation postValidation;
+    private final PostUtil postUtil;
 
     @Override
     public void isValidateHighlightId(Member member, UUID highlightId) {
@@ -26,5 +27,15 @@ public class PostHelperImpl implements PostHelper{
     @Override
     public void isMembersPost(PostEntity postEntity, Member member) {
         postValidation.isMembersPost(postEntity,member);
+    }
+
+    @Override
+    public PostEntity findPostByPostId(Long postId) {
+        return postUtil.findPostByPostId(postId);
+    }
+
+    @Override
+    public PostEntity save(PostEntity postEntity) {
+        return postUtil.save(postEntity);
     }
 }

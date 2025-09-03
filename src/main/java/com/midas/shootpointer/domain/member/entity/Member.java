@@ -32,15 +32,4 @@ public class Member extends BaseEntity {
     @Convert(converter = EncryptConverter.class)
     private String email;
 
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
-    @Builder.Default
-    private List<HighlightEntity> highlights=new ArrayList<>();
-
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
-    @Builder.Default
-    private List<MemberBackNumberEntity> memberBackNumbers=new ArrayList<>();
-
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<PostEntity> postEntities=new ArrayList<>();
-
 }

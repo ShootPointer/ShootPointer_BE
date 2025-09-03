@@ -35,9 +35,6 @@ spring:
 
   # JPA 설정
   jpa:
-    show-sql: ${SPRING_JPA_SHOW_SQL:true}
-    type:
-      preferred_uuid_jdbc_type: uuid
     hibernate:
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create-drop}
     database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
@@ -75,8 +72,8 @@ spring:
             user-name-attribute: id
         registration:
           kakao:
-            client-id: 2d02b80c257c10b0bcd5f762ba607f0d
-            client-secret: 7dv7lab9zTDrD4ag27NEeLY3ZMBbPcJo
+            client-id: test
+            client-secret: test
             redirect-uri: http://localhost:8081
             authorization-grant-type: authorization_code
             client-authentication-method: POST

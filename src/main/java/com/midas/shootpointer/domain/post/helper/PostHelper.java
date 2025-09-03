@@ -1,4 +1,4 @@
 package com.midas.shootpointer.domain.post.helper;
 
-public interface PostHelper extends PostValidation{
+public interface PostHelper extends PostValidation,PostUtil{
 }

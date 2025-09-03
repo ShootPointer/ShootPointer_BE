@@ -30,13 +30,19 @@ public class PostEntity extends BaseEntity {
     @Column(name = "hash_tag")
     private HashTag hashTag;
 
+
+    @Column(name = "like_cnt")
+    @Builder.Default
+    private Integer likeCnt=0;
+
+
     @ManyToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "member_id",nullable = false)
     private Member member;
 
     @Setter
     @OneToOne
-    @JoinColumn(name = "highlight_id",unique = true,nullable = false)
+    @JoinColumn(name = "highlight_id",unique = true)
     private HighlightEntity highlight;
 
     public void update(String title,String content,HashTag hashTag,HighlightEntity highlight){
@@ -44,6 +50,18 @@ public class PostEntity extends BaseEntity {
         this.content=content;
         this.hashTag=hashTag;
         this.highlight=highlight;
+    }
+
+    public void createLike(){
+        this.likeCnt++;
+    }
+
+    public void deleteLike(){
+        if(this.likeCnt>0){
+            this.likeCnt--;
+        }else{
+            this.likeCnt=0;
+        }
     }
 
 }

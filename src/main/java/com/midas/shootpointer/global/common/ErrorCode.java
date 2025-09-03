@@ -17,6 +17,9 @@ public enum ErrorCode {
      * highlight:                  20
      * member:                     30
      * global:                     40
+     * backnumber :                50
+     * post:                       60
+     * like:                       70
      * backNumber:                 50
      * post:                       60
 
@@ -78,6 +81,12 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(50201, HttpStatus.NOT_FOUND, "Member를 찾을 수 없음"),
 
 
+    //706(like - helper)
+    INVALID_CREATE_LIKE(70601,HttpStatus.BAD_REQUEST,"이미 좋아요한 게시글입니다."),
+    INVALID_DELETE_LIKE(70602,HttpStatus.BAD_REQUEST,"잘못된 좋아요 요청입니다."),
+    NOT_FOUND_LIKE(70603,HttpStatus.NOT_FOUND,"좋아요를 찾을 수 없습니다."),
+
+
     //206(highlight - helper) part
     IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID(20601,HttpStatus.FORBIDDEN,"유저의 하이라이트 영상이 아닙니다."),
     IS_NOT_CORRECT_HASH_TAG(20602,HttpStatus.BAD_REQUEST,"잘못된 카테고리 입력입니다."),
@@ -90,6 +99,8 @@ public enum ErrorCode {
     //607(post-business) part
     IS_NOT_EXIST_POST(60701,HttpStatus.FORBIDDEN,"존재하지 않는 게시물입니다.")
     ;
+
+
 
     private final Integer code;
     private final HttpStatus httpStatus;

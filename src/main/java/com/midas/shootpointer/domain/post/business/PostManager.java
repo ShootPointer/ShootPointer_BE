@@ -77,6 +77,7 @@ public class PostManager {
         /**
          * 6. 수정 진행
          */
+        //TODO: 수정 부분 및 생성 postUtilImpl 에서 처리하도록 변경.
         postEntity.update(
                 request.getTitle(),
                 request.getContent(),
