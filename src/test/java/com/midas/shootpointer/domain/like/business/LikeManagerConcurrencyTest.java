@@ -1,43 +1,28 @@
 package com.midas.shootpointer.domain.like.business;
 
-import com.midas.shootpointer.domain.like.helper.LikeHelper;
 import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
-import com.midas.shootpointer.domain.post.helper.PostHelper;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
-@ActiveProfiles("test")
 class LikeManagerConcurrencyTest {
     @Autowired
     private LikeManager likeManager;
-
-    @Autowired
-    private LikeHelper likeHelper;
-
-    @Autowired
-    private PostHelper postHelper;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -55,68 +40,104 @@ class LikeManagerConcurrencyTest {
      * 좋아요할 게시물 Id
      */
     private static Long postId;
-    private static final List<Member> memberList=new ArrayList<>();
+    private static final List<Member> memberList = new ArrayList<>();
 
-    @BeforeEach
-    void setUp(){
-        /**
-         * 더미 게시판 작성.
-         */
-        Member savedMember=memberRepository.saveAndFlush(makeMockMember());
-        postId=postCommandRepository.saveAndFlush(makeMockPost(savedMember)).getPostId();
+    @BeforeAll
+    void initData() {
+        // 게시물 하나 생성
+        Member owner = memberRepository.saveAndFlush(makeMockMember());
+        postId = postCommandRepository.saveAndFlush(makeMockPost(owner)).getPostId();
 
-        /**
-         * 더미 멤버 삽입
-         */
-        for (int i=0;i<INF;i++){
-            memberList.add(memberRepository.save(makeMockMember()));
+        // 10,000 명 생성
+        List<Member> bulk = new ArrayList<>();
+        for (int i=0; i<10_000; i++) {
+            bulk.add(makeMockMember());
+            if (i % 1000 == 0) {
+                memberRepository.saveAllAndFlush(bulk);
+                memberList.addAll(bulk);
+                bulk.clear();
+            }
+        }
+        if (!bulk.isEmpty()) {
+            memberRepository.saveAllAndFlush(bulk);
+            memberList.addAll(bulk);
         }
     }
-
     @AfterEach
-    void tearDown(){
-        memberRepository.deleteAll();;
-        postCommandRepository.deleteAll();
+    void cleanLikes() {
         likeCommandRepository.deleteAll();
+        postQueryRepository.findByPostId(postId).ifPresent(post -> {
+            post.setLikeCnt(0);
+            postCommandRepository.saveAndFlush(post);
+        });
     }
 
-    private final int INF=10000;
+    @AfterAll
+    void clearData() {
+        likeCommandRepository.deleteAll();
+        postCommandRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
+
+    private final int INF_0=100;
+    private final int INF_1 = 1_000;
+    private final int INF_2 = 10_000;
+
     @Test
-    @DisplayName("동시에 10000개의 요청으로 좋아요 수를 증가시킵니다.")
-    void increate_10000_request_of_like() throws InterruptedException {
+    @DisplayName("동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
+    void increase_100_request_of_like() throws InterruptedException {
+        extracted(INF_0);
+    }
+
+    @Test
+    @DisplayName("동시에 1_000개의 요청으로 좋아요 수를 증가시킵니다.")
+    void increase_1_000_request_of_like() throws InterruptedException {
         //given
-        final int threadCount=INF;
-        final ExecutorService executorService= Executors.newFixedThreadPool(32);
-        final CountDownLatch countDownLatch=new CountDownLatch(threadCount);
+        extracted(INF_1);
+    }
+
+    @Test
+    @DisplayName("동시에 10_000개의 요청으로 좋아요 수를 증가시킵니다.")
+    void increase_10_000_request_of_like() throws InterruptedException {
+        //given
+        extracted(INF_2);
+    }
+
+
+    private void extracted(int INF_0) throws InterruptedException {
+        //given
+        final int threadCount = INF_0;
+        final ExecutorService executorService = Executors.newFixedThreadPool(32);
+        final CountDownLatch countDownLatch = new CountDownLatch(threadCount);
 
 
         //when
-        for (int i=0;i<threadCount;i++){
-            final int idx=i;
-            executorService.submit(()->{
+        for (int i = 0; i < threadCount; i++) {
+            final int idx = i;
+            executorService.submit(() -> {
                 try {
-                    likeManager.increase(postId,memberList.get(idx));
-                }finally {
+                    likeManager.increase(postId, memberList.get(idx));
+                } finally {
                     countDownLatch.countDown();
                 }
             });
         }
         countDownLatch.await();
-        final PostEntity post=postQueryRepository.findByPostId(postId).orElseThrow();
+        final PostEntity post = postQueryRepository.findByPostId(postId).orElseThrow();
 
         //then
-        assertThat(post.getLikeCnt()).isEqualTo(INF);
+        assertThat(post.getLikeCnt()).isEqualTo(INF_0);
     }
 
-    private Member makeMockMember(){
-        String random=UUID.randomUUID().toString().substring(0,5);
+    private Member makeMockMember() {
+        String random = UUID.randomUUID().toString().substring(0, 5);
         return Member.builder()
-                .username("test"+random)
-                .email("test"+random+"@naver.com")
+                .username("test" + random)
+                .email("test" + random + "@naver.com")
                 .build();
     }
 
-    private PostEntity makeMockPost(Member member){
+    private PostEntity makeMockPost(Member member) {
         return PostEntity.builder()
                 .member(member)
                 .hashTag(HashTag.TREE_POINT)

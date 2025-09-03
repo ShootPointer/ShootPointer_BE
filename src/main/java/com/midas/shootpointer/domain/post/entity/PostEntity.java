@@ -33,6 +33,7 @@ public class PostEntity extends BaseEntity {
 
     @Column(name = "like_cnt")
     @Builder.Default
+    @Setter
     private Integer likeCnt=0;
 
 
@@ -52,9 +53,6 @@ public class PostEntity extends BaseEntity {
         this.highlight=highlight;
     }
 
-    public void createLike(){
-        this.likeCnt++;
-    }
 
     public void deleteLike(){
         if(this.likeCnt>0){
