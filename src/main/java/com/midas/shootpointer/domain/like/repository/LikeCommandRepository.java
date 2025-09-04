@@ -14,5 +14,4 @@ public interface LikeCommandRepository extends JpaRepository<LikeEntity,Long> {
     @Modifying
     @Query(value = "UPDATE post SET like_cnt = like_cnt + 1 WHERE post_id=:postId",nativeQuery = true)
     void increasesLikeCnt(@Param(value = "postId")Long postId);
-
 }

@@ -7,6 +7,7 @@ import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.*;
-
+@Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
 class LikeManagerConcurrencyTest {
@@ -73,7 +74,7 @@ class LikeManagerConcurrencyTest {
             /**
              * atomic
              */
-            post.setAtomicLikeCnt(new AtomicInteger(0));
+            //post.setAtomicLikeCnt(new AtomicInteger(0));
             postCommandRepository.saveAndFlush(post);
         });
     }
@@ -107,8 +108,8 @@ class LikeManagerConcurrencyTest {
         extracted(INF_2);
     }*/
 
-    @Test
-    @DisplayName("AtomicInteger 사용 -동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
+/*    @Test
+    @DisplayName("AtomicInteger 사용 - 동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
     void AtomicInteger_increase_100_request_of_like() throws InterruptedException {
         atomicExtracted(INF_0);
     }
@@ -123,9 +124,25 @@ class LikeManagerConcurrencyTest {
     @DisplayName("AtomicInteger 사용 -동시에 10,000개의 요청으로 좋아요 수를 증가시킵니다.")
     void AtomicInteger_increase_10_000_request_of_like() throws InterruptedException {
         atomicExtracted(INF_2);
+    }*/
+
+    @Test
+    @DisplayName("OptimisticLock - 동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
+    void OptimisticLock_increase_100_request_of_like() throws InterruptedException {
+        extracted(INF_0);
     }
 
+    @Test
+    @DisplayName("OptimisticLock - 동시에 1,000개의 요청으로 좋아요 수를 증가시킵니다.")
+    void OptimisticLock_increase_1_000_request_of_like() throws InterruptedException {
+        extracted(INF_1);
+    }
 
+    @Test
+    @DisplayName("OptimisticLock - 동시에 10,000개의 요청으로 좋아요 수를 증가시킵니다.")
+    void OptimisticLock_increase_10_000_request_of_like() throws InterruptedException {
+        extracted(INF_2);
+    }
 
     private void extracted(int threadCnt) throws InterruptedException {
         //given
@@ -139,7 +156,10 @@ class LikeManagerConcurrencyTest {
             executorService.submit(() -> {
                 try {
                     likeManager.increase(postId, memberList.get(idx));
-                } finally {
+                } catch (Exception e){
+                    log.error("동시성 테스트 오류 : {}",e.getMessage());
+                }
+                finally{
                     countDownLatch.countDown();
                 }
             });
@@ -151,7 +171,7 @@ class LikeManagerConcurrencyTest {
         assertThat(post.getLikeCnt()).isEqualTo(threadCnt);
     }
 
-    private void atomicExtracted(int threadCnt) throws InterruptedException {
+/*    private void atomicExtracted(int threadCnt) throws InterruptedException {
         //given
         final ExecutorService executorService = Executors.newFixedThreadPool(32);
         final CountDownLatch countDownLatch = new CountDownLatch(threadCnt);
@@ -173,7 +193,7 @@ class LikeManagerConcurrencyTest {
 
         //then
         assertThat(post.getAtomicLikeCnt().get()).isEqualTo(threadCnt);
-    }
+    }*/
 
     private Member makeMockMember() {
         String random = UUID.randomUUID().toString().substring(0, 5);

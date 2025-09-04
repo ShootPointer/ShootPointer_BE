@@ -56,8 +56,8 @@ class LikeUtilImplTest {
         PostEntity savedPost=postCommandRepository.save(makeMockPostEntity(savedMember));
 
         //when
-        likeUtil.increaseLikeCnt(savedPost);
-        likeUtil.increaseLikeCnt(savedPost);
+        //likeUtil.increaseLikeCnt(savedPost);
+        //likeUtil.increaseLikeCnt(savedPost);
 
         //then
         assertThat(savedPost.getLikeCnt()).isEqualTo(2);
@@ -69,10 +69,10 @@ class LikeUtilImplTest {
         //given
         Member savedMember=memberRepository.save(makeMockMember());
         PostEntity savedPost=postCommandRepository.save(makeMockPostEntity(savedMember));
-        likeUtil.increaseLikeCnt(savedPost);
-        likeUtil.increaseLikeCnt(savedPost);
-        likeUtil.increaseLikeCnt(savedPost);
-        likeUtil.increaseLikeCnt(savedPost);
+       // likeUtil.increaseLikeCnt(savedPost);
+        //likeUtil.increaseLikeCnt(savedPost);
+        //likeUtil.increaseLikeCnt(savedPost);
+        //likeUtil.increaseLikeCnt(savedPost);
 
         //when
         likeUtil.decreaseLikeCnt(savedPost);
