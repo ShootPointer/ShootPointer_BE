@@ -88,6 +88,8 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 
+	//redisson
+	implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
 }
 
 tasks.named('test') {
