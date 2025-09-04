@@ -32,7 +32,10 @@ public class LikeUtilImpl implements LikeUtil {
     ==========================**/
     @Override
     public void increaseLikeCnt(PostEntity post) {
-        likeCommandRepository.increasesLikeCnt(post.getPostId());
+       // likeCommandRepository.increasesLikeCnt(post.getPostId());
+        int atomic=post.increaseAtomicLikeCnt();
+        post.setLikeCnt(atomic);
+        postCommandRepository.save(post);
     }
     
     /*==========================

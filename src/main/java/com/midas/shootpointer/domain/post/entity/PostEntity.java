@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 @Table(name = "post")
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -36,6 +38,13 @@ public class PostEntity extends BaseEntity {
     @Setter
     private Integer likeCnt=0;
 
+    /**
+     * 원시적 변수
+     */
+    @Transient
+    @Setter
+    private AtomicInteger atomicLikeCnt=new AtomicInteger(0);
+
 
     @ManyToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "member_id",nullable = false)
@@ -60,6 +69,10 @@ public class PostEntity extends BaseEntity {
         }else{
             this.likeCnt=0;
         }
+    }
+
+    public int increaseAtomicLikeCnt(){
+        return this.atomicLikeCnt.getAndIncrement();
     }
 
 }

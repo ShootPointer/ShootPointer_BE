@@ -16,6 +16,8 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.assertj.core.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -52,7 +54,7 @@ class LikeManagerConcurrencyTest {
         List<Member> bulk = new ArrayList<>();
         for (int i=0; i<10_000; i++) {
             bulk.add(makeMockMember());
-            if (i % 1000 == 0) {
+            if (i % 1_000 == 0) {
                 memberRepository.saveAllAndFlush(bulk);
                 memberList.addAll(bulk);
                 bulk.clear();
@@ -68,6 +70,10 @@ class LikeManagerConcurrencyTest {
         likeCommandRepository.deleteAll();
         postQueryRepository.findByPostId(postId).ifPresent(post -> {
             post.setLikeCnt(0);
+            /**
+             * atomic
+             */
+            post.setAtomicLikeCnt(new AtomicInteger(0));
             postCommandRepository.saveAndFlush(post);
         });
     }
@@ -83,36 +89,52 @@ class LikeManagerConcurrencyTest {
     private final int INF_1 = 1_000;
     private final int INF_2 = 10_000;
 
-    @Test
-    @DisplayName("동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
-    void increase_100_request_of_like() throws InterruptedException {
+/*    @Test
+    @DisplayName("incrementQuery - 동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
+    void incrementQuery_increase_100_request_of_like() throws InterruptedException {
         extracted(INF_0);
     }
 
     @Test
-    @DisplayName("동시에 1_000개의 요청으로 좋아요 수를 증가시킵니다.")
-    void increase_1_000_request_of_like() throws InterruptedException {
-        //given
+    @DisplayName("incrementQuery - 동시에 1,000개의 요청으로 좋아요 수를 증가시킵니다.")
+    void incrementQuery_increase_1_000_request_of_like() throws InterruptedException {
         extracted(INF_1);
     }
 
     @Test
-    @DisplayName("동시에 10_000개의 요청으로 좋아요 수를 증가시킵니다.")
-    void increase_10_000_request_of_like() throws InterruptedException {
-        //given
+    @DisplayName("incrementQuery - 동시에 10,000개의 요청으로 좋아요 수를 증가시킵니다.")
+    void incrementQuery_increase_10_000_request_of_like() throws InterruptedException {
         extracted(INF_2);
+    }*/
+
+    @Test
+    @DisplayName("AtomicInteger 사용 -동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
+    void AtomicInteger_increase_100_request_of_like() throws InterruptedException {
+        atomicExtracted(INF_0);
+    }
+
+    @Test
+    @DisplayName("AtomicInteger 사용 -동시에 1,000개의 요청으로 좋아요 수를 증가시킵니다.")
+    void AtomicInteger_increase_1_000_request_of_like() throws InterruptedException {
+        atomicExtracted(INF_1);
+    }
+
+    @Test
+    @DisplayName("AtomicInteger 사용 -동시에 10,000개의 요청으로 좋아요 수를 증가시킵니다.")
+    void AtomicInteger_increase_10_000_request_of_like() throws InterruptedException {
+        atomicExtracted(INF_2);
     }
 
 
-    private void extracted(int INF_0) throws InterruptedException {
+
+    private void extracted(int threadCnt) throws InterruptedException {
         //given
-        final int threadCount = INF_0;
         final ExecutorService executorService = Executors.newFixedThreadPool(32);
-        final CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+        final CountDownLatch countDownLatch = new CountDownLatch(threadCnt);
 
 
         //when
-        for (int i = 0; i < threadCount; i++) {
+        for (int i = 0; i < threadCnt; i++) {
             final int idx = i;
             executorService.submit(() -> {
                 try {
@@ -126,7 +148,31 @@ class LikeManagerConcurrencyTest {
         final PostEntity post = postQueryRepository.findByPostId(postId).orElseThrow();
 
         //then
-        assertThat(post.getLikeCnt()).isEqualTo(INF_0);
+        assertThat(post.getLikeCnt()).isEqualTo(threadCnt);
+    }
+
+    private void atomicExtracted(int threadCnt) throws InterruptedException {
+        //given
+        final ExecutorService executorService = Executors.newFixedThreadPool(32);
+        final CountDownLatch countDownLatch = new CountDownLatch(threadCnt);
+        final PostEntity post = postQueryRepository.findByPostId(postId).orElseThrow();
+
+
+        //when
+        for (int i = 0; i < threadCnt; i++) {
+            final int idx = i;
+            executorService.submit(() -> {
+                try {
+                    post.increaseAtomicLikeCnt();
+                } finally {
+                    countDownLatch.countDown();
+                }
+            });
+        }
+        countDownLatch.await();
+
+        //then
+        assertThat(post.getAtomicLikeCnt().get()).isEqualTo(threadCnt);
     }
 
     private Member makeMockMember() {
