@@ -19,8 +19,8 @@ public class LikeHelperImpl implements LikeHelper {
     }
 
     @Override
-    public void increaseLikeCnt(Long postId) {
-        likeUtil.increaseLikeCnt(postId);
+    public void increaseLikeCnt(PostEntity post) {
+        likeUtil.increaseLikeCnt(post);
     }
 
     @Override

@@ -26,7 +26,6 @@ public class LikeUtilImpl implements LikeUtil {
     private final LikeQueryRepository likeQueryRepository;
     private final LikeCommandRepository likeCommandRepository;
     private final PostQueryRepository postQueryRepository;
-    private final JdbcTemplate jdbcTemplate;
 
     /*==========================
     *
@@ -40,40 +39,9 @@ public class LikeUtilImpl implements LikeUtil {
     *
     ==========================**/
     @Override
-    @Transactional
-    public void increaseLikeCnt(Long postId) {
+    public void increaseLikeCnt(PostEntity post) {
        //likeCommandRepository.increasesLikeCnt(post.getPostId());
-
-
-        /**
-         * Optimistic Lock 재시도 로직.
-         */
-        int tryCnt=0;
-        boolean success=false;
-
-        while (tryCnt<=100 && !success){
-            try {
-                PostEntity post=postQueryRepository.findById(postId)
-                        .orElseThrow(()->new CustomException(ErrorCode.IS_NOT_EXIST_POST));
-
-                int updatedCount=postCommandRepository.updatedCount(postId,post.getVersion());
-                //성공한 경우
-                if(updatedCount!=0) success=true;
-                else tryCnt++;
-
-            }catch (OptimisticLockException e){
-                tryCnt++;
-                log.error("Optimistic Lock 실패 : {}", tryCnt);
-            }
-        }
-
-
-        /**
-         * 재시도 횟수 초과.
-         */
-        if(!success){
-            throw new RuntimeException("Optimistic Lock 재시도 초과");
-        }
+        post.increase();
     }
 
     /*==========================

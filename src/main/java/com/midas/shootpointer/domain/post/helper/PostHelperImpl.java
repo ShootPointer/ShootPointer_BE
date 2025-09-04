@@ -38,4 +38,9 @@ public class PostHelperImpl implements PostHelper{
     public PostEntity save(PostEntity postEntity) {
         return postUtil.save(postEntity);
     }
+
+    @Override
+    public PostEntity findByPostByPostIdWithPessimisticLock(Long postId) {
+        return postUtil.findByPostByPostIdWithPessimisticLock(postId);
+    }
 }

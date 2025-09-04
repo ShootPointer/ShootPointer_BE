@@ -7,7 +7,7 @@ import com.midas.shootpointer.domain.post.entity.PostEntity;
 import java.util.UUID;
 
 public interface LikeUtil {
-    void increaseLikeCnt(Long postId);
+    void increaseLikeCnt(PostEntity post);
     void decreaseLikeCnt(PostEntity post);
     LikeEntity createLike(PostEntity post, Member member);
     void deleteLike(LikeEntity like);

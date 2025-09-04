@@ -23,4 +23,9 @@ public class PostUtilImpl implements PostUtil{
     public PostEntity save(PostEntity postEntity) {
         return postCommandRepository.save(postEntity);
     }
+
+    @Override
+    public PostEntity findByPostByPostIdWithPessimisticLock(Long postId) {
+        return postQueryRepository.findByPostIdWithPessimisticLock(postId);
+    }
 }

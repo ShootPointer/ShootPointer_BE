@@ -90,6 +90,7 @@ class LikeManagerConcurrencyTest {
     private final int INF_1 = 1_000;
     private final int INF_2 = 10_000;
 
+    //============================= 증분 쿼리 테스트 코드 =============================
 /*    @Test
     @DisplayName("incrementQuery - 동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
     void incrementQuery_increase_100_request_of_like() throws InterruptedException {
@@ -108,6 +109,10 @@ class LikeManagerConcurrencyTest {
         extracted(INF_2);
     }*/
 
+
+
+
+    //============================= Atomic 변수 테스트 코드 =============================
 /*    @Test
     @DisplayName("AtomicInteger 사용 - 동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
     void AtomicInteger_increase_100_request_of_like() throws InterruptedException {
@@ -126,7 +131,9 @@ class LikeManagerConcurrencyTest {
         atomicExtracted(INF_2);
     }*/
 
-    @Test
+
+    //============================= Optimistic Lock 테스트 코드 =============================
+/*    @Test
     @DisplayName("OptimisticLock - 동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
     void OptimisticLock_increase_100_request_of_like() throws InterruptedException {
         extracted(INF_0);
@@ -141,6 +148,27 @@ class LikeManagerConcurrencyTest {
     @Test
     @DisplayName("OptimisticLock - 동시에 10,000개의 요청으로 좋아요 수를 증가시킵니다.")
     void OptimisticLock_increase_10_000_request_of_like() throws InterruptedException {
+        extracted(INF_2);
+    }*/
+
+
+
+    //============================= Pessimistic Lock 테스트 코드 =============================
+    @Test
+    @DisplayName("PessimisticLock - 동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
+    void PessimisticLock_increase_100_request_of_like() throws InterruptedException {
+        extracted(INF_0);
+    }
+
+    @Test
+    @DisplayName("PessimisticLock - 동시에 1,000개의 요청으로 좋아요 수를 증가시킵니다.")
+    void PessimisticLock_increase_1_000_request_of_like() throws InterruptedException {
+        extracted(INF_1);
+    }
+
+    @Test
+    @DisplayName("PessimisticLock - 동시에 10,000개의 요청으로 좋아요 수를 증가시킵니다.")
+    void PessimisticLock_increase_10_000_request_of_like() throws InterruptedException {
         extracted(INF_2);
     }
 

@@ -16,12 +16,12 @@ import java.util.UUID;
 public class LikeManager {
     private final LikeHelper likeHelper;
     private final PostHelper postHelper;
-
+    @Transactional
     public Long increase(Long postId, Member member){
         /**
          * 1. 게시물이 존재하는 지 여부
          */
-        PostEntity postEntity=postHelper.findPostByPostId(postId);
+        PostEntity postEntity=postHelper.findByPostByPostIdWithPessimisticLock(postId);
 
 
         /**
@@ -33,7 +33,7 @@ public class LikeManager {
         /**
          * 3. 좋아요 생성 및 증가.
          */
-        likeHelper.increaseLikeCnt(postId);
+        likeHelper.increaseLikeCnt(postEntity);
         LikeEntity savedLike=likeHelper.createLike(postEntity,member);
 
         return savedLike.getLikeId();
