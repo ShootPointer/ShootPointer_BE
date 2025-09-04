@@ -22,7 +22,7 @@ public class DistributedLockAspect {
     private final RedissonClient redissonClient;
     private final AopForTransaction aopForTransaction;
 
-    @Around("@annotation(com.midas.shootpointer.global.annotation.DistributedLock")
+    @Around("@annotation(com.midas.shootpointer.global.annotation.DistributedLock)")
     public Object lock(final ProceedingJoinPoint joinPoint) throws Throwable{
         MethodSignature signature=(MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();

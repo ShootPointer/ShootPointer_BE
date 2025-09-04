@@ -5,6 +5,7 @@ import com.midas.shootpointer.domain.like.helper.LikeHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
+import com.midas.shootpointer.global.annotation.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +17,14 @@ import java.util.UUID;
 public class LikeManager {
     private final LikeHelper likeHelper;
     private final PostHelper postHelper;
+
     @Transactional
+    @DistributedLock(key = "#postId")
     public Long increase(Long postId, Member member){
         /**
          * 1. 게시물이 존재하는 지 여부
          */
-        PostEntity postEntity=postHelper.findByPostByPostIdWithPessimisticLock(postId);
+        PostEntity postEntity=postHelper.findPostByPostId(postId);
 
 
         /**

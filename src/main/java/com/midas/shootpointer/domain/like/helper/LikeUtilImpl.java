@@ -7,6 +7,7 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
+import com.midas.shootpointer.global.annotation.DistributedLock;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import jakarta.persistence.OptimisticLockException;
@@ -25,7 +26,6 @@ public class LikeUtilImpl implements LikeUtil {
     private final PostCommandRepository postCommandRepository;
     private final LikeQueryRepository likeQueryRepository;
     private final LikeCommandRepository likeCommandRepository;
-    private final PostQueryRepository postQueryRepository;
 
     /*==========================
     *
@@ -40,7 +40,6 @@ public class LikeUtilImpl implements LikeUtil {
     ==========================**/
     @Override
     public void increaseLikeCnt(PostEntity post) {
-       //likeCommandRepository.increasesLikeCnt(post.getPostId());
         post.increase();
     }
 
