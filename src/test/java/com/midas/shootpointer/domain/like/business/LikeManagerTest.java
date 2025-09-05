@@ -104,7 +104,6 @@ class LikeManagerTest {
          * 좋아요 처음 개수 = 5
          */
 
-        //when
         /**
          * 좋아요 2개 감소
          */

@@ -11,11 +11,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostCommandRepository extends JpaRepository<PostEntity,Long> {
-    /**
-     * 비선점 잠금
-     */
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query(value = "UPDATE post SET version = version + 1, like_cnt = like_cnt+1 WHERE post_id=:postId AND version=:version",nativeQuery = true)
-    int updatedCount(@Param(value = "postId")Long postId, @Param(value = "version")Long version);
-
 }

@@ -49,8 +49,8 @@ spring:
 
     # Redis 설정
     redis:
-      host: redis
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
       timeout: 2000ms
       jedis:
         pool:

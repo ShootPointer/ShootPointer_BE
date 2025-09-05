@@ -48,10 +48,10 @@ class LikeHelperImplTest {
         PostEntity post=mock(PostEntity.class);
 
         //when
-       // likeHelper.increaseLikeCnt(post);
+        likeHelper.increaseLikeCnt(post);
 
         //then
-        //verify(likeUtil,times(1)).increaseLikeCnt(post);
+        verify(likeUtil,times(1)).increaseLikeCnt(post);
     }
 
     @Test
