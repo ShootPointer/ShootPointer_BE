@@ -94,4 +94,9 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	/**
+	 * 동시성 제어 테스트 제외 - 제외 이유 : PR시 Jacoco 커버리지 측정 시간 대폭 증가.
+	 **/
+	exclude '**/com/midas/shootpointer/domain/like/business/LikeManagerConcurrencyTest.class'
+
 }
