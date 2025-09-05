@@ -12,6 +12,7 @@ import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -47,12 +48,12 @@ public class PostManager {
         return postCommandRepository.save(postEntity).getPostId();
     }
 
+    @Transactional
     public Long update(PostRequest request,Member member,Long postId){
         /**
          * 1. 게시물이 존재하는 지 여부
          */
-        PostEntity postEntity=postQueryRepository.findByPostId(postId)
-                .orElseThrow(()->new CustomException(ErrorCode.IS_NOT_EXIST_POST));
+        PostEntity postEntity=postHelper.findPostByPostId(postId);
 
         /**
          * 2. 게시물이 멤버의 게시물인지 확인
@@ -77,14 +78,7 @@ public class PostManager {
         /**
          * 6. 수정 진행
          */
-        //TODO: 수정 부분 및 생성 postUtilImpl 에서 처리하도록 변경.
-        postEntity.update(
-                request.getTitle(),
-                request.getContent(),
-                request.getHashTag(),
-                highlightEntity
-        );
-        postEntity=postCommandRepository.save(postEntity);
+        postEntity=postHelper.update(request,postEntity,highlightEntity);
 
         return postEntity.getPostId();
     }
@@ -93,8 +87,7 @@ public class PostManager {
         /**
          * 1. 게시물이 존재하는 지 여부
          */
-        PostEntity postEntity=postQueryRepository.findByPostId(postId)
-                .orElseThrow(()->new CustomException(ErrorCode.IS_NOT_EXIST_POST));
+        PostEntity postEntity=postHelper.findPostByPostId(postId);
 
 
         /**
@@ -103,7 +96,7 @@ public class PostManager {
         postHelper.isMembersPost(postEntity,member);
 
         /**
-         * 3. 삭제 처리
+         * 3. 논리적 삭제 처리
          */
         postEntity.delete();
         return postEntity.getPostId();
