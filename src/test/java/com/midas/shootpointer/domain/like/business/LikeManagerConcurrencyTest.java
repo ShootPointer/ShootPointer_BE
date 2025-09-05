@@ -154,7 +154,6 @@ class LikeManagerConcurrencyTest {
 
 
     //============================= Pessimistic Lock 테스트 코드 =============================
-/*
     @Test
     @DisplayName("PessimisticLock - 동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
     void PessimisticLock_increase_100_request_of_like() throws InterruptedException {
@@ -172,11 +171,10 @@ class LikeManagerConcurrencyTest {
     void PessimisticLock_increase_10_000_request_of_like() throws InterruptedException {
         extracted(INF_2);
     }
-*/
 
 
     //============================= Distributed Lock 테스트 코드 =============================
-    @Test
+/*    @Test
     @DisplayName("DistributedLock - 동시에 100개의 요청으로 좋아요 수를 증가시킵니다.")
     void DistributedLock_increase_100_request_of_like() throws InterruptedException {
         extracted(INF_0);
@@ -192,7 +190,7 @@ class LikeManagerConcurrencyTest {
     @DisplayName("DistributedLock - 동시에 10,000개의 요청으로 좋아요 수를 증가시킵니다.")
     void DistributedLock_increase_10_000_request_of_like() throws InterruptedException {
         extracted(INF_2);
-    }
+    }*/
 
 
     private void extracted(int threadCnt) throws InterruptedException {

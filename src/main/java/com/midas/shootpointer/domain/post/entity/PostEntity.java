@@ -38,9 +38,6 @@ public class PostEntity extends BaseEntity {
     @Setter
     private Integer likeCnt=0;
 
-    @Version
-    private Long version;
-
     @ManyToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "member_id",nullable = false)
     private Member member;

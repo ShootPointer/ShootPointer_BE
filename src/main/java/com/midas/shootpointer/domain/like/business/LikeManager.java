@@ -19,12 +19,11 @@ public class LikeManager {
     private final PostHelper postHelper;
 
     @Transactional
-    @DistributedLock(key = "#postId")
     public Long increase(Long postId, Member member){
         /**
          * 1. 게시물이 존재하는 지 여부
          */
-        PostEntity postEntity=postHelper.findPostByPostId(postId);
+        PostEntity postEntity=postHelper.findByPostByPostIdWithPessimisticLock(postId);
 
 
         /**
