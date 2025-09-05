@@ -47,6 +47,7 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: postgres
 
 
+
       - name: Upload JUnit Test Report
         if: always()   # 실패해도 업로드되도록
         uses: actions/upload-artifact@v4
