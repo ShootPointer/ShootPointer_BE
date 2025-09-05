@@ -6,16 +6,23 @@ import com.midas.shootpointer.domain.like.repository.LikeQueryRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
+import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
+import com.midas.shootpointer.global.annotation.DistributedLock;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
+import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class LikeUtilImpl implements LikeUtil {
-    private final PostCommandRepository postCommandRepository;
     private final LikeQueryRepository likeQueryRepository;
     private final LikeCommandRepository likeCommandRepository;
 
@@ -32,10 +39,9 @@ public class LikeUtilImpl implements LikeUtil {
     ==========================**/
     @Override
     public void increaseLikeCnt(PostEntity post) {
-        post.createLike();
-        postCommandRepository.save(post);
+        post.increase();
     }
-    
+
     /*==========================
     *
     *LikeUtilImpl
@@ -50,7 +56,6 @@ public class LikeUtilImpl implements LikeUtil {
     @Override
     public void decreaseLikeCnt(PostEntity post) {
         post.deleteLike();
-        postCommandRepository.save(post);
     }
 
     /*==========================
