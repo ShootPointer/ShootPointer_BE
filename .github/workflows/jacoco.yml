@@ -24,7 +24,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Test with Gradle
-        run: ./gradlew clean test jacocoTestReport
+        run: ./gradlew clean test jacocoTestReport --info --stacktrace
 
 
       - name: Upload JUnit Test Report
