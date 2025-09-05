@@ -1,7 +1,7 @@
 package com.midas.shootpointer;
 
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
+import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class HealthCheckController {
     private final JwtUtil jwtUtil;
-    private final MemberRepository memberRepository;
+    private final MemberQueryRepository memberQueryRepository;
     @GetMapping("/health-check")
     public ResponseEntity<String> healthCheck(){
         return ResponseEntity.ok("health-check");
@@ -26,7 +26,7 @@ public class HealthCheckController {
                 .email("test@naver.com")
                 .username("test")
                 .build();
-        Member savedMember=memberRepository.save(member);
+        Member savedMember=memberQueryRepository.save(member);
         return ResponseEntity.ok(jwtUtil.createToken(savedMember.getMemberId(),member.getEmail(),member.getUsername()));
     }
 }
