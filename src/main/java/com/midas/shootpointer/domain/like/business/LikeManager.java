@@ -46,7 +46,7 @@ public class LikeManager {
         /**
          * 1. 게시물이 존재하는 지 여부
          */
-        PostEntity postEntity=postHelper.findPostByPostId(postId);
+        PostEntity postEntity=postHelper.findByPostByPostIdWithPessimisticLock(postId);
 
         /**
          * 2. 좋아요 엔티티 가져오기.

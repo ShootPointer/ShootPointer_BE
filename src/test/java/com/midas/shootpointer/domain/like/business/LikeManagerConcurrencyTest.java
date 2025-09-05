@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.like.business;
 
+import com.midas.shootpointer.domain.like.entity.LikeEntity;
 import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberRepository;
@@ -71,10 +72,6 @@ class LikeManagerConcurrencyTest {
         likeCommandRepository.deleteAll();
         postQueryRepository.findByPostId(postId).ifPresent(post -> {
             post.setLikeCnt(0);
-            /**
-             * atomic
-             */
-            //post.setAtomicLikeCnt(new AtomicInteger(0));
             postCommandRepository.saveAndFlush(post);
         });
     }
@@ -172,6 +169,24 @@ class LikeManagerConcurrencyTest {
         extracted(INF_2);
     }
 
+    @Test
+    @DisplayName("PessimisticLock - 동시에 100개의 요청으로 좋아요 수를 감소시킵니다.")
+    void PessimisticLock_decrease_100_request_of_like() throws InterruptedException {
+        extracted_decrease(INF_0);
+    }
+
+    @Test
+    @DisplayName("PessimisticLock - 동시에 1,000개의 요청으로 좋아요 수를 감소시킵니다.")
+    void PessimisticLock_decrease_1_000_request_of_like() throws InterruptedException {
+        extracted_decrease(INF_1);
+    }
+
+    @Test
+    @DisplayName("PessimisticLock - 동시에 10,000개의 요청으로 좋아요 수를 감소시킵니다.")
+    void PessimisticLock_decrease_10_000_request_of_like() throws InterruptedException {
+        extracted_decrease(INF_2);
+    }
+
 
     //============================= Distributed Lock 테스트 코드 =============================
 /*    @Test
@@ -218,6 +233,43 @@ class LikeManagerConcurrencyTest {
 
         //then
         assertThat(post.getLikeCnt()).isEqualTo(threadCnt);
+    }
+
+    private void extracted_decrease(int threadCnt) throws InterruptedException {
+        //given
+
+        /**
+         * 좋아요 생성.
+         */
+
+        for(int i=0;i<threadCnt;i++){
+            likeManager.increase(postId,memberList.get(i));
+        }
+        PostEntity post = postQueryRepository.findByPostId(postId).orElseThrow();
+        System.out.println("======================처음 좋아요 개수 : "+post.getLikeCnt()+"======================");
+
+        final ExecutorService executorService = Executors.newFixedThreadPool(32);
+        final CountDownLatch countDownLatch = new CountDownLatch(threadCnt);
+
+        //when
+        for (int i = 0; i < threadCnt; i++) {
+            final int idx = i;
+            executorService.submit(() -> {
+                try {
+                    likeManager.decrease(postId, memberList.get(idx));
+                } catch (Exception e){
+                    log.error("동시성 테스트 오류 : {}",e.getMessage());
+                }
+                finally{
+                    countDownLatch.countDown();
+                }
+            });
+        }
+        countDownLatch.await();
+        post = postQueryRepository.findByPostId(postId).orElseThrow();
+
+        //then
+        assertThat(post.getLikeCnt()).isEqualTo(0);
     }
 
 /*    private void atomicExtracted(int threadCnt) throws InterruptedException {

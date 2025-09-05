@@ -23,7 +23,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class LikeUtilImpl implements LikeUtil {
-    private final PostCommandRepository postCommandRepository;
     private final LikeQueryRepository likeQueryRepository;
     private final LikeCommandRepository likeCommandRepository;
 
@@ -57,7 +56,6 @@ public class LikeUtilImpl implements LikeUtil {
     @Override
     public void decreaseLikeCnt(PostEntity post) {
         post.deleteLike();
-        postCommandRepository.save(post);
     }
 
     /*==========================
