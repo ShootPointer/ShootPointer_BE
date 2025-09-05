@@ -1,7 +1,7 @@
 package com.midas.shootpointer.domain.post.helper;
 
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
+import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
@@ -38,7 +38,7 @@ class PostUtilImplTest {
     private PostQueryRepository postQueryRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberQueryRepository memberRepository;
 
     @Autowired
     private PostCommandRepository postCommandRepository;
