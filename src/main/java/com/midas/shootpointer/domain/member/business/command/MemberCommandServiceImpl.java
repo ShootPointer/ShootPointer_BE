@@ -16,16 +16,21 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 	
 	private final MemberManager memberManager;
 	private final KakaoService kakaoService;
+	private final TokenService tokenService;
 	
 	
 	@Override
-	public Member processKakaoLogin(HttpServletRequest request) {
+	public KakaoDTO processKakaoLogin(HttpServletRequest request) {
 		memberManager.validateKakaoCallback(request);
 		String code = extractCodeFromRequest(request);
 		
 		KakaoDTO kakaoInfo = kakaoService.getKakaoUserInfo(code);
+		Member member = memberManager.processKakaoLogin(request, kakaoInfo);
 		
-		return memberManager.processKakaoLogin(request, kakaoInfo);
+		// JWT 발급 및 DTO에 토큰 세팅
+		tokenService.generateTokens(member, kakaoInfo);
+		
+		return kakaoInfo;
 	}
 	
 	@Override

@@ -28,13 +28,7 @@ public class MemberCommandController {
     @GetMapping("/callback")
     public ResponseEntity<MsgEntity> callback(HttpServletRequest request) {
         // 모든 비즈니스 로직은 Service Layer에서 처리
-        Member member = memberCommandService.processKakaoLogin(request);
-        
-        KakaoDTO kakaoInfo = KakaoDTO.builder()
-            .email(member.getEmail())
-            .nickname(member.getUsername())
-            .build();
-        
+        KakaoDTO kakaoInfo = memberCommandService.processKakaoLogin(request);
         return ResponseEntity.ok().body(new MsgEntity("Success", kakaoInfo));
     }
     
