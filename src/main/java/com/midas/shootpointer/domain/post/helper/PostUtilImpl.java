@@ -30,12 +30,13 @@ public class PostUtilImpl implements PostUtil{
     }
 
     @Override
-    public PostEntity update(PostRequest postRequest, PostEntity post, HighlightEntity highlight) {
-        post.update(postRequest.getTitle(),
-                    postRequest.getContent(),
-                    postRequest.getHashTag(),
-                    highlight
+    public PostEntity update(PostEntity newPost, PostEntity existedPost, HighlightEntity highlight) {
+        existedPost.update(
+                newPost.getTitle(),
+                newPost.getContent(),
+                newPost.getHashTag(),
+                highlight
         );
-        return postCommandRepository.saveAndFlush(post);
+        return postCommandRepository.saveAndFlush(existedPost);
     }
 }

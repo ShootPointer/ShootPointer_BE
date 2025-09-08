@@ -48,38 +48,39 @@ public class PostManager {
     }
 
     @Transactional
-    public Long update(PostRequest request,Member member,Long postId){
+    public Long update(PostEntity newPost,Member member,Long postId){
+        UUID highlightId=newPost.getHighlight().getHighlightId();
         /**
          * 1. 게시물이 존재하는 지 여부
          */
-        PostEntity postEntity=postHelper.findPostByPostId(postId);
+        PostEntity existedPost=postHelper.findPostByPostId(postId);
 
         /**
          * 2. 게시물이 멤버의 게시물인지 확인
          */
-        postHelper.isMembersPost(postEntity,member);
+        postHelper.isMembersPost(existedPost,member);
 
         /**
          * 3.하이라이트 영상 불러오기.
          */
-        HighlightEntity highlightEntity=highlightHelper.findHighlightByHighlightId(request.getHighlightId());
+        HighlightEntity highlightEntity=highlightHelper.findHighlightByHighlightId(highlightId);
 
         /**
          * 4. Highlight URL이 유저의 영상으로 일치 여부.
          */
-        postHelper.isValidateHighlightId(member,request.getHighlightId());
+        postHelper.isValidateHighlightId(member,highlightId);
 
         /**
          * 5. 해시태그가 올바른 지 여부.
          */
-        postHelper.isValidPostHashTag(request.getHashTag());
+        postHelper.isValidPostHashTag(newPost.getHashTag());
 
         /**
          * 6. 수정 진행
          */
-        postEntity=postHelper.update(request,postEntity,highlightEntity);
+        existedPost=postHelper.update(newPost,existedPost,highlightEntity);
 
-        return postEntity.getPostId();
+        return existedPost.getPostId();
     }
 
     public Long delete(Long postId,Member member){

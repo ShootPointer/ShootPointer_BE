@@ -3,6 +3,8 @@ package com.midas.shootpointer.domain.post.controller;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
 import com.midas.shootpointer.domain.post.business.command.PostCommandService;
+import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,6 +22,7 @@ import java.util.UUID;
 @Tag(name = "게시판 - 등록,삭제,업데이트",description = "게시물 C(CREATE) U(UPDATE) D(DELETE) API")
 public class PostCommandController {
     private final PostCommandService postCommandService;
+    private final PostMapper postMapper;
     @Operation(
             summary = "게시물 등록 API - [담당자 : 김도연]",
             responses = {
@@ -52,8 +55,9 @@ public class PostCommandController {
                 .memberId(UUID.randomUUID())
                 .email("test@naver.com")
                 .username("test")
-                .build();;
-        return ResponseEntity.ok(ApiResponse.created(postCommandService.create(request,member)));
+                .build();
+        PostEntity entity=postMapper.dtoToEntity(request,member);
+        return ResponseEntity.ok(ApiResponse.created(postCommandService.create(entity,member)));
     }
 
     @Operation(
@@ -90,7 +94,8 @@ public class PostCommandController {
                 .email("test@naver.com")
                 .username("test")
                 .build();
-        return ResponseEntity.ok(ApiResponse.ok(postCommandService.update(request,member,Long.decode(postId))));
+        PostEntity entity=postMapper.dtoToEntity(request,member);
+        return ResponseEntity.ok(ApiResponse.ok(postCommandService.update(entity,member,Long.decode(postId))));
     }
 
 
