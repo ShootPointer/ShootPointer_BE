@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostQueryServiceImpl implements PostQueryService{
     private final PostManager postManager;
     @Override
-    public PostResponse singleRead(Long decode) {
-        return null;
+    public PostResponse singleRead(Long postId) {
+        return postManager.singleRead(postId);
     }
 }
