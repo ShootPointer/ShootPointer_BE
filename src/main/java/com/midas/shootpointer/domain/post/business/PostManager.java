@@ -21,8 +21,7 @@ import java.util.UUID;
 public class PostManager {
     private final PostHelper postHelper;
     private final HighlightHelper highlightHelper;
-    private final PostCommandRepository postCommandRepository;
-    private final PostQueryRepository postQueryRepository;
+
 
     public Long save(Member member, PostEntity postEntity, UUID highlightId){
         /**
@@ -45,7 +44,7 @@ public class PostManager {
          */
         postEntity.setHighlight(highlightEntity);
 
-        return postCommandRepository.save(postEntity).getPostId();
+        return postHelper.save(postEntity).getPostId();
     }
 
     @Transactional

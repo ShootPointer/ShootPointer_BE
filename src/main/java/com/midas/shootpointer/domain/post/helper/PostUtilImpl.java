@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class PostUtilImpl implements PostUtil{
     private final PostQueryRepository postQueryRepository;
     private final PostCommandRepository postCommandRepository;
-    private final PostMapper postMapper;
+
     @Override
     public PostEntity findPostByPostId(Long postId) {
         return postQueryRepository.findByPostId(postId)
