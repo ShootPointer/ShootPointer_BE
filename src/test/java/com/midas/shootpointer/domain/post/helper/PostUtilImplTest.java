@@ -6,6 +6,8 @@ import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
+import com.midas.shootpointer.global.common.ErrorCode;
+import com.midas.shootpointer.global.exception.CustomException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -35,13 +37,14 @@ class PostUtilImplTest {
     private PostUtilImpl postUtil;
 
     @Autowired
-    private PostQueryRepository postQueryRepository;
-
-    @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
     private PostCommandRepository postCommandRepository;
+
+    @Autowired
+    private PostQueryRepository postQueryRepository;
+
 
     @Test
     @DisplayName("게시판 Id를 이용하여 게시물을 조회합니다._SUCCESS")
@@ -71,6 +74,43 @@ class PostUtilImplTest {
         //then
         assertThat(post.getPostId()).isEqualTo(savedPost.getPostId());
         assertThat(post.getMember().getMemberId()).isEqualTo(savedPost.getMember().getMemberId());
+    }
+
+    @Test
+    @DisplayName("게시판 Id로 게시판 객체를 조회합니다._SUCCESS")
+    void find_SUCCESS(){
+        //given
+        Member member=memberRepository.save(makeMember());
+        PostEntity post=postCommandRepository.save(makeMockPost(member));
+        Long postId=post.getPostId();
+
+        //when
+        PostEntity findPost=postUtil.findPostByPostId(postId);
+
+        //then
+        assertThat(findPost).isNotNull();
+        assertThat(findPost.getMember().getMemberId()).isEqualTo(post.getMember().getMemberId());
+        assertThat(findPost.getPostId()).isEqualTo(postId);
+        assertThat(findPost.getContent()).isEqualTo(post.getContent());
+        assertThat(findPost.getHashTag()).isEqualTo(post.getHashTag());
+    }
+
+
+    @Test
+    @DisplayName("게시판 Id로 게시판 객체를 조회를 실패하면 IS_NOT_EXIST_POST 예외를 발생시킵니다._FAIL")
+    void find_FAIL(){
+        //given
+        Long postId=123L;
+
+        //when
+        CustomException exception=catchThrowableOfType(()->
+                        postUtil.findPostByPostId(postId),
+                        CustomException.class
+        );
+
+        //then
+        assertThat(exception).isNotNull();
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.IS_NOT_EXIST_POST);
     }
 
     private PostEntity makeMockPost(Member member){
