@@ -28,19 +28,27 @@ spring:
 
   # 데이터소스 설정
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      connection-timeout: 30000
 
   # JPA 설정
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    database-platform: org.hibernate.dialect.H2Dialect
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create-drop}
+    database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
+        format_sql: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL:true}
+        use_sql_comments: true
+        show-sql: true
 
   # MongoDB 설정
   data:
@@ -49,8 +57,8 @@ spring:
 
     # Redis 설정
     redis:
-      host: redis
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
       timeout: 2000ms
       jedis:
         pool:

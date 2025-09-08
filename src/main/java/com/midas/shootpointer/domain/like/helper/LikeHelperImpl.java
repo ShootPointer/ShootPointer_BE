@@ -18,6 +18,7 @@ public class LikeHelperImpl implements LikeHelper {
         likeValidation.isValidCreateLike(memberId,postId);
     }
 
+
     @Override
     public void increaseLikeCnt(PostEntity post) {
         likeUtil.increaseLikeCnt(post);

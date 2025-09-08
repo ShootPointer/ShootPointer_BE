@@ -8,4 +8,5 @@ public interface PostUtil {
     PostEntity findPostByPostId(Long postId);
     PostEntity save(PostEntity postEntity);
     PostEntity update(PostEntity newPost, PostEntity existedPost, HighlightEntity highlight);
+    PostEntity findByPostByPostIdWithPessimisticLock(Long postId);
 }

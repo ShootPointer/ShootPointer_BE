@@ -81,11 +81,23 @@ dependencies {
 	testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.3'
 
 	//H2 DataBase
-	testImplementation 'com.h2database:h2'
+	testImplementation 'com.h2database:h2:2.2.224'
 	testRuntimeOnly 'com.h2database:h2'
 
+	//test - log
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	//redisson
+	implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+	/**
+	 * 동시성 제어 테스트 제외 - 제외 이유 : PR시 Jacoco 커버리지 측정 시간 대폭 증가.
+	 **/
+	if (System.getenv("CI") == "true") {
+		exclude '**/LikeManagerConcurrencyTest.class'
+	}
 }
