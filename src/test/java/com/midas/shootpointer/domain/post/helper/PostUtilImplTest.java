@@ -1,5 +1,8 @@
 package com.midas.shootpointer.domain.post.helper;
 
+import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
+import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
@@ -22,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,6 +48,9 @@ class PostUtilImplTest {
 
     @Autowired
     private PostQueryRepository postQueryRepository;
+
+    @Autowired
+    private HighlightCommandRepository highlightCommandRepository;
 
 
     @Test
@@ -113,6 +120,33 @@ class PostUtilImplTest {
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.IS_NOT_EXIST_POST);
     }
 
+    @Test
+    @DisplayName("게시판을 수정합니다._SUCCESS")
+    void update_SUCCESS(){
+        //given
+        Member member=memberRepository.save(makeMember());
+        PostEntity post=postCommandRepository.save(makeMockPost(member));
+        HighlightEntity highlightEntity=highlightCommandRepository.save(makeHighlight(member));
+
+        PostEntity newPost=PostEntity.builder()
+                .title("title2")
+                .member(member)
+                .content("content2")
+                .highlight(highlightEntity)
+                .hashTag(HashTag.TWO_POINT)
+                .build();
+
+        //when
+        PostEntity updatedPost=postUtil.update(newPost,post,highlightEntity);
+
+        //then
+        assertThat(updatedPost.getHashTag()).isEqualTo(newPost.getHashTag());
+        assertThat(updatedPost.getContent()).isEqualTo(newPost.getContent());
+        assertThat(updatedPost.getPostId()).isEqualTo(post.getPostId());
+        assertThat(updatedPost.getMember().getMemberId()).isEqualTo(post.getMember().getMemberId());
+        assertThat(updatedPost.getTitle()).isEqualTo(post.getTitle());
+    }
+
     private PostEntity makeMockPost(Member member){
         return PostEntity.builder()
                 .title("title")
@@ -126,6 +160,14 @@ class PostUtilImplTest {
         return Member.builder()
                 .email("test@naver.com")
                 .username("tet")
+                .build();
+    }
+
+    private HighlightEntity makeHighlight(Member member){
+        return HighlightEntity.builder()
+                .highlightKey(UUID.randomUUID())
+                .member(member)
+                .highlightURL("test")
                 .build();
     }
 
