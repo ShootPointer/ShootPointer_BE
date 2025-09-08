@@ -45,4 +45,9 @@ public class PostHelperImpl implements PostHelper{
     public PostEntity update(PostEntity newPost, PostEntity existedPost, HighlightEntity highlight) {
         return postUtil.update(newPost,existedPost,highlight);
     }
+  
+    @Override
+    public PostEntity findByPostByPostIdWithPessimisticLock(Long postId) {
+        return postUtil.findByPostByPostIdWithPessimisticLock(postId);
+    }
 }

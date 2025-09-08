@@ -10,7 +10,9 @@ import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -38,5 +40,11 @@ public class PostUtilImpl implements PostUtil{
                 highlight
         );
         return postCommandRepository.saveAndFlush(existedPost);
+    }
+  
+    @Override
+    @Transactional
+    public PostEntity findByPostByPostIdWithPessimisticLock(Long postId) {
+        return postQueryRepository.findByPostIdWithPessimisticLock(postId);
     }
 }

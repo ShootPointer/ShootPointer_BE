@@ -84,6 +84,7 @@ class PostUtilImplTest {
     }
 
     @Test
+<<<<<<< HEAD
     @DisplayName("게시판 Id로 게시판 객체를 조회합니다._SUCCESS")
     void find_SUCCESS(){
         //given
@@ -145,6 +146,20 @@ class PostUtilImplTest {
         assertThat(updatedPost.getPostId()).isEqualTo(post.getPostId());
         assertThat(updatedPost.getMember().getMemberId()).isEqualTo(post.getMember().getMemberId());
         assertThat(updatedPost.getTitle()).isEqualTo(post.getTitle());
+=======
+    @DisplayName("게시판 Id를 이용하여 게시물을 조회합니다.-Pessimistic Lock 적용_SUCCESS")
+    void findByPostId_with_pessimisticLock(){
+        //given
+        Member member=memberRepository.save(makeMember());
+        PostEntity post=postCommandRepository.save(makeMockPost(member));
+
+        //when
+        PostEntity findPost=postUtil.findByPostByPostIdWithPessimisticLock(post.getPostId());
+
+        //then
+        assertThat(findPost.getPostId()).isEqualTo(post.getPostId());
+        assertThat(findPost.getMember().getMemberId()).isEqualTo(member.getMemberId());
+>>>>>>> 70f271379c1d23de58c003d69309023dc7b63bb2
     }
 
     private PostEntity makeMockPost(Member member){

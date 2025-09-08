@@ -5,6 +5,7 @@ import com.midas.shootpointer.domain.like.helper.LikeHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
+import com.midas.shootpointer.global.annotation.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class LikeManager {
         /**
          * 1. 게시물이 존재하는 지 여부
          */
-        PostEntity postEntity=postHelper.findPostByPostId(postId);
+        PostEntity postEntity=postHelper.findByPostByPostIdWithPessimisticLock(postId);
 
 
         /**
@@ -45,7 +46,7 @@ public class LikeManager {
         /**
          * 1. 게시물이 존재하는 지 여부
          */
-        PostEntity postEntity=postHelper.findPostByPostId(postId);
+        PostEntity postEntity=postHelper.findByPostByPostIdWithPessimisticLock(postId);
 
         /**
          * 2. 좋아요 엔티티 가져오기.

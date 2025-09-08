@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 @Table(name = "post")
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -33,8 +35,8 @@ public class PostEntity extends BaseEntity {
 
     @Column(name = "like_cnt")
     @Builder.Default
+    @Setter
     private Integer likeCnt=0;
-
 
     @ManyToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "member_id",nullable = false)
@@ -52,10 +54,10 @@ public class PostEntity extends BaseEntity {
         this.highlight=highlight;
     }
 
-    public void createLike(){
+
+    public void increase(){
         this.likeCnt++;
     }
-
     public void deleteLike(){
         if(this.likeCnt>0){
             this.likeCnt--;
