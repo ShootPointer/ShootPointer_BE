@@ -4,6 +4,7 @@ import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
+import com.midas.shootpointer.domain.post.dto.PostResponse;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
@@ -100,5 +101,13 @@ public class PostManager {
          */
         postEntity.delete();
         return postEntity.getPostId();
+    }
+
+    @Transactional(readOnly = true)
+    public PostResponse singleRead(Long postId){
+        /**
+         * 게시물 단건 조회.
+         */
+        return postHelper.singleRead(postId);
     }
 }

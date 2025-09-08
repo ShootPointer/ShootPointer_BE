@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.post.helper;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
+import com.midas.shootpointer.domain.post.dto.PostResponse;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
@@ -46,5 +47,11 @@ public class PostUtilImpl implements PostUtil{
     @Transactional
     public PostEntity findByPostByPostIdWithPessimisticLock(Long postId) {
         return postQueryRepository.findByPostIdWithPessimisticLock(postId);
+    }
+
+    @Override
+    public PostResponse singleRead(Long postId) {
+        return postQueryRepository.findPostResponseDtoByPostId(postId)
+                .orElseThrow(()->new CustomException(ErrorCode.IS_NOT_EXIST_POST));
     }
 }
