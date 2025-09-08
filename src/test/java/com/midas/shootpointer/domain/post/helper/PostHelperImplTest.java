@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.post.helper;
 
+import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import org.junit.jupiter.api.Assertions;
@@ -28,6 +29,12 @@ class PostHelperImplTest {
 
     @Mock
     private PostEntity postEntity;
+
+    @Mock
+    private PostEntity newPostEntity;
+
+    @Mock
+    private HighlightEntity highlightEntity;
 
     @Mock
     private Member member;
@@ -83,5 +90,32 @@ class PostHelperImplTest {
 
         //then
         verify(postUtil,times(1)).save(postEntity);
+    }
+
+    @Test
+    @DisplayName("게시물id로 게시물 entity를 조회합니다. - postUtil.findPostByPostId(postId) 메서드가 실행되는지 확인합니다.")
+    void find(){
+        //given
+        Long postId=111L;
+        when(postUtil.findPostByPostId(postId)).thenReturn(postEntity);
+
+        //when
+        postHelper.findPostByPostId(postId);
+
+        //then
+        verify(postUtil,times(1)).findPostByPostId(postId);
+    }
+
+    @Test
+    @DisplayName("게시물을 수정합니다. - postUtil.update(postRequest,post,highlight) 메서드가 실행되는지 확인합니다.")
+    void update(){
+        //given
+        when(postUtil.update(newPostEntity,postEntity,highlightEntity)).thenReturn(postEntity);
+
+        //when
+        postHelper.update(newPostEntity,postEntity,highlightEntity);
+
+        //then
+        verify(postUtil,times(1)).update(newPostEntity,postEntity,highlightEntity);
     }
 }
