@@ -128,7 +128,7 @@ class PostManagerTest {
         PostEntity mockPostEntity = spy(mockPostEntity("",mockMember));
         Long postId = 111L;
 
-        when(postQueryRepository.findByPostId(postId)).thenReturn(Optional.of(mockPostEntity));
+        when(postHelper.findPostByPostId(postId)).thenReturn(mockPostEntity);
         doNothing().when(postHelper).isMembersPost(mockPostEntity, mockMember);
 
         //when
@@ -136,7 +136,7 @@ class PostManagerTest {
 
         //then
         assertThat(deletedPostId).isEqualTo(mockPostEntity.getPostId());
-        verify(postQueryRepository, times(1)).findByPostId(postId);
+        verify(postHelper, times(1)).findPostByPostId(postId);
         verify(postHelper, times(1)).isMembersPost(mockPostEntity, mockMember);
         verify(mockPostEntity, times(1)).delete();
 
