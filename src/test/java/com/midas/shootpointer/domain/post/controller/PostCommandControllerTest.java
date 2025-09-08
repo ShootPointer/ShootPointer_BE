@@ -56,7 +56,7 @@ class PostCommandControllerTest {
         PostEntity post=mockPost();
 
         //when
-        when(postMapper.dtoToEntity(postRequest,any(Member.class))).thenReturn(post);
+        when(postMapper.dtoToEntity(any(PostRequest.class),any(Member.class))).thenReturn(post);
         when(postCommandService.create(any(PostEntity.class),any(Member.class)))
                         .thenReturn(savedPostId);
 
@@ -81,7 +81,7 @@ class PostCommandControllerTest {
         PostRequest postRequest=mockPostRequest();
         PostEntity post=mockPost();
         //when
-        when(postMapper.dtoToEntity(postRequest,any(Member.class))).thenReturn(post);
+        when(postMapper.dtoToEntity(any(PostRequest.class),any(Member.class))).thenReturn(post);
         when(postCommandService.update(any(PostEntity.class),any(Member.class),anyLong()))
                 .thenReturn(Long.decode(postId));
 
