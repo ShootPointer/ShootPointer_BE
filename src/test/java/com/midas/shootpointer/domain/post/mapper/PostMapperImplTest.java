@@ -20,7 +20,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 class PostMapperImplTest {
     @Autowired
     private PostMapperImpl postMapper;

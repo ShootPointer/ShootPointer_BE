@@ -35,7 +35,7 @@ import static org.mockito.Mockito.*;
  * 통합 테스트로 진행.
  */
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 class PostUtilImplTest {
     @Autowired
     private PostUtilImpl postUtil;
