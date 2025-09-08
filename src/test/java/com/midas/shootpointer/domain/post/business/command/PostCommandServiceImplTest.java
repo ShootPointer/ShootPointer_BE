@@ -29,25 +29,20 @@ class PostCommandServiceImplTest {
     @Mock
     private PostManager postManager;
 
-    @Mock
-    private PostMapper postMapper;
-
     @Test
     @DisplayName("게시물 저장 시 PostDto->PostEntity 호출 여부를 확인하고 postManager-save 호출 여부를 확인합니다.")
     void create(){
         //given
-        PostRequest request=mockPostRequest();
-        PostEntity postEntity=mockPostEntity();
+        PostEntity postEntity=mockPostEntity("123");
         Member member=mockMember();
+        UUID highlightId=postEntity.getHighlight().getHighlightId();
 
         //when
-        when(postMapper.dtoToEntity(request,member)).thenReturn(postEntity);
-        when(postManager.save(member,postEntity,request.getHighlightId())).thenReturn(111L);
+        when(postManager.save(member,postEntity,highlightId)).thenReturn(111L);
 
         //then
-        Long createdPostId=postCommandService.create(request,member);
-        verify(postMapper,times(1)).dtoToEntity(request,member);
-        verify(postManager,times(1)).save(member,postEntity,request.getHighlightId());
+        Long createdPostId=postCommandService.create(postEntity,member);
+        verify(postManager,times(1)).save(member,postEntity,highlightId);
         assertThat(createdPostId).isEqualTo(111L);
     }
 
@@ -55,16 +50,16 @@ class PostCommandServiceImplTest {
     @DisplayName("게시물 수정 시 postManager-update 호출 여부를 확인합니다.")
     void update(){
         //given
-        PostRequest request=mockPostRequest();
         Long postId=111L;
         Member member=mockMember();
+        PostEntity newPost=mockPostEntity("new");
 
         //when
-        when(postManager.update(request,member,postId)).thenReturn(111L);
+        when(postManager.update(newPost,member,postId)).thenReturn(111L);
 
         //then
-        Long createdPostId=postCommandService.update(request,member,postId);
-        verify(postManager,times(1)).update(request,member,postId);
+        Long createdPostId=postCommandService.update(newPost,member,postId);
+        verify(postManager,times(1)).update(newPost,member,postId);
         assertThat(createdPostId).isEqualTo(111L);
     }
 
@@ -93,10 +88,10 @@ class PostCommandServiceImplTest {
     /**
      * mock postEntity
      */
-    private PostEntity mockPostEntity(){
+    private PostEntity mockPostEntity(String str){
         return PostEntity.builder()
-                .title("title")
-                .content("content")
+                .title("title"+str)
+                .content("content"+str)
                 .hashTag(HashTag.TREE_POINT)
                 .build();
     }
