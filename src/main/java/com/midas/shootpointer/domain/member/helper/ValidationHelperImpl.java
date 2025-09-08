@@ -29,8 +29,4 @@ public class ValidationHelperImpl implements ValidationHelper {
 		return processingCodes.contains(code);
 	}
 	
-	@Override
-	public void releaseKakaoCode(String code) {
-		processingCodes.remove(code);
-	}
 }
