@@ -18,17 +18,4 @@ public class PostMapperImpl implements PostMapper{
                 .member(member)
                 .build();
     }
-
-    @Override
-    public PostResponse entityToDto(PostEntity postEntity) {
-        return PostResponse.builder()
-                .content(postEntity.getContent())
-                .createdAt(postEntity.getCreatedAt())
-                .postId(postEntity.getPostId())
-                .hashTag(postEntity.getHashTag())
-                //.highlightUrl(postEntity.getHighlight().getHighlightURL())
-                .modifiedAt(postEntity.getModifiedAt())
-                .title(postEntity.getTitle())
-                .build();
-    }
 }
