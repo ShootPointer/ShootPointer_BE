@@ -1,10 +1,13 @@
 package com.midas.shootpointer.domain.member.controller;
 
 import com.midas.shootpointer.domain.member.business.MemberManager;
+import com.midas.shootpointer.domain.member.business.command.KakaoService;
+import com.midas.shootpointer.domain.member.business.command.MemberCommandService;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
+import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.entity.MsgEntity;
-import com.midas.shootpointer.domain.member.helper.RequestHelper;
 import com.midas.shootpointer.global.annotation.CustomLog;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/kakao")
-public class KakaoController {
+@Tag(name = "회원 관리", description = "회원 관리 API")
+public class MemberCommandController {
     
-    private final MemberManager memberManager;
-    private final RequestHelper requestHelper;
+    private final MemberCommandService memberCommandService;
     
     @CustomLog("카카오 소셜 로그인 및 JWT 발급")
     @GetMapping("/callback")
     public ResponseEntity<MsgEntity> callback(HttpServletRequest request) {
-        // HTTP 요청 검증 및 코드 추출
-        String code = requestHelper.validateAndExtractKakaoCallback(request);
+        // 모든 비즈니스 로직은 Service Layer에서 처리
+        Member member = memberCommandService.processKakaoLogin(request);
         
-        // 비즈니스 로직 처리 (JWT 토큰 생성 포함)
-        KakaoDTO kakaoInfo = memberManager.processKakaoLogin(code);
+        KakaoDTO kakaoInfo = KakaoDTO.builder()
+            .email(member.getEmail())
+            .nickname(member.getUsername())
+            .build();
         
         return ResponseEntity.ok().body(new MsgEntity("Success", kakaoInfo));
     }
+    
 }
