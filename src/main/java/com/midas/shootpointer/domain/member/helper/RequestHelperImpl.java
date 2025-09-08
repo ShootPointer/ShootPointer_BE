@@ -10,8 +10,6 @@ public class RequestHelperImpl implements RequestHelper {
 	
 	@Override
 	public String validateAndExtractKakaoCallback(HttpServletRequest request) {
-		// 요청 정보 로깅
-		logRequestDetails(request);
 		
 		// 에러 체크
 		if (hasKakaoError(request)) {
@@ -27,17 +25,6 @@ public class RequestHelperImpl implements RequestHelper {
 		}
 		
 		return code;
-	}
-	
-	@Override
-	public void logRequestDetails(HttpServletRequest request) {
-		System.err.println("=== KAKAO CALLBACK DEBUG ===");
-		System.err.println("Code: " + request.getParameter("code"));
-		System.err.println("Error: " + request.getParameter("error"));
-		System.err.println("All parameters: " + request.getParameterMap());
-		System.err.println("Request URL: " + request.getRequestURL());
-		System.err.println("Query String: " + request.getQueryString());
-		System.err.println("===========================");
 	}
 	
 	@Override

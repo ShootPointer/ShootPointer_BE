@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface RequestHelper {
 	String validateAndExtractKakaoCallback(HttpServletRequest request);
-	void logRequestDetails(HttpServletRequest request);
 	boolean hasKakaoError(HttpServletRequest request);
 	String getKakaoErrorDetails(HttpServletRequest request);
 	String extractKakaoCode(HttpServletRequest request);
