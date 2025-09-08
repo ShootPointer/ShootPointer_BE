@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.member.controller;
 
 import com.midas.shootpointer.domain.member.business.query.MemberQueryService;
 import com.midas.shootpointer.domain.member.dto.MemberResponseDto;
+import com.midas.shootpointer.domain.member.mapper.MemberMapper;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberQueryController {
 	
 	private final MemberQueryService memberQueryService;
+	private final MemberMapper memberMapper;
 	
 	/**
 	 * 이메일을 통한 회원 정보 조회
@@ -28,7 +30,10 @@ public class MemberQueryController {
 	@GetMapping("/email/{email}")
 	public ResponseEntity<ApiResponse<MemberResponseDto>> getMemberByEmail(@PathVariable String email) {
 		return memberQueryService.findByEmail(email)
-			.map(member -> ResponseEntity.ok(ApiResponse.ok(member)))
+			.map(member -> {
+				MemberResponseDto dto = memberMapper.entityToDto(member);
+				return ResponseEntity.ok(ApiResponse.ok(dto));
+			})
 			.orElse(ResponseEntity.notFound().build());
 	}
 }

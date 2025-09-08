@@ -1,10 +1,10 @@
 package com.midas.shootpointer.domain.member.business.query;
 
-import com.midas.shootpointer.domain.member.dto.MemberResponseDto;
+import com.midas.shootpointer.domain.member.entity.Member;
 import java.util.Optional;
 
 public interface MemberQueryService {
 	
-	Optional<MemberResponseDto> findByEmail(String email);
+	Optional<Member> findByEmail(String email);
 	
 }
