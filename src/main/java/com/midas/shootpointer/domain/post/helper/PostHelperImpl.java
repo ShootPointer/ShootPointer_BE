@@ -5,6 +5,7 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
 import com.midas.shootpointer.domain.post.dto.PostResponse;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class PostHelperImpl implements PostHelper{
     private final PostValidation postValidation;
     private final PostUtil postUtil;
+    private final PostMapper postMapper;
 
     @Override
     public void isValidateHighlightId(Member member, UUID highlightId) {
@@ -52,8 +54,4 @@ public class PostHelperImpl implements PostHelper{
         return postUtil.findByPostByPostIdWithPessimisticLock(postId);
     }
 
-    @Override
-    public PostResponse singleRead(Long postId) {
-        return postUtil.singleRead(postId);
-    }
 }

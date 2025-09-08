@@ -20,21 +20,4 @@ public interface PostQueryRepository extends JpaRepository<PostEntity,Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query(value = "SELECT p FROM PostEntity AS p WHERE p.postId=:postId")
     PostEntity findByPostIdWithPessimisticLock(@Param(value = "postId")Long postId);
-
-    /**
-     * 게시물 단 건 조회
-     */
-    @Query(value = "SELECT new com.midas.shootpointer.domain.post.dto.PostResponse(" +
-                   "p.postId," +
-                   "p.title," +
-                   "p.content," +
-                   "p.highlight.highlightURL," +
-                   "p.likeCnt,p.createdAt," +
-                   "p.modifiedAt," +
-                   "p.hashTag" +
-                   ") " +
-                   "FROM PostEntity p " +
-                   "WHERE p.postId = :postId"
-    )
-    Optional<PostResponse> findPostResponseDtoByPostId(@Param(value = "postId") Long postId);
 }

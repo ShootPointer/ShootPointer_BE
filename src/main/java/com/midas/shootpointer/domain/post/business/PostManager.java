@@ -7,6 +7,7 @@ import com.midas.shootpointer.domain.post.dto.PostRequest;
 import com.midas.shootpointer.domain.post.dto.PostResponse;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
+import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
@@ -22,6 +23,7 @@ import java.util.UUID;
 public class PostManager {
     private final PostHelper postHelper;
     private final HighlightHelper highlightHelper;
+    private final PostMapper postMapper;
 
     @Transactional
     public Long save(Member member, PostEntity postEntity, UUID highlightId){
@@ -106,8 +108,8 @@ public class PostManager {
     @Transactional(readOnly = true)
     public PostResponse singleRead(Long postId){
         /**
-         * 게시물 단건 조회.
+         * 1. postMapper : entity -> dto 변환.
          */
-        return postHelper.singleRead(postId);
+        return postMapper.entityToDto(postHelper.findPostByPostId(postId));
     }
 }

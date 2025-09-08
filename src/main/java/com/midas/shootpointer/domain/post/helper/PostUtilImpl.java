@@ -49,9 +49,4 @@ public class PostUtilImpl implements PostUtil{
         return postQueryRepository.findByPostIdWithPessimisticLock(postId);
     }
 
-    @Override
-    public PostResponse singleRead(Long postId) {
-        return postQueryRepository.findPostResponseDtoByPostId(postId)
-                .orElseThrow(()->new CustomException(ErrorCode.IS_NOT_EXIST_POST));
-    }
 }

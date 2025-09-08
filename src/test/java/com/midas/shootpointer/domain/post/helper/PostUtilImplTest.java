@@ -169,52 +169,6 @@ class PostUtilImplTest {
         assertThat(findPost.getMember().getMemberId()).isEqualTo(member.getMemberId());
     }
 
-    @DisplayName("게시판의 Id를 이용하여 게시물 단건 조회합니다._SUCCESS")
-    @Test
-    void singleRead_SUCCESS(){
-        //given
-        Member member=memberRepository.save(makeMember());
-        HighlightEntity highlight=highlightCommandRepository.save(makeHighlight(member));
-        PostEntity post=postCommandRepository.save(makeMockPost(member,highlight));
-        Long postId=post.getPostId();
-        PostResponse expectedResponse=postMapper.entityToDto(post);
-
-        //when
-        PostResponse findResponse=postUtil.singleRead(postId);
-
-        //then
-        assertThat(findResponse.getHighlightUrl()).isEqualTo(expectedResponse.getHighlightUrl());
-        assertThat(findResponse.getLikeCnt()).isEqualTo(expectedResponse.getLikeCnt());
-        assertThat(findResponse.getTitle()).isEqualTo(expectedResponse.getTitle());
-        assertThat(findResponse.getHashTag()).isEqualTo(expectedResponse.getHashTag());
-        assertThat(findResponse.getContent()).isEqualTo(expectedResponse.getContent());
-        assertThat(findResponse.getPostId()).isEqualTo(expectedResponse.getPostId());
-        assertThat(findResponse.getCreatedAt()).isEqualTo(expectedResponse.getCreatedAt());
-        assertThat(findResponse.getModifiedAt()).isEqualTo(expectedResponse.getModifiedAt());
-    }
-
-
-    @DisplayName("게시판의 Id를 이용하여 게시물 단건 조회 실페 시 IS_NOT_EXIST_POST 예외 처리 합니다._FAIL")
-    @Test
-    void singleRead_FAIL(){
-        //given
-        Member member=memberRepository.save(makeMember());
-        HighlightEntity highlight=highlightCommandRepository.save(makeHighlight(member));
-        PostEntity post=postCommandRepository.save(makeMockPost(member,highlight));
-        Long failedPostId=123124125L;
-
-
-        //when
-        CustomException exception=catchThrowableOfType(()->
-                postUtil.singleRead(failedPostId),
-                CustomException.class
-        );
-
-        //then
-        assertThat(exception).isNotNull();
-        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.IS_NOT_EXIST_POST);
-    }
-
     private PostEntity makeMockPost(Member member,HighlightEntity highlight){
         return PostEntity.builder()
                 .title("title")

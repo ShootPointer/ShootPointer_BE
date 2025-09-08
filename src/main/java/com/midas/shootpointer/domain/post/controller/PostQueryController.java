@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.post.controller;
 
 import com.midas.shootpointer.domain.post.business.query.PostQueryService;
 import com.midas.shootpointer.domain.post.dto.PostResponse;
+import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "게시판 - 조회",description = "게시물 R(READ) API")
 public class PostQueryController {
     private final PostQueryService postQueryService;
+    private final PostMapper postMapper;
 
     @Operation(
             summary = "게시물 등록 API - [담당자 : 김도연]",

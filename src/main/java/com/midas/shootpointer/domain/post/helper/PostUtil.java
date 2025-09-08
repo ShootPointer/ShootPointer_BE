@@ -10,5 +10,4 @@ public interface PostUtil {
     PostEntity save(PostEntity postEntity);
     PostEntity update(PostEntity newPost, PostEntity existedPost, HighlightEntity highlight);
     PostEntity findByPostByPostIdWithPessimisticLock(Long postId);
-    PostResponse singleRead(Long postId);
 }

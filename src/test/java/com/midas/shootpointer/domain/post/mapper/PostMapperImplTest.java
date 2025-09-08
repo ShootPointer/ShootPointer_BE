@@ -1,5 +1,7 @@
 package com.midas.shootpointer.domain.post.mapper;
 
+import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberRepository;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
@@ -31,6 +33,9 @@ class PostMapperImplTest {
     @Autowired
     private PostCommandRepository postCommandRepository;
 
+    @Autowired
+    private HighlightCommandRepository highlightCommandRepository;
+
     @Test
     @DisplayName("Dto를 Entity로 매핑합니다.")
     void dtoToEntity_SUCCESS(){
@@ -59,28 +64,33 @@ class PostMapperImplTest {
         //given
         String content="test_test_test_test_test_test_test_test_test_test_test_test_";
         String title="title";
-        UUID memberId=UUID.randomUUID();
-        Long postId=12312313L;
-        Member mock=memberRepository.findByMemberId(memberId)
-                .orElseGet(this::makeMockMember);
+
+        Member mock=memberRepository.save(makeMockMember());
+        HighlightEntity highlight=highlightCommandRepository.save(HighlightEntity.builder()
+                .highlightKey(UUID.randomUUID())
+                .member(mock)
+                .highlightURL("testst")
+                .build());
 
         PostEntity postEntity=PostEntity.builder()
                 .title(title)
                 .content(content)
+                .highlight(highlight)
                 .hashTag(HashTag.TREE_POINT)
                 .member(mock)
                 .build();
-        PostEntity finalPostEntity = postEntity;
-        postEntity=postCommandRepository.findById(postId)
-                .orElseGet(()-> finalPostEntity);
+
+
 
         //when
         PostResponse postResponse=postMapper.entityToDto(postEntity);
 
         //then
-        assertThat(postResponse.getContent()).isEqualTo(content);
-        assertThat(postResponse.getHashTag()).isEqualTo(HashTag.TREE_POINT);
-        assertThat(postResponse.getTitle()).isEqualTo(title);
+        assertThat(postResponse.getContent()).isEqualTo(postEntity.getContent());
+        assertThat(postResponse.getHashTag()).isEqualTo(postEntity.getHashTag());
+        assertThat(postResponse.getHighlightUrl()).isEqualTo(postEntity.getHighlight().getHighlightURL());
+        assertThat(postResponse.getTitle()).isEqualTo(postEntity.getTitle());
+        assertThat(postResponse.getLikeCnt()).isEqualTo(postEntity.getLikeCnt());
         assertThat(postResponse.getPostId()).isEqualTo(postEntity.getPostId());
         assertThat(postResponse.getCreatedAt()).isEqualTo(postEntity.getCreatedAt());
         assertThat(postResponse.getModifiedAt()).isEqualTo(postEntity.getModifiedAt());
@@ -92,7 +102,6 @@ class PostMapperImplTest {
     private Member makeMockMember(){
         return Member.builder()
                 .email("test@naver.com")
-                .memberId(UUID.randomUUID())
                 .username("teest")
                 .build();
     }
