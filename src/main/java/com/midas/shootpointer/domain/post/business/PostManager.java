@@ -22,7 +22,7 @@ public class PostManager {
     private final PostHelper postHelper;
     private final HighlightHelper highlightHelper;
 
-
+    @Transactional
     public Long save(Member member, PostEntity postEntity, UUID highlightId){
         /**
          * 1.하이라이트 영상 불러오기.

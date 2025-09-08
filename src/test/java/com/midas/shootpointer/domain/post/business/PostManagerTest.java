@@ -56,73 +56,76 @@ class PostManagerTest {
     void save() {
         //given
         Member mockMember=mockMember();
-        PostEntity mockPostEntity=mockPostEntity();
         UUID randomUUID=UUID.randomUUID();
-        HighlightEntity mockHighlight=mockHighlight();
+        HighlightEntity mockHighlight=mockHighlight(randomUUID);
+        PostEntity mockPostEntity=mockPostEntity("",mockMember);
+
+        //저장된 게시물
+        PostEntity savedPostEntity=createAndSavedPostEntity(mockHighlight,mockMember,111L,"");
 
         when(highlightHelper.findHighlightByHighlightId(randomUUID)).thenReturn(mockHighlight);
         doNothing().when(postHelper).isValidateHighlightId(mockMember,randomUUID);
         doNothing().when(postHelper).isValidPostHashTag(mockPostEntity.getHashTag());
-        when(postCommandRepository.save(mockPostEntity))
-                .thenReturn(PostEntity.builder()
-                        .content("content")
-                        .hashTag(HashTag.TREE_POINT)
-                        .title("title")
-                        .postId(111L)
-                        .build()
-                );
+        when(postHelper.save(any(PostEntity.class))).thenReturn(savedPostEntity);
+
 
         //when
         Long savedPostId=postManager.save(mockMember,mockPostEntity,randomUUID);
 
         //then
         assertThat(savedPostId).isEqualTo(111L);
+        assertThat(mockPostEntity.getHighlight()).isEqualTo(mockHighlight);
+
         verify(highlightHelper,times(1)).findHighlightByHighlightId(randomUUID);
         verify(postHelper,times(1)).isValidateHighlightId(mockMember,randomUUID);
         verify(postHelper,times(1)).isValidPostHashTag(mockPostEntity.getHashTag());
     }
 
+
     @Test
     @DisplayName("postHelper의 다양한 유효성 검증을 진행하고 게시물을 수정하고 성공 시 postId를 반환합니다.")
     void update(){
         Member mockMember = mockMember();
-        PostEntity mockPostEntity = spy(mockPostEntity());
         UUID highlightId = UUID.randomUUID();
-        PostRequest postRequest = PostRequest.of(highlightId, "title2", "content2", HashTag.TWO_POINT);
-        HighlightEntity mockHighlight = mockHighlight();
+        HighlightEntity mockHighlight = mockHighlight(highlightId);
+        PostEntity newPost=spy(PostEntity.builder()
+                .content("content2")
+                .hashTag(HashTag.TWO_POINT)
+                .highlight(mockHighlight)
+                .member(mockMember)
+                .title("title2")
+                .build());
         Long postId = 111L;
+        PostEntity existedPost=createAndSavedPostEntity(mockHighlight,mockMember,postId,"exist");
 
-        when(postQueryRepository.findByPostId(postId)).thenReturn(Optional.of(mockPostEntity));
-        doNothing().when(postHelper).isMembersPost(mockPostEntity, mockMember);
+        when(postHelper.findPostByPostId(postId)).thenReturn(existedPost);
+
+        doNothing().when(postHelper).isMembersPost(existedPost, mockMember);
+
         when(highlightHelper.findHighlightByHighlightId(highlightId)).thenReturn(mockHighlight);
         doNothing().when(postHelper).isValidateHighlightId(mockMember, highlightId);
-        doNothing().when(postHelper).isValidPostHashTag(postRequest.getHashTag());
+        doNothing().when(postHelper).isValidPostHashTag(any(HashTag.class));
 
-        when(postCommandRepository.save(any(PostEntity.class))).thenReturn(mockPostEntity);
+        when(postHelper.update(newPost,existedPost,mockHighlight))
+                .thenReturn(newPost);
 
         //when
-        Long updatedPostId = postManager.update(postRequest, mockMember, postId);
+        Long updatedPostId = postManager.update(newPost, mockMember, postId);
 
         //then
-        assertThat(updatedPostId).isEqualTo(mockPostEntity.getPostId());
-        verify(postQueryRepository, times(1)).findByPostId(postId);
-        verify(postHelper, times(1)).isMembersPost(mockPostEntity, mockMember);
+        assertThat(updatedPostId).isEqualTo(newPost.getPostId());
+        verify(postHelper, times(1)).findPostByPostId(postId);
+        verify(postHelper, times(1)).isMembersPost(existedPost, mockMember);
         verify(postHelper, times(1)).isValidateHighlightId(mockMember, highlightId);
-        verify(postHelper, times(1)).isValidPostHashTag(postRequest.getHashTag());
-        verify(mockPostEntity, times(1)).update(
-                postRequest.getTitle(),
-                postRequest.getContent(),
-                postRequest.getHashTag(),
-                mockHighlight
-        );
-        verify(postCommandRepository, times(1)).save(mockPostEntity);
+        verify(postHelper, times(1)).isValidPostHashTag(newPost.getHashTag());
+        verify(postHelper,times(1)).update(newPost,existedPost,mockHighlight);
     }
 
     @Test
     @DisplayName("postHelper의 다양한 유효성 검증을 진행하고 게시물을 삭제하고 성공 시 postId를 반환합니다.")
     void delete(){
         Member mockMember = mockMember();
-        PostEntity mockPostEntity = spy(mockPostEntity());
+        PostEntity mockPostEntity = spy(mockPostEntity("",mockMember));
         Long postId = 111L;
 
         when(postQueryRepository.findByPostId(postId)).thenReturn(Optional.of(mockPostEntity));
@@ -142,38 +145,25 @@ class PostManagerTest {
      * mock 하이라이트 영상
      * @return HighlightEntity
      */
-    private HighlightEntity mockHighlight() {
+    private HighlightEntity mockHighlight(UUID highlightId) {
         return HighlightEntity.builder()
+                .highlightId(highlightId)
                 .highlightURL("test")
                 .highlightKey(UUID.randomUUID())
                 .build();
     }
 
-    /**
-     * mock 게시 요청 dto 생성
-     * @return PostRequest
-     */
-    private PostRequest mockPostRequest(){
-        return PostRequest.of(UUID.randomUUID(),"title","content", HashTag.TREE_POINT);
-    }
-
-    /**
-     * mock 수정 요청 dto 생성
-     * @return PostRequest
-     */
-    private PostRequest mockUpdatePostRequest(){
-        return PostRequest.of(UUID.randomUUID(),"title2","content2", HashTag.TWO_POINT);
-    }
 
 
     /**
      * mock 게시물 엔티티
      * @return PostEntity
      */
-    private PostEntity mockPostEntity(){
+    private PostEntity mockPostEntity(String str,Member member){
         return PostEntity.builder()
-                .title("title")
-                .content("content")
+                .title("title"+str)
+                .content("content"+str)
+                .member(member)
                 .hashTag(HashTag.TREE_POINT)
                 .build();
     }
@@ -186,6 +176,17 @@ class PostManagerTest {
                 .memberId(UUID.randomUUID())
                 .email("test@naver.com")
                 .username("test")
+                .build();
+    }
+
+    private PostEntity createAndSavedPostEntity(HighlightEntity highlight,Member member,Long postId,String str){
+        return PostEntity.builder()
+                .member(member)
+                .postId(postId)
+                .highlight(highlight)
+                .hashTag(HashTag.TREE_POINT)
+                .content("content"+str)
+                .title("title"+str)
                 .build();
     }
 }
