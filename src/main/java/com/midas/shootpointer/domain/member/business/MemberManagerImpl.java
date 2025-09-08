@@ -23,21 +23,15 @@ public class MemberManagerImpl implements MemberManager {
         // 1. 코드 검증
         validationHelper.validateKakaoCode(code);
         
-        try {
-            // 2. 카카오에서 사용자 정보 획득
-            KakaoDTO kakaoInfo = kakaoService.getKakaoUserInfo(code);
-            
-            // 3. 회원 처리 (신규 가입 또는 기존 회원 조회)
-            Member member = memberService.findOrCreateMember(kakaoInfo);
-            
-            // 4. JWT 토큰 생성 및 설정
-            tokenService.generateTokens(member, kakaoInfo);
-            
-            return kakaoInfo;
-            
-        } finally {
-            // 5. 코드 처리 완료 후 검증 해제
-            validationHelper.releaseKakaoCode(code);
-        }
+        // 2. 카카오에서 사용자 정보 획득
+        KakaoDTO kakaoInfo = kakaoService.getKakaoUserInfo(code);
+        
+        // 3. 회원 처리 (신규 가입 또는 기존 회원 조회)
+        Member member = memberService.findOrCreateMember(kakaoInfo);
+        
+        // 4. JWT 토큰 생성 및 설정
+        tokenService.generateTokens(member, kakaoInfo);
+        return kakaoInfo;
+        
     }
 }
