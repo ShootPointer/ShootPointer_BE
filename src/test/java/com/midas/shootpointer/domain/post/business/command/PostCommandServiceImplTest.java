@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.post.business.command;
 
+import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.business.PostManager;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
@@ -33,8 +34,9 @@ class PostCommandServiceImplTest {
     @DisplayName("게시물 저장 시 PostDto->PostEntity 호출 여부를 확인하고 postManager-save 호출 여부를 확인합니다.")
     void create(){
         //given
-        PostEntity postEntity=mockPostEntity("123");
         Member member=mockMember();
+        HighlightEntity highlight=mockHighlightEntity(member);
+        PostEntity postEntity=mockPostEntity("123",highlight);
         UUID highlightId=postEntity.getHighlight().getHighlightId();
 
         //when
@@ -52,7 +54,8 @@ class PostCommandServiceImplTest {
         //given
         Long postId=111L;
         Member member=mockMember();
-        PostEntity newPost=mockPostEntity("new");
+        HighlightEntity highlightEntity=mockHighlightEntity(member);
+        PostEntity newPost=mockPostEntity("new",highlightEntity);
 
         //when
         when(postManager.update(newPost,member,postId)).thenReturn(111L);
@@ -88,11 +91,24 @@ class PostCommandServiceImplTest {
     /**
      * mock postEntity
      */
-    private PostEntity mockPostEntity(String str){
+    private PostEntity mockPostEntity(String str,HighlightEntity highlight){
         return PostEntity.builder()
                 .title("title"+str)
                 .content("content"+str)
                 .hashTag(HashTag.TREE_POINT)
+                .highlight(highlight)
+                .build();
+    }
+
+    /**
+     * mock highlight
+     */
+    private HighlightEntity mockHighlightEntity(Member member){
+        return HighlightEntity.builder()
+                .highlightId(UUID.randomUUID())
+                .highlightURL("testetst")
+                .member(member)
+                .highlightKey(UUID.randomUUID())
                 .build();
     }
 
