@@ -34,7 +34,9 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 	}
 	
 	@Override
-	public UUID deleteMember(UUID memberId, Member currentMember) {
+	public UUID deleteMember(UUID memberId) {
+		Member currentMember = memberManager.findMemberById(memberId);
+		
 		return memberManager.deleteMember(memberId, currentMember);
 	}
 	
