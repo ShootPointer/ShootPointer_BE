@@ -7,7 +7,6 @@ import com.midas.shootpointer.domain.highlight.dto.UploadHighlight;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
 import com.midas.shootpointer.global.annotation.CustomLog;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
@@ -34,7 +33,6 @@ import java.util.UUID;
 public class HighlightCommandServiceImpl implements HighlightCommandService {
     private final HighlightCommandRepository highlightCommandRepository;
     private final HighlightQueryRepository highlightQueryRepository;
-    private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
     /*
     영상 크기 제한 100MB
