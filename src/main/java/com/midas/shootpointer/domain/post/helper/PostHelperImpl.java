@@ -1,6 +1,8 @@
 package com.midas.shootpointer.domain.post.helper;
 
+import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.post.dto.PostRequest;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -39,6 +41,11 @@ public class PostHelperImpl implements PostHelper{
         return postUtil.save(postEntity);
     }
 
+    @Override
+    public PostEntity update(PostEntity newPost, PostEntity existedPost, HighlightEntity highlight) {
+        return postUtil.update(newPost,existedPost,highlight);
+    }
+  
     @Override
     public PostEntity findByPostByPostIdWithPessimisticLock(Long postId) {
         return postUtil.findByPostByPostIdWithPessimisticLock(postId);

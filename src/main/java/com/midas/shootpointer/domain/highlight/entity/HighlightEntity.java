@@ -42,7 +42,7 @@ public class HighlightEntity extends BaseEntity {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "back_number_id",nullable = false)
+    @JoinColumn(name = "back_number_id")
     private BackNumberEntity backNumber;
 
     public void select(){
