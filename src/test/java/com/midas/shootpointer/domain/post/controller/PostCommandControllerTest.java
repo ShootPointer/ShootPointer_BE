@@ -5,6 +5,8 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.business.command.PostCommandService;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
 import com.midas.shootpointer.domain.post.entity.HashTag;
+import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,9 @@ class PostCommandControllerTest {
     @Mock
     private PostCommandService postCommandService;
 
+    @Mock
+    private PostMapper postMapper;
+
     private final String baseUrl="/api/post";
 
     @BeforeEach
@@ -48,8 +53,11 @@ class PostCommandControllerTest {
         //given
         Long savedPostId=111L;
         PostRequest postRequest=mockPostRequest();
+        PostEntity post=mockPost();
+
         //when
-        when(postCommandService.create(any(PostRequest.class),any(Member.class)))
+        when(postMapper.dtoToEntity(any(PostRequest.class),any(Member.class))).thenReturn(post);
+        when(postCommandService.create(any(PostEntity.class),any(Member.class)))
                         .thenReturn(savedPostId);
 
         //then
@@ -62,7 +70,7 @@ class PostCommandControllerTest {
                 .andExpect(jsonPath("$.data").value(111L))
                 .andDo(print());
 
-        verify(postCommandService,times(1)).create(any(PostRequest.class),any(Member.class));
+        verify(postCommandService,times(1)).create(any(PostEntity.class),any(Member.class));
     }
 
     @Test
@@ -71,8 +79,10 @@ class PostCommandControllerTest {
         //given
         String postId="111";
         PostRequest postRequest=mockPostRequest();
+        PostEntity post=mockPost();
         //when
-        when(postCommandService.update(any(PostRequest.class),any(Member.class),anyLong()))
+        when(postMapper.dtoToEntity(any(PostRequest.class),any(Member.class))).thenReturn(post);
+        when(postCommandService.update(any(PostEntity.class),any(Member.class),anyLong()))
                 .thenReturn(Long.decode(postId));
 
         //then
@@ -85,7 +95,7 @@ class PostCommandControllerTest {
                 .andExpect(jsonPath("$.data").value(111L))
                 .andDo(print());
 
-        verify(postCommandService,times(1)).update(any(PostRequest.class),any(Member.class),anyLong());
+        verify(postCommandService,times(1)).update(any(PostEntity.class),any(Member.class),anyLong());
     }
 
 
@@ -126,6 +136,17 @@ class PostCommandControllerTest {
                 .memberId(UUID.randomUUID())
                 .email("test@naver.com")
                 .username("test")
+                .build();
+    }
+
+    /**
+     * Mock PostEntity
+     */
+    private PostEntity mockPost(){
+        return PostEntity.builder()
+                .title("title")
+                .content("content")
+                .hashTag(HashTag.TREE_POINT)
                 .build();
     }
 }
