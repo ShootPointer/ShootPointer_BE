@@ -21,6 +21,7 @@ import java.util.Arrays;
 public class SecurityConfig {
     
     private final JwtHandler jwtHandler;
+    private final JwtUtil jwtUtil;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -31,7 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/**", "/oauth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtHandler),
+                .addFilterBefore(new JwtAuthenticationFilter(jwtHandler, jwtUtil),
                         org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
                 )
                 .httpBasic(Customizer.withDefaults());
