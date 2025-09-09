@@ -83,6 +83,7 @@ public class PostManager {
         return existedPost.getPostId();
     }
 
+    @Transactional
     public Long delete(Long postId,Member member){
         /**
          * 1. 게시물이 존재하는 지 여부

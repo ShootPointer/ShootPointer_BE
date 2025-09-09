@@ -39,7 +39,7 @@ public class PostUtilImpl implements PostUtil{
                 newPost.getHashTag(),
                 highlight
         );
-        return postCommandRepository.saveAndFlush(existedPost);
+        return postCommandRepository.save(existedPost);
     }
   
     @Override
