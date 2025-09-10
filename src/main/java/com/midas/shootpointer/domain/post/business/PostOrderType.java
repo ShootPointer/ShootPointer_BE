@@ -9,5 +9,9 @@ public enum PostOrderType {
     //인기순
     POPULAR,
     //최신순
-    LATEST
+    LATEST;
+
+    public static String getNameWithLowerCase(PostOrderType orderType){
+        return orderType.name().toLowerCase();
+    }
 }
