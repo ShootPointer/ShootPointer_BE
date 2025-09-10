@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class LikeUtilImplTest {
     @Autowired

@@ -3,7 +3,9 @@ package com.midas.shootpointer.domain.post.helper;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
+import com.midas.shootpointer.domain.post.dto.PostResponse;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,7 @@ import java.util.UUID;
 public class PostHelperImpl implements PostHelper{
     private final PostValidation postValidation;
     private final PostUtil postUtil;
+    private final PostMapper postMapper;
 
     @Override
     public void isValidateHighlightId(Member member, UUID highlightId) {
@@ -42,12 +45,13 @@ public class PostHelperImpl implements PostHelper{
     }
 
     @Override
-    public PostEntity update(PostEntity newPost, PostEntity existedPost, HighlightEntity highlight) {
-        return postUtil.update(newPost,existedPost,highlight);
+    public PostEntity update(PostEntity newPost, PostEntity oldPost, HighlightEntity highlight) {
+        return postUtil.update(newPost,oldPost,highlight);
     }
   
     @Override
     public PostEntity findByPostByPostIdWithPessimisticLock(Long postId) {
         return postUtil.findByPostByPostIdWithPessimisticLock(postId);
     }
+
 }

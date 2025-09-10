@@ -1,41 +1,51 @@
 package com.midas.shootpointer.domain.post.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.midas.shootpointer.domain.comment.dto.CommentResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@AllArgsConstructor
 @Getter
 @NoArgsConstructor
 @Builder
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 /**
  * 게시물 조회 dto
  */
 public class PostResponse {
     //게시물 Id
-    Long postId;
+    private Long postId;
 
     //게시물 제목
-    String title;
+    private String title;
 
     //게시물 내용
-    String content;
+    private String content;
 
     //동영상 url
-    String highlightUrl;
+    private String highlightUrl;
+
+    //좋아요 개수
+    private Integer likeCnt;
 
     //게시 시간
-    LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime createdAt;
 
     //수정 시간
-    LocalDateTime modifiedAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime modifiedAt;
 
     //해시 태그
-    HashTag hashTag;
+    private HashTag hashTag;
+
 }

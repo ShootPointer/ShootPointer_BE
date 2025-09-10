@@ -20,15 +20,16 @@ public class PostMapperImpl implements PostMapper{
     }
 
     @Override
-    public PostResponse entityToDto(PostEntity postEntity) {
+    public PostResponse entityToDto(PostEntity post) {
         return PostResponse.builder()
-                .content(postEntity.getContent())
-                .createdAt(postEntity.getCreatedAt())
-                .postId(postEntity.getPostId())
-                .hashTag(postEntity.getHashTag())
-                //.highlightUrl(postEntity.getHighlight().getHighlightURL())
-                .modifiedAt(postEntity.getModifiedAt())
-                .title(postEntity.getTitle())
+                .hashTag(post.getHashTag())
+                .postId(post.getPostId())
+                .title(post.getTitle())
+                .modifiedAt(post.getModifiedAt())
+                .highlightUrl(post.getHighlight().getHighlightURL())
+                .createdAt(post.getCreatedAt())
+                .content(post.getContent())
+                .likeCnt(post.getLikeCnt())
                 .build();
     }
 }

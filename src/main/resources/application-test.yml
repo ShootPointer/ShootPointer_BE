@@ -14,6 +14,9 @@ jwt:
   refresh_expiration_time: 259200000
 
 spring:
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
   main:
     allow-bean-definition-overriding: true
   application:

@@ -42,11 +42,11 @@ public class LikeController {
     ==========================**/
     @PostMapping("{postId}")
     public ResponseEntity<ApiResponse<Long>> create(
-            @PathVariable(value = "postId") String postId
+            @PathVariable(value = "postId") Long postId
     ) {
 
         Member member=new Member();
-        return ResponseEntity.ok(ApiResponse.created(likeCommandService.create(Long.parseLong(postId), member)));
+        return ResponseEntity.ok(ApiResponse.created(likeCommandService.create(postId, member)));
     }
 
     @Operation(
@@ -73,9 +73,9 @@ public class LikeController {
     ==========================**/
     @DeleteMapping("{postId}")
     public ResponseEntity<ApiResponse<Long>> delete(
-            @PathVariable(value = "postId") String postId
+            @PathVariable(value = "postId") Long postId
     ) {
         Member member=new Member();
-        return ResponseEntity.ok(ApiResponse.ok(likeCommandService.delete(Long.parseLong(postId), member)));
+        return ResponseEntity.ok(ApiResponse.ok(likeCommandService.delete(postId, member)));
     }
 }

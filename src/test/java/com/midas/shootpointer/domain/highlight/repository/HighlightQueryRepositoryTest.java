@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 @DataJpaTest
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 class HighlightQueryRepositoryTest {
     @Autowired
     private EntityManager em;

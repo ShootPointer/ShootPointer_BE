@@ -32,14 +32,14 @@ public class PostUtilImpl implements PostUtil{
     }
 
     @Override
-    public PostEntity update(PostEntity newPost, PostEntity existedPost, HighlightEntity highlight) {
-        existedPost.update(
+    public PostEntity update(PostEntity newPost, PostEntity oldPost, HighlightEntity highlight) {
+        oldPost.update(
                 newPost.getTitle(),
                 newPost.getContent(),
                 newPost.getHashTag(),
                 highlight
         );
-        return postCommandRepository.save(existedPost);
+        return postCommandRepository.saveAndFlush(oldPost);
     }
   
     @Override
@@ -47,4 +47,5 @@ public class PostUtilImpl implements PostUtil{
     public PostEntity findByPostByPostIdWithPessimisticLock(Long postId) {
         return postQueryRepository.findByPostIdWithPessimisticLock(postId);
     }
+
 }

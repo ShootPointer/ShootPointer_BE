@@ -4,9 +4,12 @@ import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
+import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
+import com.midas.shootpointer.domain.post.dto.PostResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.mapper.PostMapper;
+import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
@@ -35,16 +38,13 @@ import static org.mockito.Mockito.*;
  * 통합 테스트로 진행.
  */
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 class PostUtilImplTest {
     @Autowired
     private PostUtilImpl postUtil;
 
     @Autowired
-    private PostQueryRepository postQueryRepository;
-
-    @Autowired
-    private MemberQueryRepository memberRepository;
+    private MemberCommandRepository memberRepository;
 
     @Autowired
     private PostCommandRepository postCommandRepository;
@@ -52,13 +52,17 @@ class PostUtilImplTest {
     @Autowired
     private HighlightCommandRepository highlightCommandRepository;
 
+    @Autowired
+    private PostMapper postMapper;
+
 
     @Test
     @DisplayName("게시판 Id를 이용하여 게시물을 조회합니다._SUCCESS")
     void findPostByPostId() {
         //given
-        Member member=memberRepository.save(makeMember());
-        PostEntity post=postCommandRepository.save(makeMockPost(member));
+        Member member = memberRepository.save(makeMember());
+        HighlightEntity highlight=highlightCommandRepository.save(makeHighlight(member));
+        PostEntity post=postCommandRepository.save(makeMockPost(member,highlight));
 
         //when
         PostEntity findPost=postUtil.findPostByPostId(post.getPostId());
@@ -72,8 +76,9 @@ class PostUtilImplTest {
     @DisplayName("게시판 객체를 저장합니다._SUCCESS")
     void save() {
         //given
-        Member member=memberRepository.save(makeMember());
-        PostEntity post=makeMockPost(member);
+        Member member = memberRepository.save(makeMember());
+        HighlightEntity highlight=highlightCommandRepository.save(makeHighlight(member));
+        PostEntity post=postCommandRepository.save(makeMockPost(member,highlight));
 
         //when
         PostEntity savedPost=postUtil.save(post);
@@ -87,8 +92,9 @@ class PostUtilImplTest {
     @DisplayName("게시판 Id로 게시판 객체를 조회합니다._SUCCESS")
     void find_SUCCESS(){
         //given
-        Member member=memberRepository.save(makeMember());
-        PostEntity post=postCommandRepository.save(makeMockPost(member));
+        Member member = memberRepository.save(makeMember());
+        HighlightEntity highlight=highlightCommandRepository.save(makeHighlight(member));
+        PostEntity post=postCommandRepository.save(makeMockPost(member,highlight));
         Long postId=post.getPostId();
 
         //when
@@ -125,19 +131,20 @@ class PostUtilImplTest {
     void update_SUCCESS() {
         //given
         Member member = memberRepository.save(makeMember());
-        PostEntity post = postCommandRepository.save(makeMockPost(member));
-        HighlightEntity highlightEntity = highlightCommandRepository.save(makeHighlight(member));
+        HighlightEntity highlight=highlightCommandRepository.save(makeHighlight(member));
+        PostEntity post=postCommandRepository.save(makeMockPost(member,highlight));
+
 
         PostEntity newPost = PostEntity.builder()
                 .title("title2")
                 .member(member)
                 .content("content2")
-                .highlight(highlightEntity)
+                .highlight(highlight)
                 .hashTag(HashTag.TWO_POINT)
                 .build();
 
         //when
-        PostEntity updatedPost = postUtil.update(newPost, post, highlightEntity);
+        PostEntity updatedPost = postUtil.update(newPost, post, highlight);
 
         //then
         assertThat(updatedPost.getHashTag()).isEqualTo(newPost.getHashTag());
@@ -148,10 +155,12 @@ class PostUtilImplTest {
     }
 
     @DisplayName("게시판 Id를 이용하여 게시물을 조회합니다.-Pessimistic Lock 적용_SUCCESS")
+    @Test
     void findByPostId_with_pessimisticLock(){
         //given
         Member member=memberRepository.save(makeMember());
-        PostEntity post=postCommandRepository.save(makeMockPost(member));
+        HighlightEntity highlight=highlightCommandRepository.save(makeHighlight(member));
+        PostEntity post=postCommandRepository.save(makeMockPost(member,highlight));
 
         //when
         PostEntity findPost=postUtil.findByPostByPostIdWithPessimisticLock(post.getPostId());
@@ -161,10 +170,11 @@ class PostUtilImplTest {
         assertThat(findPost.getMember().getMemberId()).isEqualTo(member.getMemberId());
     }
 
-    private PostEntity makeMockPost(Member member){
+    private PostEntity makeMockPost(Member member,HighlightEntity highlight){
         return PostEntity.builder()
                 .title("title")
                 .member(member)
+                .highlight(highlight)
                 .content("content")
                 .hashTag(HashTag.TREE_POINT)
                 .build();

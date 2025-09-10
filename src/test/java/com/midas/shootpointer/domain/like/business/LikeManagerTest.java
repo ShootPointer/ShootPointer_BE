@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 @Transactional
 /**
  * 통합 테스트로 진행합니다.

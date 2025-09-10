@@ -86,7 +86,7 @@ public class PostCommandController {
     @PutMapping("{postId}")
     public ResponseEntity<ApiResponse<Long>> update(
           @RequestBody PostRequest request,
-          @PathVariable(value = "postId") String postId
+          @PathVariable(value = "postId") Long postId
     ){
         //TODO: member -> 현재 로그인한 멤버 가져오기.
         Member member=Member.builder()
@@ -95,7 +95,7 @@ public class PostCommandController {
                 .username("test")
                 .build();
         PostEntity entity=postMapper.dtoToEntity(request,member);
-        return ResponseEntity.ok(ApiResponse.ok(postCommandService.update(entity,member,Long.decode(postId))));
+        return ResponseEntity.ok(ApiResponse.ok(postCommandService.update(entity,member,postId)));
     }
 
 
@@ -123,7 +123,7 @@ public class PostCommandController {
     ==========================**/
     @DeleteMapping("{postId}")
     public ResponseEntity<ApiResponse<Long>> delete(
-            @PathVariable(value = "postId") String postId
+            @PathVariable(value = "postId") Long postId
     ){
         //TODO: member -> 현재 로그인한 멤버 가져오기.
         Member member=Member.builder()
@@ -131,7 +131,7 @@ public class PostCommandController {
                 .email("test@naver.com")
                 .username("test")
                 .build();
-        return ResponseEntity.ok(ApiResponse.ok(postCommandService.delete(member,Long.decode(postId))));
+        return ResponseEntity.ok(ApiResponse.ok(postCommandService.delete(member,postId)));
     }
 
 
