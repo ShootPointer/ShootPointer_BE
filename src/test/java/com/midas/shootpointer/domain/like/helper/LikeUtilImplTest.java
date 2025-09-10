@@ -4,7 +4,7 @@ import com.midas.shootpointer.domain.like.entity.LikeEntity;
 import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.like.repository.LikeQueryRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
+import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
@@ -36,7 +36,7 @@ class LikeUtilImplTest {
     private LikeUtilImpl likeUtil;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberQueryRepository memberRepository;
 
     @Autowired
     private PostCommandRepository postCommandRepository;

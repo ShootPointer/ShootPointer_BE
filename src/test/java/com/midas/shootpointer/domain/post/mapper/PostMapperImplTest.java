@@ -3,7 +3,7 @@ package com.midas.shootpointer.domain.post.mapper;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
+import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
 import com.midas.shootpointer.domain.post.dto.PostRequest;
 import com.midas.shootpointer.domain.post.dto.PostResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
@@ -28,7 +28,7 @@ class PostMapperImplTest {
     private PostMapperImpl postMapper;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberQueryRepository memberRepository;
 
     @Autowired
     private PostCommandRepository postCommandRepository;

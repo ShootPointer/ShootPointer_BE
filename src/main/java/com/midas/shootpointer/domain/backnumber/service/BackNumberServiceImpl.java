@@ -7,7 +7,7 @@ import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.backnumber.mapper.BackNumberMapper;
 import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
+import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
 import com.midas.shootpointer.domain.memberbacknumber.entity.MemberBackNumberEntity;
 import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import com.midas.shootpointer.global.annotation.CustomLog;
@@ -26,7 +26,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BackNumberServiceImpl implements BackNumberService{
     private final BackNumberRepository backNumberRepository;
-    private final MemberRepository memberRepository;
+    private final MemberQueryRepository memberQueryRepository;;
     private final MemberBackNumberRepository memberBackNumberRepository;
     private final OpenCVClient openCVClient;
     private final BackNumberMapper mapper;
@@ -50,7 +50,7 @@ public class BackNumberServiceImpl implements BackNumberService{
         UUID memberId = jwtUtil.getMemberId(token);
         //TODO: 임의로 멤버 id값 지정 및 예외처리 수정
 
-        Member member = memberRepository.findByMemberId(memberId)
+        Member member = memberQueryRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         //1. 요청 등 번호가 있는지 확인

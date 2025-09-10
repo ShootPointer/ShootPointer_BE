@@ -6,7 +6,7 @@ import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.like.entity.LikeEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
+import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
 import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
@@ -34,7 +34,7 @@ class LikeQueryRepositoryTest {
     private LikeQueryRepository likeQueryRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberQueryRepository memberRepository;
 
     @Autowired
     private PostCommandRepository postCommandRepository;

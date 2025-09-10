@@ -49,7 +49,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Test with Gradle
-        run: ./gradlew clean test jacocoTestReport --info --stacktrace
+        run: SPRING_PROFILES_ACTIVE=test ./gradlew clean test jacocoTestReport --info --stacktrace
         env: 
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
           SPRING_DATASOURCE_USERNAME: postgres
