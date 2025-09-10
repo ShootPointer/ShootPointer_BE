@@ -32,7 +32,9 @@ jacocoTestReport{
 							"**/global/dto/**",
 							"**/global/aop/**",
 							"**/global/entity/**",
-							"**/global/common/**"
+							"**/global/common/**",
+							"**/global/annotation/**",
+							"**/test/**"
 					])
 				})
 		)
