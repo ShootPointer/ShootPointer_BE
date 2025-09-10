@@ -35,7 +35,7 @@ public class PostResponse {
     private String highlightUrl;
 
     //좋아요 개수
-    private Integer likeCnt;
+    private Long likeCnt;
 
     //게시 시간
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")

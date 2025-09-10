@@ -61,7 +61,8 @@ public class PostQueryController {
     @GetMapping
     public ResponseEntity<ApiResponse<PostResponse>> multiRead(@RequestParam(required = false,defaultValue = "922337203685477580")Long postId,
                                                                @RequestParam(required = false,defaultValue = "10")int size,
-                                                               @RequestParam(required = false,defaultValue = "latest")String type){
-        return ResponseEntity.ok(ApiResponse.ok(postQueryService.multiRead(postId,size,type)));
+                                                               @RequestParam(required = false,defaultValue = "latest")String type,
+                                                               @RequestParam(required = false,defaultValue = "922337203685477580")Long likeCnt){
+        return ResponseEntity.ok(ApiResponse.ok(postQueryService.multiRead(postId,size,type,likeCnt)));
     }
 }

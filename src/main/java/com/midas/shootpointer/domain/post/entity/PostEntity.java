@@ -36,7 +36,7 @@ public class PostEntity extends BaseEntity {
     @Column(name = "like_cnt")
     @Builder.Default
     @Setter
-    private Integer likeCnt=0;
+    private Long likeCnt=0L;
 
     @ManyToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "member_id",nullable = false)
@@ -62,7 +62,7 @@ public class PostEntity extends BaseEntity {
         if(this.likeCnt>0){
             this.likeCnt--;
         }else{
-            this.likeCnt=0;
+            this.likeCnt=0L;
         }
     }
 
