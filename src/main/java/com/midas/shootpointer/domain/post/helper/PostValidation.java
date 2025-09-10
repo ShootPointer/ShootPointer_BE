@@ -11,5 +11,4 @@ public interface PostValidation {
     void isValidateHighlightId(Member member, UUID highlightId);
     void isValidPostHashTag(Object o);
     void isMembersPost(PostEntity postEntity,Member member);
-    PostOrderType isValidPostOrderType(String type);
 }

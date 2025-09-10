@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.post.helper;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.post.business.PostOrderType;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface PostUtil {
     PostEntity findByPostByPostIdWithPessimisticLock(Long postId);
     List<PostEntity> getLatestPostListBySliceAndNoOffset(Long postId,int size);
     List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId,int size,Long likeCnt);
+    PostOrderType isValidPostOrderType(String type);
 }

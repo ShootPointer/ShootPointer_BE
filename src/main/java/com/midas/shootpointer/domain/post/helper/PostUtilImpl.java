@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.post.helper;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.post.business.PostOrderType;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
@@ -55,6 +56,28 @@ public class PostUtilImpl implements PostUtil{
     @Override
     public List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId, int size, Long likeCnt) {
         return postQueryRepository.getPopularPostListBySliceAndNoOffset(postId,size,likeCnt);
+    }
+
+    /*==========================
+    *
+    *PostUtilImpl
+    *
+    * @parm type : 조회순/인기순 정렬 type
+    * @return 존재하지 않는 정렬 type일 시 CustomException 발생 / 존재하면 ENUM 클래스 반환.
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 9. 10.
+    *
+    ==========================**/
+    @Override
+    public PostOrderType isValidPostOrderType(String type) {
+        PostOrderType postOrderType;
+        try {
+            postOrderType=PostOrderType.valueOf(type);
+        }catch (IllegalArgumentException e){
+            throw new CustomException(ErrorCode.NOT_EXIST_ORDER_TYPE);
+        }
+        return postOrderType;
     }
 
 }
