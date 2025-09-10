@@ -94,7 +94,7 @@ class LikeManagerTest {
         Member savedMember_2=memberRepository.save(makeMockMember());
         PostEntity savedPost=postCommandRepository.save(makePostEntity(savedMember_1));
 
-        savedPost.setLikeCnt(5);
+        savedPost.setLikeCnt(5L);
 
         LikeEntity likeEntity_1=makeMockLike(savedPost,savedMember_1);
         LikeEntity likeEntity_2=makeMockLike(savedPost,savedMember_2);

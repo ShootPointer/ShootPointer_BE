@@ -1,17 +1,14 @@
-package com.midas.shootpointer.domain.post.dto;
+package com.midas.shootpointer.domain.post.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.midas.shootpointer.domain.comment.dto.CommentResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -47,5 +44,8 @@ public class PostResponse {
 
     //해시 태그
     private HashTag hashTag;
+
+    //작성자 이름
+    private String memberName;
 
 }

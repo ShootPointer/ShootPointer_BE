@@ -2,7 +2,7 @@ package com.midas.shootpointer.domain.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.domain.post.business.query.PostQueryService;
-import com.midas.shootpointer.domain.post.dto.PostResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import org.springframework.http.MediaType;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -92,7 +90,7 @@ class PostQueryControllerTest {
     private PostResponse makePostResponse(LocalDateTime time, Long postId){
         return PostResponse.builder()
                 .content("content")
-                .likeCnt(10)
+                .likeCnt(10L)
                 .createdAt(time)
                 .modifiedAt(time)
                 .highlightUrl("test")

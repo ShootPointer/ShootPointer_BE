@@ -62,7 +62,7 @@ class PostEntityTest {
                 .content(content)
                 .hashTag(HashTag.TREE_POINT)
                 .title(title)
-                .likeCnt(1)
+                .likeCnt(1L)
                 .build();
 
         //when
@@ -87,7 +87,7 @@ class PostEntityTest {
                 .content(content)
                 .hashTag(HashTag.TREE_POINT)
                 .title(title)
-                .likeCnt(10)
+                .likeCnt(10L)
                 .build();
 
         //when

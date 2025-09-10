@@ -1,6 +1,5 @@
-package com.midas.shootpointer.domain.post.dto;
+package com.midas.shootpointer.domain.post.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 

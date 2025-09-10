@@ -1,7 +1,7 @@
 package com.midas.shootpointer.domain.post.controller;
 
 import com.midas.shootpointer.domain.post.business.query.PostQueryService;
-import com.midas.shootpointer.domain.post.dto.PostResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;

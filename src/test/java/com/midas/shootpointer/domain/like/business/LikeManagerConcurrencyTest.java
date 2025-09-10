@@ -71,7 +71,7 @@ class LikeManagerConcurrencyTest {
     void cleanLikes() {
         likeCommandRepository.deleteAll();
         postQueryRepository.findByPostId(postId).ifPresent(post -> {
-            post.setLikeCnt(0);
+            post.setLikeCnt(0L);
             postCommandRepository.saveAndFlush(post);
         });
     }
