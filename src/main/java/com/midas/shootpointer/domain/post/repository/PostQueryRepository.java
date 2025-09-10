@@ -37,5 +37,8 @@ public interface PostQueryRepository extends JpaRepository<PostEntity,Long> {
                    "LIMIT :size",
             nativeQuery = true
     )
-    List<PostEntity> getPopularPostListBySliceAndNoOffset(@Param(value = "lastPostId")Long lastPostId,@Param(value = "size")int size,@Param(value = "likeCnt")int likeCnt);
+    List<PostEntity> getPopularPostListBySliceAndNoOffset(@Param(value = "lastPostId")Long lastPostId,
+                                                          @Param(value = "size")int size,
+                                                          @Param(value = "likeCnt")Long likeCnt
+    );
 }

@@ -102,6 +102,7 @@ public enum ErrorCode {
     //606(post-helper) part
     DELETED_POST(60601,HttpStatus.FORBIDDEN,"삭제된 게시물입니다."),
     IS_NOT_MEMBERS_POST(60602,HttpStatus.FORBIDDEN,"유저의 게시물이 아닙니다."),
+    NOT_EXIST_ORDER_TYPE(60603,HttpStatus.BAD_REQUEST,"잘못된 조회 방식입니다."),
 
     //607(post-business) part
     IS_NOT_EXIST_POST(60701,HttpStatus.FORBIDDEN,"존재하지 않는 게시물입니다.")

@@ -2,9 +2,13 @@ package com.midas.shootpointer.domain.post.mapper;
 
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.request.PostRequest;
+import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class PostMapperImpl implements PostMapper{
@@ -31,5 +35,16 @@ public class PostMapperImpl implements PostMapper{
                 .content(post.getContent())
                 .likeCnt(post.getLikeCnt())
                 .build();
+    }
+
+    @Override
+    public PostListResponse entityToDto(List<PostEntity> postEntityList) {
+        //게시물 응답 Dto 리스트 변환
+        List<PostResponse> postResponses=postEntityList.stream()
+                .map(this::entityToDto)
+                .toList();
+        int size=postResponses.size();
+
+        return PostListResponse.of(postResponses.get(size-1).getPostId(),postResponses);
     }
 }

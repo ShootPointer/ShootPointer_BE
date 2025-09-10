@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.post.business.query;
 
 import com.midas.shootpointer.domain.post.business.PostManager;
+import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,5 +15,10 @@ public class PostQueryServiceImpl implements PostQueryService{
     @Override
     public PostResponse singleRead(Long postId) {
         return postManager.singleRead(postId);
+    }
+
+    @Override
+    public PostListResponse multiRead(Long postId, int size, String type, Long likeCnt) {
+        return postManager.multiRead(postId,type,size,likeCnt);
     }
 }

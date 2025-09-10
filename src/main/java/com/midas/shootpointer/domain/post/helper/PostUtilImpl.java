@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class PostUtilImpl implements PostUtil{
@@ -43,6 +45,16 @@ public class PostUtilImpl implements PostUtil{
     @Transactional
     public PostEntity findByPostByPostIdWithPessimisticLock(Long postId) {
         return postQueryRepository.findByPostIdWithPessimisticLock(postId);
+    }
+
+    @Override
+    public List<PostEntity> getLatestPostListBySliceAndNoOffset(Long postId, int size) {
+        return postQueryRepository.getLatestPostListBySliceAndNoOffset(postId,size);
+    }
+
+    @Override
+    public List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId, int size, Long likeCnt) {
+        return postQueryRepository.getPopularPostListBySliceAndNoOffset(postId,size,likeCnt);
     }
 
 }

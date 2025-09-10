@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.post.business;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
@@ -108,4 +109,26 @@ public class PostManager {
          */
         return postMapper.entityToDto(postHelper.findPostByPostId(postId));
     }
+
+    @Transactional(readOnly = true)
+    public PostListResponse multiRead(Long lastPostId,String type,int size,Long likeCnt){
+        /**
+         * 1. type 올바른지 확인.
+         */
+        PostOrderType orderType=postHelper.isValidPostOrderType(type);
+
+        /**
+         * 2. type = POPULAR (인기순) / LATEST (최신순) 정렬 후 조회.
+         */
+        PostListResponse response = null;
+        switch (orderType){
+            case POPULAR -> response=postMapper.
+                    entityToDto(postHelper.getPopularPostListBySliceAndNoOffset(lastPostId,size,likeCnt));
+
+            case LATEST -> response=postMapper.
+                    entityToDto(postHelper.getLatestPostListBySliceAndNoOffset(lastPostId,size));
+        }
+        return response;
+    }
+
 }
