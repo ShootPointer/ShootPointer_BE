@@ -3,13 +3,9 @@ package com.midas.shootpointer.domain.post.repository;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
-import com.midas.shootpointer.domain.post.dto.PostResponse;
+import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,7 +24,7 @@ class PostQueryRepositoryTest {
     private PostCommandRepository postCommandRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberCommandRepository memberRepository;
 
     @Autowired
     private HighlightCommandRepository highlightCommandRepository;
