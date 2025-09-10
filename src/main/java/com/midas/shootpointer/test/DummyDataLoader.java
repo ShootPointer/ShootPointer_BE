@@ -3,7 +3,7 @@ package com.midas.shootpointer.test;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
+import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -24,7 +24,7 @@ import java.util.UUID;
 public class DummyDataLoader implements CommandLineRunner {
     private final JdbcTemplate jdbcTemplate;
     private final MakeRandomWord makeRandomWord;
-    private final MemberRepository memberRepository;
+    private final MemberCommandRepository memberRepository;
     private final HighlightCommandRepository highlightCommandRepository;
 
     private final int batchSize=10_000;
