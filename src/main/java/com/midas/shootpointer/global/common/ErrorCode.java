@@ -41,10 +41,8 @@ public enum ErrorCode {
 
     INTERNAL_SERVER_ERROR(50000,HttpStatus.INTERNAL_SERVER_ERROR,"서버 내부 오류"),
     NOT_FOUND_END_POINT(40400,HttpStatus.NOT_FOUND,"존재하지 않은 API입니다."),
-
-    // 301(member - controller) part
-    DUPLICATE_REQUEST(30101, HttpStatus.BAD_REQUEST, "Authorization 중복 요청"),
-
+    
+    
     NOT_FOUND_HIGHLIGHT_ID(20201,HttpStatus.NOT_FOUND,"해당 하이라이트 영상을 찾을 수 없습니다."),
     NOT_MATCH_HIGHLIGHT_VIDEO(20202,HttpStatus.BAD_REQUEST,"잘못된 요청입니다."),
     INVALID_FILE_TYPE(20203,HttpStatus.BAD_REQUEST,"지원하지 않는 파일 형식입니다."),
@@ -57,6 +55,15 @@ public enum ErrorCode {
     KAKAO_TOKEN_RESPONSE_INVALID(30203, HttpStatus.BAD_REQUEST, "카카오 사용자 정보 요청 실패"),
     KAKAO_USERINFO_FAIL(30204, HttpStatus.BAD_REQUEST, "카카오 인증 코드가 유효하지 않음"),
     JSON_OBJECT_PARSE_FAIL(30205, HttpStatus.INTERNAL_SERVER_ERROR, "Json 파싱 실패"),
+    
+    // 306(member - helper) part
+    INVALID_KAKAO_USER_INFO(30601, HttpStatus.BAD_REQUEST, "카카오 사용자 정보가 유효하지 않습니다."),
+    INVALID_EMAIL(30602, HttpStatus.BAD_REQUEST, "이메일이 비어있거나 유효하지 않습니다."),
+    INVALID_NICKNAME(30603, HttpStatus.BAD_REQUEST, "닉네임이 비어있거나 유효하지 않습니다."),
+    INVALID_EMAIL_FORMAT(30604, HttpStatus.BAD_REQUEST, "이메일 형식이 잘못되었습니다."),
+    KAKAO_AUTH_ERROR(30605, HttpStatus.BAD_REQUEST, "카카오 인증 과정에서 오류가 발생했습니다."),
+    DUPLICATE_EMAIL(30606, HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
+    UNAUTHORIZED_MEMBER_ACCESS(30607, HttpStatus.FORBIDDEN, "해당 멤버에 대한 접근 권한이 없습니다."),
 
     // 404(global - util) part
     AES_ENCRYPT_FAIL(40401, HttpStatus.INTERNAL_SERVER_ERROR, "AES 암호화 실패"),

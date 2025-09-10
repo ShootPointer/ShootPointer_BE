@@ -4,7 +4,7 @@ import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
+import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
@@ -41,13 +41,13 @@ class PostUtilImplTest {
     private PostUtilImpl postUtil;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private PostQueryRepository postQueryRepository;
+
+    @Autowired
+    private MemberQueryRepository memberRepository;
 
     @Autowired
     private PostCommandRepository postCommandRepository;
-
-    @Autowired
-    private PostQueryRepository postQueryRepository;
 
     @Autowired
     private HighlightCommandRepository highlightCommandRepository;

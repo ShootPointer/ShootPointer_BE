@@ -2,6 +2,7 @@ package com.midas.shootpointer.global.config;
 
 import com.midas.shootpointer.global.util.jwt.JwtAuthenticationFilter;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
+import com.midas.shootpointer.global.util.jwt.handler.JwtHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +19,8 @@ import java.util.Arrays;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-    private final JwtUtil jwtUtil;
+    
+    private final JwtHandler jwtHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -30,7 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/**", "/oauth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil),
+                .addFilterBefore(new JwtAuthenticationFilter(jwtHandler),
                         org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
                 )
                 .httpBasic(Customizer.withDefaults());

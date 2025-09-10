@@ -5,7 +5,7 @@ import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
+import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
 import com.midas.shootpointer.domain.memberbacknumber.entity.MemberBackNumberEntity;
 import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import jakarta.persistence.EntityManager;
@@ -31,7 +31,7 @@ class HighlightQueryRepositoryTest {
     private HighlightCommandRepository highlightCommandRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberQueryRepository memberRepository;
 
     @Autowired
     private BackNumberRepository backNumberRepository;

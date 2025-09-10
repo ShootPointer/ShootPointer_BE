@@ -7,7 +7,7 @@ import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.backnumber.mapper.BackNumberMapper;
 import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.member.repository.MemberRepository;
+import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
 import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
@@ -48,7 +48,7 @@ class BackNumberServiceImplTest {
     private MemberBackNumberRepository memberBackNumberRepository;
 
     @Mock
-    private MemberRepository memberRepository;
+    private MemberQueryRepository memberRepository;
 
     @Mock
     private OpenCVClient openCVClient;
