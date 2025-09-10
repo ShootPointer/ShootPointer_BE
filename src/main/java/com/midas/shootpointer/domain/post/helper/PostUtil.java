@@ -8,6 +8,6 @@ import com.midas.shootpointer.domain.post.entity.PostEntity;
 public interface PostUtil {
     PostEntity findPostByPostId(Long postId);
     PostEntity save(PostEntity postEntity);
-    PostEntity update(PostEntity newPost, PostEntity existedPost, HighlightEntity highlight);
+    PostEntity update(PostEntity newPost, PostEntity oldPost, HighlightEntity highlight);
     PostEntity findByPostByPostIdWithPessimisticLock(Long postId);
 }

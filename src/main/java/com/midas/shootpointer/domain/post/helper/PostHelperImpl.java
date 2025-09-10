@@ -45,8 +45,8 @@ public class PostHelperImpl implements PostHelper{
     }
 
     @Override
-    public PostEntity update(PostEntity newPost, PostEntity existedPost, HighlightEntity highlight) {
-        return postUtil.update(newPost,existedPost,highlight);
+    public PostEntity update(PostEntity newPost, PostEntity oldPost, HighlightEntity highlight) {
+        return postUtil.update(newPost,oldPost,highlight);
     }
   
     @Override

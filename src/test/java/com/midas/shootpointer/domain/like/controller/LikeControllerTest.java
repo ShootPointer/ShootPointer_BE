@@ -46,11 +46,11 @@ class LikeControllerTest {
     @DisplayName("좋아요 생성 POST 요청 성공시 저장된 likeId를 반환합니다._SUCCESS")
     void create_SUCCESS() throws Exception {
         //given
-        String postId="111";
+        Long postId=111L;
 
         //when
         when(likeCommandService.create(anyLong(),any(Member.class)))
-                .thenReturn(Long.parseLong(postId));
+                .thenReturn(postId);
 
         //then
         mockMvc.perform(post(baseUrl+"/"+postId)
@@ -68,11 +68,11 @@ class LikeControllerTest {
     @DisplayName("좋아요 삭제 DELETE 요청 성공시 삭제된 likeId를 반환합니다._SUCCESS")
     void delete_SUCCESS() throws Exception {
         //given
-        String postId="111";
+        Long postId=111L;
 
         //when
         when(likeCommandService.delete(anyLong(),any(Member.class)))
-                .thenReturn(Long.parseLong(postId));
+                .thenReturn(postId);
 
         //then
         mockMvc.perform(delete(baseUrl+"/"+postId)

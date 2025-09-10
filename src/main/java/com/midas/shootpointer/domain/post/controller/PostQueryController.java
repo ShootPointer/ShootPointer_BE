@@ -44,7 +44,7 @@ public class PostQueryController {
     *
     ==========================**/
     @GetMapping("{postId}")
-    public ResponseEntity<ApiResponse<PostResponse>> singleRead(@PathVariable(value = "postId") String postId){
-        return ResponseEntity.ok(ApiResponse.ok(postQueryService.singleRead(Long.decode(postId))));
+    public ResponseEntity<ApiResponse<PostResponse>> singleRead(@PathVariable(value = "postId") Long postId){
+        return ResponseEntity.ok(ApiResponse.ok(postQueryService.singleRead(postId)));
     }
 }
