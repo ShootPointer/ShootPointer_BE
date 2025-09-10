@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,5 +45,23 @@ public class PostQueryController {
     @GetMapping("{postId}")
     public ResponseEntity<ApiResponse<PostResponse>> singleRead(@PathVariable(value = "postId") Long postId){
         return ResponseEntity.ok(ApiResponse.ok(postQueryService.singleRead(postId)));
+    }
+
+    /*==========================
+    *
+    *PostQueryController
+    *
+    * @parm postId : 마지막 요청 postId / size : 요청 크기 / type : 최신순 OR 인기순 (디폴트 값은 최신순)
+    * @return 여러 건의 게시물.
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 9. 10.
+    *
+    ==========================**/
+    @GetMapping
+    public ResponseEntity<ApiResponse<PostResponse>> multiRead(@RequestParam(required = false,defaultValue = "922337203685477580")Long postId,
+                                                               @RequestParam(required = false,defaultValue = "10")int size,
+                                                               @RequestParam(required = false,defaultValue = "latest")String type){
+        return ResponseEntity.ok(ApiResponse.ok(postQueryService.multiRead(postId,size,type)));
     }
 }
