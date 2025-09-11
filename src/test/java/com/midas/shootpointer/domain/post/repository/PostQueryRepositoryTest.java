@@ -47,10 +47,11 @@ class PostQueryRepositoryTest {
     @Nested
     class PostQueryRepositoryTestForBulk{
         private static PriorityQueue<PostEntity> postEntitiesOrderByCreatedAtDesc=new PriorityQueue<>((a,b)->b.getCreatedAt().compareTo(a.getCreatedAt()));
+        private static PriorityQueue<PostEntity> postEntitiesOrderByLikeCntDesc=new PriorityQueue<>((a,b)->b.getLikeCnt().compareTo(a.getLikeCnt()));
 
         @BeforeEach
         void setUp() throws InterruptedException {
-            set(postEntitiesOrderByCreatedAtDesc);
+            set(postEntitiesOrderByCreatedAtDesc,postEntitiesOrderByLikeCntDesc);
         }
 
         @AfterEach
@@ -149,7 +150,10 @@ class PostQueryRepositoryTest {
     /*
     ======================================초기 세팅 메소드======================================
      */
-    private void set(PriorityQueue<PostEntity> postEntities) throws InterruptedException {
+    private void set(
+            PriorityQueue<PostEntity> postEntitiesOrderByCreatedAtDesc,
+            PriorityQueue<PostEntity> postEntitiesOrderByLikeCntDesc
+                     ) throws InterruptedException {
         member=memberRepository.save(makeMember());
         highlight=highlightCommandRepository.save(makeHighlight(member));
         Random random=new Random();
@@ -161,7 +165,8 @@ class PostQueryRepositoryTest {
             HashTag hashTag=HashTag.TWO_POINT;
             PostEntity post=postCommandRepository.save(makePostEntity(member,highlight,randomLikeCnt,hashTag));
 
-            postEntities.add(post);
+            postEntitiesOrderByCreatedAtDesc.add(post);
+            postEntitiesOrderByLikeCntDesc.add(post);
 
             //1개씩 삽입 후 0.1초씩 기다림.
             Thread.sleep(100);
