@@ -23,17 +23,17 @@ public interface PostQueryRepository extends JpaRepository<PostEntity,Long> {
     /**
      * 최신순 게시물 다건 조회
      */
-    @Query(value = "SELECT p FROM post as p WHERE post_id < :lastPostId ORDER BY post_id DESC LIMIT :size ",nativeQuery = true)
+    @Query(value = "SELECT * FROM post as p WHERE p.post_id < :lastPostId ORDER BY p.post_id DESC LIMIT :size ",nativeQuery = true)
     List<PostEntity> getLatestPostListBySliceAndNoOffset (@Param(value = "lastPostId")Long lastPostId,@Param(value = "size")int size);
 
     /**
      * 좋아요순 게시물 다건 조회
      * 좋아요가 같은 경우는 최신 순 봔환.
      */
-    @Query(value = "SELECT p FROM post as p " +
-                   "WHERE (like_cnt < :likeCnt) OR " +
-                   "(like_cnt = :likeCnt AND post_id < :postId) " +
-                   "ORDER BY like_cnt DESC " +
+    @Query(value = "SELECT * FROM post as p " +
+                   "WHERE (p.like_cnt < :likeCnt) OR " +
+                   "(p.like_cnt = :likeCnt AND p.post_id < :postId) " +
+                   "ORDER BY p.like_cnt DESC " +
                    "LIMIT :size",
             nativeQuery = true
     )

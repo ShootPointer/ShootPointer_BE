@@ -7,8 +7,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 @Table(name = "post")
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -43,8 +41,8 @@ public class PostEntity extends BaseEntity {
     private Member member;
 
     @Setter
-    @OneToOne
-    @JoinColumn(name = "highlight_id",unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "highlight_id")
     private HighlightEntity highlight;
 
     public void update(String title,String content,HashTag hashTag,HighlightEntity highlight){
