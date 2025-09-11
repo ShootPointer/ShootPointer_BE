@@ -65,8 +65,8 @@ public class PostHelperImpl implements PostHelper{
     }
 
     @Override
-    public List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId, int size, Long likeCnt) {
-        return postUtil.getPopularPostListBySliceAndNoOffset(postId,size,likeCnt);
+    public List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId, int size) {
+        return postUtil.getPopularPostListBySliceAndNoOffset(postId,size);
     }
 
 }

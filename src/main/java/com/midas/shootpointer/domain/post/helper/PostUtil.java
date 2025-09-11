@@ -12,6 +12,6 @@ public interface PostUtil {
     PostEntity update(PostEntity newPost, PostEntity oldPost, HighlightEntity highlight);
     PostEntity findByPostByPostIdWithPessimisticLock(Long postId);
     List<PostEntity> getLatestPostListBySliceAndNoOffset(Long postId,int size);
-    List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId,int size,Long likeCnt);
+    List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId,int size);
     PostOrderType isValidPostOrderType(String type);
 }

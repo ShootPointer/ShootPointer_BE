@@ -111,7 +111,7 @@ public class PostManager {
     }
 
     @Transactional(readOnly = true)
-    public PostListResponse multiRead(Long lastPostId,String type,int size,Long likeCnt){
+    public PostListResponse multiRead(Long lastPostId,String type,int size){
         /**
          * 1. type 올바른지 확인.
          */
@@ -123,7 +123,7 @@ public class PostManager {
         PostListResponse response = null;
         switch (orderType){
             case POPULAR -> response=postMapper.
-                    entityToDto(postHelper.getPopularPostListBySliceAndNoOffset(lastPostId,size,likeCnt));
+                    entityToDto(postHelper.getPopularPostListBySliceAndNoOffset(lastPostId,size));
 
             case LATEST -> response=postMapper.
                     entityToDto(postHelper.getLatestPostListBySliceAndNoOffset(lastPostId,size));

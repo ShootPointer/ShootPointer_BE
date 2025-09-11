@@ -54,8 +54,8 @@ public class PostUtilImpl implements PostUtil{
     }
 
     @Override
-    public List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId, int size, Long likeCnt) {
-        return postQueryRepository.getPopularPostListBySliceAndNoOffset(postId,size,likeCnt);
+    public List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId, int size) {
+        return postQueryRepository.getPopularPostListBySliceAndNoOffset(size,postId);
     }
 
     /*==========================

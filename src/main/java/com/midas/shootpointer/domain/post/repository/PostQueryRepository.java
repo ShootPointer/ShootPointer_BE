@@ -31,14 +31,12 @@ public interface PostQueryRepository extends JpaRepository<PostEntity,Long> {
      * 좋아요가 같은 경우는 최신 순 봔환.
      */
     @Query(value = "SELECT * FROM post as p " +
-                   "WHERE (p.like_cnt < :likeCnt) OR " +
-                   "(p.like_cnt = :likeCnt AND p.post_id < :postId) " +
-                   "ORDER BY p.like_cnt DESC " +
+                   "WHERE p.like_cnt < :likeCnt " +
+                   "ORDER BY p.like_cnt DESC, p.post_id DESC " +
                    "LIMIT :size",
             nativeQuery = true
     )
-    List<PostEntity> getPopularPostListBySliceAndNoOffset(@Param(value = "lastPostId")Long lastPostId,
-                                                          @Param(value = "size")int size,
+    List<PostEntity> getPopularPostListBySliceAndNoOffset(@Param(value = "size")int size,
                                                           @Param(value = "likeCnt")Long likeCnt
     );
 }

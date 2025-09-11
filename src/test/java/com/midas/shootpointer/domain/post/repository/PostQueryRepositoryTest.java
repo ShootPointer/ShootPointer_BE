@@ -46,8 +46,14 @@ class PostQueryRepositoryTest {
 
     @Nested
     class PostQueryRepositoryTestForBulk{
-        private static PriorityQueue<PostEntity> postEntitiesOrderByCreatedAtDesc=new PriorityQueue<>((a,b)->b.getCreatedAt().compareTo(a.getCreatedAt()));
-        private static PriorityQueue<PostEntity> postEntitiesOrderByLikeCntDesc=new PriorityQueue<>((a,b)->b.getLikeCnt().compareTo(a.getLikeCnt()));
+        private PriorityQueue<PostEntity> postEntitiesOrderByCreatedAtDesc=new PriorityQueue<>((a,b)->b.getCreatedAt().compareTo(a.getCreatedAt()));
+        /**
+         * 정렬 순서
+         * 1순위 : 좋아요 많은 순서
+         * 2순위 : 최신순
+         */
+        private PriorityQueue<PostEntity> postEntitiesOrderByLikeCntDesc=new PriorityQueue<>((a,b)->a.getLikeCnt().equals(b.getLikeCnt()) ?
+                b.getCreatedAt().compareTo(a.getCreatedAt()): b.getLikeCnt().compareTo(a.getLikeCnt()));
 
         @BeforeEach
         void setUp() throws InterruptedException {
@@ -57,6 +63,8 @@ class PostQueryRepositoryTest {
         @AfterEach
         void delete(){
             clean();
+            postEntitiesOrderByCreatedAtDesc.clear();
+            postEntitiesOrderByLikeCntDesc.clear();
         }
 
         @DisplayName("1_000개의 게시물을 최신순으로 불러옵니다.")
@@ -80,6 +88,9 @@ class PostQueryRepositoryTest {
             /*
             * then : 우선순위 큐와 실제로 조회된 게시물의 postId가 일치하는지 확인합니다.
             */
+            //개수 일치 확인
+            assertThat(postEntitiesOrderByCreatedAtDesc.size()).isEqualTo(LIMIT);
+
             while (!postEntitiesOrderByCreatedAtDesc.isEmpty()){
                 PostEntity nowPost=postEntitiesOrderByCreatedAtDesc.poll();
                 assertThat(nowPost.getPostId()).isEqualTo(findPostEntities.get(idx).getPostId());
@@ -95,24 +106,29 @@ class PostQueryRepositoryTest {
              * given
              * 1. 100개의 게시물이 @BeforeEach에 의해 1초 단위로 저장됩니다.
              * 2. 100개의 게시물이 PriorityQueue 형태로 저장됩니다.
-             * 3. 우선순위 큐로 set() 메소드에서 미리 저장한 게시물 엔티티들을 최신순으로 정렬합니다.
+             * 3. 우선순위 큐로 set() 메소드에서 미리 저장한 게시물 엔티티들을 좋아요순으로 정렬합니다.
              */
 
 
             /*
-             * when : getLatestPostListBySliceAndNoOffset()를 호출하여 100개의 게시물을 최신순으로 조회합니다.
+             * when : getLatestPostListBySliceAndNoOffset()를 호출하여 100개의 게시물을 좋아요순으로 조회합니다.
              */
             Long lastPostId=922337203685477580L;
+
             int idx=0;
-            List<PostEntity> findPostEntities=postQueryRepository.getLatestPostListBySliceAndNoOffset(lastPostId,LIMIT);
+            List<PostEntity> findPostEntities=postQueryRepository.getPopularPostListBySliceAndNoOffset(LIMIT,lastPostId);
 
             /*
              * then : 우선순위 큐와 실제로 조회된 게시물의 postId가 일치하는지 확인합니다.
              */
-            while (!postEntitiesOrderByCreatedAtDesc.isEmpty()){
-                PostEntity nowPost=postEntitiesOrderByCreatedAtDesc.poll();
+
+            //개수 일치 확인
+            assertThat(postEntitiesOrderByLikeCntDesc.size()).isEqualTo(LIMIT);
+
+            while (!postEntitiesOrderByLikeCntDesc.isEmpty()){
+                PostEntity nowPost=postEntitiesOrderByLikeCntDesc.poll();
                 assertThat(nowPost.getPostId()).isEqualTo(findPostEntities.get(idx).getPostId());
-                assertThat(nowPost.getCreatedAt()).isEqualTo(findPostEntities.get(idx).getCreatedAt());
+                assertThat(nowPost.getLikeCnt()).isEqualTo(findPostEntities.get(idx).getLikeCnt());
                 idx++;
             }
         }
