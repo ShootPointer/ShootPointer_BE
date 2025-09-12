@@ -22,7 +22,7 @@ public class PostQueryController {
     private final PostMapper postMapper;
 
     @Operation(
-            summary = "게시물 등록 API - [담당자 : 김도연]",
+            summary = "게시물 단건 조회 API - [담당자 : 김도연]",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "게시물 조회 성공",
                             content = @Content(mediaType="application/json",
@@ -48,6 +48,18 @@ public class PostQueryController {
         return ResponseEntity.ok(ApiResponse.ok(postQueryService.singleRead(postId)));
     }
 
+
+    @Operation(
+            summary = "게시물 다건 조회 API - [담당자 : 김도연]",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "게시물 조회 성공",
+                            content = @Content(mediaType="application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX",description = "게시물 조회 실패",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+            }
+    )
     /*==========================
     *
     *PostQueryController

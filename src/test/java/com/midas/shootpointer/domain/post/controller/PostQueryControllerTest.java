@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.domain.post.business.query.PostQueryService;
+import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import org.jetbrains.annotations.NotNull;
@@ -12,18 +13,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.time.format.DateTimeFormatter;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class PostQueryControllerTest {
@@ -51,7 +53,7 @@ class PostQueryControllerTest {
     void singleRead() throws Exception {
         //given
         Long postId=123124L;
-        PostResponse response=makePostResponse(LocalDateTime.now(),postId);
+        PostResponse response=makePostResponse(LocalDateTime.now(),postId,10L);
 
         //when
         when(postQueryService.singleRead(anyLong()))
@@ -77,6 +79,41 @@ class PostQueryControllerTest {
 
     }
 
+    @Test
+    @DisplayName("게시물 다건 조회 GET 요청 성공 시 PostListResponse를 반환합니다-인기순._SUCCESS")
+    void multiRead() throws Exception {
+        //given
+        String type="popular";
+        Long postId=1000L;
+        int size=2;
+
+        List<PostResponse> postResponses=new ArrayList<>();
+        postResponses.add(makePostResponse(LocalDateTime.now(), 1L,50L));
+        postResponses.add(makePostResponse(LocalDateTime.now(), 2L,30L));
+
+        PostListResponse expectedResponse=PostListResponse.of(postId,postResponses);
+
+        //when
+        when(postQueryService.multiRead(postId,size,type)).thenReturn(expectedResponse);
+
+        //then
+        mockMvc.perform(get(baseUrl)
+                        .param("postId",postId.toString())
+                        .param("size", String.valueOf(size))
+                        .param("type",type))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.success").value(true))
+
+                .andExpect(jsonPath("$.data.postList[0].postId").value(1L))
+                .andExpect(jsonPath("$.data.postList[0].likeCnt").value(50L))
+                .andExpect(jsonPath("$.data.postList[1].postId").value(2L))
+                .andExpect(jsonPath("$.data.postList[1].likeCnt").value(30L))
+                .andDo(print());
+
+        verify(postQueryService,times(1)).multiRead(postId,size,type);
+    }
+
     @NotNull
     private static String getCreatedDateFormat(PostResponse response) {
         return response.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -87,10 +124,10 @@ class PostQueryControllerTest {
         return response.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 
-    private PostResponse makePostResponse(LocalDateTime time, Long postId){
+    private PostResponse makePostResponse(LocalDateTime time, Long postId,Long likeCnt){
         return PostResponse.builder()
                 .content("content")
-                .likeCnt(10L)
+                .likeCnt(likeCnt)
                 .createdAt(time)
                 .modifiedAt(time)
                 .highlightUrl("test")
