@@ -54,6 +54,20 @@ class PostQueryRepositoryTest {
         //then
         assertThat(postEntities).isEmpty();
     }
+
+    @DisplayName("게시물 좋아요순으로 조회 시 조건에 맞는 게시물이 존재하지 않으면 빈 배열을 반환합니다.")
+    @Test
+    void getPopularPostListBySliceAndNoOffset_EMPTY_ARRAY(){
+        //given
+        Long likeCnt=123124L;
+        int size=10;
+
+        // when
+        List<PostEntity> postEntities=postQueryRepository.getPopularPostListBySliceAndNoOffset(size,likeCnt);
+
+        //then
+        assertThat(postEntities).isEmpty();
+    }
     /*
     ======================================대용량 데이터 사용 쿼리 테스트======================================
      */
