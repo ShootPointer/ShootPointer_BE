@@ -131,4 +131,19 @@ class PostHelperImplTest {
         //then
         verify(postUtil,times(1)).getLatestPostListBySliceAndNoOffset(postId,size);
     }
+
+    @Test
+    @DisplayName("게시판을 좋아요순으로 조회합니다. - postUtil.getPopularPostListBySliceAndNoOffset(Long postId, int size) 메서드가 실행되는지 확인합니다.")
+    void getPopularPostListBySliceAndNoOffset(){
+        //given
+        Long postId=124134325L;
+        int size=100;
+        when(postUtil.getPopularPostListBySliceAndNoOffset(postId,size)).thenReturn(List.of(postEntity));
+
+        //when
+        postHelper.getPopularPostListBySliceAndNoOffset(postId,size);
+
+        //then
+        verify(postUtil,times(1)).getPopularPostListBySliceAndNoOffset(postId,size);
+    }
 }
