@@ -3,9 +3,12 @@ package com.midas.shootpointer.domain.post.business;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
+import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +18,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
@@ -36,6 +41,9 @@ class PostManagerTest {
 
     @Mock
     private PostQueryRepository postQueryRepository;
+
+    @Mock
+    private PostMapper postMapper;
 
     @Test
     @DisplayName(
@@ -130,6 +138,30 @@ class PostManagerTest {
         verify(postHelper, times(1)).isMembersPost(mockPostEntity, mockMember);
         verify(mockPostEntity, times(1)).delete();
 
+    }
+
+    @Test
+    @DisplayName("type 값이 올바른지 확인하고 type 값에 맞는 postHelper의 메소드들을 호출합니다._POPULAR")
+    void multiRead_POPULAR(){
+        //given
+        String type="popular";
+        Long lastPostId=12L;
+        int size=10;
+        List<PostEntity> postEntities=new ArrayList<>();
+        List<PostResponse> responses=new ArrayList<>();
+        PostListResponse postListResponse=PostListResponse.of(lastPostId,responses);
+
+
+        //when
+        when(postHelper.isValidAndGetPostOrderType(type)).thenReturn(PostOrderType.popular);
+        when(postHelper.getPopularPostListBySliceAndNoOffset(lastPostId,size)).thenReturn(postEntities);
+        when(postMapper.entityToDto(postEntities)).thenReturn(postListResponse);
+
+        postManager.multiRead(lastPostId,type,size);
+
+        //then
+        verify(postHelper,times(1)).getPopularPostListBySliceAndNoOffset(lastPostId,size);
+        verify(postMapper,times(1)).entityToDto(postEntities);
     }
     /**
      * mock 하이라이트 영상
