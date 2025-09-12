@@ -18,7 +18,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowableOfType;
 
 /**
  * 통합 테스트로 진행.
@@ -40,6 +41,8 @@ class PostUtilImplTest {
 
     @Autowired
     private PostMapper postMapper;
+    @Autowired
+    private PostUtilImpl postUtilImpl;
 
 
     @Test
@@ -155,7 +158,6 @@ class PostUtilImplTest {
         assertThat(findPost.getPostId()).isEqualTo(post.getPostId());
         assertThat(findPost.getMember().getMemberId()).isEqualTo(member.getMemberId());
     }
-
     private PostEntity makeMockPost(Member member,HighlightEntity highlight){
         return PostEntity.builder()
                 .title("title")
