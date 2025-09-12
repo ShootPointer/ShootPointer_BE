@@ -4,6 +4,7 @@ import com.midas.shootpointer.domain.member.business.command.MemberCommandServic
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
 import com.midas.shootpointer.domain.member.entity.MsgEntity;
 import com.midas.shootpointer.global.annotation.CustomLog;
+import com.midas.shootpointer.global.dto.ApiResponse;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,16 +36,10 @@ public class MemberCommandController {
     
     @CustomLog("회원 탈퇴")
     @DeleteMapping
-    public ResponseEntity<MsgEntity> deleteMember(HttpServletRequest request) {
-        // JWT에서 memberId 추출
-        String token = jwtUtil.resolveToken(request);
-        UUID memberId = jwtUtil.getMemberId(token);
+    public ResponseEntity<ApiResponse<UUID>> deleteMember(HttpServletRequest request) {
+        UUID deletedMemberId = memberCommandService.deleteMember(request);
         
-        UUID deletedMemberId = memberCommandService.deleteMember(memberId);
-        
-        return ResponseEntity.ok(
-            new MsgEntity("회원 탈퇴가 완료되었습니다.", deletedMemberId)
-        );
+        return ResponseEntity.ok(ApiResponse.ok(deletedMemberId));
     }
     
 }
