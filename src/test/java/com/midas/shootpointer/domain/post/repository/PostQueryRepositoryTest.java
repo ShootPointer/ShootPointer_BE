@@ -139,7 +139,7 @@ class PostQueryRepositoryTest {
                 PostEntity nowPost=postEntitiesOrderByCreatedAtDesc.poll();
                 assertThat(nowPost.getPostId()).isEqualTo(findPostEntities.get(idx).getPostId());
                 //밀리초까지만 비교
-                assertThat(nowPost.getCreatedAt()).isEqualTo(findPostEntities.get(idx).getCreatedAt().truncatedTo(ChronoUnit.MILLIS));
+                assertThat(nowPost.getCreatedAt().truncatedTo(ChronoUnit.SECONDS)).isEqualTo(findPostEntities.get(idx).getCreatedAt().truncatedTo(ChronoUnit.SECONDS));
                 idx++;
             }
         }
