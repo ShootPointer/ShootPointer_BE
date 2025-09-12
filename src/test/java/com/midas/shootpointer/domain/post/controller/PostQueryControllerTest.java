@@ -81,7 +81,7 @@ class PostQueryControllerTest {
 
     @Test
     @DisplayName("게시물 다건 조회 GET 요청 성공 시 PostListResponse를 반환합니다-인기순._SUCCESS")
-    void multiRead() throws Exception {
+    void multiRead_POPULAR() throws Exception {
         //given
         String type="popular";
         Long postId=1000L;
@@ -90,6 +90,41 @@ class PostQueryControllerTest {
         List<PostResponse> postResponses=new ArrayList<>();
         postResponses.add(makePostResponse(LocalDateTime.now(), 1L,50L));
         postResponses.add(makePostResponse(LocalDateTime.now(), 2L,30L));
+
+        PostListResponse expectedResponse=PostListResponse.of(postId,postResponses);
+
+        //when
+        when(postQueryService.multiRead(postId,size,type)).thenReturn(expectedResponse);
+
+        //then
+        mockMvc.perform(get(baseUrl)
+                        .param("postId",postId.toString())
+                        .param("size", String.valueOf(size))
+                        .param("type",type))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.success").value(true))
+
+                .andExpect(jsonPath("$.data.postList[0].postId").value(1L))
+                .andExpect(jsonPath("$.data.postList[0].likeCnt").value(50L))
+                .andExpect(jsonPath("$.data.postList[1].postId").value(2L))
+                .andExpect(jsonPath("$.data.postList[1].likeCnt").value(30L))
+                .andDo(print());
+
+        verify(postQueryService,times(1)).multiRead(postId,size,type);
+    }
+
+    @Test
+    @DisplayName("게시물 다건 조회 GET 요청 성공 시 PostListResponse를 반환합니다-최신순._SUCCESS")
+    void multiRead_LATEST() throws Exception {
+        //given
+        String type="latest";
+        Long postId=1000L;
+        int size=2;
+
+        List<PostResponse> postResponses=new ArrayList<>();
+        postResponses.add(makePostResponse(LocalDateTime.now(), 1L,50L));
+        postResponses.add(makePostResponse(LocalDateTime.now().minusDays(2L), 2L,30L));
 
         PostListResponse expectedResponse=PostListResponse.of(postId,postResponses);
 
