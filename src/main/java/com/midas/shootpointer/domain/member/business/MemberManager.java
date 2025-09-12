@@ -34,6 +34,10 @@ public class MemberManager {
         return member.getMemberId();
     }
     
+    public Member findMemberById(UUID memberId) {
+        return memberHelper.findMemberById(memberId);
+    }
+    
     private Member findOrCreateMember(KakaoDTO kakaoDTO) {
         try {
             return memberHelper.findMemberByEmail(kakaoDTO.getEmail());

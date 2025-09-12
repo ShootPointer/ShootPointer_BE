@@ -10,8 +10,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.util.StringUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -84,7 +83,14 @@ public class JwtUtil {
             throw new CustomException(ErrorCode.JWT_CREATE_FAIL);
         }
     }
-
+    
+    public String resolveToken(HttpServletRequest request) {
+        String bearer = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {
+            return bearer.substring(7);
+        }
+        return null;
+    }
 
     public String decodeBase64(String encoded) {
         return new String(Base64.getDecoder().decode(encoded), StandardCharsets.UTF_8);
