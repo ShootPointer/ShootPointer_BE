@@ -30,6 +30,13 @@ class PostQueryRepositoryTest {
     @Autowired
     private HighlightCommandRepository highlightCommandRepository;
 
+    @BeforeEach
+    void setUpClean() {
+        postCommandRepository.deleteAll();
+        highlightCommandRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
+
     @AfterEach
     void tearDown() {
         postCommandRepository.deleteAll();
