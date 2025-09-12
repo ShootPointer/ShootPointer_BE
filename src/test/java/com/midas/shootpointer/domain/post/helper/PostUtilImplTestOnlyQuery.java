@@ -55,6 +55,29 @@ public class PostUtilImplTestOnlyQuery {
         verify(postQueryRepository, times(1)).getLatestPostListBySliceAndNoOffset(anyLong(), anyInt());
     }
 
+    @DisplayName("게시물을 좋아요순 10개 조회합니다. - postQueryRepository-getPopularPostListBySliceAndNoOffset() 동작 유무를 확인합니다.")
+    @Test
+    void getPopularPostListBySliceAndNoOffset() {
+        // given
+        Long likeCnt = 21312313213L;
+        int size = 10;
+        List<PostEntity> postEntities = new ArrayList<>();
+        Member mockMember = makeMember();
+        for (int i = 0; i < 10; i++) {
+            postEntities.add(makeMockPost(mockMember, makeHighlight(mockMember)));
+        }
+
+        when(postQueryRepository.getPopularPostListBySliceAndNoOffset(anyInt(), anyLong()))
+                .thenReturn(postEntities);
+
+        // when
+        List<PostEntity> result = postUtil.getPopularPostListBySliceAndNoOffset(likeCnt,size);
+
+        // then
+        assertThat(result).hasSize(10);
+        verify(postQueryRepository, times(1)).getPopularPostListBySliceAndNoOffset(anyInt(), anyLong());
+    }
+
 
 
     private PostEntity makeMockPost(Member member, HighlightEntity highlight) {
