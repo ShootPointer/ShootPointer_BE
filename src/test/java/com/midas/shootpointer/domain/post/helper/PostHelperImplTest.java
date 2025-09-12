@@ -118,6 +118,19 @@ class PostHelperImplTest {
     }
 
     @Test
+    @DisplayName("게시물 id로 낙관적 락을 적용하여 게시물 entity를 조회합니다. - postUtil.findByPostByPostIdWithPessimisticLock(postId) 메서드가 실행되는지 확인합니다.")
+    void findByPostByPostIdWithPessimisticLock(){
+        //given
+        Long postId=10L;
+        when(postUtil.findByPostByPostIdWithPessimisticLock(postId)).thenReturn(postEntity);
+
+        //when
+        postHelper.findByPostByPostIdWithPessimisticLock(postId);
+
+        //then
+        verify(postUtil,times(1)).findByPostByPostIdWithPessimisticLock(postId);
+    }
+    @Test
     @DisplayName("게시판을 최신순으로 조회합니다. - postUtil.getLatestPostListBySliceAndNoOffset(Long postId, int size) 메서드가 실행되는지 확인합니다.")
     void getLatestPostListBySliceAndNoOffset(){
         //given
