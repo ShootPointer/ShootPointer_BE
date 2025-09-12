@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,6 +37,23 @@ class PostQueryRepositoryTest {
 
     private static final int LIMIT=100;
 
+    /*
+    ======================================일반 데이터 사용 쿼리 테스트======================================
+     */
+
+    @DisplayName("게시물 최신순으로 조회 시 조건에 맞는 게시물이 존재하지 않으면 빈 배열을 반환합니다.")
+    @Test
+    void getLatestPostListBySliceAndNoOffset_EMPTY_ARRAY(){
+        //given
+        Long postId=123124L;
+        int size=10;
+
+        // when
+        List<PostEntity> postEntities=postQueryRepository.getLatestPostListBySliceAndNoOffset(postId,size);
+
+        //then
+        assertThat(postEntities).isEmpty();
+    }
     /*
     ======================================대용량 데이터 사용 쿼리 테스트======================================
      */
