@@ -3,18 +3,16 @@ package com.midas.shootpointer.domain.post.helper;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class PostHelperImplTest {
@@ -117,5 +115,20 @@ class PostHelperImplTest {
 
         //then
         verify(postUtil,times(1)).update(newPostEntity,postEntity,highlightEntity);
+    }
+
+    @Test
+    @DisplayName("게시판을 최신순으로 조회합니다. - postUtil.getLatestPostListBySliceAndNoOffset(Long postId, int size) 메서드가 실행되는지 확인합니다.")
+    void getLatestPostListBySliceAndNoOffset(){
+        //given
+        Long postId=124134325L;
+        int size=100;
+        when(postUtil.getLatestPostListBySliceAndNoOffset(postId,size)).thenReturn(List.of(postEntity));
+
+        //when
+        postHelper.getLatestPostListBySliceAndNoOffset(postId,size);
+
+        //then
+        verify(postUtil,times(1)).getLatestPostListBySliceAndNoOffset(postId,size);
     }
 }
