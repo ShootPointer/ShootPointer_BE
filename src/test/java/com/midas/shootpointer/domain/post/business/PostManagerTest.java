@@ -163,6 +163,31 @@ class PostManagerTest {
         verify(postHelper,times(1)).getPopularPostListBySliceAndNoOffset(lastPostId,size);
         verify(postMapper,times(1)).entityToDto(postEntities);
     }
+
+    @Test
+    @DisplayName("type 값이 올바른지 확인하고 type 값에 맞는 postHelper의 메소드들을 호출합니다._LATEST")
+    void multiRead_LATEST(){
+        //given
+        String type="latest";
+        Long lastPostId=12L;
+        int size=10;
+        List<PostEntity> postEntities=new ArrayList<>();
+        List<PostResponse> responses=new ArrayList<>();
+        PostListResponse postListResponse=PostListResponse.of(lastPostId,responses);
+
+
+        //when
+        when(postHelper.isValidAndGetPostOrderType(type)).thenReturn(PostOrderType.latest);
+        when(postHelper.getLatestPostListBySliceAndNoOffset(lastPostId,size)).thenReturn(postEntities);
+        when(postMapper.entityToDto(postEntities)).thenReturn(postListResponse);
+
+        postManager.multiRead(lastPostId,type,size);
+
+        //then
+        verify(postHelper,times(1)).getLatestPostListBySliceAndNoOffset(lastPostId,size);
+        verify(postMapper,times(1)).entityToDto(postEntities);
+    }
+
     /**
      * mock 하이라이트 영상
      * @return HighlightEntity
