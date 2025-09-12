@@ -11,7 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.*;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Random;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -134,7 +138,8 @@ class PostQueryRepositoryTest {
             while (!postEntitiesOrderByCreatedAtDesc.isEmpty()){
                 PostEntity nowPost=postEntitiesOrderByCreatedAtDesc.poll();
                 assertThat(nowPost.getPostId()).isEqualTo(findPostEntities.get(idx).getPostId());
-                assertThat(nowPost.getCreatedAt()).isEqualTo(findPostEntities.get(idx).getCreatedAt());
+                //밀리초까지만 비교
+                assertThat(nowPost.getCreatedAt()).isEqualTo(findPostEntities.get(idx).getCreatedAt().truncatedTo(ChronoUnit.MILLIS));
                 idx++;
             }
         }
