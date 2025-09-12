@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PostOrderType {
     //인기순
-    POPULAR,
+    popular,
     //최신순
-    LATEST;
+    latest;
 }

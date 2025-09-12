@@ -115,17 +115,17 @@ public class PostManager {
         /**
          * 1. type 올바른지 확인.
          */
-        PostOrderType orderType=postHelper.isValidPostOrderType(type);
+        PostOrderType orderType=postHelper.isValidAndGetPostOrderType(type);
 
         /**
          * 2. type = POPULAR (인기순) / LATEST (최신순) 정렬 후 조회.
          */
         PostListResponse response = null;
         switch (orderType){
-            case POPULAR -> response=postMapper.
+            case popular -> response=postMapper.
                     entityToDto(postHelper.getPopularPostListBySliceAndNoOffset(lastPostId,size));
 
-            case LATEST -> response=postMapper.
+            case latest -> response=postMapper.
                     entityToDto(postHelper.getLatestPostListBySliceAndNoOffset(lastPostId,size));
         }
         return response;

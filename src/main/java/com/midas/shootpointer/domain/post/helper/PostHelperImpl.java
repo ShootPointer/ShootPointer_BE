@@ -35,8 +35,8 @@ public class PostHelperImpl implements PostHelper{
     }
 
     @Override
-    public PostOrderType isValidPostOrderType(String type) {
-        return postUtil.isValidPostOrderType(type);
+    public PostOrderType isValidAndGetPostOrderType(String type) {
+        return postUtil.isValidAndGetPostOrderType(type);
     }
 
     @Override

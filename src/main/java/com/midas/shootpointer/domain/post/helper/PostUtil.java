@@ -13,5 +13,5 @@ public interface PostUtil {
     PostEntity findByPostByPostIdWithPessimisticLock(Long postId);
     List<PostEntity> getLatestPostListBySliceAndNoOffset(Long postId,int size);
     List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId,int size);
-    PostOrderType isValidPostOrderType(String type);
+    PostOrderType isValidAndGetPostOrderType(String type);
 }

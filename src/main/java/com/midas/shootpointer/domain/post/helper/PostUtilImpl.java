@@ -70,7 +70,7 @@ public class PostUtilImpl implements PostUtil{
     *
     ==========================**/
     @Override
-    public PostOrderType isValidPostOrderType(String type) {
+    public PostOrderType isValidAndGetPostOrderType(String type) {
         PostOrderType postOrderType;
         try {
             postOrderType=PostOrderType.valueOf(type);
