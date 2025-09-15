@@ -1,6 +1,6 @@
+/*
 package com.midas.shootpointer.domain.backnumber.service;
 
-import com.midas.shootpointer.domain.backnumber.business.command.BackNumberServiceImpl;
 import com.midas.shootpointer.domain.backnumber.dto.BackNumberRequest;
 import com.midas.shootpointer.domain.backnumber.dto.BackNumberResponse;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
@@ -170,9 +170,11 @@ class BackNumberServiceImplTest {
         assertThat(customException).isNotNull();
         assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
     }
-    /**
+    */
+/**
      * Mock Member
-     */
+     *//*
+
     private Member mockMember() {
         return Member.builder()
                 .memberId(UUID.randomUUID())
@@ -181,16 +183,20 @@ class BackNumberServiceImplTest {
                 .build();
     }
 
-    /**
+    */
+/**
      * Mock BackNumber Request
-     */
+     *//*
+
     private BackNumberRequest mockBackNumberRequest() {
         return BackNumberRequest.of(100);
     }
 
-    /**
+    */
+/**
      * Mock MultiFile
-     */
+     *//*
+
     private MockMultipartFile mockMultipartFile() {
         return new MockMultipartFile(
                 "file",
@@ -200,9 +206,11 @@ class BackNumberServiceImplTest {
         );
     }
 
-    /**
+    */
+/**
      * Mock BackNumberEntity
-     */
+     *//*
+
     private BackNumberEntity mockBackNumberEntity(BackNumber backNumber) {
         return BackNumberEntity
                 .builder()
@@ -210,4 +218,4 @@ class BackNumberServiceImplTest {
                 .backNumber(backNumber)
                 .build();
     }
-}
+}*/

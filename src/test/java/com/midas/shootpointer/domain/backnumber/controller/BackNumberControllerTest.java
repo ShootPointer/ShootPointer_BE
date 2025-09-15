@@ -1,9 +1,13 @@
 package com.midas.shootpointer.domain.backnumber.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.midas.shootpointer.domain.backnumber.business.command.BackNumberCommandService;
 import com.midas.shootpointer.domain.backnumber.dto.BackNumberRequest;
 import com.midas.shootpointer.domain.backnumber.dto.BackNumberResponse;
-import com.midas.shootpointer.domain.backnumber.business.command.BackNumberService;
+import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
+import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
+import com.midas.shootpointer.domain.backnumber.mapper.BackNumberMapper;
+import com.midas.shootpointer.domain.member.entity.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,9 +22,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.mockito.BDDMockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class BackNumberControllerTest {
@@ -31,7 +36,10 @@ class BackNumberControllerTest {
     private ObjectMapper objectMapper;
 
     @Mock
-    private BackNumberService backNumberService;
+    private BackNumberCommandService backNumberService;
+
+    @Mock
+    private BackNumberMapper mapper;
 
     @InjectMocks
     private BackNumberController backNumberController;
@@ -48,9 +56,17 @@ class BackNumberControllerTest {
         // given
         String url = "/api/backNumber";
         BackNumberResponse mockResponse = expectedResponse();
+        int backNumber=100;
 
-        given(backNumberService.create(anyString(), any(BackNumberRequest.class),any(MultipartFile.class)))
-                .willReturn(mockResponse);
+        when(mapper.dtoToEntity(any(BackNumberRequest.class)))
+                .thenReturn(BackNumberEntity
+                        .builder()
+                        .backNumber(BackNumber.of(backNumber))
+                        .build()
+                );
+
+        given(backNumberService.create(any(Member.class), any(BackNumberEntity.class),any(MultipartFile.class)))
+                .willReturn(backNumber);
 
         BackNumberRequest request = BackNumberRequest.of(100);
         MockMultipartFile jsonPart = new MockMultipartFile(
@@ -75,10 +91,10 @@ class BackNumberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("CREATED"))
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.backNumber").value(mockResponse.getBackNumber()))
+                .andExpect(jsonPath("$.data").value(mockResponse.getBackNumber()))
                 .andDo(print());
 
-        verify(backNumberService).create(anyString(), any(BackNumberRequest.class),any(MultipartFile.class));
+        verify(backNumberService).create(any(Member.class), any(BackNumberEntity.class),any(MultipartFile.class));
     }
     /**
      * Mock MultipartFile
