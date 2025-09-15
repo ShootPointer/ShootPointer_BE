@@ -3,8 +3,7 @@ package com.midas.shootpointer.domain.backnumber.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.domain.backnumber.dto.BackNumberRequest;
 import com.midas.shootpointer.domain.backnumber.dto.BackNumberResponse;
-import com.midas.shootpointer.domain.backnumber.service.BackNumberService;
-import com.midas.shootpointer.global.dto.ApiResponse;
+import com.midas.shootpointer.domain.backnumber.business.command.BackNumberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,15 +11,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.UUID;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
