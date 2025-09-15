@@ -1,6 +1,8 @@
 package com.midas.shootpointer.infrastructure.openCV;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.midas.shootpointer.global.common.ErrorCode;
+import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.file.GenerateFileName;
 import com.midas.shootpointer.infrastructure.openCV.dto.OpenCVResponse;
 import com.midas.shootpointer.infrastructure.openCV.service.OpenCVClientImpl;
@@ -19,6 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -78,14 +81,14 @@ class OpenCVClientTest {
         );
         Integer mockBackNumber = 1;
         UUID mockUserId = UUID.randomUUID();
-        String mockToken="test-token";
+
 
         //when
-       // OpenCVResponse<?> response = openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile,mockToken);
+        OpenCVResponse<?> response = openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile);
 
         //then
-       // assertThat(response.isSuccess()).isTrue();
-        //assertThat(response.getStatus()).isEqualTo(200);
+        assertThat(response.isSuccess()).isTrue();
+        assertThat(response.getStatus()).isEqualTo(200);
 
         /**
          * 요청 방식 일치
@@ -94,8 +97,6 @@ class OpenCVClientTest {
         assertThat(request).isNotNull();
         assertThat(request.getMethod()).isEqualTo("POST");
         assertThat(request.getPath()).contains("/api/send-image");
-
-        assertThat(request.getHeader("Authorization")).isEqualTo("test-token");
         assertThat(request.getHeader("X-Member-Id")).isEqualTo(mockUserId.toString());
 
         assertThat(request.getHeader("Content-Type")).startsWith("multipart/form-data");
@@ -121,15 +122,15 @@ class OpenCVClientTest {
                 "file", "test.img", "image/png", "fake img".getBytes()
         );
         UUID mockUserId = UUID.randomUUID();
-        String mockToken="test-token";
+
         // when
-       // CustomException exception = catchThrowableOfType(() ->
-       //                 openCVClient.sendBackNumberInformation(mockUserId, 1, mockMultipartFile,mockToken),
-         //       CustomException.class);
+       CustomException exception = catchThrowableOfType(() ->
+                        openCVClient.sendBackNumberInformation(mockUserId, 1, mockMultipartFile),
+                CustomException.class);
 
         // then
-        //assertThat(exception).isNotNull();
-        //assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.FAILED_POST_API_RETRY_TO_OPENCV);
+        assertThat(exception).isNotNull();
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.FAILED_POST_API_RETRY_TO_OPENCV);
 
         // 요청이 4번 발생 확인
         assertThat(mockWebServer.getRequestCount()).isEqualTo(4);
@@ -158,14 +159,14 @@ class OpenCVClientTest {
         );
         Integer mockBackNumber = 1;
         UUID mockUserId = UUID.randomUUID();
-        String mockToken="test-token";
+
         //when & then
-        /*CustomException customException=catchThrowableOfType(()->
-                openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile,mockToken),
+        CustomException customException=catchThrowableOfType(()->
+                openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile),
                 CustomException.class
-        );*/
-        /*assertThat(customException).isNotNull();
-        assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);*/
+        );
+        assertThat(customException).isNotNull();
+        assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
     }
 
     @Test
@@ -196,12 +197,12 @@ class OpenCVClientTest {
         String mockToken="test-token";
 
         //when & then
-        /*CustomException customException=catchThrowableOfType(()->
-                        openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile,mockToken),
+        CustomException customException=catchThrowableOfType(()->
+                        openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile),
                 CustomException.class
-        );*/
-        //assertThat(customException).isNotNull();
-        //assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
+        );
+        assertThat(customException).isNotNull();
+        assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
     }
 
     private void setUpMockProperties() {

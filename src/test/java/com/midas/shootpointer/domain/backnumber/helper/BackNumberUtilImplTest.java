@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.backnumber.helper;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,11 @@ class BackNumberUtilImplTest {
 
     @Autowired
     private BackNumberRepository backNumberRepository;
+
+    @AfterEach
+    void cleanUp(){
+        backNumberRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("BackNumber 객체로 entity를 조회합니다.-존재하는 경우(조회)")
