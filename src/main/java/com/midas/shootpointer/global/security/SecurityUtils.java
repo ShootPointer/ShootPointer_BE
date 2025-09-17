@@ -21,8 +21,10 @@ public class SecurityUtils {
 	 */
 	public static Member getCurrentMember() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null && authentication.getPrincipal()
-			instanceof CustomUserDetails) {
+		
+		if (authentication != null &&
+			authentication.isAuthenticated() &&
+			authentication.getPrincipal() instanceof CustomUserDetails) {
 			CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal(); // Object 타입을 반환하는데, 이를 CustomUserDetails로 Boxing
 			
 			return userDetails.getMember();
