@@ -1,5 +1,6 @@
 package com.midas.shootpointer.global.config;
 
+import com.midas.shootpointer.global.security.CustomUserDetailsService;
 import com.midas.shootpointer.global.util.jwt.JwtAuthenticationFilter;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
 import com.midas.shootpointer.global.util.jwt.handler.JwtHandler;
@@ -22,6 +23,7 @@ public class SecurityConfig {
     
     private final JwtHandler jwtHandler;
     private final JwtUtil jwtUtil;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -32,7 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/**", "/oauth/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtHandler, jwtUtil),
+                .addFilterBefore(new JwtAuthenticationFilter(jwtHandler, jwtUtil, customUserDetailsService),
                         org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
                 )
                 .httpBasic(Customizer.withDefaults());
