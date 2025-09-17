@@ -10,7 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -21,24 +23,25 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfig {
     
-    private final JwtHandler jwtHandler;
-    private final JwtUtil jwtUtil;
     private final CustomUserDetailsService customUserDetailsService;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+        JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/**", "/oauth/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtHandler, jwtUtil, customUserDetailsService),
-                        org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class
-                )
-                .httpBasic(Customizer.withDefaults());
-
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .sessionManagement(session -> session.sessionCreationPolicy(
+                SessionCreationPolicy.STATELESS
+            ))
+            .authorizeHttpRequests(authz -> authz
+                .requestMatchers("/**", "/oauth/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .userDetailsService(customUserDetailsService)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .httpBasic(Customizer.withDefaults());
+        
         return http.build();
     }
 
