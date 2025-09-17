@@ -6,12 +6,14 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.entity.MsgEntity;
 import com.midas.shootpointer.global.annotation.CustomLog;
 import com.midas.shootpointer.global.dto.ApiResponse;
+import com.midas.shootpointer.global.security.CustomUserDetails;
 import com.midas.shootpointer.global.security.SecurityUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,9 +38,10 @@ public class MemberCommandController {
     
     @CustomLog("회원 탈퇴")
     @DeleteMapping
-    public ResponseEntity<ApiResponse<UUID>> deleteMember(HttpServletRequest request) {
-        UUID deletedMemberId = memberCommandService.deleteMember(request);
-        
+    public ResponseEntity<ApiResponse<UUID>> deleteMember(@AuthenticationPrincipal
+        CustomUserDetails userDetails) {
+        Member member = userDetails.getMember();
+        UUID deletedMemberId = memberCommandService.deleteMember(member);
         return ResponseEntity.ok(ApiResponse.ok(deletedMemberId));
     }
     
