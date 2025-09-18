@@ -2,13 +2,13 @@ package com.midas.shootpointer.domain.post.helper;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.post.dto.PostRequest;
-import com.midas.shootpointer.domain.post.dto.PostResponse;
+import com.midas.shootpointer.domain.post.business.PostOrderType;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -35,6 +35,11 @@ public class PostHelperImpl implements PostHelper{
     }
 
     @Override
+    public PostOrderType isValidAndGetPostOrderType(String type) {
+        return postUtil.isValidAndGetPostOrderType(type);
+    }
+
+    @Override
     public PostEntity findPostByPostId(Long postId) {
         return postUtil.findPostByPostId(postId);
     }
@@ -52,6 +57,16 @@ public class PostHelperImpl implements PostHelper{
     @Override
     public PostEntity findByPostByPostIdWithPessimisticLock(Long postId) {
         return postUtil.findByPostByPostIdWithPessimisticLock(postId);
+    }
+
+    @Override
+    public List<PostEntity> getLatestPostListBySliceAndNoOffset(Long postId, int size) {
+        return postUtil.getLatestPostListBySliceAndNoOffset(postId,size);
+    }
+
+    @Override
+    public List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId, int size) {
+        return postUtil.getPopularPostListBySliceAndNoOffset(postId,size);
     }
 
 }

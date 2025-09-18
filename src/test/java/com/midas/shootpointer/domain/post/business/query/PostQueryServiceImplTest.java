@@ -1,12 +1,9 @@
 package com.midas.shootpointer.domain.post.business.query;
 
-import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
-import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.business.PostManager;
-import com.midas.shootpointer.domain.post.dto.PostResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
-import com.midas.shootpointer.domain.post.entity.PostEntity;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,10 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,6 +23,8 @@ class PostQueryServiceImplTest {
     @Mock
     private PostManager postManager;
 
+    @Mock
+    private PostListResponse postListResponse;
     @Test
     @DisplayName("게시물 조회 시 postManager - singleRead(postId)의 호출을 확인합니다.")
     void singleRead(){
@@ -45,10 +41,26 @@ class PostQueryServiceImplTest {
         verify(postManager,times(1)).singleRead(postId);
     }
 
+    @Test
+    @DisplayName("게시물 조회 시 postManager - multiRead(postId,size,type)의 호출을 확인합니다.")
+    void multiRead(){
+        //given
+        Long postId=123124L;
+        int size=10;
+        String type="latest";
+
+        //when
+        when(postManager.multiRead(postId,type,size)).thenReturn(postListResponse);
+        postQueryService.multiRead(postId,size,type);
+
+        //then
+        verify(postManager,times(1)).multiRead(postId,type,size);
+    }
+
     private PostResponse makePostResponse(LocalDateTime time,Long postId){
         return PostResponse.builder()
                 .content("content")
-                .likeCnt(10)
+                .likeCnt(10L)
                 .createdAt(time)
                 .modifiedAt(time)
                 .highlightUrl("test")

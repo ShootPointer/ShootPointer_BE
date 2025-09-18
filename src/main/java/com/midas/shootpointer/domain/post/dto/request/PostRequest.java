@@ -1,9 +1,8 @@
-package com.midas.shootpointer.domain.post.dto;
+package com.midas.shootpointer.domain.post.dto.request;
 
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
