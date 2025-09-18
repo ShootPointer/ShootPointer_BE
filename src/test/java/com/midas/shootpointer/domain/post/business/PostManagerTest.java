@@ -18,11 +18,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -188,6 +189,43 @@ class PostManagerTest {
         verify(postMapper,times(1)).entityToDto(postEntities);
     }
 
+    @Test
+    @DisplayName("search : String을 입력받아 조건에 맞는 게시물을 조회하는 postHelper 메서드를 호출합니다.")
+    void getPostEntitiesByPostTitleOrPostContent(){
+        //given
+        Long postId=12415315L;
+        String search="test";
+        int size=10;
+
+        List<PostEntity> postEntityList=new ArrayList<>();
+        List<PostResponse> postResponses=new ArrayList<>();
+        Member member=mockMember();
+        for (int i=0;i<2;i++){
+            postEntityList.add(mockPostEntity("",member));
+            postResponses.add(PostResponse.builder()
+                    .title(postEntityList.get(i).getTitle())
+                    .memberName(member.getUsername())
+                    .content(postEntityList.get(i).getContent())
+                    .createdAt(LocalDateTime.now())
+                    .modifiedAt(LocalDateTime.now())
+                    .highlightUrl("test")
+                    .likeCnt(100L)
+                    .hashTag(HashTag.TREE_POINT)
+                    .build());
+        }
+        PostListResponse postListResponse=PostListResponse.of(postId,postResponses);
+
+        //when
+        when(postHelper.getPostEntitiesByPostTitleOrPostContent(search,postId,size))
+                .thenReturn(postEntityList);
+        when(postMapper.entityToDto(postEntityList)).thenReturn(postListResponse);
+
+        postManager.getPostEntitiesByPostTitleOrPostContent(search,postId,size);
+
+        //then
+        verify(postHelper,times(1)).getPostEntitiesByPostTitleOrPostContent(search,postId,size);
+        verify(postMapper,times(1)).entityToDto(postEntityList);
+    }
     /**
      * mock 하이라이트 영상
      * @return HighlightEntity
