@@ -1,7 +1,6 @@
-package com.midas.shootpointer.global.aop;
+package com.midas.shootpointer;
 
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.global.annotation.WithMockCustomMember;
 import com.midas.shootpointer.global.security.CustomUserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

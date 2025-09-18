@@ -1,6 +1,5 @@
-package com.midas.shootpointer.global.annotation;
+package com.midas.shootpointer;
 
-import com.midas.shootpointer.global.aop.WithMockCustomUserSecurityContextFactory;
 import org.springframework.security.test.context.support.WithSecurityContext;
 
 import java.lang.annotation.Retention;

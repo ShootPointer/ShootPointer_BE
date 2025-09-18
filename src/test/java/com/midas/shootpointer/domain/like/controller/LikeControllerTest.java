@@ -2,7 +2,7 @@ package com.midas.shootpointer.domain.like.controller;
 
 import com.midas.shootpointer.domain.like.business.command.LikeCommandService;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.global.annotation.WithMockCustomMember;
+import com.midas.shootpointer.WithMockCustomMember;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

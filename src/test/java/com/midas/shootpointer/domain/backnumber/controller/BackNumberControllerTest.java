@@ -8,7 +8,7 @@ import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.backnumber.mapper.BackNumberMapper;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.global.annotation.WithMockCustomMember;
+import com.midas.shootpointer.WithMockCustomMember;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
