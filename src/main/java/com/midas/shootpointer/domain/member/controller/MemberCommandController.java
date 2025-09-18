@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.member.controller;
 
 import com.midas.shootpointer.domain.member.business.command.MemberCommandService;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
+import com.midas.shootpointer.domain.member.dto.MemberResponseDto;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.entity.MsgEntity;
 import com.midas.shootpointer.global.annotation.CustomLog;
@@ -47,9 +48,13 @@ public class MemberCommandController {
     
     @CustomLog("회원 정보 조회")
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<Member>> getCurrentMember() {
+    public MemberResponseDto getCurrentMember() {
         Member currentMember = SecurityUtils.getCurrentMember();
-        
-        return ResponseEntity.ok(ApiResponse.ok(currentMember));
+		
+		return MemberResponseDto.builder()
+			.memberId(currentMember.getMemberId())
+			.email(currentMember.getEmail())
+			.username(currentMember.getUsername())
+			.build();
     }
 }
