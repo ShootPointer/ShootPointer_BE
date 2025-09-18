@@ -19,11 +19,17 @@ public class TokenServiceImpl implements TokenService {
 		// Access Token 생성
 		String accessToken = jwtHandler.createAccessToken(member);
 		
-		// Refresh Token 생성
-		String refreshToken = jwtHandler.createRefreshToken(member.getEmail());
+		// Refresh Token 생성 -> 기존에 존재하면 해당 Refresh Token 설정 / 만료 되었다면 새로운 Refresh Token 생성
+		String existingRefreshToken = refreshTokenHandler.getRefreshToken(member.getEmail())
+			.orElse(null);
+		String refreshToken;
 		
-		// Refresh Token Redis에 저장
-		refreshTokenHandler.saveRefreshToken(member.getEmail(), refreshToken);
+		if (existingRefreshToken != null && jwtHandler.validateToken(existingRefreshToken)) {
+			refreshToken = existingRefreshToken;
+		} else {
+			refreshToken = jwtHandler.createRefreshToken(member.getEmail());
+			refreshTokenHandler.saveRefreshToken(member.getEmail(), refreshToken);
+		}
 		
 		// DTO에 토큰 정보 설정
 		kakaoDTO.setAccessToken(accessToken);

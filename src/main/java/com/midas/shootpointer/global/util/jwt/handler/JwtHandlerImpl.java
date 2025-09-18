@@ -2,6 +2,8 @@ package com.midas.shootpointer.global.util.jwt.handler;
 
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
+import io.jsonwebtoken.Claims;
+import java.util.Date;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -40,8 +42,9 @@ public class JwtHandlerImpl implements JwtHandler {
 	@Override
 	public boolean validateToken(String token) {
 		try {
-			jwtUtil.parseToken(token);
-			return true;
+			Claims claims = jwtUtil.parseToken(token);
+			Date expiration = claims.getExpiration();
+			return expiration.after(new Date());
 		} catch (Exception e) {
 			return false;
 		}
