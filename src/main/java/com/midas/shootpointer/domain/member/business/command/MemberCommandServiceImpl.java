@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.member.business.command;
 import com.midas.shootpointer.domain.member.business.MemberManager;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.global.util.jwt.handler.RefreshTokenHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 	private final MemberManager memberManager;
 	private final KakaoService kakaoService;
 	private final TokenService tokenService;
+	private final RefreshTokenHandler refreshTokenHandler;
 	
 	@Override
 	public KakaoDTO processKakaoLogin(HttpServletRequest request) {
@@ -31,16 +33,6 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 		
 		return kakaoInfo;
 	}
-	
-//	@Override
-//	public UUID deleteMember(HttpServletRequest request) {
-//		String token = jwtUtil.resolveToken(request);
-//		UUID memberId = jwtUtil.getMemberId(token);
-//
-//		Member currentMember = memberManager.findMemberById(memberId);
-//
-//		return memberManager.deleteMember(memberId, currentMember);
-//	}
 
 	private String extractCodeFromRequest(HttpServletRequest request) {
 		return request.getParameter("code");
@@ -48,6 +40,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 	
 	@Override
 	public UUID deleteMember(Member member) {
-		return memberManager.deleteMember(member.getMemberId(), member);
+		// DB에서 회원 삭제
+		UUID deletedMemberId = memberManager.deleteMember(member.getMemberId(), member);
+		// Redis에서 회원 탈퇴 시 Refresh Token 삭제
+		refreshTokenHandler.deleteRefreshToken(member.getEmail());
+		
+		return deletedMemberId;
 	}
 }
