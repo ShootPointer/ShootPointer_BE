@@ -7,8 +7,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 @Table(name = "post")
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -36,15 +34,15 @@ public class PostEntity extends BaseEntity {
     @Column(name = "like_cnt")
     @Builder.Default
     @Setter
-    private Integer likeCnt=0;
+    private Long likeCnt=0L;
 
     @ManyToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "member_id",nullable = false)
     private Member member;
 
     @Setter
-    @OneToOne
-    @JoinColumn(name = "highlight_id",unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "highlight_id")
     private HighlightEntity highlight;
 
     public void update(String title,String content,HashTag hashTag,HighlightEntity highlight){
@@ -62,7 +60,7 @@ public class PostEntity extends BaseEntity {
         if(this.likeCnt>0){
             this.likeCnt--;
         }else{
-            this.likeCnt=0;
+            this.likeCnt=0L;
         }
     }
 

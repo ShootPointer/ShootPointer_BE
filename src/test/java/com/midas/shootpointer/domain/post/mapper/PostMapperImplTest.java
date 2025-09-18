@@ -4,23 +4,24 @@ import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
-import com.midas.shootpointer.domain.post.dto.PostRequest;
-import com.midas.shootpointer.domain.post.dto.PostResponse;
+import com.midas.shootpointer.domain.post.dto.request.PostRequest;
+import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @ActiveProfiles("dev")
 class PostMapperImplTest {
@@ -96,6 +97,48 @@ class PostMapperImplTest {
         assertThat(postResponse.getModifiedAt()).isEqualTo(postEntity.getModifiedAt());
     }
 
+    @Test
+    @DisplayName("리스트 형태의 게시물 Entity를 PostListResponseDto로 변환합니다.")
+    void entityToListDto_SUCCESS(){
+        /*
+        * given
+        */
+        Member member=memberRepository.save(makeMockMember());
+        HighlightEntity highlight=highlightCommandRepository.save(makeHighlight(member));
+        List<PostEntity> postEntities=new ArrayList<>();
+        int size=10;
+
+        for (int i=0;i<size;i++){
+            PostEntity post=postCommandRepository.save(makePostEntity(member,highlight));
+            postEntities.add(post);
+        }
+        Long lastPostId=postEntities.get(size-1).getPostId();
+
+        /*
+        * when
+        */
+        PostListResponse postResponse=postMapper.entityToDto(postEntities);
+
+        /*
+        * then
+        */
+        assertThat(postResponse.getLastPostId()).isEqualTo(lastPostId);
+
+        List<PostResponse> mappedPostResponse=postResponse.getPostList();
+        int idx=0;
+        for (PostResponse response:mappedPostResponse){
+            assertThat(response.getPostId()).isEqualTo(postEntities.get(idx).getPostId());
+            assertThat(response.getContent()).isEqualTo(postEntities.get(idx).getContent());
+            assertThat(response.getCreatedAt()).isEqualTo(postEntities.get(idx).getCreatedAt());
+            assertThat(response.getMemberName()).isEqualTo(postEntities.get(idx).getMember().getUsername());
+            assertThat(response.getLikeCnt()).isEqualTo(postEntities.get(idx).getLikeCnt());
+            assertThat(response.getModifiedAt()).isEqualTo(postEntities.get(idx).getModifiedAt());
+            assertThat(response.getTitle()).isEqualTo(postEntities.get(idx).getTitle());
+            assertThat(response.getHashTag()).isEqualTo(postEntities.get(idx).getHashTag());
+            assertThat(response.getHighlightUrl()).isEqualTo(postEntities.get(idx).getHighlight().getHighlightURL());
+            idx++;
+        }
+    }
     /**
      * Mock Member
      */
@@ -106,4 +149,22 @@ class PostMapperImplTest {
                 .build();
     }
 
+    private PostEntity makePostEntity(Member member,HighlightEntity highlight){
+        return PostEntity.builder()
+                .likeCnt(10L)
+                .hashTag(HashTag.TWO_POINT)
+                .member(member)
+                .title("title")
+                .content("content")
+                .highlight(highlight)
+                .build();
+    }
+
+    private HighlightEntity makeHighlight(Member member){
+        return HighlightEntity.builder()
+                .highlightURL("test_test_tes")
+                .highlightKey(UUID.randomUUID())
+                .member(member)
+                .build();
+    }
 }

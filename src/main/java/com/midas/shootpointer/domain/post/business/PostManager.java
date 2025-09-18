@@ -3,15 +3,11 @@ package com.midas.shootpointer.domain.post.business;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.post.dto.PostRequest;
-import com.midas.shootpointer.domain.post.dto.PostResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
-import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
-import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
-import com.midas.shootpointer.global.common.ErrorCode;
-import com.midas.shootpointer.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -113,4 +109,26 @@ public class PostManager {
          */
         return postMapper.entityToDto(postHelper.findPostByPostId(postId));
     }
+
+    @Transactional(readOnly = true)
+    public PostListResponse multiRead(Long lastPostId,String type,int size){
+        /**
+         * 1. type 올바른지 확인.
+         */
+        PostOrderType orderType=postHelper.isValidAndGetPostOrderType(type);
+
+        /**
+         * 2. type = POPULAR (인기순) / LATEST (최신순) 정렬 후 조회.
+         */
+        PostListResponse response = null;
+        switch (orderType){
+            case popular -> response=postMapper.
+                    entityToDto(postHelper.getPopularPostListBySliceAndNoOffset(lastPostId,size));
+
+            case latest -> response=postMapper.
+                    entityToDto(postHelper.getLatestPostListBySliceAndNoOffset(lastPostId,size));
+        }
+        return response;
+    }
+
 }

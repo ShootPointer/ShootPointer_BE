@@ -1,38 +1,26 @@
 package com.midas.shootpointer.domain.post.helper;
 
-import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
-import com.midas.shootpointer.domain.post.dto.PostResponse;
+import com.midas.shootpointer.domain.post.business.PostOrderType;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
-import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
-import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Optional;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowableOfType;
 
 /**
  * 통합 테스트로 진행.
@@ -54,6 +42,8 @@ class PostUtilImplTest {
 
     @Autowired
     private PostMapper postMapper;
+    @Autowired
+    private PostUtilImpl postUtilImpl;
 
 
     @Test
@@ -169,6 +159,50 @@ class PostUtilImplTest {
         assertThat(findPost.getPostId()).isEqualTo(post.getPostId());
         assertThat(findPost.getMember().getMemberId()).isEqualTo(member.getMemberId());
     }
+
+    @DisplayName("사용자가 파라미터로 입력한 게시물 조회 방식 - '좋아요순'/'최신순'의 ENUM 형태가 올바른지 판단하고 알맞은 ENUM값을 반환합니다._SUCCESS")
+    @Test
+    void isValidAndGetPostOrderType_SUCCESS(){
+        //given
+        String latestType="latest";
+        String popularType="popular";
+
+        //when
+        PostOrderType latestOrderType=postUtil.isValidAndGetPostOrderType(latestType);
+        PostOrderType popularOrderType=postUtil.isValidAndGetPostOrderType(popularType);
+
+        //then
+        assertThat(latestOrderType).isEqualTo(PostOrderType.latest);
+        assertThat(popularOrderType).isEqualTo(PostOrderType.popular);
+    }
+
+    @DisplayName("사용자가 파라미터로 입력한 게시물 조회 방식 - '좋아요순'/'최신순'의 ENUM 형태가 올바른지 판단하고 알맞지 않으면 NOT_EXIST_ORDER_TYPE 예외를 발생시킵니다._FAIL")
+    @Test
+    void isValidAndGetPostOrderType_FAIL(){
+        //given
+        String latestType="Latest";
+        String popularType="Popular";
+
+        //when
+        CustomException customExceptionOfLatest=catchThrowableOfType(()->
+                postUtil.isValidAndGetPostOrderType(latestType),
+                CustomException.class
+        );
+
+        CustomException customExceptionOfPopular=catchThrowableOfType(()->
+                        postUtil.isValidAndGetPostOrderType(popularType),
+                CustomException.class
+        );
+
+        //then
+        assertThat(customExceptionOfLatest).isNotNull();
+        assertThat(customExceptionOfPopular).isNotNull();
+
+        assertThat(customExceptionOfLatest.getErrorCode()).isEqualTo(ErrorCode.NOT_EXIST_ORDER_TYPE);
+        assertThat(customExceptionOfPopular.getErrorCode()).isEqualTo(ErrorCode.NOT_EXIST_ORDER_TYPE);
+    }
+
+
 
     private PostEntity makeMockPost(Member member,HighlightEntity highlight){
         return PostEntity.builder()

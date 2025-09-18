@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.post.helper;
 
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.post.business.PostOrderType;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
@@ -67,6 +68,5 @@ public class PostValidationImpl implements PostValidation{
             throw new CustomException(ErrorCode.IS_NOT_MEMBERS_POST);
         }
     }
-
 
 }

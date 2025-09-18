@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.highlight.entity;
 
-import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.entity.BaseEntity;
@@ -44,6 +43,7 @@ public class HighlightEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "back_number_id")
     private BackNumberEntity backNumber;
+
 
     public void select(){
         this.isSelected=true;
