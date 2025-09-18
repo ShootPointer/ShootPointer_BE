@@ -9,7 +9,5 @@ public interface MemberCommandService {
     
     KakaoDTO processKakaoLogin(HttpServletRequest request);
 
-//    UUID deleteMember(HttpServletRequest request);
-    
     UUID deleteMember(Member member);
 }
