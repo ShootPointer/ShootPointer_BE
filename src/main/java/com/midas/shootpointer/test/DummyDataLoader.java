@@ -71,6 +71,7 @@ public class DummyDataLoader implements CommandLineRunner {
             long start = threeYearsAgo.toEpochSecond(ZoneOffset.UTC);
             long end = now.toEpochSecond(ZoneOffset.UTC);
             long randomEpoch = start + (long) (random.nextDouble() * (end - start));
+            //UTC 기준으로 하여 LocalDateTime를 long 형태로 변환.
             LocalDateTime randomDateTime = LocalDateTime.ofEpochSecond(randomEpoch, 0, ZoneOffset.UTC);
 
             batchArgs.add(new Object[]{title,content, HashTag.TREE_POINT.name(),highlightId,memberId,likeCnt,randomDateTime,randomDateTime});
