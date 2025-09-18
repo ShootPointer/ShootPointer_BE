@@ -45,3 +45,5 @@ src/main/resources/redis-data
 src/main/resources/docker-compose.yml
 src/main/resources/application-dev.yml
 src/main/resources/application.yml
+src/main/resources/application-test.yml
+## Test

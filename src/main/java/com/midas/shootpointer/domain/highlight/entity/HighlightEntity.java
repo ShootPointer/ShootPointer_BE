@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.highlight.entity;
 
-import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.entity.BaseEntity;
@@ -20,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Getter
-@Table(name = "higlight")
+@Table(name = "highlight")
 public class HighlightEntity extends BaseEntity {
     @Id
     @UuidGenerator
@@ -30,10 +29,11 @@ public class HighlightEntity extends BaseEntity {
     @Column(name = "highlight_url",nullable = false)
     private String highlightURL;
 
-    @Column(name = "highlight_key",nullable = false)
+    @Column(name = "highlight_key",nullable = false,unique = true,columnDefinition = "uuid")
     private UUID highlightKey;
 
     @Column(name = "is_selected")
+    @Builder.Default
     private Boolean isSelected=false;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,8 +41,9 @@ public class HighlightEntity extends BaseEntity {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "back_number_id",nullable = false)
+    @JoinColumn(name = "back_number_id")
     private BackNumberEntity backNumber;
+
 
     public void select(){
         this.isSelected=true;

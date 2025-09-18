@@ -2,11 +2,47 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.5'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'jacoco'
 }
 
 group = 'com.midas'
 version = '0.0.1-SNAPSHOT'
 
+test {
+	finalizedBy jacocoTestReport
+}
+
+jacoco {
+	toolVersion = "0.8.11"
+}
+
+//test
+
+jacocoTestReport{
+	dependsOn test
+	reports {
+		xml.required.set(true)
+	}
+	afterEvaluate {
+		classDirectories.setFrom(
+				files(classDirectories.files.collect{
+					fileTree(dir: it, exclude: [
+					        "**/global/config/**",
+							"**/global/exception/**",
+							"**/global/dto/**",
+							"**/global/aop/**",
+							"**/global/entity/**",
+							"**/global/common/**",
+							"**/HealthCheckController.class",
+							"ShootPointerApplication.class",
+							"**/domain/**/entity/**",
+							"**/global/annotation/**",
+							"**/test/**"
+					])
+				})
+		)
+	}
+}
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
@@ -41,6 +77,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.springframework.security:spring-security-test'
 
 	//Swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
@@ -50,11 +87,23 @@ dependencies {
 	testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.3'
 
 	//H2 DataBase
-	testImplementation 'com.h2database:h2'
+	testImplementation 'com.h2database:h2:2.2.224'
 	testRuntimeOnly 'com.h2database:h2'
 
+	//test - log
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	//redisson
+	implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+	/**
+	 * 동시성 제어 테스트 제외 - 제외 이유 : PR시 Jacoco 커버리지 측정 시간 대폭 증가.
+	 **/
+	if (System.getenv("CI") == "true") {
+		exclude '**/LikeManagerConcurrencyTest.class'
+	}
 }

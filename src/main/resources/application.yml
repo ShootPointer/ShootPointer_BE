@@ -14,10 +14,20 @@ jwt:
   refresh_expiration_time: 259200000
 
 spring:
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
   main:
     allow-bean-definition-overriding: true
   application:
     name: shootpointer
+  # Data 크기
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5000MB
+      max-request-size: 5000MB
+
 
   # 데이터소스 설정
   datasource:
@@ -26,13 +36,15 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD:}
     driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
 
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      connection-timeout: 30000
+
   # JPA 설정
   jpa:
-    show-sql: ${SPRING_JPA_SHOW_SQL:true}
-    type:
-      preferred_uuid_jdbc_type: uuid
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create-drop}
     database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
     properties:
       hibernate:
@@ -48,9 +60,14 @@ spring:
 
     # Redis 설정
     redis:
-      host: redis
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
       timeout: 2000ms
+      jedis:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
   # kakao
   security:
     oauth2:
@@ -63,8 +80,8 @@ spring:
             user-name-attribute: id
         registration:
           kakao:
-            client-id: 2d02b80c257c10b0bcd5f762ba607f0d
-            client-secret: 7dv7lab9zTDrD4ag27NEeLY3ZMBbPcJo
+            client-id: test
+            client-secret: test
             redirect-uri: http://localhost:8081
             authorization-grant-type: authorization_code
             client-authentication-method: POST
