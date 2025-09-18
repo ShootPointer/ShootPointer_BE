@@ -132,11 +132,11 @@ public class PostManager {
     }
 
     @Transactional(readOnly = true)
-    public PostListResponse getPostEntitiesByPostTitleOrPostContent(String search){
+    public PostListResponse getPostEntitiesByPostTitleOrPostContent(String search,Long postId,int size){
         /**
          * 1. 제목 + 내용 게시물 조회.
          */
-        return postMapper.entityToDto(postHelper.getPostEntitiesByPostTitleOrPostContent(search));
+        return postMapper.entityToDto(postHelper.getPostEntitiesByPostTitleOrPostContent(search,postId,size));
     }
 
 }

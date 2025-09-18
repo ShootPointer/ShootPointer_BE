@@ -23,7 +23,7 @@ public class PostQueryServiceImpl implements PostQueryService{
     }
 
     @Override
-    public PostListResponse search(String search) {
-        return postManager.getPostEntitiesByPostTitleOrPostContent(search);
+    public PostListResponse search(String search,Long postId,int size) {
+        return postManager.getPostEntitiesByPostTitleOrPostContent(search,postId,size);
     }
 }

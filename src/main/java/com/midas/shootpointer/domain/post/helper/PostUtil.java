@@ -14,5 +14,5 @@ public interface PostUtil {
     List<PostEntity> getLatestPostListBySliceAndNoOffset(Long postId,int size);
     List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId,int size);
     PostOrderType isValidAndGetPostOrderType(String type);
-    List<PostEntity> getPostEntitiesByPostTitleOrPostContent(String search);
+    List<PostEntity> getPostEntitiesByPostTitleOrPostContent(String search,Long postId,int size);
 }

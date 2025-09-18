@@ -101,7 +101,9 @@ public class PostQueryController {
     *
     ==========================**/
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<PostListResponse>> search(@RequestParam(required = true) String search){
-        return ResponseEntity.ok(ApiResponse.ok(postQueryService.search(search)));
+    public ResponseEntity<ApiResponse<PostListResponse>> search(@RequestParam(required = true) String search,
+                                                                @RequestParam(required = false,defaultValue = "922337203685477580") Long postId,
+                                                                @RequestParam(required = false,defaultValue = "10")int size){
+        return ResponseEntity.ok(ApiResponse.ok(postQueryService.search(search,postId,size)));
     }
 }
