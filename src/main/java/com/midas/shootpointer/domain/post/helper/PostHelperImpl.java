@@ -40,6 +40,11 @@ public class PostHelperImpl implements PostHelper{
     }
 
     @Override
+    public List<PostEntity> getPostEntitiesByPostTitleOrPostContent(String search) {
+        return postUtil.getPostEntitiesByPostTitleOrPostContent(search);
+    }
+
+    @Override
     public PostEntity findPostByPostId(Long postId) {
         return postUtil.findPostByPostId(postId);
     }

@@ -3,7 +3,6 @@ package com.midas.shootpointer.domain.post.controller;
 import com.midas.shootpointer.domain.post.business.query.PostQueryService;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
-import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,10 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -80,5 +75,33 @@ public class PostQueryController {
                                                                    @RequestParam(required = false,defaultValue = "10")int size,
                                                                    @RequestParam(required = false,defaultValue = "latest")String type){
         return ResponseEntity.ok(ApiResponse.ok(postQueryService.multiRead(postId,size,type)));
+    }
+
+
+    @Operation(
+            summary = "게시물 검색 조회 API - [담당자 : 김도연]",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "게시물 검색 조회 성공",
+                            content = @Content(mediaType="application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX",description = "게시물 검색 조회 실패",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+            }
+    )
+    /*==========================
+    *
+    *PostQueryController
+    *
+    * @parm [search] : 검색명
+    * @return org.springframework.http.ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<com.midas.shootpointer.domain.post.dto.response.PostListResponse>>
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 9. 18.
+    *
+    ==========================**/
+    @GetMapping("/list")
+    public ResponseEntity<ApiResponse<PostListResponse>> search(@RequestParam(required = true) String search){
+        return ResponseEntity.ok(ApiResponse.ok(postQueryService.search(search)));
     }
 }
