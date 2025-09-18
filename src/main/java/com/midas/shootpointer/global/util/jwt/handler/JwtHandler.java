@@ -1,7 +1,6 @@
 package com.midas.shootpointer.global.util.jwt.handler;
 
 import com.midas.shootpointer.domain.member.entity.Member;
-import java.util.Date;
 import java.util.UUID;
 
 public interface JwtHandler {
@@ -11,6 +10,4 @@ public interface JwtHandler {
 	String getNicknameFromToken(String token);
 	UUID getMemberIdFromToken(String token);
 	boolean validateToken(String token);
-	Date getTokenExpiration(String token);
-	boolean isTokenExpired(String token, long threshHoldMs);
 }
