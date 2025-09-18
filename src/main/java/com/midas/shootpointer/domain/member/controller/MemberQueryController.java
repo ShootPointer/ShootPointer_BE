@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "회원 조회", description = "회원 조회 API")
 public class MemberQueryController {
 	
+	//* TODO : 회원 조회 API는 삭제 예정
+	
 	private final MemberQueryService memberQueryService;
 	private final MemberMapper memberMapper;
 	
