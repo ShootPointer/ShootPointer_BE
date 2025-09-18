@@ -190,6 +190,33 @@ class PostManagerTest {
     }
 
     @Test
+    @DisplayName("postId로 게시물을 단 건 조회하며 성공 시 PostResponse를 반환합니다.")
+    void singleRead(){
+        //given
+        Long postId=123L;
+        Member member=mockMember();
+        PostEntity expectedPost=mockPostEntity("",member);
+        PostResponse expectedResponse=PostResponse.builder()
+                        .content(expectedPost.getContent())
+                        .hashTag(expectedPost.getHashTag())
+                        .likeCnt(expectedPost.getLikeCnt())
+                        .createdAt(LocalDateTime.now())
+                        .highlightUrl("url")
+                        .memberName(expectedPost.getMember().getUsername())
+                        .modifiedAt(LocalDateTime.now())
+                        .title(expectedPost.getTitle())
+                        .build();
+
+        //when
+        when(postHelper.findPostByPostId(postId)).thenReturn(expectedPost);
+        when(postMapper.entityToDto(expectedPost)).thenReturn(expectedResponse);
+        postManager.singleRead(postId);
+
+        //then
+        verify(postHelper,times(1)).findPostByPostId(postId);
+        verify(postMapper,times(1)).entityToDto(expectedPost);
+    }
+    @Test
     @DisplayName("search : String을 입력받아 조건에 맞는 게시물을 조회하는 postHelper 메서드를 호출합니다.")
     void getPostEntitiesByPostTitleOrPostContent(){
         //given
