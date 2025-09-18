@@ -131,4 +131,12 @@ public class PostManager {
         return response;
     }
 
+    @Transactional(readOnly = true)
+    public PostListResponse getPostEntitiesByPostTitleOrPostContent(String search){
+        /**
+         * 1. 제목 + 내용 게시물 조회.
+         */
+        return postMapper.entityToDto(postHelper.getPostEntitiesByPostTitleOrPostContent(search));
+    }
+
 }
