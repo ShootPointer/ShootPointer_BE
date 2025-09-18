@@ -165,12 +165,14 @@ class PostHelperImplTest {
     void getPostEntitiesByPostTitleOrPostContent(){
         //given
         String search="제목";
-        when(postUtil.getPostEntitiesByPostTitleOrPostContent(search)).thenReturn(List.of(postEntity));
+        Long lastPostId=12312412424L;
+        int size=10;
+        when(postUtil.getPostEntitiesByPostTitleOrPostContent(search,lastPostId,size)).thenReturn(List.of(postEntity));
 
         //when
-        postHelper.getPostEntitiesByPostTitleOrPostContent(search);
+        postHelper.getPostEntitiesByPostTitleOrPostContent(search,lastPostId,size);
 
         //then
-        verify(postUtil,times(1)).getPostEntitiesByPostTitleOrPostContent(search);
+        verify(postUtil,times(1)).getPostEntitiesByPostTitleOrPostContent(search,lastPostId,size);
     }
 }

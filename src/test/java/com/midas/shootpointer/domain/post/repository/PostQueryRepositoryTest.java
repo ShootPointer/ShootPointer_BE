@@ -88,6 +88,8 @@ class PostQueryRepositoryTest {
         //given
         member=memberRepository.save(makeMember());
         highlight=highlightCommandRepository.save(makeHighlight(member));
+        int size=10;
+        Long postId=12341241534L;
 
         List<PostEntity> expectedPostEntities=new ArrayList<>();
         //3개 생성.
@@ -110,7 +112,7 @@ class PostQueryRepositoryTest {
         expectedPostEntities.sort((a,b)->b.getCreatedAt().compareTo(a.getCreatedAt()));
 
         //when
-        List<PostEntity> getPostEntity=postQueryRepository.getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc("내용");
+        List<PostEntity> getPostEntity=postQueryRepository.getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc("내용",size,postId);
 
         //then
         assertThat(getPostEntity).isNotEmpty();
@@ -129,6 +131,8 @@ class PostQueryRepositoryTest {
         //given
         member=memberRepository.save(makeMember());
         highlight=highlightCommandRepository.save(makeHighlight(member));
+        Long postId=12412515L;
+        int size=10;
 
         List<PostEntity> expectedPostEntities=new ArrayList<>();
         //3개 생성.
@@ -151,7 +155,7 @@ class PostQueryRepositoryTest {
         expectedPostEntities.sort((a,b)->b.getCreatedAt().compareTo(a.getCreatedAt()));
 
         //when
-        List<PostEntity> getPostEntity=postQueryRepository.getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc("제목");
+        List<PostEntity> getPostEntity=postQueryRepository.getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc("제목",size,postId);
 
         //then
         assertThat(getPostEntity).isNotEmpty();
