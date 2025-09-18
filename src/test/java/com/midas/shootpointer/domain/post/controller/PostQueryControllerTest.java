@@ -53,7 +53,7 @@ class PostQueryControllerTest {
     void singleRead() throws Exception {
         //given
         Long postId=123124L;
-        PostResponse response=makePostResponse(LocalDateTime.now(),postId,10L,"","");
+        PostResponse response=makePostResponse(LocalDateTime.now(),postId,10L,"title","content");
 
         //when
         when(postQueryService.singleRead(anyLong()))
