@@ -18,22 +18,19 @@ import java.util.UUID;
 public class WithMockCustomUserSecurityContextFactory implements WithSecurityContextFactory<WithMockCustomMember> {
     @Override
     public SecurityContext createSecurityContext(WithMockCustomMember annotation) {
-        SecurityContext context= SecurityContextHolder.createEmptyContext();
 
         //Member 객체 생성.
         Member member=Member.builder()
-                .username("test")
-                .email("test@naver.com")
+                .username(annotation.name())
+                .email(annotation.email())
                 .memberId(UUID.randomUUID())
                 .build();
 
+        SecurityContext context= SecurityContextHolder.createEmptyContext();
         CustomUserDetails userDetails=new CustomUserDetails(member);
+        Authentication auth=UsernamePasswordAuthenticationToken.authenticated(userDetails,"password",userDetails.getAuthorities());
 
-        Authentication authentication=new UsernamePasswordAuthenticationToken(
-                userDetails,null, userDetails.getAuthorities()
-        );
-
-        context.setAuthentication(authentication);
+        context.setAuthentication(auth);
         return context;
     }
 }
