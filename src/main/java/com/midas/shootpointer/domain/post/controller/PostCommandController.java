@@ -1,11 +1,12 @@
 package com.midas.shootpointer.domain.post.controller;
 
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.business.command.PostCommandService;
+import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import com.midas.shootpointer.global.dto.ApiResponse;
+import com.midas.shootpointer.global.security.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/post")
@@ -23,6 +22,7 @@ import java.util.UUID;
 public class PostCommandController {
     private final PostCommandService postCommandService;
     private final PostMapper postMapper;
+    private final SecurityUtils securityUtils;
     @Operation(
             summary = "게시물 등록 API - [담당자 : 김도연]",
             responses = {
@@ -50,12 +50,7 @@ public class PostCommandController {
     public ResponseEntity<ApiResponse<Long>> create(
             @RequestBody PostRequest request
     ) {
-        //TODO: member -> 현재 로그인한 멤버 가져오기.
-        Member member=Member.builder()
-                .memberId(UUID.randomUUID())
-                .email("test@naver.com")
-                .username("test")
-                .build();
+        Member member=SecurityUtils.getCurrentMember();
         PostEntity entity=postMapper.dtoToEntity(request,member);
         return ResponseEntity.ok(ApiResponse.created(postCommandService.create(entity,member)));
     }
@@ -88,12 +83,7 @@ public class PostCommandController {
           @RequestBody PostRequest request,
           @PathVariable(value = "postId") Long postId
     ){
-        //TODO: member -> 현재 로그인한 멤버 가져오기.
-        Member member=Member.builder()
-                .memberId(UUID.randomUUID())
-                .email("test@naver.com")
-                .username("test")
-                .build();
+        Member member=SecurityUtils.getCurrentMember();
         PostEntity entity=postMapper.dtoToEntity(request,member);
         return ResponseEntity.ok(ApiResponse.ok(postCommandService.update(entity,member,postId)));
     }
@@ -125,14 +115,8 @@ public class PostCommandController {
     public ResponseEntity<ApiResponse<Long>> delete(
             @PathVariable(value = "postId") Long postId
     ){
-        //TODO: member -> 현재 로그인한 멤버 가져오기.
-        Member member=Member.builder()
-                .memberId(UUID.randomUUID())
-                .email("test@naver.com")
-                .username("test")
-                .build();
+        Member member=SecurityUtils.getCurrentMember();
         return ResponseEntity.ok(ApiResponse.ok(postCommandService.delete(member,postId)));
     }
-
 
 }

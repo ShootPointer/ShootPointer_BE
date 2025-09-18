@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -200,6 +202,37 @@ class PostUtilImplTest {
 
         assertThat(customExceptionOfLatest.getErrorCode()).isEqualTo(ErrorCode.NOT_EXIST_ORDER_TYPE);
         assertThat(customExceptionOfPopular.getErrorCode()).isEqualTo(ErrorCode.NOT_EXIST_ORDER_TYPE);
+    }
+
+    @Test
+    @DisplayName("제목 + 내용으로 게시물을 조회하고 NoOffSet+Slice 방식으로 변환하며, postId 내림차순(게시물 업로드 최신순)으로 정렬하여 반환합니다._SUCCESS")
+    void search() throws InterruptedException {
+        //given
+        String search="content";
+        Long postId=12312525L;
+        int size=10;
+
+        Member member=memberRepository.save(makeMember());
+        HighlightEntity highlight=highlightCommandRepository.save(makeHighlight(member));
+        List<PostEntity> expectedPostList=new ArrayList<>();
+
+        //더미 게시물 11개 생성.
+        for (int i=0;i<11;i++){
+            Thread.sleep(100);
+            expectedPostList.add(postCommandRepository.save(makeMockPost(member,highlight)));
+        }
+        //정렬
+        expectedPostList.sort((a,b)->b.getPostId().compareTo(a.getPostId()));
+
+        //when
+        List<PostEntity> findPostList=postUtilImpl.getPostEntitiesByPostTitleOrPostContent(search,postId,size);
+
+        //then
+        assertThat(findPostList).isNotEmpty();
+        assertThat(findPostList.size()).isEqualTo(size);
+        for (int i=0;i<10;i++){
+            assertThat(expectedPostList.get(i).getPostId()).isEqualTo(findPostList.get(i).getPostId());
+        }
     }
 
 

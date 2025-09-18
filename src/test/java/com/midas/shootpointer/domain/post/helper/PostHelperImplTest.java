@@ -159,4 +159,20 @@ class PostHelperImplTest {
         //then
         verify(postUtil,times(1)).getPopularPostListBySliceAndNoOffset(postId,size);
     }
+
+    @Test
+    @DisplayName("게시판을 검색 조회합니다 - postUtil.getPostEntitiesByPostTitleOrPostContent(String search) 메서드가 실행되는지 확인합니다.")
+    void getPostEntitiesByPostTitleOrPostContent(){
+        //given
+        String search="제목";
+        Long lastPostId=12312412424L;
+        int size=10;
+        when(postUtil.getPostEntitiesByPostTitleOrPostContent(search,lastPostId,size)).thenReturn(List.of(postEntity));
+
+        //when
+        postHelper.getPostEntitiesByPostTitleOrPostContent(search,lastPostId,size);
+
+        //then
+        verify(postUtil,times(1)).getPostEntitiesByPostTitleOrPostContent(search,lastPostId,size);
+    }
 }

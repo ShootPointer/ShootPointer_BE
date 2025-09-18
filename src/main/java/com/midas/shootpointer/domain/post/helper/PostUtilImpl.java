@@ -80,4 +80,9 @@ public class PostUtilImpl implements PostUtil{
         return postOrderType;
     }
 
+    @Override
+    public List<PostEntity> getPostEntitiesByPostTitleOrPostContent(String search,Long postId,int size) {
+        return postQueryRepository.getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc(search,size,postId);
+    }
+
 }

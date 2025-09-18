@@ -39,4 +39,19 @@ public interface PostQueryRepository extends JpaRepository<PostEntity,Long> {
     List<PostEntity> getPopularPostListBySliceAndNoOffset(@Param(value = "size")int size,
                                                           @Param(value = "likeCnt")Long likeCnt
     );
+
+    /**
+     * 1. 제목 + 내용 게시물 조회 - NoOffset+slice 방식
+     * 2. 조회된 게시물 최신순 정렬 반환.
+     */
+    @Query(value = "SELECT * FROM post as p " +
+                   "WHERE (p.title like CONCAT('%', :search, '%') " +
+                   "OR p.content like CONCAT('%', :search, '%')) " +
+                   "AND p.post_id < :lastPostId " +
+                   "ORDER BY p.post_id DESC " +
+                   "LIMIT :size",nativeQuery = true)
+    List<PostEntity> getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc(@Param(value = "search") String search,
+                                                                                 @Param(value = "size") int size,
+                                                                                 @Param(value = "lastPostId")Long postId);
+
 }

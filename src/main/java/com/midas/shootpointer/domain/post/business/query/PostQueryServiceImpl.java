@@ -21,4 +21,9 @@ public class PostQueryServiceImpl implements PostQueryService{
     public PostListResponse multiRead(Long postId, int size, String type) {
         return postManager.multiRead(postId,type,size);
     }
+
+    @Override
+    public PostListResponse search(String search,Long postId,int size) {
+        return postManager.getPostEntitiesByPostTitleOrPostContent(search,postId,size);
+    }
 }

@@ -7,4 +7,6 @@ public interface PostQueryService {
     PostResponse singleRead(Long decode);
 
     PostListResponse multiRead(Long postId, int size, String type);
+
+    PostListResponse search(String search,Long postId,int size);
 }

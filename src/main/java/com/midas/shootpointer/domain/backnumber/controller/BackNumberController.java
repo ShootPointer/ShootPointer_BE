@@ -5,6 +5,7 @@ import com.midas.shootpointer.domain.backnumber.dto.BackNumberRequest;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.backnumber.mapper.BackNumberMapper;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.global.security.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -48,12 +49,11 @@ public class BackNumberController {
     @PostMapping
     public ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<Integer>> create(
             @RequestPart(value = "backNumberRequestDto") BackNumberRequest request,
-            @RequestPart(value = "image") MultipartFile image,
-            @RequestHeader("Authorization") String jwtToken
+            @RequestPart(value = "image") MultipartFile image
     ) {
-        String token = jwtToken.substring(7);
+
         BackNumberEntity backNumberEntity = mapper.dtoToEntity(request);
-        Member member = new Member();
+        Member member= SecurityUtils.getCurrentMember();
         return ResponseEntity.ok(com.midas.shootpointer.global.dto.ApiResponse.created(backNumberCommandService.create(member,backNumberEntity,image)));
     }
 }

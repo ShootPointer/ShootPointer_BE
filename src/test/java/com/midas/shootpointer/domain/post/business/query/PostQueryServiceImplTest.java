@@ -57,6 +57,22 @@ class PostQueryServiceImplTest {
         verify(postManager,times(1)).multiRead(postId,type,size);
     }
 
+    @Test
+    @DisplayName("게시물 조회 시 postManager - getPostEntitiesByPostTitleOrPostContent(search,postId,size)의 호출을 확인합니다.")
+    void search(){
+        //given
+        Long postId=214124L;
+        int size=10;
+        String search="search";
+
+        //when
+        when(postManager.getPostEntitiesByPostTitleOrPostContent(search,postId,size)).thenReturn(postListResponse);
+        postQueryService.search(search,postId,size);
+
+        //then
+        verify(postManager,times(1)).getPostEntitiesByPostTitleOrPostContent(search,postId,size);
+    }
+
     private PostResponse makePostResponse(LocalDateTime time,Long postId){
         return PostResponse.builder()
                 .content("content")

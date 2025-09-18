@@ -3,10 +3,11 @@ package com.midas.shootpointer.global.security;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
-import java.util.UUID;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 /**
  * 어느 패키지 / 클래스에서 인증된 Member 객체를 사용할 수 있는 Security Utils 클래스

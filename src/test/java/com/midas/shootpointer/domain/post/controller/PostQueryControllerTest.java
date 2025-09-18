@@ -53,7 +53,7 @@ class PostQueryControllerTest {
     void singleRead() throws Exception {
         //given
         Long postId=123124L;
-        PostResponse response=makePostResponse(LocalDateTime.now(),postId,10L);
+        PostResponse response=makePostResponse(LocalDateTime.now(),postId,10L,"title","content");
 
         //when
         when(postQueryService.singleRead(anyLong()))
@@ -88,8 +88,8 @@ class PostQueryControllerTest {
         int size=2;
 
         List<PostResponse> postResponses=new ArrayList<>();
-        postResponses.add(makePostResponse(LocalDateTime.now(), 1L,50L));
-        postResponses.add(makePostResponse(LocalDateTime.now(), 2L,30L));
+        postResponses.add(makePostResponse(LocalDateTime.now(), 1L,50L,"",""));
+        postResponses.add(makePostResponse(LocalDateTime.now(), 2L,30L,"",""));
 
         PostListResponse expectedResponse=PostListResponse.of(postId,postResponses);
 
@@ -123,8 +123,8 @@ class PostQueryControllerTest {
         int size=2;
 
         List<PostResponse> postResponses=new ArrayList<>();
-        postResponses.add(makePostResponse(LocalDateTime.now(), 1L,50L));
-        postResponses.add(makePostResponse(LocalDateTime.now().minusDays(2L), 2L,30L));
+        postResponses.add(makePostResponse(LocalDateTime.now(), 1L,50L,"",""));
+        postResponses.add(makePostResponse(LocalDateTime.now().minusDays(2L), 2L,30L,"",""));
 
         PostListResponse expectedResponse=PostListResponse.of(postId,postResponses);
 
@@ -149,6 +149,49 @@ class PostQueryControllerTest {
         verify(postQueryService,times(1)).multiRead(postId,size,type);
     }
 
+    @Test
+    @DisplayName("게시물 검색 조회 GET 요청 성공 시 PostListResponse를 반환합니다._SUCCESS")
+    void search() throws Exception {
+        //given
+        String search="test";
+        Long postId=1000L;
+        int size=10;
+
+        List<PostResponse> postResponses=new ArrayList<>();
+        postResponses.add(makePostResponse(LocalDateTime.now(), 1L,50L,"title1","content1"));
+        postResponses.add(makePostResponse(LocalDateTime.now().minusDays(2L), 2L,30L,"title2","content2"));
+
+        PostListResponse expectedResponse=PostListResponse.of(2L,postResponses);
+
+        //when
+        when(postQueryService.search(search,postId,size)).thenReturn(expectedResponse);
+
+        //then
+        mockMvc.perform(get(baseUrl+"/list")
+                        .param("postId",postId.toString())
+                        .param("size", String.valueOf(size))
+                        .param("search",search))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.success").value(true))
+
+                .andExpect(jsonPath("$.data.postList[0].postId").value(1L))
+                .andExpect(jsonPath("$.data.postList[0].likeCnt").value(50L))
+                .andExpect(jsonPath("$.data.postList[0].title").value("title1"))
+                .andExpect(jsonPath("$.data.postList[0].content").value("content1"))
+
+                .andExpect(jsonPath("$.data.postList[1].postId").value(2L))
+                .andExpect(jsonPath("$.data.postList[1].likeCnt").value(30L))
+                .andExpect(jsonPath("$.data.postList[1].title").value("title2"))
+                .andExpect(jsonPath("$.data.postList[1].content").value("content2"))
+
+                .andExpect(jsonPath("$.data.lastPostId").value(2L))
+                .andDo(print());
+
+        verify(postQueryService,times(1)).search(search,postId,size);
+
+    }
+
     @NotNull
     private static String getCreatedDateFormat(PostResponse response) {
         return response.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -159,15 +202,15 @@ class PostQueryControllerTest {
         return response.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 
-    private PostResponse makePostResponse(LocalDateTime time, Long postId,Long likeCnt){
+    private PostResponse makePostResponse(LocalDateTime time, Long postId,Long likeCnt,String title,String content){
         return PostResponse.builder()
-                .content("content")
+                .content(content)
                 .likeCnt(likeCnt)
                 .createdAt(time)
                 .modifiedAt(time)
                 .highlightUrl("test")
                 .postId(postId)
-                .title("title")
+                .title(title)
                 .hashTag(HashTag.TWO_POINT)
                 .build();
 
