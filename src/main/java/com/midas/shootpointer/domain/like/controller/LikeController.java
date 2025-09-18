@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.like.controller;
 import com.midas.shootpointer.domain.like.business.command.LikeCommandService;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.dto.ApiResponse;
+import com.midas.shootpointer.global.security.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -45,7 +46,7 @@ public class LikeController {
             @PathVariable(value = "postId") Long postId
     ) {
 
-        Member member=new Member();
+        Member member= SecurityUtils.getCurrentMember();
         return ResponseEntity.ok(ApiResponse.created(likeCommandService.create(postId, member)));
     }
 
@@ -75,7 +76,7 @@ public class LikeController {
     public ResponseEntity<ApiResponse<Long>> delete(
             @PathVariable(value = "postId") Long postId
     ) {
-        Member member=new Member();
+        Member member=SecurityUtils.getCurrentMember();
         return ResponseEntity.ok(ApiResponse.ok(likeCommandService.delete(postId, member)));
     }
 }
