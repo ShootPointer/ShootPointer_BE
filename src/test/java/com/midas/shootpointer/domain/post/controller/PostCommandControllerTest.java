@@ -7,48 +7,51 @@ import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
+import com.midas.shootpointer.global.annotation.WithMockCustomMember;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import java.util.UUID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("dev")
 class PostCommandControllerTest {
+    @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
     private ObjectMapper objectMapper;
 
-    @InjectMocks
-    private PostCommandController postCommandController;
-
-    @Mock
+    @MockitoBean
     private PostCommandService postCommandService;
 
-    @Mock
+    @MockitoBean
     private PostMapper postMapper;
 
     private final String baseUrl="/api/post";
 
     @BeforeEach
     void setUp(){
-        mockMvc= MockMvcBuilders.standaloneSetup(postCommandController)
-                .build();
         objectMapper=new ObjectMapper();
     }
     @Test
     @DisplayName("게시물 직상 POST 요청 성공시 저장된 postId를 반환합니다._SUCCESS")
+    @WithMockCustomMember
     void create_SUCCESS() throws Exception {
         //given
         Long savedPostId=111L;
@@ -75,6 +78,7 @@ class PostCommandControllerTest {
 
     @Test
     @DisplayName("게시물 수정 PUT 요청 성공시 수정된 postId를 반환합니다._SUCCESS")
+    @WithMockCustomMember
     void update_SUCCESS() throws Exception {
         //given
         String postId="111";
@@ -102,6 +106,7 @@ class PostCommandControllerTest {
 
     @Test
     @DisplayName("게시물 삭제 DELETE 요청 성공시 삭제된 postId를 반환합니다._SUCCESS")
+    @WithMockCustomMember
     void delete_SUCCESS() throws Exception {
         //given
         String postId="111";
