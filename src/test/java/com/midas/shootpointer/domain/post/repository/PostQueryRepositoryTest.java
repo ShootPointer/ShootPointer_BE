@@ -12,10 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -84,6 +81,89 @@ class PostQueryRepositoryTest {
         //then
         assertThat(postEntities).isEmpty();
     }
+
+    @DisplayName("게시물의 제목과 내용으로 게시물을 조회하고 최신순으로 정렬하여 반환합니다. - content로 조회.")
+    @Test
+    void getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc_CONTENT() throws InterruptedException {
+        //given
+        member=memberRepository.save(makeMember());
+        highlight=highlightCommandRepository.save(makeHighlight(member));
+
+        List<PostEntity> expectedPostEntities=new ArrayList<>();
+        //3개 생성.
+        for (int i=0;i<3;i++){
+            //0.1초씩 기다림 - 생성 날짜 구별을 위해
+            Thread.sleep(100);
+            PostEntity post=postCommandRepository.save(
+                    PostEntity.builder()
+                            .member(member)
+                            .highlight(highlight)
+                            .content("내용1 + 내용 2 + 내용 "+i)
+                            .title("제목 1 + 제목2 + 제목 "+i)
+                            .hashTag(HashTag.TREE_POINT)
+                            .likeCnt(10L)
+                            .build()
+            );
+            expectedPostEntities.add(post);
+        }
+        //최신 순의 나열
+        expectedPostEntities.sort((a,b)->b.getCreatedAt().compareTo(a.getCreatedAt()));
+
+        //when
+        List<PostEntity> getPostEntity=postQueryRepository.getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc("내용");
+
+        //then
+        assertThat(getPostEntity).isNotEmpty();
+        assertThat(getPostEntity.size()).isEqualTo(3);
+        for (int i=0;i<3;i++){
+            assertThat(getPostEntity.get(i).getPostId()).isEqualTo(expectedPostEntities.get(i).getPostId());
+            assertThat(getPostEntity.get(i).getTitle()).isEqualTo(expectedPostEntities.get(i).getTitle());
+            assertThat(getPostEntity.get(i).getContent()).isEqualTo(expectedPostEntities.get(i).getContent());
+        }
+
+    }
+
+    @DisplayName("게시물의 제목과 내용으로 게시물을 조회하고 최신순으로 정렬하여 반환합니다. - title로 조회.")
+    @Test
+    void getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc_TITLE() throws InterruptedException {
+        //given
+        member=memberRepository.save(makeMember());
+        highlight=highlightCommandRepository.save(makeHighlight(member));
+
+        List<PostEntity> expectedPostEntities=new ArrayList<>();
+        //3개 생성.
+        for (int i=0;i<3;i++){
+            //0.1초씩 기다림 - 생성 날짜 구별을 위해
+            Thread.sleep(100);
+            PostEntity post=postCommandRepository.save(
+                    PostEntity.builder()
+                            .member(member)
+                            .highlight(highlight)
+                            .content("내용1 + 내용 2 + 내용 "+i)
+                            .title("제목 1 + 제목2 + 제목 "+i)
+                            .hashTag(HashTag.TREE_POINT)
+                            .likeCnt(10L)
+                            .build()
+            );
+            expectedPostEntities.add(post);
+        }
+        //최신 순의 나열
+        expectedPostEntities.sort((a,b)->b.getCreatedAt().compareTo(a.getCreatedAt()));
+
+        //when
+        List<PostEntity> getPostEntity=postQueryRepository.getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc("제목");
+
+        //then
+        assertThat(getPostEntity).isNotEmpty();
+        assertThat(getPostEntity.size()).isEqualTo(3);
+        for (int i=0;i<3;i++){
+            assertThat(getPostEntity.get(i).getPostId()).isEqualTo(expectedPostEntities.get(i).getPostId());
+            assertThat(getPostEntity.get(i).getTitle()).isEqualTo(expectedPostEntities.get(i).getTitle());
+            assertThat(getPostEntity.get(i).getContent()).isEqualTo(expectedPostEntities.get(i).getContent());
+        }
+
+    }
+
     /*
     ======================================대용량 데이터 사용 쿼리 테스트======================================
      */
