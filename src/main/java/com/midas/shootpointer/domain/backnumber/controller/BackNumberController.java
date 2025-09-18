@@ -49,8 +49,7 @@ public class BackNumberController {
     @PostMapping
     public ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<Integer>> create(
             @RequestPart(value = "backNumberRequestDto") BackNumberRequest request,
-            @RequestPart(value = "image") MultipartFile image,
-            @RequestHeader("Authorization") String jwtToken
+            @RequestPart(value = "image") MultipartFile image
     ) {
 
         BackNumberEntity backNumberEntity = mapper.dtoToEntity(request);
