@@ -33,6 +33,9 @@ jacocoTestReport{
 							"**/global/aop/**",
 							"**/global/entity/**",
 							"**/global/common/**",
+							"**/HealthCheckController.class",
+							"ShootPointerApplication.class",
+							"**/domain/**/entity/**",
 							"**/global/annotation/**",
 							"**/test/**"
 					])

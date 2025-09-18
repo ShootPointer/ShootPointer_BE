@@ -11,21 +11,19 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
 import org.junit.jupiter.api.*;
-
-import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.any;
-
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -83,10 +81,10 @@ class OpenCVClientTest {
         );
         Integer mockBackNumber = 1;
         UUID mockUserId = UUID.randomUUID();
-        String mockToken="test-token";
+
 
         //when
-        OpenCVResponse<?> response = openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile,mockToken);
+        OpenCVResponse<?> response = openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile);
 
         //then
         assertThat(response.isSuccess()).isTrue();
@@ -99,8 +97,6 @@ class OpenCVClientTest {
         assertThat(request).isNotNull();
         assertThat(request.getMethod()).isEqualTo("POST");
         assertThat(request.getPath()).contains("/api/send-image");
-
-        assertThat(request.getHeader("Authorization")).isEqualTo("test-token");
         assertThat(request.getHeader("X-Member-Id")).isEqualTo(mockUserId.toString());
 
         assertThat(request.getHeader("Content-Type")).startsWith("multipart/form-data");
@@ -126,10 +122,10 @@ class OpenCVClientTest {
                 "file", "test.img", "image/png", "fake img".getBytes()
         );
         UUID mockUserId = UUID.randomUUID();
-        String mockToken="test-token";
+
         // when
-        CustomException exception = catchThrowableOfType(() ->
-                        openCVClient.sendBackNumberInformation(mockUserId, 1, mockMultipartFile,mockToken),
+       CustomException exception = catchThrowableOfType(() ->
+                        openCVClient.sendBackNumberInformation(mockUserId, 1, mockMultipartFile),
                 CustomException.class);
 
         // then
@@ -163,10 +159,10 @@ class OpenCVClientTest {
         );
         Integer mockBackNumber = 1;
         UUID mockUserId = UUID.randomUUID();
-        String mockToken="test-token";
+
         //when & then
         CustomException customException=catchThrowableOfType(()->
-                openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile,mockToken),
+                openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile),
                 CustomException.class
         );
         assertThat(customException).isNotNull();
@@ -202,7 +198,7 @@ class OpenCVClientTest {
 
         //when & then
         CustomException customException=catchThrowableOfType(()->
-                        openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile,mockToken),
+                        openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile),
                 CustomException.class
         );
         assertThat(customException).isNotNull();

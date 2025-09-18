@@ -55,13 +55,12 @@ public class OpenCVClientImpl implements OpenCVClient {
     ==========================**/
     @Override
     @CustomLog
-    public OpenCVResponse<?> sendBackNumberInformation(UUID memberId, Integer backNumber, MultipartFile image,String token) throws IOException {
+    public OpenCVResponse<?> sendBackNumberInformation(UUID memberId, Integer backNumber, MultipartFile image) throws IOException {
         //이미지 이름 생성
         String fileName = generateFileName.generate(FileType.IMAGE, image);
 
         OpenCVResponse<?> response = webClient.post()
                 .uri(openCVBaseUrl+openCVPostApiUrl)
-                .header("Authorization",token)
                 .header("X-Member-Id", String.valueOf(memberId))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData("image", new ByteArrayResource(image.getBytes()) {

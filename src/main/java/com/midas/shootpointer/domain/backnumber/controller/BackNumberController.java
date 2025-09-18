@@ -1,10 +1,11 @@
 package com.midas.shootpointer.domain.backnumber.controller;
 
+import com.midas.shootpointer.domain.backnumber.business.command.BackNumberCommandService;
 import com.midas.shootpointer.domain.backnumber.dto.BackNumberRequest;
-import com.midas.shootpointer.domain.backnumber.dto.BackNumberResponse;
-import com.midas.shootpointer.domain.backnumber.service.BackNumberService;
+import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
+import com.midas.shootpointer.domain.backnumber.mapper.BackNumberMapper;
+import com.midas.shootpointer.domain.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Tag(name = "등 번호", description = "등 번호 API")
 public class BackNumberController {
-    private final BackNumberService backNumberService;
+    private final BackNumberCommandService backNumberCommandService;
+    private final BackNumberMapper mapper;
+
     /*==========================
     *
     *BackNumberController
@@ -34,22 +37,23 @@ public class BackNumberController {
     @Operation(
             summary = "등 번호 등록 API - [담당자 : 김도연]",
             responses = {
-                    @ApiResponse(responseCode = "200",description = "등 번호 등록 성공",
-                        content = @Content(mediaType="application/json",
-                        schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
-                    @ApiResponse(responseCode = "4XX",description = "등 번호 등록 실패",
-                        content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+                    @ApiResponse(responseCode = "200", description = "등 번호 등록 성공",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+                    @ApiResponse(responseCode = "4XX", description = "등 번호 등록 실패",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
             }
     )
     @PostMapping
-    public ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<BackNumberResponse>> create(
+    public ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<Integer>> create(
             @RequestPart(value = "backNumberRequestDto") BackNumberRequest request,
-            @RequestPart (value = "image") MultipartFile image,
+            @RequestPart(value = "image") MultipartFile image,
             @RequestHeader("Authorization") String jwtToken
-    ){
+    ) {
         String token = jwtToken.substring(7);
-        BackNumberResponse response=backNumberService.create(token, request,image);
-        return ResponseEntity.ok(com.midas.shootpointer.global.dto.ApiResponse.created(response));
+        BackNumberEntity backNumberEntity = mapper.dtoToEntity(request);
+        Member member = new Member();
+        return ResponseEntity.ok(com.midas.shootpointer.global.dto.ApiResponse.created(backNumberCommandService.create(member,backNumberEntity,image)));
     }
 }

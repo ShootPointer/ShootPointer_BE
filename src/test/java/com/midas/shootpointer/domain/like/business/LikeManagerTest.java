@@ -1,36 +1,23 @@
 package com.midas.shootpointer.domain.like.business;
 
-import com.midas.shootpointer.domain.like.business.command.LikeCommandService;
 import com.midas.shootpointer.domain.like.entity.LikeEntity;
-import com.midas.shootpointer.domain.like.helper.LikeHelper;
 import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
-import com.midas.shootpointer.domain.post.helper.PostHelper;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("dev")
@@ -48,12 +35,6 @@ class LikeManagerTest {
 
     @Autowired
     private LikeManager likeManager;
-
-    @Autowired
-    private LikeHelper likeHelper;
-
-    @Autowired
-    private PostHelper postHelper;
 
     @Autowired
     private MemberQueryRepository memberRepository;
