@@ -96,6 +96,9 @@ dependencies {
 
 	//redisson
 	implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
+
+	//ElasticSearch
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 }
 
 tasks.named('test') {
