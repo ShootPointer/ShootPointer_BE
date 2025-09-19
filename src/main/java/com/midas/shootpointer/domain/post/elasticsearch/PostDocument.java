@@ -1,5 +1,6 @@
-package com.midas.shootpointer.domain.post.entity;
+package com.midas.shootpointer.domain.post.elasticsearch;
 
+import com.midas.shootpointer.domain.post.entity.PostEntity;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,12 +27,20 @@ public class PostDocument {
     @Field(type = FieldType.Keyword)
     private String hashTag;
 
+    @Field(type = FieldType.Long)
+    private Long likeCnt;
+
+    @Field(type = FieldType.Text)
+    private String memberName;
+
     @Builder
-    public PostDocument(Long id,String title,String content,String hashTag){
+    public PostDocument(Long id,String title,String content,String hashTag,Long likeCnt,String memberName){
         this.content=content;
         this.hashTag=hashTag;
         this.id=id;
         this.title=title;
+        this.memberName=memberName;
+        this.likeCnt=likeCnt;
     }
 
     public static PostDocument of(PostEntity post){
@@ -40,6 +49,8 @@ public class PostDocument {
                 .title(post.getTitle())
                 .hashTag(post.getHashTag().getName())
                 .id(post.getPostId())
+                .likeCnt(post.getLikeCnt())
+                .memberName(post.getMember().getUsername())
                 .build();
     }
 }
