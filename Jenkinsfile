@@ -7,6 +7,7 @@ pipeline {
 
     environment {
         COMPOSE_FILE = 'docker-compose.yml'
+        SPRING_PROFILES_ACTIVE = "${params.PROFILE}"
     }
 
     stages {
@@ -88,7 +89,7 @@ pipeline {
             steps {
                 sh 'echo "🚀 Building and Deploying Containers with Docker Compose"'
                 sh 'docker system prune -a -f'
-                sh 'docker-compose up -d --build'
+                sh 'SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE docker-compose up -d --build'
             }
             post {
                 success { sh 'echo "✅ Successfully Deployed with Docker Compose"' }
