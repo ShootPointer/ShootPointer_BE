@@ -1,6 +1,13 @@
 pipeline {
     agent any
-
+    
+    parameters {
+        choice(
+            name: 'PROFILE',
+            choices: ['dev', 'testdata', 'prod'],
+            description: 'Select Spring Profile for deployment'
+        )
+    }
     tools {
         jdk 'openjdk-17-jdk'
     }
