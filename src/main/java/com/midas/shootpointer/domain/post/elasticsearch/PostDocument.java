@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.post.elasticsearch;
 
-import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.midas.shootpointer.domain.post.entity.HashTag;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,11 +15,12 @@ import java.time.LocalDateTime;
 @Document(indexName = "post",createIndex = true)
 @Mapping(mappingPath = "elasticsearch/post-mapping.json")
 @Setting(settingPath = "elasticsearch/post-setting.json")
+@JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostDocument {
     @Id
     @Field(type = FieldType.Long)
-    private Long id;
+    private Long postId;
 
     @Field(type = FieldType.Text)
     private String title;
@@ -27,7 +29,7 @@ public class PostDocument {
     private String content;
 
     @Field(type = FieldType.Keyword)
-    private String hashTag;
+    private HashTag hashTag;
 
     @Field(type = FieldType.Long)
     private Long likeCnt;
@@ -41,29 +43,28 @@ public class PostDocument {
     @Field(type = FieldType.Date,format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
     private LocalDateTime modifiedAt;
 
+    @Field(type = FieldType.Text)
+    private String highlightUrl;
 
     @Builder
-    public PostDocument(Long id,String title,String content,String hashTag,Long likeCnt,String memberName,LocalDateTime createdAt,LocalDateTime modifiedAt){
+    public PostDocument(Long postId,
+                        String title,
+                        String content,
+                        HashTag hashTag,
+                        Long likeCnt,
+                        String memberName,
+                        LocalDateTime createdAt,
+                        LocalDateTime modifiedAt,
+                        String highlightUrl
+    ){
         this.content=content;
         this.hashTag=hashTag;
-        this.id=id;
+        this.postId=postId;
         this.title=title;
         this.memberName=memberName;
         this.likeCnt=likeCnt;
         this.createdAt=createdAt;
         this.modifiedAt=modifiedAt;
-    }
-
-    public static PostDocument of(PostEntity post){
-        return PostDocument.builder()
-                .content(post.getContent())
-                .title(post.getTitle())
-                .hashTag(post.getHashTag().getName())
-                .id(post.getPostId())
-                .likeCnt(post.getLikeCnt())
-                .memberName(post.getMember().getUsername())
-                .createdAt(post.getCreatedAt())
-                .modifiedAt(post.getModifiedAt())
-                .build();
+        this.highlightUrl=highlightUrl;
     }
 }
