@@ -20,4 +20,6 @@ public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
         PostDocument postDocument=PostDocument.of(post);
         return postElasticSearchRepository.save(postDocument).getId();
     }
+
+
 }

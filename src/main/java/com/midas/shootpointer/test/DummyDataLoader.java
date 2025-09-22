@@ -4,6 +4,8 @@ import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
+import com.midas.shootpointer.domain.post.elasticsearch.PostDocument;
+import com.midas.shootpointer.domain.post.elasticsearch.PostElasticSearchRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -26,6 +28,7 @@ public class DummyDataLoader implements CommandLineRunner {
     private final MakeRandomWord makeRandomWord;
     private final MemberCommandRepository memberRepository;
     private final HighlightCommandRepository highlightCommandRepository;
+    private final PostElasticSearchRepository postElasticSearchRepository;
 
     private final int batchSize=10_000;
     private final int insertSize=10_000_000;
@@ -56,6 +59,8 @@ public class DummyDataLoader implements CommandLineRunner {
 
         String sql="INSERT INTO post (title, content, hash_tag, highlight_id, member_id,like_cnt,created_at,modified_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         List<Object[]> batchArgs=new ArrayList<>();
+        List<PostDocument> esBatch=new ArrayList<>(); //ElasticSearch용
+
 
         for (int i=0;i<insertSize;i++){
             //제목
@@ -65,7 +70,7 @@ public class DummyDataLoader implements CommandLineRunner {
             String content=makeRandomWord.generateContent();
 
             //좋아요 개수
-            int likeCnt = random.nextInt(100_000) + 1; // 1 ~ 100000
+            long likeCnt = random.nextInt(100_000) + 1; // 1 ~ 100000
 
             // 랜덤 날짜
             long start = threeYearsAgo.toEpochSecond(ZoneOffset.UTC);
@@ -76,9 +81,22 @@ public class DummyDataLoader implements CommandLineRunner {
 
             batchArgs.add(new Object[]{title,content, HashTag.TREE_POINT.name(),highlightId,memberId,likeCnt,randomDateTime,randomDateTime});
 
+            //ElasticSearch용 Batch
+            esBatch.add(PostDocument.builder()
+                            .title(title)
+                            .memberName(member.getUsername())
+                            .hashTag(HashTag.TREE_POINT.getName())
+                            .content(content)
+                            .likeCnt(likeCnt)
+                            .createdAt(randomDateTime)
+                            .modifiedAt(randomDateTime)
+                            .build()
+            );
             if (i > 0 && i%batchSize == 0){
                 jdbcTemplate.batchUpdate(sql,batchArgs);
                 batchArgs.clear();
+
+                postElasticSearchRepository.saveAll(esBatch);
                 System.out.println(i+"건 삽입 완료");
             }
 

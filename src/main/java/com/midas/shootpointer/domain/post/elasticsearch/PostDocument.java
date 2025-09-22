@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.elasticsearch.annotations.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Document(indexName = "post",createIndex = true)
 @Mapping(mappingPath = "elasticsearch/post-mapping.json")
@@ -33,14 +35,23 @@ public class PostDocument {
     @Field(type = FieldType.Text)
     private String memberName;
 
+    @Field(type = FieldType.Date,format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
+    private LocalDateTime createdAt;
+
+    @Field(type = FieldType.Date,format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
+    private LocalDateTime modifiedAt;
+
+
     @Builder
-    public PostDocument(Long id,String title,String content,String hashTag,Long likeCnt,String memberName){
+    public PostDocument(Long id,String title,String content,String hashTag,Long likeCnt,String memberName,LocalDateTime createdAt,LocalDateTime modifiedAt){
         this.content=content;
         this.hashTag=hashTag;
         this.id=id;
         this.title=title;
         this.memberName=memberName;
         this.likeCnt=likeCnt;
+        this.createdAt=createdAt;
+        this.modifiedAt=modifiedAt;
     }
 
     public static PostDocument of(PostEntity post){
@@ -51,6 +62,8 @@ public class PostDocument {
                 .id(post.getPostId())
                 .likeCnt(post.getLikeCnt())
                 .memberName(post.getMember().getUsername())
+                .createdAt(post.getCreatedAt())
+                .modifiedAt(post.getModifiedAt())
                 .build();
     }
 }

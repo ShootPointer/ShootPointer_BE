@@ -131,7 +131,7 @@ services:
 
       SPRING_ELASTICSEARCH_URIS: http://elasticsearch:9200
     ports:
-      - "9001:9001"
+      - "9000:9000"
     networks:
       - spring-network
     restart: always
