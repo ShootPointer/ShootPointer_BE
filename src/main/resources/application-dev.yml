@@ -12,8 +12,13 @@ jwt:
   secret: 4qmZKqt8Kwd2MCbGj39akXECPZr9hPUlgxYq2L6e9ho=
   access_expiration_time: 86400000
   refresh_expiration_time: 259200000
+app:
+  elasticsearch:
+    enabled: false
 
 spring:
+  elasticsearch:
+    uris: http://localhost:9999
   main:
     allow-bean-definition-overriding: true
   application:

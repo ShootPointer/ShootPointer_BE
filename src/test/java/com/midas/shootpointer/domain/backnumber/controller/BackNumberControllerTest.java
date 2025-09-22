@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.backnumber.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.backnumber.business.command.BackNumberCommandService;
 import com.midas.shootpointer.domain.backnumber.dto.BackNumberRequest;
 import com.midas.shootpointer.domain.backnumber.dto.BackNumberResponse;
@@ -8,7 +9,6 @@ import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.backnumber.mapper.BackNumberMapper;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.WithMockCustomMember;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

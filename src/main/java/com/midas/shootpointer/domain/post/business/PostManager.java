@@ -5,6 +5,7 @@ import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
+import com.midas.shootpointer.domain.post.elasticsearch.helper.PostElasticSearchHelper;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
@@ -20,6 +21,7 @@ public class PostManager {
     private final PostHelper postHelper;
     private final HighlightHelper highlightHelper;
     private final PostMapper postMapper;
+    private final PostElasticSearchHelper postElasticSearchHelper;
 
     @Transactional
     public Long save(Member member, PostEntity postEntity, UUID highlightId){
@@ -42,6 +44,12 @@ public class PostManager {
          * 4. 하이라이트 저장.
          */
         postEntity.setHighlight(highlightEntity);
+
+        /*
+         * 5. 게시물 ElasticSearch Document 저장 (조건부).
+         */
+        postElasticSearchHelper.createPostDocument(postEntity);
+
 
         return postHelper.save(postEntity).getPostId();
     }

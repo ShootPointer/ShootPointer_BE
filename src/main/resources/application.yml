@@ -30,7 +30,8 @@ spring:
 
   # ElasticSearch
   elasticsearch:
-    uris: ${SPRING_ELASTIC_URIS:elastic://localhost:9200}
+    uris: ${SPRING_ELASTICSEARCH_URIS:http://elasticsearch:9200}
+
   # 데이터소스 설정
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/shootpointer}
@@ -62,8 +63,8 @@ spring:
 
     # Redis 설정
     redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
       timeout: 2000ms
       jedis:
         pool:

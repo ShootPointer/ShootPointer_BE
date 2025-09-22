@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.elasticsearch.annotations.*;
 
 @Getter
-@Document(indexName = "posts",createIndex = true)
-@Setting(settingPath = "elasticsearch/post-setting.json")
+@Document(indexName = "post",createIndex = true)
 @Mapping(mappingPath = "elasticsearch/post-mapping.json")
+@Setting(settingPath = "elasticsearch/post-setting.json")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostDocument {
     @Id

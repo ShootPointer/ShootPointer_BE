@@ -5,11 +5,11 @@
     },
     "title": {
       "type": "text",
-      "analyzer": "korean"
+      "analyzer": "nori"
     },
     "content": {
       "type": "text",
-      "analyzer": "korean"
+      "analyzer": "nori"
     },
     "hashTag": {
       "type": "keyword"
