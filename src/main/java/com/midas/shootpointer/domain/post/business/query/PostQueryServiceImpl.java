@@ -26,4 +26,9 @@ public class PostQueryServiceImpl implements PostQueryService{
     public PostListResponse search(String search,Long postId,int size) {
         return postManager.getPostEntitiesByPostTitleOrPostContent(search,postId,size);
     }
+
+    @Override
+    public PostListResponse searchByElastic(String search, Long postId, int size) {
+        return postManager.getPostByPostTitleOrPostContentByElasticSearch(search,postId,size);
+    }
 }

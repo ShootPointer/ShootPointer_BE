@@ -85,7 +85,7 @@ public class DummyDataLoader implements CommandLineRunner {
             esBatch.add(PostDocument.builder()
                             .title(title)
                             .memberName(member.getUsername())
-                            .hashTag(HashTag.TREE_POINT.getName())
+                            .hashTag(HashTag.TREE_POINT)
                             .content(content)
                             .likeCnt(likeCnt)
                             .createdAt(randomDateTime)

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -145,6 +146,13 @@ public class PostManager {
          * 1. 제목 + 내용 게시물 조회.
          */
         return postMapper.entityToDto(postHelper.getPostEntitiesByPostTitleOrPostContent(search,postId,size));
+    }
+
+    @Transactional(readOnly = true)
+    public PostListResponse getPostByPostTitleOrPostContentByElasticSearch(String search,Long postId,int size){
+        List<PostResponse> elasticSearch =
+                postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search, postId, size);
+        return PostListResponse.of(elasticSearch.get(elasticSearch.size()-1).getPostId(),elasticSearch);
     }
 
 }
