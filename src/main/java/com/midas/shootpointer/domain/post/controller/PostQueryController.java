@@ -106,4 +106,33 @@ public class PostQueryController {
                                                                 @RequestParam(required = false,defaultValue = "10")int size){
         return ResponseEntity.ok(ApiResponse.ok(postQueryService.search(search,postId,size)));
     }
+
+    @Operation(
+            summary = "게시물 검색 조회 API(by ElasticSearch) - [담당자 : 김도연]",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "게시물 검색 조회 성공",
+                            content = @Content(mediaType="application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX",description = "게시물 검색 조회 실패",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+            }
+    )
+    /*==========================
+    *
+    *PostQueryController
+    * ElasticSearch를 이용한 게시물 검색.
+    * @parm [search, postId, size] search : 검색명 / postId : 마지막 요청 게시물 id / size : 요청 크기
+    * @return org.springframework.http.ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<com.midas.shootpointer.domain.post.dto.response.PostListResponse>>
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 9. 23.
+    *
+    ==========================**/
+    @GetMapping("/list-elastic")
+    public ResponseEntity<ApiResponse<PostListResponse>> searchElastic(@RequestParam(required = true) String search,
+                                                                       @RequestParam(required = false,defaultValue = "922337203685477580") Long postId,
+                                                                       @RequestParam(required = false,defaultValue = "10")int size){
+        return ResponseEntity.ok(ApiResponse.ok(postQueryService.searchByElastic(search,postId,size)));
+    }
 }

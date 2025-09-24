@@ -73,7 +73,7 @@ public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
                                 .minimumShouldMatch("1")
                         )
                 )
-                .withSort(Sort.by(Sort.Order.desc("id")))
+                .withSort(Sort.by(Sort.Order.desc("postId")))
                 .withSearchAfter(Collections.singletonList(lastPostId))
                 .withMaxResults(size)
                 .build();

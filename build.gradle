@@ -99,7 +99,6 @@ dependencies {
 
 	//ElasticSearch
 	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-	implementation 'co.elastic.clients:elasticsearch-java:8.11.2'
 }
 
 tasks.named('test') {

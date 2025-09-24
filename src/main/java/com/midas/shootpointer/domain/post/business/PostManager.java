@@ -152,6 +152,11 @@ public class PostManager {
     public PostListResponse getPostByPostTitleOrPostContentByElasticSearch(String search,Long postId,int size){
         List<PostResponse> elasticSearch =
                 postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search, postId, size);
+
+        if (elasticSearch.isEmpty()){
+            return PostListResponse.of(922337203685477580L,List.of());
+        }
+
         return PostListResponse.of(elasticSearch.get(elasticSearch.size()-1).getPostId(),elasticSearch);
     }
 

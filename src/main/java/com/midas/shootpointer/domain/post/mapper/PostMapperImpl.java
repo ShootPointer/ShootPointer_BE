@@ -4,10 +4,10 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
+import com.midas.shootpointer.domain.post.elasticsearch.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -39,12 +39,33 @@ public class PostMapperImpl implements PostMapper{
 
     @Override
     public PostListResponse entityToDto(List<PostEntity> postEntityList) {
+        //값이 없는 경우
+        if (postEntityList.isEmpty()){
+            return PostListResponse.of(922337203685477580L,List.of());
+        }
+
         //게시물 응답 Dto 리스트 변환
         List<PostResponse> postResponses=postEntityList.stream()
                 .map(this::entityToDto)
                 .toList();
+
         int size=postResponses.size();
 
         return PostListResponse.of(postResponses.get(size-1).getPostId(),postResponses);
+    }
+
+    @Override
+    public PostDocument documentToEntity(PostEntity entity) {
+        return PostDocument.builder()
+                .postId(entity.getPostId())
+                .modifiedAt(entity.getModifiedAt())
+                .createdAt(entity.getCreatedAt())
+                .content(entity.getContent())
+                .hashTag(entity.getHashTag())
+                .highlightUrl(entity.getHighlight().getHighlightURL())
+                .likeCnt(entity.getLikeCnt())
+                .memberName(entity.getMember().getUsername())
+                .title(entity.getTitle())
+                .build();
     }
 }

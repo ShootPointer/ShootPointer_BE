@@ -153,7 +153,7 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - logger.level=debug
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
     ports:
       - "9200:9200"
       - "9300:9300"

@@ -2,11 +2,11 @@ package com.midas.shootpointer.domain.post.elasticsearch;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.midas.shootpointer.domain.post.entity.HashTag;
-import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
 import java.time.LocalDateTime;

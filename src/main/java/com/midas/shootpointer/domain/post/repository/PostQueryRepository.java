@@ -2,6 +2,8 @@ package com.midas.shootpointer.domain.post.repository;
 
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import jakarta.persistence.LockModeType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -53,5 +55,11 @@ public interface PostQueryRepository extends JpaRepository<PostEntity,Long> {
     List<PostEntity> getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc(@Param(value = "search") String search,
                                                                                  @Param(value = "size") int size,
                                                                                  @Param(value = "lastPostId")Long postId);
+
+    @Query(
+            value = "SELECT p FROM PostEntity p JOIN FETCH p.member m JOIN FETCH p.highlight h",
+            countQuery = "SELECT count(p) FROM PostEntity p"
+    )
+    Page<PostEntity> findAllWithMemberAndHighlight(Pageable pageable);
 
 }
