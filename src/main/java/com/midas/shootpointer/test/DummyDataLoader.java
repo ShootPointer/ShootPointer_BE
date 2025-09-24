@@ -4,17 +4,13 @@ import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
-import com.midas.shootpointer.domain.post.elasticsearch.PostDocument;
 import com.midas.shootpointer.domain.post.elasticsearch.PostElasticSearchRepository;
 import com.midas.shootpointer.domain.post.elasticsearch.mapper.PostElasticSearchMapper;
 import com.midas.shootpointer.domain.post.entity.HashTag;
-import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +32,7 @@ public class DummyDataLoader implements CommandLineRunner {
     private final PostElasticSearchRepository postElasticSearchRepository;
     private final PostElasticSearchMapper mapper;
 
-    private final int batchSize=2_000;
+    private final int batchSize=10_000;
     private final int insertSize=1_000_000;
     private final PostQueryRepository postQueryRepository;
 
@@ -102,7 +98,7 @@ public class DummyDataLoader implements CommandLineRunner {
         /**
          * Elastic Search 배치 처리
          */
-        long esStart = System.currentTimeMillis();
+/*        long esStart = System.currentTimeMillis();
         System.out.println("ES 배치 시작 시간: " + LocalDateTime.now());
         int page = 0;
 
@@ -119,10 +115,10 @@ public class DummyDataLoader implements CommandLineRunner {
 
             System.out.println("ES 배치 : " + ((page + 1) * batchSize) + "건 삽입 완료");
             page++;
-        } while (result.hasNext());
+        } while (result.hasNext());*/
 
-        long esEnd = System.currentTimeMillis();
-        System.out.println("ES 배치 종료 시간: " + LocalDateTime.now());
-        System.out.println("ES 전체 소요 시간(ms): " + (esEnd - esStart));
+        //long esEnd = System.currentTimeMillis();
+        //System.out.println("ES 배치 종료 시간: " + LocalDateTime.now());
+        //System.out.println("ES 전체 소요 시간(ms): " + (esEnd - esStart));
     }
 }
