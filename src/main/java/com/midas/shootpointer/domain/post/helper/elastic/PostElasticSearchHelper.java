@@ -1,4 +1,4 @@
-package com.midas.shootpointer.domain.post.elasticsearch.helper;
+package com.midas.shootpointer.domain.post.helper.elastic;
 
 public interface PostElasticSearchHelper extends PostElasticSearchUtil{
 }

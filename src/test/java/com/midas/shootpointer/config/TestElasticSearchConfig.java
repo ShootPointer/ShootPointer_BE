@@ -1,9 +1,9 @@
 package com.midas.shootpointer.config;
 
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
-import com.midas.shootpointer.domain.post.elasticsearch.PostElasticSearchRepository;
-import com.midas.shootpointer.domain.post.elasticsearch.helper.PostElasticSearchHelper;
-import com.midas.shootpointer.domain.post.elasticsearch.helper.PostElasticSearchUtil;
+import com.midas.shootpointer.domain.post.repository.PostElasticSearchRepository;
+import com.midas.shootpointer.domain.post.helper.elastic.PostElasticSearchHelper;
+import com.midas.shootpointer.domain.post.helper.elastic.PostElasticSearchUtil;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;

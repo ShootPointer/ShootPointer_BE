@@ -1,9 +1,9 @@
-package com.midas.shootpointer.domain.post.elasticsearch.helper;
+package com.midas.shootpointer.domain.post.helper.elastic;
 
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
-import com.midas.shootpointer.domain.post.elasticsearch.PostDocument;
-import com.midas.shootpointer.domain.post.elasticsearch.PostElasticSearchRepository;
-import com.midas.shootpointer.domain.post.elasticsearch.mapper.PostElasticSearchMapper;
+import com.midas.shootpointer.domain.post.entity.PostDocument;
+import com.midas.shootpointer.domain.post.repository.PostElasticSearchRepository;
+import com.midas.shootpointer.domain.post.mapper.PostElasticSearchMapper;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;

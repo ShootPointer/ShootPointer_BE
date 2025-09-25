@@ -1,4 +1,4 @@
-package com.midas.shootpointer.domain.post.helper;
+package com.midas.shootpointer.domain.post.helper.simple;
 
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;

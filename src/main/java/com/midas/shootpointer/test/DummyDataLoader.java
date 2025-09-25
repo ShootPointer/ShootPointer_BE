@@ -4,8 +4,8 @@ import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
-import com.midas.shootpointer.domain.post.elasticsearch.PostElasticSearchRepository;
-import com.midas.shootpointer.domain.post.elasticsearch.mapper.PostElasticSearchMapper;
+import com.midas.shootpointer.domain.post.repository.PostElasticSearchRepository;
+import com.midas.shootpointer.domain.post.mapper.PostElasticSearchMapper;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class DummyDataLoader implements CommandLineRunner {
     private final PostElasticSearchMapper mapper;
 
     private final int batchSize=10_000;
-    private final int insertSize=1_000_000;
+    private final int insertSize=10_000_000;
     private final PostQueryRepository postQueryRepository;
 
     @Override
@@ -115,10 +115,10 @@ public class DummyDataLoader implements CommandLineRunner {
 
             System.out.println("ES 배치 : " + ((page + 1) * batchSize) + "건 삽입 완료");
             page++;
-        } while (result.hasNext());*/
+        } while (result.hasNext());
 
-        //long esEnd = System.currentTimeMillis();
-        //System.out.println("ES 배치 종료 시간: " + LocalDateTime.now());
-        //System.out.println("ES 전체 소요 시간(ms): " + (esEnd - esStart));
+        long esEnd = System.currentTimeMillis();
+        System.out.println("ES 배치 종료 시간: " + LocalDateTime.now());
+        System.out.println("ES 전체 소요 시간(ms): " + (esEnd - esStart));*/
     }
 }

@@ -1,11 +1,9 @@
-package com.midas.shootpointer.domain.post.helper;
+package com.midas.shootpointer.domain.post.helper.simple;
 
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.post.business.PostOrderType;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
-import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.midas.shootpointer.domain.post.elasticsearch.helper;
+package com.midas.shootpointer.domain.post.helper.elastic;
 
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
