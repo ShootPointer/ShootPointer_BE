@@ -14,7 +14,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 @Configuration
 @EnableElasticsearchRepositories
-@Profile("!test")  // test 프로파일이 아닐 때만 활성화
+@Profile("dev")  // dev 프로파일에서만 활성화
 public class ElasticSearchConfig  {
     @Value("${spring.elasticsearch.uris}")
     private String host;

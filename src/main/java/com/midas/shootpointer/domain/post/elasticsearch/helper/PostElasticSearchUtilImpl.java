@@ -21,11 +21,12 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
-@Profile("!test")  // test 프로파일이 아닐 때만 활성화
+@Profile("!dev")  // dev 프로파일이 아닐 때만 활성화
 public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
     private final PostElasticSearchRepository postElasticSearchRepository;
     private final ElasticsearchOperations elasticsearchOperations;
     private final PostElasticSearchMapper mapper;
+
     @Transactional
     @Override
     public Long createPostDocument(PostEntity post) {

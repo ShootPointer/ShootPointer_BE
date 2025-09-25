@@ -6,11 +6,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
 import java.time.LocalDateTime;
-
+@Profile("!dev")  // dev 프로파일이 아닐 때만 활성화
 @Getter
 @Document(indexName = "post",createIndex = true)
 @Mapping(mappingPath = "elasticsearch/post-mapping.json")

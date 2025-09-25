@@ -9,10 +9,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@Profile("!dev")  // dev 프로파일이 아닐 때만 활성화
 @RequiredArgsConstructor
-@Profile("!test")  // test 프로파일이 아닐 때만 활성화
 public class PostElasticSearchHelperImpl implements PostElasticSearchHelper{
     private final PostElasticSearchUtil postElasticSearchUtil;
+
     @Override
     public Long createPostDocument(PostEntity post) {
         return postElasticSearchUtil.createPostDocument(post);
