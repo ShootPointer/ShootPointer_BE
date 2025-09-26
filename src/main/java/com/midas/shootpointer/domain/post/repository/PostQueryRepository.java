@@ -2,8 +2,6 @@ package com.midas.shootpointer.domain.post.repository;
 
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import jakarta.persistence.LockModeType;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -47,26 +45,22 @@ public interface PostQueryRepository extends JpaRepository<PostEntity,Long> {
      * 2. 조회된 게시물 최신순 정렬 반환.
      */
     @Query(value = """
-            SELECT *
-            FROM (
-                SELECT *
-                FROM post
-                WHERE title   LIKE '%' || :search || '%'
-                   OR content LIKE '%' || :search || '%'
-            ) AS sub
-            WHERE sub.post_id < :lastPostId
-            ORDER BY sub.post_id DESC
-            LIMIT :size
-            """,
+        SELECT *
+        FROM post p
+        WHERE (p.title LIKE CONCAT('%', :search, '%')
+            OR p.content LIKE CONCAT('%', :search, '%'))
+          AND p.post_id < :lastPostId
+        ORDER BY p.post_id DESC
+        LIMIT :size
+        """,
             nativeQuery = true)
-    List<PostEntity> getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc(@Param(value = "search") String search,
-                                                                                 @Param(value = "size") int size,
-                                                                                 @Param(value = "lastPostId")Long postId);
+    List<PostEntity> getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc(
+            @Param("search") String search,
+            @Param("size") int size,
+            @Param("lastPostId") Long postId
+    );
 
-    @Query(
-            value = "SELECT p FROM PostEntity p JOIN FETCH p.member m JOIN FETCH p.highlight h",
-            countQuery = "SELECT count(p) FROM PostEntity p"
-    )
-    Page<PostEntity> findAllWithMemberAndHighlight(Pageable pageable);
 
+    @Query(value = "SELECT p FROM PostEntity p JOIN FETCH p.member m JOIN FETCH p.highlight h")
+    List<PostEntity> findAllWithMemberAndHighlight();
 }
