@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.post.controller;
 import com.midas.shootpointer.domain.post.business.query.PostQueryService;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -132,7 +133,10 @@ public class PostQueryController {
     @GetMapping("/list-elastic")
     public ResponseEntity<ApiResponse<PostListResponse>> searchElastic(@RequestParam(required = true) String search,
                                                                        @RequestParam(required = false,defaultValue = "922337203685477580") Long postId,
-                                                                       @RequestParam(required = false,defaultValue = "10")int size){
-        return ResponseEntity.ok(ApiResponse.ok(postQueryService.searchByElastic(search,postId,size)));
+                                                                       @RequestParam(required = false,defaultValue = "10")int size,
+                                                                       @RequestParam(required = false,defaultValue = "922337203685477580")Double _score,
+                                                                       @RequestParam(required = false,defaultValue = "922337203685477580")Long likeCnt){
+        PostSort sort=new PostSort(size,_score,likeCnt,postId);
+        return ResponseEntity.ok(ApiResponse.ok(postQueryService.searchByElastic(search,sort)));
     }
 }

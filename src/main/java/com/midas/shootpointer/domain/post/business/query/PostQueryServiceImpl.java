@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.post.business.query;
 import com.midas.shootpointer.domain.post.business.PostManager;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,7 @@ public class PostQueryServiceImpl implements PostQueryService{
     }
 
     @Override
-    public PostListResponse searchByElastic(String search, Long postId, int size) {
-        return postManager.getPostByPostTitleOrPostContentByElasticSearch(search,postId,size);
+    public PostListResponse searchByElastic(String search, PostSort sort) {
+        return postManager.getPostByPostTitleOrPostContentByElasticSearch(search,sort);
     }
 }
