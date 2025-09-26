@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.post.helper.elastic;
 
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -20,8 +21,8 @@ public class PostElasticSearchHelperImpl implements PostElasticSearchHelper{
     }
 
     @Override
-    public List<PostResponse> getPostByTitleOrContentByElasticSearch(String search, int size, double _score, Long likeCnt, Long lastPostId) {
-        return postElasticSearchUtil.getPostByTitleOrContentByElasticSearch(search,size,_score,likeCnt,lastPostId);
+    public List<PostResponse> getPostByTitleOrContentByElasticSearch(String search, PostSort sort) {
+        return postElasticSearchUtil.getPostByTitleOrContentByElasticSearch(search,sort);
     }
 
 }

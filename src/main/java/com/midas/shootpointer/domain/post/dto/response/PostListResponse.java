@@ -13,7 +13,7 @@ import java.util.List;
 public class PostListResponse {
     private Long lastPostId;
     private List<PostResponse> postList;
-    private List<Object[]> sort;
+    private PostSort sort;
 
     @Builder
     public static PostListResponse of(Long lastPostId,List<PostResponse> postList){
@@ -21,7 +21,7 @@ public class PostListResponse {
     }
 
     @Builder
-    public static PostListResponse withSort(Long lastPostId,List<PostResponse> postList,List<Object[]> sort){
+    public static PostListResponse withSort(Long lastPostId,List<PostResponse> postList,PostSort sort){
         return new PostListResponse(lastPostId,postList,sort);
     }
 }

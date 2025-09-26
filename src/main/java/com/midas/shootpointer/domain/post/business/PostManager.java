@@ -5,6 +5,7 @@ import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.helper.elastic.PostElasticSearchHelper;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.simple.PostHelper;
@@ -154,11 +155,13 @@ public class PostManager {
     }
 
     @Transactional(readOnly = true)
-    public PostListResponse getPostByPostTitleOrPostContentByElasticSearch(String search,Long postId,int size){
-        // ElasticSearch가 사용 가능한 경우에만 실행
+    public PostListResponse getPostByPostTitleOrPostContentByElasticSearch(String search, PostSort sort){
+        /**
+         * 0. ElasticSearch가 사용 가능한 경우에만 실행
+          */
         if (postElasticSearchHelper != null) {
             List<PostResponse> elasticSearch =
-                    postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search, postId, size);
+                    postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search, sort.size(), size);
 
             if (!elasticSearch.isEmpty()){
                 return PostListResponse.of(elasticSearch.get(elasticSearch.size()-1).getPostId(),elasticSearch);

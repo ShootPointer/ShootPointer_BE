@@ -36,10 +36,10 @@ public interface PostElasticSearchRepository extends ElasticsearchRepository<Pos
                   },
                   "sort":[
                     {"_score" : {"order": "desc"} },
-                    {"likeCnt" : {"order": "desc} },
+                    {"likeCnt" : {"order": "desc"} },
                     {"postId" : {"order": "desc"} }
                   ],
-                  "size": "?1",
+                  "size": "?1.size",
                   "search_after": ["?2","?3","?4"]
                 }
             """)

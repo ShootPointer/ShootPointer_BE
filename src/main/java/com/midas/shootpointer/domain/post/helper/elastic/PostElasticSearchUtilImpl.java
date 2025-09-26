@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.post.helper.elastic;
 
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.mapper.PostElasticSearchMapper;
@@ -29,12 +30,9 @@ public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
 
     @Transactional(readOnly = true)
     @Override
-    public List<PostResponse> getPostByTitleOrContentByElasticSearch(String search,
-                                                                     int size,
-                                                                     double _score,
-                                                                     Long likeCnt,
-                                                                     Long lastPostId) {
-        List<PostDocument> documentList=postElasticSearchRepository.search(search,size,_score,likeCnt,lastPostId)
+    public List<PostResponse> getPostByTitleOrContentByElasticSearch(String search, PostSort sort) {
+        List<PostDocument> documentList=postElasticSearchRepository.search(search,sort.size(),sort._score(),
+                        sort.likeCnt(),sort.lastPostId())
                 .orElse(Collections.emptyList());
 
         /**
