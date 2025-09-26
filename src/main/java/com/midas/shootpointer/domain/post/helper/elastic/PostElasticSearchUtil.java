@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PostElasticSearchUtil {
     Long createPostDocument(PostEntity post);
-    List<PostResponse> getPostByTitleOrContentByElasticSearch(String search, Long lastPostId, int size);
+    List<PostResponse> getPostByTitleOrContentByElasticSearch(String search, int size,double _score,Long likeCnt,Long lastPostId);
 }
