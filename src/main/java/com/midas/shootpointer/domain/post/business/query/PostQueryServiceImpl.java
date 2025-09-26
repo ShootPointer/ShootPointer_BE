@@ -29,7 +29,7 @@ public class PostQueryServiceImpl implements PostQueryService{
     }
 
     @Override
-    public PostListResponse searchByElastic(String search, PostSort sort) {
-        return postManager.getPostByPostTitleOrPostContentByElasticSearch(search,sort);
+    public PostListResponse searchByElastic(String search, int size,PostSort sort) {
+        return postManager.getPostByPostTitleOrPostContentByElasticSearch(search,size,sort);
     }
 }

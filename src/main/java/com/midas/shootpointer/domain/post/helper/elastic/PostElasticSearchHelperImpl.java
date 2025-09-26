@@ -21,8 +21,8 @@ public class PostElasticSearchHelperImpl implements PostElasticSearchHelper{
     }
 
     @Override
-    public List<PostResponse> getPostByTitleOrContentByElasticSearch(String search, PostSort sort) {
-        return postElasticSearchUtil.getPostByTitleOrContentByElasticSearch(search,sort);
+    public List<PostResponse> getPostByTitleOrContentByElasticSearch(String search,int size, PostSort sort) {
+        return postElasticSearchUtil.getPostByTitleOrContentByElasticSearch(search,size,sort);
     }
 
 }

@@ -3,11 +3,9 @@ package com.midas.shootpointer.domain.post.repository;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.elasticsearch.annotations.Query;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 @Profile("!dev")  // dev 프로파일이 아닐 때만 활성화
@@ -39,7 +37,7 @@ public interface PostElasticSearchRepository extends ElasticsearchRepository<Pos
                     {"likeCnt" : {"order": "desc"} },
                     {"postId" : {"order": "desc"} }
                   ],
-                  "size": "?1.size",
+                  "size": "?1",
                   "search_after": ["?2","?3","?4"]
                 }
             """)
@@ -69,5 +67,5 @@ public interface PostElasticSearchRepository extends ElasticsearchRepository<Pos
     * @date 25. 9. 26.
     *
     ==========================**/
-    Optional<List<PostDocument>> search(String search, int size, double _score, Long likeCnt, Long lastPostId);
+    SearchHits<PostDocument> search(String search, int size, double _score, Long likeCnt, Long lastPostId);
 }
