@@ -155,21 +155,25 @@ public class PostManager {
     }
 
     @Transactional(readOnly = true)
-    public PostListResponse getPostByPostTitleOrPostContentByElasticSearch(String search, PostSort sort){
+    public PostListResponse getPostByPostTitleOrPostContentByElasticSearch(String search,PostSort sort){
         /**
          * 0. ElasticSearch가 사용 가능한 경우에만 실행
           */
-        if (postElasticSearchHelper != null) {
-            List<PostResponse> elasticSearch =
-                    postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search, sort.size(), size);
-
-            if (!elasticSearch.isEmpty()){
-                return PostListResponse.of(elasticSearch.get(elasticSearch.size()-1).getPostId(),elasticSearch);
-            }
+        if (postElasticSearchHelper == null) {
+            //일반 검색
+            return getPostEntitiesByPostTitleOrPostContent(search, sort.lastPostId(), sort.size());
         }
-        
-        // ElasticSearch가 없거나 결과가 없는 경우 일반 검색
-        return getPostEntitiesByPostTitleOrPostContent(search, postId, size);
+
+        /**
+         * 1. 게시물 정렬 조건 + 검색어 게시물 검색 조회
+         */
+        List<PostResponse> responses=postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search,sort);
+
+        /**
+         * 2. PostListResponse 형태로 반환.
+         */
+        return PostListResponse.withSort(sort.lastPostId(),responses,sort);
+
     }
 
 }
