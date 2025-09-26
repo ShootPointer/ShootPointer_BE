@@ -58,7 +58,7 @@ public interface PostElasticSearchRepository extends ElasticsearchRepository<Pos
     *           size : 불러올 게시물 크기
     *           _score : 마지막 게시물 _score
     *           likeCnt : 마지막 게시물 좋아요 개수
-    *           lastPostId : 마지막 게시물 게시물 id
+    *           lastPostId : 마지막 게시물 id
     * ]
     * @return java.util.List<com.midas.shootpointer.domain.post.entity.PostDocument>
     * @author kimdoyeon
