@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.post.helper.elastic;
 
+import com.midas.shootpointer.domain.post.dto.response.PostSearchHit;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
@@ -32,21 +33,20 @@ public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
 
     @Transactional(readOnly = true)
     @Override
-    public List<Object[]> getPostByTitleOrContentByElasticSearch(String search, int size, PostSort sort) {
-        SearchHits<PostDocument> documentList=postElasticSearchRepository.search(search,size,sort._score(),
-                        sort.likeCnt(),sort.lastPostId());
+    public List<PostSearchHit> getPostByTitleOrContentByElasticSearch(String search, int size, PostSort sort) {
+        SearchHits<PostDocument> documentList=postElasticSearchRepository.search(search,size,sort);
 
         /**
          * 조회된 Document가 없는 경우 빈 리스트 반환
          */
         if(documentList==null) return Collections.emptyList();
 
-        List<Object[]> responses=new ArrayList<>();
+        List<PostSearchHit> responses=new ArrayList<>();
         for (SearchHit<PostDocument> hit:documentList){
             PostDocument doc=hit.getContent();
             float _score=hit.getScore();
-            //PostDoc 값 , _score 값 저장
-            responses.add(new Object[]{doc,_score});
+            //PostResponse 값 , _score 값 저장
+            responses.add(new PostSearchHit(doc,_score));
         }
 
         return responses;

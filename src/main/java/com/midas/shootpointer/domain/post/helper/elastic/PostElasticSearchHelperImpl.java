@@ -1,6 +1,6 @@
 package com.midas.shootpointer.domain.post.helper.elastic;
 
-import com.midas.shootpointer.domain.post.dto.response.PostResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostSearchHit;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class PostElasticSearchHelperImpl implements PostElasticSearchHelper{
     }
 
     @Override
-    public List<PostResponse> getPostByTitleOrContentByElasticSearch(String search,int size, PostSort sort) {
+    public List<PostSearchHit> getPostByTitleOrContentByElasticSearch(String search, int size, PostSort sort) {
         return postElasticSearchUtil.getPostByTitleOrContentByElasticSearch(search,size,sort);
     }
 

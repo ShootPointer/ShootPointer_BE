@@ -134,9 +134,9 @@ public class PostQueryController {
     public ResponseEntity<ApiResponse<PostListResponse>> searchElastic(@RequestParam(required = true) String search,
                                                                        @RequestParam(required = false,defaultValue = "922337203685477580") Long postId,
                                                                        @RequestParam(required = false,defaultValue = "10")int size,
-                                                                       @RequestParam(required = false,defaultValue = "922337203685477580")Double _score,
+                                                                       @RequestParam(required = false,defaultValue = "922337203685477580")float _score,
                                                                        @RequestParam(required = false,defaultValue = "922337203685477580")Long likeCnt){
-        PostSort sort=new PostSort(size,_score,likeCnt,postId);
-        return ResponseEntity.ok(ApiResponse.ok(postQueryService.searchByElastic(search,sort)));
+        PostSort sort=new PostSort(_score,likeCnt,postId);
+        return ResponseEntity.ok(ApiResponse.ok(postQueryService.searchByElastic(search,size,sort)));
     }
 }

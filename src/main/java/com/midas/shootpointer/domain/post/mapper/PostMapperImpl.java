@@ -55,17 +55,17 @@ public class PostMapperImpl implements PostMapper{
     }
 
     @Override
-    public PostDocument documentToEntity(PostEntity entity) {
-        return PostDocument.builder()
-                .postId(entity.getPostId())
-                .modifiedAt(entity.getModifiedAt())
-                .createdAt(entity.getCreatedAt())
-                .content(entity.getContent())
-                .hashTag(entity.getHashTag())
-                .highlightUrl(entity.getHighlight().getHighlightURL())
-                .likeCnt(entity.getLikeCnt())
-                .memberName(entity.getMember().getUsername())
-                .title(entity.getTitle())
+    public PostResponse documentToEResponse(PostDocument document) {
+         return PostResponse.builder()
+                .title(document.getTitle())
+                .content(document.getContent())
+                .createdAt(document.getCreatedAt())
+                .memberName(document.getMemberName())
+                .hashTag(document.getHashTag())
+                .highlightUrl(document.getHighlightUrl())
+                .likeCnt(document.getLikeCnt())
+                .modifiedAt(document.getModifiedAt())
+                .postId(document.getPostId())
                 .build();
     }
 }

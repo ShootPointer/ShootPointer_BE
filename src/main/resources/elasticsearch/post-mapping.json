@@ -1,6 +1,6 @@
 {
   "properties": {
-    "id": {
+    "postId": {
       "type": "long"
     },
     "title": {
@@ -13,6 +13,20 @@
     },
     "hashTag": {
       "type": "keyword"
+    },
+    "likeCnt": {
+      "type": "long"
+    },
+    "createdAt": {
+      "type": "date",
+      "format": "yyyy-MM-dd'T'HH:mm:ss.SSS||epoch_millis"
+    },
+    "modifiedAt": {
+      "type": "date",
+      "format": "yyyy-MM-dd'T'HH:mm:ss.SSS||epoch_millis"
+    },
+    "highlightUrl": {
+      "type": "text"
     }
   }
 }

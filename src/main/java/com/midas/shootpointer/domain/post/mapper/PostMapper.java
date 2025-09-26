@@ -13,5 +13,5 @@ public interface PostMapper {
     PostEntity dtoToEntity(PostRequest postRequest, Member member);
     PostResponse entityToDto(PostEntity post);
     PostListResponse entityToDto(List<PostEntity> postEntityList);
-    PostDocument documentToEntity(PostEntity entity);
+    PostResponse documentToEResponse(PostDocument document);
 }

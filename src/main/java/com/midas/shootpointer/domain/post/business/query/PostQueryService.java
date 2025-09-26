@@ -11,5 +11,5 @@ public interface PostQueryService {
 
     PostListResponse search(String search,Long postId,int size);
 
-    PostListResponse searchByElastic(String search, PostSort sort);
+    PostListResponse searchByElastic(String search, int size,PostSort sort);
 }

@@ -5,7 +5,9 @@ import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
+import com.midas.shootpointer.domain.post.dto.response.PostSearchHit;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
+import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.helper.elastic.PostElasticSearchHelper;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.simple.PostHelper;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -165,9 +168,9 @@ public class PostManager {
         }
 
         /**
-         * 1. 게시물 정렬 조건 + 검색어 게시물 검색 조회
+         * 1. 게시물 정렬 조건 + 검색어 게시물 검색 , _score 조회
          */
-        List<PostResponse> responses=postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search,size,sort);
+        List<PostSearchHit> responses=postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search,size,sort);
 
         /**
          * 2. PostListResponse 형태로 반환 - 마지막 게시물의 정렬 값 보내기.
@@ -175,13 +178,26 @@ public class PostManager {
 
         //결과값이 없는 경우 - 이전에 보낸 정렬값(기본값) 그대로 전송
         if(responses.isEmpty()){
-            return PostListResponse.withSort(sort.lastPostId(),responses,sort);
+            return PostListResponse.withSort(sort.lastPostId(), Collections.emptyList(),sort);
         }
 
         //결과값이 존재하는 경우 - 마지막 게시물의 정렬 기준 전송
         int last=responses.size()-1;
-        PostSort newSort=new PostSort(responses.get(last).)
-        return PostListResponse.withSort(sort.lastPostId(),responses,sort);
+
+        PostDocument lastResponse=responses.get(last).doc();
+        PostSort newSort=new PostSort(responses.get(last)._score(),
+                lastResponse.getLikeCnt(),
+                lastResponse.getPostId()
+        );
+
+        /**
+         * 3. List<PostDocument> -> List<PostResponse> 형태로 변환
+         */
+        List<PostResponse> postResponses=responses.stream()
+                .map(hit->postMapper.documentToEResponse(hit.doc()))
+                .toList();
+
+        return PostListResponse.withSort(lastResponse.getPostId(),postResponses,newSort);
 
     }
 
