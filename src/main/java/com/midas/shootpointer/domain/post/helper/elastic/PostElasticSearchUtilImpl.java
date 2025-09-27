@@ -1,11 +1,13 @@
 package com.midas.shootpointer.domain.post.helper.elastic;
 
+import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSearchHit;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.mapper.PostElasticSearchMapper;
 import com.midas.shootpointer.domain.post.repository.PostElasticSearchRepository;
+import com.midas.shootpointer.global.annotation.CustomLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -13,6 +15,7 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,6 +53,22 @@ public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
         }
 
         return responses;
+    }
+
+    @Override
+    @CustomLog
+    public List<String> suggestCompleteSearch(String keyword) {
+        try {
+            SearchResponse<PostDocument> searchResponse=
+                    postElasticSearchRepository.suggestCompleteByKeyword(keyword);
+
+            return searchResponse.hits().hits().stream()
+                    .map(hit->hit.source().getTitle())
+                    .toList();
+
+        }catch (IOException e){
+            return Collections.emptyList();
+        }
     }
 
 }

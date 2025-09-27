@@ -9,4 +9,5 @@ import java.util.List;
 public interface PostElasticSearchUtil {
     Long createPostDocument(PostEntity post);
     List<PostSearchHit> getPostByTitleOrContentByElasticSearch(String search, int size, PostSort sort);
+    List<String> suggestCompleteSearch(String keyword);
 }

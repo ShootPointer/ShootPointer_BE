@@ -25,4 +25,9 @@ public class PostElasticSearchHelperImpl implements PostElasticSearchHelper{
         return postElasticSearchUtil.getPostByTitleOrContentByElasticSearch(search,size,sort);
     }
 
+    @Override
+    public List<String> suggestCompleteSearch(String keyword) {
+        return postElasticSearchUtil.suggestCompleteSearch(keyword);
+    }
+
 }

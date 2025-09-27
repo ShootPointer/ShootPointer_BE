@@ -32,8 +32,8 @@ public class DummyDataLoader implements CommandLineRunner {
     private final PostElasticSearchRepository postElasticSearchRepository;
     private final PostElasticSearchMapper mapper;
 
-    private final int batchSize=10_000;
-    private final int insertSize=100_000;
+    private final int batchSize=2_000;
+    private final int insertSize=1_000_000;
     private final PostQueryRepository postQueryRepository;
 
     @Override

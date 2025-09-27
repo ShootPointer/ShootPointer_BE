@@ -1,7 +1,10 @@
 package com.midas.shootpointer.domain.post.repository;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +17,15 @@ import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
 import java.util.List;
 
 @Repository
 @Profile("!dev")
 @RequiredArgsConstructor
-public class PostCustomElasticSearchImpl implements PostCustomElasticSearch {
+public class PostCustomElasticSearchRepositoryImpl implements PostCustomElasticSearchRepository {
     private final ElasticsearchOperations operations;
+    private final ElasticsearchClient elasticsearchClient;
     //제목 가중치
     private final float TITLE_WEIGHT = 30f;
     //내용 가중치
@@ -58,6 +63,22 @@ public class PostCustomElasticSearchImpl implements PostCustomElasticSearch {
 
         NativeQuery query = builder.build();
         return operations.search(query, PostDocument.class);
+    }
+
+    @Override
+    public SearchResponse<PostDocument> suggestCompleteByKeyword(String keyword) throws IOException {
+        SearchRequest searchRequest=new SearchRequest.Builder()
+                .index("post")
+                .query(q->q
+                        .matchPhrase( m->m
+                                .field("title")
+                                .query(keyword)
+                        )
+                )
+                .size(5)
+                .build();
+
+        return elasticsearchClient.search(searchRequest, PostDocument.class);
     }
 
     /**

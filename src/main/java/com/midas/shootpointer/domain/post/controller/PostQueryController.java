@@ -4,6 +4,7 @@ import com.midas.shootpointer.domain.post.business.query.PostQueryService;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
+import com.midas.shootpointer.domain.post.dto.response.SearchAutoCompleteResponse;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,6 +13,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -131,12 +134,24 @@ public class PostQueryController {
     *
     ==========================**/
     @GetMapping("/list-elastic")
-    public ResponseEntity<ApiResponse<PostListResponse>> searchElastic(@RequestParam(required = true) String search,
+    public ResponseEntity<ApiResponse<PostListResponse>> searchElastic(@RequestParam(required = false) String search,
                                                                        @RequestParam(required = false,defaultValue = "922337203685477580") Long postId,
                                                                        @RequestParam(required = false,defaultValue = "10")int size,
                                                                        @RequestParam(required = false,defaultValue = "922337203685477580")float _score,
                                                                        @RequestParam(required = false,defaultValue = "922337203685477580")Long likeCnt){
+        /**
+         * 검색어가 없는 경우 -> 최신 게시물 리스트 조회
+         */
+        if(search.isBlank()){
+            return ResponseEntity.ok(ApiResponse.ok(postQueryService.multiRead(postId,size,"latest")));
+        }
         PostSort sort=new PostSort(_score,likeCnt,postId);
         return ResponseEntity.ok(ApiResponse.ok(postQueryService.searchByElastic(search,size,sort)));
     }
+
+    @GetMapping("/suggest")
+    public ResponseEntity<ApiResponse<List<SearchAutoCompleteResponse>>> searchSuggest(@RequestParam(value = "keyword",required = true) String keyword){
+        return ResponseEntity.ok()
+    }
+
 }
