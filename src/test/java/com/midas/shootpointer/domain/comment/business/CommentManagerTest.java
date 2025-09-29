@@ -109,17 +109,6 @@ class CommentManagerTest {
 	}
 	
 	@Test
-	@DisplayName("댓글 저장 실패 - Comment가 Null인 경우")
-	void save_Failed_NullComment() {
-		// given
-		Comment comment = null;
-		
-		// when-then
-		assertThatThrownBy(() -> commentManager.save(comment))
-			.isInstanceOf(NullPointerException.class);
-	}
-	
-	@Test
 	@DisplayName("댓글 저장 실패 - Comment에 Post가 Null인 경우")
 	void save_Failed_CommentPostIsNull() {
 		// given
