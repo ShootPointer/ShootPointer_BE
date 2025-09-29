@@ -4,9 +4,12 @@ import com.midas.shootpointer.domain.post.business.PostManager;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
+import com.midas.shootpointer.domain.post.dto.response.SearchAutoCompleteResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +34,10 @@ public class PostQueryServiceImpl implements PostQueryService{
     @Override
     public PostListResponse searchByElastic(String search, int size,PostSort sort) {
         return postManager.getPostByPostTitleOrPostContentByElasticSearch(search,size,sort);
+    }
+
+    @Override
+    public List<SearchAutoCompleteResponse> suggest(String keyword) {
+        return postManager.searchAutoCompleteResponse(keyword);
     }
 }

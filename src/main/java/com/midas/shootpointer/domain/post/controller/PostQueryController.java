@@ -151,7 +151,7 @@ public class PostQueryController {
 
     @GetMapping("/suggest")
     public ResponseEntity<ApiResponse<List<SearchAutoCompleteResponse>>> searchSuggest(@RequestParam(value = "keyword",required = true) String keyword){
-        return ResponseEntity.ok()
+        return ResponseEntity.ok(ApiResponse.ok(postQueryService.suggest(keyword)));
     }
 
 }

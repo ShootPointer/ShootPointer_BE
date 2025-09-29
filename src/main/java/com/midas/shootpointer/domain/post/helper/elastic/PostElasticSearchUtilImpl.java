@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.post.helper.elastic;
 
-import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSearchHit;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
@@ -57,14 +56,12 @@ public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
 
     @Override
     @CustomLog
-    public List<String> suggestCompleteSearch(String keyword) {
-        try {
-            SearchResponse<PostDocument> searchResponse=
-                    postElasticSearchRepository.suggestCompleteByKeyword(keyword);
+    public List<String> suggestCompleteSearch(String keyword)  {
 
-            return searchResponse.hits().hits().stream()
-                    .map(hit->hit.source().getTitle())
-                    .toList();
+        try {
+            SearchHits<PostDocument> postDocumentSearchHits=postElasticSearchRepository.suggestCompleteByKeyword(keyword);
+            return postDocumentSearchHits
+                    .map(hit->hit.getContent().getTitle()).toList();
 
         }catch (IOException e){
             return Collections.emptyList();

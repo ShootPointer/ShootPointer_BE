@@ -14,7 +14,7 @@ public class PostElasticSearchMapperImpl implements PostElasticSearchMapper {
         return PostDocument.builder()
                 .content(post.getContent())
                 .title(post.getTitle())
-                .hashTag(post.getHashTag())
+                .hashTag(post.getHashTag().getName())
                 .postId(post.getPostId())
                 .likeCnt(post.getLikeCnt())
                 .memberName(post.getMember().getUsername())

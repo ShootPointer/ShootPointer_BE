@@ -7,8 +7,16 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SearchAutoCompleteResponse {
     @JsonProperty("suggest")
     private String suggest;
+
+    private SearchAutoCompleteResponse(String keyword){
+        this.suggest=keyword;
+    }
+    public static SearchAutoCompleteResponse of(String title){
+        return new SearchAutoCompleteResponse(title);
+    }
 }

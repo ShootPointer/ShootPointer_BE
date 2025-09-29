@@ -5,7 +5,10 @@
     },
     "title": {
       "type": "text",
-      "analyzer": "nori"
+      "analyzer": "nori",
+      "fields": {
+        "keyword": { "type": "keyword" }
+      }
     },
     "content": {
       "type": "text",

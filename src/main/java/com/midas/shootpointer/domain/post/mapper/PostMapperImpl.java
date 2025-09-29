@@ -4,6 +4,7 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
+import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import org.springframework.stereotype.Component;
@@ -61,7 +62,7 @@ public class PostMapperImpl implements PostMapper{
                 .content(document.getContent())
                 .createdAt(document.getCreatedAt())
                 .memberName(document.getMemberName())
-                .hashTag(document.getHashTag())
+                .hashTag(HashTag.valueOf(document.getHashTag()))
                 .highlightUrl(document.getHighlightUrl())
                 .likeCnt(document.getLikeCnt())
                 .modifiedAt(document.getModifiedAt())

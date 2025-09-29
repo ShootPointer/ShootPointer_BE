@@ -3,8 +3,6 @@ package com.midas.shootpointer.domain.post.repository;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
-import co.elastic.clients.elasticsearch.core.SearchRequest;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
 import lombok.RequiredArgsConstructor;
@@ -66,19 +64,16 @@ public class PostCustomElasticSearchRepositoryImpl implements PostCustomElasticS
     }
 
     @Override
-    public SearchResponse<PostDocument> suggestCompleteByKeyword(String keyword) throws IOException {
-        SearchRequest searchRequest=new SearchRequest.Builder()
-                .index("post")
-                .query(q->q
-                        .matchPhrase( m->m
-                                .field("title")
-                                .query(keyword)
-                        )
-                )
-                .size(5)
+    public SearchHits<PostDocument> suggestCompleteByKeyword(String keyword) throws IOException {
+        NativeQuery nativeQuery=NativeQuery.builder()
+                .withQuery(q->q.matchPhrasePrefix(p->p
+                        .field("title")
+                        .query(keyword)
+                ))
+                .withMaxResults(5)
                 .build();
 
-        return elasticsearchClient.search(searchRequest, PostDocument.class);
+        return operations.search(nativeQuery,PostDocument.class);
     }
 
     /**

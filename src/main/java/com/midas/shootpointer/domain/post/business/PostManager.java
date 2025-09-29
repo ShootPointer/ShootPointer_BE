@@ -3,10 +3,7 @@ package com.midas.shootpointer.domain.post.business;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
-import com.midas.shootpointer.domain.post.dto.response.PostResponse;
-import com.midas.shootpointer.domain.post.dto.response.PostSearchHit;
-import com.midas.shootpointer.domain.post.dto.response.PostSort;
+import com.midas.shootpointer.domain.post.dto.response.*;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.helper.elastic.PostElasticSearchHelper;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
@@ -199,6 +196,25 @@ public class PostManager {
 
         return PostListResponse.withSort(lastResponse.getPostId(),postResponses,newSort);
 
+    }
+
+    @Transactional(readOnly = true)
+    public List<SearchAutoCompleteResponse> searchAutoCompleteResponse(String keyword){
+        /**
+         * 0. ElasticSearch가 사용 가능한 경우에만 실행
+         */
+        if (postElasticSearchHelper == null) {
+            //일반 검색
+            return Collections.emptyList();
+        }
+        /**
+         * 1. 자동 검색어 목록 조회
+         */
+        List<String> searchAutoCompleteTitles=postElasticSearchHelper.suggestCompleteSearch(keyword);
+
+        return searchAutoCompleteTitles.stream()
+                .map(SearchAutoCompleteResponse::of)
+                .toList();
     }
 
 }
