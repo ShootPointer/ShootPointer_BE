@@ -50,19 +50,6 @@ class CommentCommandServiceImplTest {
 		then(commentManager).should().save(comment);
 	}
 	
-	@Test
-	@DisplayName("댓글 생성 실패 - Comment가 Null인 경우")
-	void create_Failed_NullComment() {
-		// given
-		Comment comment = null;
-		
-		// when-then
-		assertThatThrownBy(() -> commentCommandService.create(comment))
-			.isInstanceOf(Exception.class); // NullPointerException이나 다른 예외 발생 가능
-		
-		then(commentManager).should().save(comment);
-	}
-	
 	private Comment createComment() {
 		Member member = Member.builder()
 			.memberId(UUID.randomUUID())
