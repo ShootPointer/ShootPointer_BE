@@ -14,9 +14,11 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CommentValidation 테스트")
+@SpringBootTest
 class CommentValidationImplTest {
 	
 	@InjectMocks
