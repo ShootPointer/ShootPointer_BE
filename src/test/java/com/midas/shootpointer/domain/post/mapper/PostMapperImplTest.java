@@ -8,6 +8,7 @@ import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
+import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -139,6 +141,40 @@ class PostMapperImplTest {
             idx++;
         }
     }
+
+    @Test
+    @DisplayName("PostDocument를 PostResponse 형태로 변환합니다.")
+    void documentToResponse(){
+        //given
+        LocalDateTime dateTime=LocalDateTime.now();
+        PostDocument mockDocument=makePostDocument(dateTime);
+        PostResponse expectedResponse=PostResponse.builder()
+                .title("title")
+                .modifiedAt(dateTime)
+                .createdAt(dateTime)
+                .memberName("name")
+                .highlightUrl("url")
+                .likeCnt(100L)
+                .postId(1L)
+                .hashTag("3점슛")
+                .content("content")
+                .build();
+
+        //when
+        PostResponse getResponse=postMapper.documentToResponse(mockDocument);
+
+        //then
+        assertThat(getResponse.getHighlightUrl()).isEqualTo(expectedResponse.getHighlightUrl());
+        assertThat(getResponse.getHashTag()).isEqualTo(expectedResponse.getHashTag());
+        assertThat(getResponse.getTitle()).isEqualTo(expectedResponse.getTitle());
+        assertThat(getResponse.getModifiedAt()).isEqualTo(expectedResponse.getModifiedAt());
+        assertThat(getResponse.getCreatedAt()).isEqualTo(expectedResponse.getCreatedAt());
+        assertThat(getResponse.getLikeCnt()).isEqualTo(expectedResponse.getLikeCnt());
+        assertThat(getResponse.getMemberName()).isEqualTo(expectedResponse.getMemberName());
+        assertThat(getResponse.getPostId()).isEqualTo(expectedResponse.getPostId());
+        assertThat(getResponse.getContent()).isEqualTo(expectedResponse.getContent());
+
+    }
     /**
      * Mock Member
      */
@@ -165,6 +201,20 @@ class PostMapperImplTest {
                 .highlightURL("test_test_tes")
                 .highlightKey(UUID.randomUUID())
                 .member(member)
+                .build();
+    }
+
+    private PostDocument makePostDocument(LocalDateTime localDateTime){
+        return PostDocument.builder()
+                .content("content")
+                .createdAt(localDateTime)
+                .hashTag("3점슛")
+                .likeCnt(100L)
+                .highlightUrl("url")
+                .memberName("name")
+                .modifiedAt(localDateTime)
+                .postId(1L)
+                .title("title")
                 .build();
     }
 }

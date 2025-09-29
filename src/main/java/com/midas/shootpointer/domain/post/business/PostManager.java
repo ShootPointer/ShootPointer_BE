@@ -191,7 +191,7 @@ public class PostManager {
          * 3. List<PostDocument> -> List<PostResponse> 형태로 변환
          */
         List<PostResponse> postResponses=responses.stream()
-                .map(hit->postMapper.documentToEResponse(hit.doc()))
+                .map(hit->postMapper.documentToResponse(hit.doc()))
                 .toList();
 
         return PostListResponse.withSort(lastResponse.getPostId(),postResponses,newSort);

@@ -198,7 +198,7 @@ class PostManagerTest {
         PostEntity expectedPost=mockPostEntity("",member);
         PostResponse expectedResponse=PostResponse.builder()
                         .content(expectedPost.getContent())
-                        .hashTag(expectedPost.getHashTag())
+                        .hashTag(expectedPost.getHashTag().getName())
                         .likeCnt(expectedPost.getLikeCnt())
                         .createdAt(LocalDateTime.now())
                         .highlightUrl("url")
@@ -237,7 +237,7 @@ class PostManagerTest {
                     .modifiedAt(LocalDateTime.now())
                     .highlightUrl("test")
                     .likeCnt(100L)
-                    .hashTag(HashTag.TREE_POINT)
+                    .hashTag(HashTag.TREE_POINT.getName())
                     .build());
         }
         PostListResponse postListResponse=PostListResponse.of(postId,postResponses);

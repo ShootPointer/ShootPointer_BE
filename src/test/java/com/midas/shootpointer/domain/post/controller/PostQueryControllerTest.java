@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.domain.post.business.query.PostQueryService;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
-import com.midas.shootpointer.domain.post.entity.HashTag;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -211,7 +210,7 @@ class PostQueryControllerTest {
                 .highlightUrl("test")
                 .postId(postId)
                 .title(title)
-                .hashTag(HashTag.TWO_POINT)
+                .hashTag("2점슛")
                 .build();
 
     }

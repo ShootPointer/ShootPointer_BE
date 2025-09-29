@@ -82,7 +82,7 @@ class PostQueryServiceImplTest {
                 .highlightUrl("test")
                 .postId(postId)
                 .title("title")
-                .hashTag(HashTag.TWO_POINT)
+                .hashTag(HashTag.TWO_POINT.getName())
                 .build();
 
     }
