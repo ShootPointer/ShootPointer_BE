@@ -20,8 +20,7 @@ public enum ErrorCode {
      * backnumber :                50
      * post:                       60
      * like:                       70
-     * backNumber:                 50
-     * post:                       60
+     * comment:                    80
 
      * <p>
      * - Package
@@ -105,9 +104,10 @@ public enum ErrorCode {
     NOT_EXIST_ORDER_TYPE(60603,HttpStatus.BAD_REQUEST,"잘못된 조회 방식입니다."),
 
     //607(post-business) part
-    IS_NOT_EXIST_POST(60701,HttpStatus.FORBIDDEN,"존재하지 않는 게시물입니다.")
-    ;
+    IS_NOT_EXIST_POST(60701,HttpStatus.FORBIDDEN,"존재하지 않는 게시물입니다."),
 
+    // 806(comment - helper) part
+    INVALID_COMMENT_CONTENT(80601, HttpStatus.BAD_REQUEST, "유효하지 않은 댓글 내용입니다.");
 
 
     private final Integer code;
