@@ -6,6 +6,7 @@ import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.comment.mapper.CommentMapper;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.helper.PostHelper;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import com.midas.shootpointer.global.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +23,14 @@ public class CommentCommandController {
 	
 	private final CommentCommandService commentCommandService;
 	private final CommentMapper commentMapper;
+	private final PostHelper postHelper;
 	
 	@PostMapping
 	public ResponseEntity<ApiResponse<Long>> create(@RequestBody CommentRequestDto requestDto) {
 		
 		Member member = SecurityUtils.getCurrentMember();
-		PostEntity postEntity = PostEntity.builder()
-			.postId(requestDto.getPostId())
-			.build();
+		
+		PostEntity postEntity = postHelper.findPostByPostId(requestDto.getPostId());
 		Comment comment = commentMapper.dtoToEntity(requestDto, member, postEntity);
 		
 		return ResponseEntity.ok(ApiResponse.created(commentCommandService.create(comment)));
