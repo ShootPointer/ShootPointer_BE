@@ -7,7 +7,7 @@ import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
-import com.midas.shootpointer.domain.post.helper.PostHelper;
+import com.midas.shootpointer.domain.post.helper.simple.PostHelper;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;

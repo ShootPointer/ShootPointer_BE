@@ -7,6 +7,8 @@ import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
+import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,13 @@ class LikeManagerTest {
         likeCommandRepository.deleteAll();
     }
 
+    @AfterEach
+    void cleanUp(){
+        likeCommandRepository.deleteAll();;
+        postCommandRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
+
     @Autowired
     private LikeManager likeManager;
 
@@ -41,6 +50,9 @@ class LikeManagerTest {
 
     @Autowired
     private PostCommandRepository postCommandRepository;
+
+    @Autowired
+    private PostQueryRepository postQueryRepository;
 
     @Autowired
     private LikeCommandRepository likeCommandRepository;
@@ -60,9 +72,10 @@ class LikeManagerTest {
         Long likeId_2=likeManager.increase(savedPost.getPostId(),savedMember_2);
         Long likeId_3=likeManager.increase(savedPost.getPostId(),savedMember_3);
         Long likeId_4=likeManager.increase(savedPost.getPostId(),savedMember_4);
+        PostEntity findPost=postQueryRepository.findByPostId(savedPost.getPostId()).orElseThrow();
 
         //then
-        assertThat(savedPost.getLikeCnt()).isEqualTo(4);
+        assertThat(findPost.getLikeCnt()).isEqualTo(4);
 
     }
 
@@ -91,8 +104,10 @@ class LikeManagerTest {
         likeManager.decrease(savedPost.getPostId(),savedMember_1);
         likeManager.decrease(savedPost.getPostId(),savedMember_2);
 
+        PostEntity findPost=postQueryRepository.findByPostId(savedPost.getPostId()).orElseThrow();
+
         //then
-        assertThat(savedPost.getLikeCnt()).isEqualTo(3);
+        assertThat(findPost.getLikeCnt()).isEqualTo(3);
     }
 
     private LikeEntity makeMockLike(PostEntity post,Member member){

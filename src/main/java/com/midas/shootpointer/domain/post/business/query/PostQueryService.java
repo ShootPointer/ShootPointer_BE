@@ -9,4 +9,6 @@ public interface PostQueryService {
     PostListResponse multiRead(Long postId, int size, String type);
 
     PostListResponse search(String search,Long postId,int size);
+
+    PostListResponse searchByElastic(String search,Long postId,int size);
 }

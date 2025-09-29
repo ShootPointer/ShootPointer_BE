@@ -5,13 +5,16 @@ import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
+import com.midas.shootpointer.domain.post.helper.elastic.PostElasticSearchHelper;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
-import com.midas.shootpointer.domain.post.helper.PostHelper;
+import com.midas.shootpointer.domain.post.helper.simple.PostHelper;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -20,6 +23,9 @@ public class PostManager {
     private final PostHelper postHelper;
     private final HighlightHelper highlightHelper;
     private final PostMapper postMapper;
+
+    @Autowired(required = false)
+    private PostElasticSearchHelper postElasticSearchHelper;
 
     @Transactional
     public Long save(Member member, PostEntity postEntity, UUID highlightId){
@@ -42,6 +48,14 @@ public class PostManager {
          * 4. 하이라이트 저장.
          */
         postEntity.setHighlight(highlightEntity);
+
+        /*
+         * 5. 게시물 ElasticSearch Document 저장 (조건부).
+         */
+        if (postElasticSearchHelper != null) {
+            postElasticSearchHelper.createPostDocument(postEntity);
+        }
+
 
         return postHelper.save(postEntity).getPostId();
     }
@@ -137,6 +151,22 @@ public class PostManager {
          * 1. 제목 + 내용 게시물 조회.
          */
         return postMapper.entityToDto(postHelper.getPostEntitiesByPostTitleOrPostContent(search,postId,size));
+    }
+
+    @Transactional(readOnly = true)
+    public PostListResponse getPostByPostTitleOrPostContentByElasticSearch(String search,Long postId,int size){
+        // ElasticSearch가 사용 가능한 경우에만 실행
+        if (postElasticSearchHelper != null) {
+            List<PostResponse> elasticSearch =
+                    postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search, postId, size);
+
+            if (!elasticSearch.isEmpty()){
+                return PostListResponse.of(elasticSearch.get(elasticSearch.size()-1).getPostId(),elasticSearch);
+            }
+        }
+        
+        // ElasticSearch가 없거나 결과가 없는 경우 일반 검색
+        return getPostEntitiesByPostTitleOrPostContent(search, postId, size);
     }
 
 }

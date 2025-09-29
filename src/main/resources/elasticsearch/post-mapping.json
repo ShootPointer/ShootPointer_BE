@@ -1,0 +1,18 @@
+{
+  "properties": {
+    "id": {
+      "type": "long"
+    },
+    "title": {
+      "type": "text",
+      "analyzer": "nori"
+    },
+    "content": {
+      "type": "text",
+      "analyzer": "nori"
+    },
+    "hashTag": {
+      "type": "keyword"
+    }
+  }
+}
