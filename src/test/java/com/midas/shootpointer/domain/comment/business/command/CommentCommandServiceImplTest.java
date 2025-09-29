@@ -25,9 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CommentCommandService 테스트")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@Transactional
-@Rollback
 class CommentCommandServiceImplTest {
 	
 	@Mock
