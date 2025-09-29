@@ -149,6 +149,28 @@ public class PostQueryController {
         return ResponseEntity.ok(ApiResponse.ok(postQueryService.searchByElastic(search,size,sort)));
     }
 
+    @Operation(
+            summary = "게시물 자동 완성 검색 API - [담당자 : 김도연]",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "게시물 자동 완성 검색 조회 성공",
+                            content = @Content(mediaType="application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX",description = "게시물 자동 완성 검색 조회 실패",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+            }
+    )
+    /*==========================
+    *
+    *PostQueryController
+    *
+    * @parm [keyword] : 검색어
+    * @return org.springframework.http.ResponseEntity<com.midas.shootpointer.global.dto.ApiResponse<java.util.List<com.midas.shootpointer.domain.post.dto.response.SearchAutoCompleteResponse>>>
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 9. 29.
+    *
+    ==========================**/
     @GetMapping("/suggest")
     public ResponseEntity<ApiResponse<List<SearchAutoCompleteResponse>>> searchSuggest(@RequestParam(value = "keyword",required = true) String keyword){
         return ResponseEntity.ok(ApiResponse.ok(postQueryService.suggest(keyword)));
