@@ -5,6 +5,7 @@ import com.midas.shootpointer.domain.highlight.repository.HighlightCommandReposi
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
+import com.midas.shootpointer.global.util.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -26,9 +27,10 @@ public class DummyDataLoader implements CommandLineRunner {
     private final MakeRandomWord makeRandomWord;
     private final MemberCommandRepository memberRepository;
     private final HighlightCommandRepository highlightCommandRepository;
-
+    private final JwtUtil jwtUtil;
+    
     private final int batchSize=10_000;
-    private final int insertSize=10_000_000;
+    private final int insertSize=10_000;
 
     @Override
     public void run(String... args) throws Exception {
@@ -37,7 +39,10 @@ public class DummyDataLoader implements CommandLineRunner {
                 .username("test")
                 .build()
         );
-
+        
+        String accessToken = jwtUtil.createToken(member.getMemberId(), member.getEmail(),
+            member.getUsername());
+        
         HighlightEntity highlight=highlightCommandRepository.save(
                 HighlightEntity.builder()
                         .highlightURL("test")
@@ -81,8 +86,8 @@ public class DummyDataLoader implements CommandLineRunner {
                 batchArgs.clear();
                 System.out.println(i+"건 삽입 완료");
             }
-
         }
+        System.out.println("Access Token : " + accessToken);
 
         if (!batchArgs.isEmpty()){
             jdbcTemplate.batchUpdate(sql,batchArgs);
