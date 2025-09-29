@@ -9,9 +9,10 @@ import org.springframework.stereotype.Component;
 public class CommentHelperImpl implements CommentHelper {
 	private final CommentValidation commentValidation;
 	private final CommentUtil commentUtil;
+	
 	@Override
-	public void isValidateCommentContent(String content) {
-		commentValidation.isValidateCommentContent(content);
+	public void validatePostExists(Long postId) {
+		commentValidation.validatePostExists(postId);
 	}
 	
 	@Override

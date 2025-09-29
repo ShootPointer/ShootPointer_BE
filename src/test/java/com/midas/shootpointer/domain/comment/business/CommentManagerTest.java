@@ -25,10 +25,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CommentManager 테스트")
@@ -56,7 +52,7 @@ class CommentManagerTest {
 			.build();
 		
 		given(postHelper.findPostByPostId(anyLong())).willReturn(comment.getPost());
-		willDoNothing().given(commentHelper).isValidateCommentContent(anyString());
+		willDoNothing().given(commentHelper).validatePostExists(anyLong());
 		given(commentHelper.save(any(Comment.class))).willReturn(savedComment);
 		
 		// when
@@ -65,7 +61,7 @@ class CommentManagerTest {
 		// then
 		assertThat(result).isEqualTo(1L);
 		then(postHelper).should().findPostByPostId(comment.getPost().getPostId());
-		then(commentHelper).should().isValidateCommentContent(comment.getContent());
+		then(commentHelper).should().validatePostExists(comment.getPost().getPostId());
 		then(commentHelper).should().save(comment);
 	}
 	
@@ -89,22 +85,22 @@ class CommentManagerTest {
 	}
 	
 	@Test
-	@DisplayName("유효하지 않은 댓글 내용으로 저장 -> 예외 발생")
-	void save_Invalid_Content_ThrowException() {
+	@DisplayName("CommentHelper에서 게시물 검증 실패 -> 예외 발생")
+	void save_Validation_Post_ThrowException() {
 		// given
 		Comment comment = createComment();
 		
 		given(postHelper.findPostByPostId(anyLong())).willReturn(comment.getPost());
-		willThrow(new CustomException(ErrorCode.INVALID_COMMENT_CONTENT))
-			.given(commentHelper).isValidateCommentContent(anyString());
+		willThrow(new CustomException(ErrorCode.IS_NOT_EXIST_POST))
+			.given(commentHelper).validatePostExists(anyLong());
 		
 		// when-then
 		assertThatThrownBy(() -> commentManager.save(comment))
 			.isInstanceOf(CustomException.class)
-			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_COMMENT_CONTENT);
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.IS_NOT_EXIST_POST);
 		
 		then(postHelper).should().findPostByPostId(comment.getPost().getPostId());
-		then(commentHelper).should().isValidateCommentContent(comment.getContent());
+		then(commentHelper).should().validatePostExists(comment.getPost().getPostId());
 		then(commentHelper).should(never()).save(any(Comment.class));
 	}
 	

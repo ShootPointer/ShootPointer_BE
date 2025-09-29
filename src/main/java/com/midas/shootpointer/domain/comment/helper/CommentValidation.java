@@ -2,5 +2,5 @@ package com.midas.shootpointer.domain.comment.helper;
 
 public interface CommentValidation {
 	
-	void isValidateCommentContent(String content);
+	void validatePostExists(Long postId);
 }

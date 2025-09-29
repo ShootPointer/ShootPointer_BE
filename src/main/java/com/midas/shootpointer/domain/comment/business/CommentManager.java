@@ -19,7 +19,7 @@ public class CommentManager {
 		
 		postHelper.findPostByPostId(comment.getPost().getPostId()); // 게시물이 존재하는지만 확인
 		
-		commentHelper.isValidateCommentContent(comment.getContent()); // 댓글 validation 체크
+		commentHelper.validatePostExists(comment.getPost().getPostId()); // 댓글 validation 체크
 		
 		return commentHelper.save(comment).getCommentId();
 	}
