@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.comment.helper;
 
 import com.midas.shootpointer.domain.comment.entity.Comment;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,5 +19,10 @@ public class CommentHelperImpl implements CommentHelper {
 	@Override
 	public Comment save(Comment comment) {
 		return commentUtil.save(comment);
+	}
+	
+	@Override
+	public List<Comment> findAllByPostIdOrderByCreatedAtDesc(Long postId) {
+		return commentUtil.findAllByPostIdOrderByCreatedAtDesc(postId);
 	}
 }
