@@ -28,7 +28,7 @@ public class CommentManager {
 	}
 	
 	@Transactional(readOnly = true)
-	public List<Comment> findCommentByPostId(Long postId) {
+	public List<Comment> findCommentsByPostId(Long postId) {
 		postHelper.findPostByPostId(postId);
 		
 		return commentHelper.findAllByPostIdOrderByCreatedAtDesc(postId); // 최신순으로 댓글을 모두 조회

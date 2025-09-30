@@ -16,6 +16,6 @@ public class CommentQueryServiceImpl implements CommentQueryService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Comment> getCommentsByPostId(Long postId) {
-		return commentManager.findCommentByPostId(postId);
+		return commentManager.findCommentsByPostId(postId);
 	}
 }
