@@ -6,6 +6,7 @@ import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -54,6 +55,7 @@ public class PostMapperImpl implements PostMapper{
         return PostListResponse.of(postResponses.get(size-1).getPostId(),postResponses);
     }
 
+    @Profile("es")
     @Override
     public PostResponse documentToResponse(PostDocument document) {
          return PostResponse.builder()

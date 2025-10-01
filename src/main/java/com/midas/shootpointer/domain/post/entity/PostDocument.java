@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.annotations.*;
 
 import java.time.LocalDateTime;
 
-@Profile("!dev")  // dev 프로파일이 아닐 때만 활성화
+@Profile("es")
 @Getter
 @Document(indexName = "post", createIndex = true)
 @Mapping(mappingPath = "elasticsearch/post-mapping.json")

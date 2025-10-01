@@ -90,7 +90,7 @@ class PostMapperImplTest {
 
         //then
         assertThat(postResponse.getContent()).isEqualTo(postEntity.getContent());
-        assertThat(postResponse.getHashTag()).isEqualTo(postEntity.getHashTag());
+        assertThat(postResponse.getHashTag()).isEqualTo(postEntity.getHashTag().getName());
         assertThat(postResponse.getHighlightUrl()).isEqualTo(postEntity.getHighlight().getHighlightURL());
         assertThat(postResponse.getTitle()).isEqualTo(postEntity.getTitle());
         assertThat(postResponse.getLikeCnt()).isEqualTo(postEntity.getLikeCnt());
@@ -136,7 +136,7 @@ class PostMapperImplTest {
             assertThat(response.getLikeCnt()).isEqualTo(postEntities.get(idx).getLikeCnt());
             assertThat(response.getModifiedAt()).isEqualTo(postEntities.get(idx).getModifiedAt());
             assertThat(response.getTitle()).isEqualTo(postEntities.get(idx).getTitle());
-            assertThat(response.getHashTag()).isEqualTo(postEntities.get(idx).getHashTag());
+            assertThat(response.getHashTag()).isEqualTo(postEntities.get(idx).getHashTag().getName());
             assertThat(response.getHighlightUrl()).isEqualTo(postEntities.get(idx).getHighlight().getHighlightURL());
             idx++;
         }

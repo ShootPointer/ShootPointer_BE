@@ -21,7 +21,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-@Profile("!dev")  // dev 프로파일이 아닐 때만 활성화
+@Profile("es")
 public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
     private final PostElasticSearchRepository postElasticSearchRepository;
     private final PostElasticSearchMapper mapper;

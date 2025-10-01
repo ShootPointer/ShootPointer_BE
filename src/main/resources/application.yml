@@ -1,3 +1,4 @@
+# 실제 product 환경
 server:
   port: ${SERVER_PORT:9000}
 
@@ -29,11 +30,6 @@ spring:
       max-file-size: 5000MB
       max-request-size: 5000MB
 
-  # ElasticSearch
-  elasticsearch:
-    enabled: false
-    uris: ${SPRING_ELASTICSEARCH_URIS:http://elasticsearch:9200}
-
   # 데이터소스 설정
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/shootpointer}
@@ -49,7 +45,7 @@ spring:
   # JPA 설정
   jpa:
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create-drop}
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
     database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
     properties:
       hibernate:
@@ -73,7 +69,7 @@ spring:
           max-active: 8
           max-idle: 8
           min-idle: 0
-  # kakao
+    # kakao
   security:
     oauth2:
       client:

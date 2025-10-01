@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.post.repository;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
@@ -13,17 +12,16 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
-import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.List;
 
-@Repository
-@Profile("!dev")
+
 @RequiredArgsConstructor
+@Profile("es")
 public class PostCustomElasticSearchRepositoryImpl implements PostCustomElasticSearchRepository {
     private final ElasticsearchOperations operations;
-    private final ElasticsearchClient elasticsearchClient;
+
     //제목 가중치
     private final float TITLE_WEIGHT = 30f;
     //내용 가중치

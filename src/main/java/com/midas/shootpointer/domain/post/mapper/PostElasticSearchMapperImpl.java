@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("!dev")  // dev 프로파일이 아닐 때만 활성화
+@Profile("es")  // dev 프로파일이 아닐 때만 활성화
 public class PostElasticSearchMapperImpl implements PostElasticSearchMapper {
 
     @Override
