@@ -1,14 +1,13 @@
 package com.midas.shootpointer.domain.comment.mapper;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.midas.shootpointer.domain.comment.dto.request.CommentRequestDto;
+import com.midas.shootpointer.domain.comment.dto.response.CommentResponseDto;
 import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import java.util.UUID;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -120,5 +119,63 @@ class CommentMapperImplTest {
 		assertThat(result.getContent()).isEqualTo(requestDto.getContent());
 		assertThat(result.getMember()).isEqualTo(member);
 		assertThat(result.getPost()).isNull();
+	}
+	
+	@Test
+	@DisplayName("Entity -> DTO 변환 성공")
+	void entityToDto_Success() {
+		// given
+		Member member = Member.builder()
+			.memberId(UUID.randomUUID())
+			.email("test@naver.com")
+			.username("test")
+			.build();
+		
+		PostEntity post = PostEntity.builder()
+			.postId(1L)
+			.build();
+		
+		Comment comment = Comment.builder()
+			.commentId(1L)
+			.content("테스트 댓글입니다.")
+			.member(member)
+			.post(post)
+			.build();
+		
+		// when
+		CommentResponseDto result = commentMapper.entityToDto(comment);
+		
+		// then
+		assertThat(result).isNotNull();
+		assertThat(result.getCommentId()).isEqualTo(1L);
+		assertThat(result.getContent()).isEqualTo("테스트 댓글입니다.");
+		assertThat(result.getMemberName()).isEqualTo("test");
+	}
+	
+	@Test
+	@DisplayName("Entity -> DTO 변환 실패 - Comment가 Null인 경우")
+	void entityToDto_Failed_NullComment() {
+		// given
+		Comment comment = null;
+		
+		// when-then
+		assertThatThrownBy(() -> commentMapper.entityToDto(comment))
+			.isInstanceOf(NullPointerException.class);
+	}
+	
+	@Test
+	@DisplayName("Entity -> DTO 변환 실패 - Member가 Null인 경우")
+	void entityToDto_Failed_NullMember() {
+		// given
+		Comment comment = Comment.builder()
+			.commentId(1L)
+			.content("테스트 댓글")
+			.member(null)
+			.post(PostEntity.builder().postId(1L).build())
+			.build();
+		
+		// when-then
+		assertThatThrownBy(() -> commentMapper.entityToDto(comment))
+			.isInstanceOf(NullPointerException.class);
 	}
 }

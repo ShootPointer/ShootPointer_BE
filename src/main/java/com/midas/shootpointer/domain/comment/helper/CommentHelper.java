@@ -1,5 +1,9 @@
 package com.midas.shootpointer.domain.comment.helper;
 
-public interface CommentHelper extends CommentValidation, CommentUtil {
+import com.midas.shootpointer.domain.comment.entity.Comment;
+import java.util.List;
 
+public interface CommentHelper extends CommentValidation, CommentUtil {
+	
+	List<Comment> findAllByPostIdOrderByCreatedAtDesc(Long postId);
 }

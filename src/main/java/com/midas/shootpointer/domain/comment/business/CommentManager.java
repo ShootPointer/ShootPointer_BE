@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.comment.business;
 import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.comment.helper.CommentHelper;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +17,15 @@ public class CommentManager {
 	
 	@Transactional
 	public Long save(Comment comment) {
-		
 		postHelper.findPostByPostId(comment.getPost().getPostId()); // 게시물이 존재하는지만 확인
-		
-		commentHelper.validatePostExists(comment.getPost().getPostId()); // 댓글 validation 체크
 		
 		return commentHelper.save(comment).getCommentId();
 	}
 	
+	@Transactional(readOnly = true)
+	public List<Comment> findCommentsByPostId(Long postId) {
+		postHelper.findPostByPostId(postId);
+		
+		return commentHelper.findAllByPostIdOrderByCreatedAtDesc(postId); // 최신순으로 댓글을 모두 조회
+	}
 }
