@@ -216,7 +216,7 @@ class CommentQueryControllerTest {
 		return CommentResponseDto.builder()
 			.commentId(commentId)
 			.content(content)
-			.writerName(writerName)
+			.memberName(writerName)
 			.createdAt(LocalDateTime.now())
 			.build();
 	}

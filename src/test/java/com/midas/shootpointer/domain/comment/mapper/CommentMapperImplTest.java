@@ -1,7 +1,6 @@
 package com.midas.shootpointer.domain.comment.mapper;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.midas.shootpointer.domain.comment.dto.request.CommentRequestDto;
 import com.midas.shootpointer.domain.comment.dto.response.CommentResponseDto;
@@ -9,7 +8,6 @@ import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import java.util.UUID;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -151,7 +149,7 @@ class CommentMapperImplTest {
 		assertThat(result).isNotNull();
 		assertThat(result.getCommentId()).isEqualTo(1L);
 		assertThat(result.getContent()).isEqualTo("테스트 댓글입니다.");
-		assertThat(result.getWriterName()).isEqualTo("test");
+		assertThat(result.getMemberName()).isEqualTo("test");
 	}
 	
 	@Test

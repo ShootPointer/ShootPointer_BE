@@ -19,7 +19,7 @@ public class CommentResponseDto {
 	
 	private String content;
 	
-	private String writerName;
+	private String memberName;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 	private LocalDateTime createdAt;

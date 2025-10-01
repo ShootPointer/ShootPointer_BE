@@ -25,7 +25,7 @@ public class CommentMapperImpl implements CommentMapper {
 		return CommentResponseDto.builder()
 			.commentId(comment.getCommentId())
 			.content(comment.getContent())
-			.writerName(comment.getMember().getUsername())
+			.memberName(comment.getMember().getUsername())
 			.createdAt(comment.getCreatedAt())
 			.build();
 	}
