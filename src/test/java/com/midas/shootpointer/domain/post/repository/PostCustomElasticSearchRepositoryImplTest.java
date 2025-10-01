@@ -120,11 +120,53 @@ class PostCustomElasticSearchRepositoryImplTest {
             @Test
             void searchByTitleHaveMoreThan_score(){
                 //given
+                PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                LocalDateTime now=LocalDateTime.now();
+                Long likeCnt=123L;
+                String keyword="테스트";
+
+                String title1="엘라스틱 테스트 테스트";
+                String title2="엘라스틱 테스트 테스트 테스트";
+                String title3="엘라스틱 테스트 테스트 테스트 테스트";
+                String title4="엘라스틱 테스트 테스트 테스트 테스트 테스트";
+
+                String content="내용";
+
+                elasticSearchRepository.saveAll(List.of(
+                        //내용 - keyword
+                        makePostDocument(now,title1,content,1L,likeCnt),
+                        makePostDocument(now,title2,content,2L,likeCnt),
+                        //제목 - keyword
+                        makePostDocument(now,title3,content,3L,likeCnt),
+                        makePostDocument(now,title4,content,4L,likeCnt)
+                ));
+
 
                 //when
+                SearchHits<PostDocument> result=elasticSearchRepository.search(keyword,5,sort);
 
                 //then
+                double post_1_score=0.0;
+                double post_2_score=0.0;
+                double post_3_score=0.0;
+                double post_4_score=0.0;
 
+                for (SearchHit<PostDocument> document:result){
+                    PostDocument postDocument=document.getContent();
+                    if (document.getContent().getPostId().equals(1L)) {
+                        post_1_score = document.getScore();
+                    }else if (document.getContent().getPostId().equals(2L)){
+                        post_2_score=document.getScore();
+                    }else if (document.getContent().getPostId().equals(3L)){
+                        post_3_score=document.getScore();
+                    }else{
+                        post_4_score=document.getScore();
+                    }
+                }
+
+                assertThat(post_2_score).isGreaterThan(post_1_score);
+                assertThat(post_3_score).isGreaterThan(post_2_score);
+                assertThat(post_4_score).isGreaterThan(post_3_score);
             }
         }
     }
