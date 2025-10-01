@@ -91,7 +91,7 @@ class CommentQueryControllerTest {
 			.andExpect(jsonPath("$.data.length()").value(3))
 			.andExpect(jsonPath("$.data[0].commentId").value(3L))
 			.andExpect(jsonPath("$.data[0].content").value("최신 댓글"))
-			.andExpect(jsonPath("$.data[0].writerName").value("테스트유저1"))
+			.andExpect(jsonPath("$.data[0].memberName").value("테스트유저1"))
 			.andExpect(jsonPath("$.data[1].commentId").value(2L))
 			.andExpect(jsonPath("$.data[2].commentId").value(1L))
 			.andDo(print());
@@ -182,7 +182,7 @@ class CommentQueryControllerTest {
 			.andExpect(jsonPath("$.data.length()").value(1))
 			.andExpect(jsonPath("$.data[0].commentId").value(1L))
 			.andExpect(jsonPath("$.data[0].content").value("단일 댓글입니다."))
-			.andExpect(jsonPath("$.data[0].writerName").value("test"))
+			.andExpect(jsonPath("$.data[0].memberName").value("test"))
 			.andDo(print());
 		
 		verify(commentQueryService, times(1)).getCommentsByPostId(postId);
