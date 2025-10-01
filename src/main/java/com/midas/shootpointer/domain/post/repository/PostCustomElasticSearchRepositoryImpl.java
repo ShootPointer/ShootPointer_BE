@@ -23,7 +23,7 @@ public class PostCustomElasticSearchRepositoryImpl implements PostCustomElasticS
     private final ElasticsearchOperations operations;
 
     //제목 가중치
-    private final float TITLE_WEIGHT = 30f;
+    private final float TITLE_WEIGHT = 40f;
     //내용 가중치
     private final float CONTENT_WEIGHT = 10f;
 
