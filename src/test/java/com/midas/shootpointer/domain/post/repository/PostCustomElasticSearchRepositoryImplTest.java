@@ -37,9 +37,18 @@ class PostCustomElasticSearchRepositoryImplTest {
      * 정렬 정확성 (score → likeCnt → postId 우선순위)
      * 엣지 케이스 (빈 검색어, 없는 값, null 등)
 
-     * [ 검색 자동 완성 ]
+     * [ 검색아 자동 완성 ]
      * 자동완성 정확성 (prefix 매칭과 결과 제한 확인)
      * 엣지 케이스 (빈 검색어, 없는 값, null 등)
+     *
+     * [ 게시물 검색 - 해시태그 ]
+     * 검색 정확도
+     * 정렬 정확성 (score → modifiedAt → likeCnt 우선순위)
+     * 엣지 케이스 (빈 검색어, 없는 값, null 등)
+     *
+     * [ 검색어 자동 완성 ]
+     *  자동완성 정확성 (prefix 매칭과 결과 제한 확인)
+     *  엣지 케이스 (빈 검색어, 없는 값, null 등)
      */
 
     @Autowired
@@ -627,7 +636,180 @@ class PostCustomElasticSearchRepositoryImplTest {
         }
     }
 
+    /*
+    ========================================
+               [ 게시물 검색 - 해시태그 테스트 ]
+    ========================================
+     */
 
+    @Nested
+    @DisplayName("게시물 검색 - 해시태그 테스트")
+    class searchByHashTagTest{
+        /*
+        ============= 검색 정확도 =================
+        */
+
+        @Nested
+        @DisplayName("검색 정확도 테스트")
+        class accuracyTest{
+            @AfterEach
+            void cleanUp(){
+                elasticSearchRepository.deleteAll();
+            }
+
+            @DisplayName("해시태그로 게시물을 조회합니다.")
+            @Test
+            void searchByTitleHaveMoreThan_score(){
+                //given
+                PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                LocalDateTime now=LocalDateTime.now();
+                Long likeCnt=123L;
+                String keyword1="3점슛";
+                String keyword2="2점슛";
+
+                String title="엘라스틱 테스트 테스트";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocumentWithHashTag(now,now,HashTag.TREE_POINT,likeCnt,1L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TREE_POINT,likeCnt,2L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TREE_POINT,likeCnt,3L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,4L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,5L,title)
+                ));
+
+
+                //when
+                SearchHits<PostDocument> expectedList1=elasticSearchRepository.searchByHashTag(keyword1,5,sort); //3점슛 해시태그
+                SearchHits<PostDocument> expectedList2=elasticSearchRepository.searchByHashTag(keyword2,5,sort);//2점슛 해시태그
+
+                //then
+                assertThat(expectedList1.getSearchHits()).hasSize(3);
+                assertThat(expectedList2.getSearchHits()).hasSize(2);
+
+                expectedList1.stream().forEach(pd->{
+                    assertThat(pd.getContent().getPostId()).isLessThanOrEqualTo(3L);
+                });
+                expectedList2.stream().forEach(pd->{
+                    assertThat(pd.getContent().getPostId()).isGreaterThanOrEqualTo(4L);
+                });
+            }
+        }
+
+        /*
+        ============= 정렬 정확도 =================
+        */
+        @Nested
+        @DisplayName("정렬 정확도 테스트")
+        class sortAccuracyTest{
+            @AfterEach
+            void cleanUp(){
+                elasticSearchRepository.deleteAll();
+            }
+
+            @DisplayName("hashTag가 같으면 _score 동일, likeCnt 내림차 순으로 정렬됩니다.")
+            @Test
+            void searchOrderBy_postId(){
+                //given
+                PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                LocalDateTime now=LocalDateTime.now();
+                String keyword="2점슛";
+
+                String title="엘라스틱 테스트 테스트";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,12L,1L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,312L,2L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,14124L,3L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,1L,4L,title)
+                ));
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.searchByHashTag(keyword,5,sort);
+                /*
+                 postId 기준 : 3L->2L->1L->4L 순서
+                 */
+                List<Long> expectedResult=List.of(3L,2L,1L,4L);
+                List<Long> realResult=new ArrayList<>();
+
+                for (SearchHit<PostDocument> hit:result){
+                    realResult.add(hit.getContent().getPostId());
+                }
+
+                //then
+                assertThat(realResult).hasSize(4);
+                for (int idx=0;idx<4;idx++){
+                    assertThat(expectedResult.get(idx)).isEqualTo(realResult.get(idx));
+                }
+            }
+
+            @DisplayName("hashTag가 같으면 _score 동일, likeCnt 동일, postId 내림차 순으로 정렬됩니다.")
+            @Test
+            void searchOrderBy_likeCnt(){
+                //given
+                PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                LocalDateTime now=LocalDateTime.now();
+                Long likeCnt=123L;
+                String keyword="2점슛";
+                String title="엘라스틱 테스트 테스트";
+
+                elasticSearchRepository.saveAll(List.of(
+                      makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,23L,title),
+                      makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,123123123123123L,title),
+                      makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,13L,title)
+                ));
+                List<Long> expectedList=List.of(123123123123123L,23L,13L);
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.searchByHashTag(keyword,5,sort);
+                List<Long> postIdList=new ArrayList<>();
+
+                for (SearchHit<PostDocument> document:result){
+                    postIdList.add(document.getContent().getPostId());
+                }
+
+                //then
+                //예상 순서 (postId) : 2L -> 1L -> 3L
+                assertThat(postIdList).hasSize(3);
+                for (int idx=0;idx<3;idx++){
+                    assertThat(postIdList.get(idx)).isEqualTo(expectedList.get(idx));
+                }
+            }
+
+
+            @DisplayName("likeCnt 값이 postId 값보다 정렬 우선순위가 높은지 확인합니다.")
+            @Test
+            void searchOrdersByLikeCntBeforePostId(){
+                //given
+                PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                LocalDateTime now=LocalDateTime.now();
+
+                String keyword="2점슛";
+                String title="엘라스틱";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,1L,4L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,2L,3L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,3L,2L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,4L,1L,title)
+                ));
+                //예상 순서 : 1L -> 2L -> 3L -> 4L
+                List<Long> expectedList=List.of(1L,2L,3L,4L);
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.searchByHashTag(keyword,5,sort);
+
+                //then
+                int idx=0;
+                for (SearchHit<PostDocument> document:result){
+                    assertThat(document.getContent().getPostId()).isEqualTo(expectedList.get(idx));
+                    idx++;
+                }
+
+
+            }
+        }
+
+    }
     /**
      * Mock PostDocument
      */
@@ -646,6 +828,26 @@ class PostCustomElasticSearchRepositoryImplTest {
                 .likeCnt(likeCnt)
                 .memberName("test")
                 .hashTag(HashTag.TREE_POINT.getName())
+                .highlightUrl("url")
+                .build();
+    }
+
+    private PostDocument makePostDocumentWithHashTag(LocalDateTime modifiedTime,
+                                                     LocalDateTime createdTime,
+                                                     HashTag tag,
+                                                     Long likeCnt,
+                                                     Long postId,
+                                                     String title
+    ){
+        return PostDocument.builder()
+                .title(title)
+                .content("content")
+                .postId(postId)
+                .modifiedAt(modifiedTime)
+                .createdAt(createdTime)
+                .likeCnt(likeCnt)
+                .memberName("test")
+                .hashTag(tag.getName())
                 .highlightUrl("url")
                 .build();
     }

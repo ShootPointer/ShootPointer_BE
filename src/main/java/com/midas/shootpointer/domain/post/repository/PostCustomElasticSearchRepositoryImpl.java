@@ -81,7 +81,7 @@ public class PostCustomElasticSearchRepositoryImpl implements PostCustomElasticS
      * @return : 조건에 맞는 해시태그로 게시물 조회
      *           [ 정렬 기준 ]
      *           1. _score 내림차 순
-     *           2. 최신순
+     *           2. postId 내림차순
      *           3. likeCnt 내림차 순
      */
     @Override
@@ -93,8 +93,8 @@ public class PostCustomElasticSearchRepositoryImpl implements PostCustomElasticS
                 .withQuery(boolQuery)
                 // sort: _score desc, modifiedAt desc, likeCnt desc
                 .withSort(SortOptions.of(s -> s.score(sc -> sc.order(SortOrder.Desc))))
-                .withSort(SortOptions.of(s -> s.field(f -> f.field("modifiedAt").order(SortOrder.Desc))))
                 .withSort(SortOptions.of(s -> s.field(f -> f.field("likeCnt").order(SortOrder.Desc))))
+                .withSort(SortOptions.of(s -> s.field(f -> f.field("postId").order(SortOrder.Desc))))
                 .withMaxResults(size);
 
         if (sort != null) {
