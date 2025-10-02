@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostElasticSearchHelperImpl implements PostElasticSearchHelper{
     private final PostElasticSearchUtil postElasticSearchUtil;
+    private final PostElasticSearchValidator postElasticSearchValidator;
 
     @Override
     public Long createPostDocument(PostEntity post) {
@@ -30,4 +31,18 @@ public class PostElasticSearchHelperImpl implements PostElasticSearchHelper{
         return postElasticSearchUtil.suggestCompleteSearch(keyword);
     }
 
+    @Override
+    public List<String> suggestCompleteSearchWithHashTag(String hashTag) {
+        return List.of();
+    }
+
+    @Override
+    public String refinedHashTag(String hashTag) {
+        return "";
+    }
+
+    @Override
+    public boolean isHashTagSearch(String keyword) {
+        return postElasticSearchValidator.isHashTagSearch(keyword);
+    }
 }

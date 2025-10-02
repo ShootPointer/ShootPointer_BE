@@ -10,4 +10,7 @@ public interface PostElasticSearchUtil {
     Long createPostDocument(PostEntity post);
     List<PostSearchHit> getPostByTitleOrContentByElasticSearch(String search, int size, PostSort sort);
     List<String> suggestCompleteSearch(String keyword);
+    List<PostSearchHit> getPostByHashTagByElasticSearch(String search, int size, PostSort sort);
+    List<String> suggestCompleteSearchWithHashTag(String hashTag);
+    String refinedHashTag(String hashTag);
 }
