@@ -32,13 +32,18 @@ public class PostElasticSearchHelperImpl implements PostElasticSearchHelper{
     }
 
     @Override
+    public List<PostSearchHit> getPostByHashTagByElasticSearch(String search, int size, PostSort sort) {
+        return postElasticSearchUtil.getPostByHashTagByElasticSearch(search,size,sort);
+    }
+
+    @Override
     public List<String> suggestCompleteSearchWithHashTag(String hashTag) {
-        return List.of();
+        return postElasticSearchUtil.suggestCompleteSearchWithHashTag(hashTag);
     }
 
     @Override
     public String refinedHashTag(String hashTag) {
-        return "";
+        return postElasticSearchUtil.refinedHashTag(hashTag);
     }
 
     @Override

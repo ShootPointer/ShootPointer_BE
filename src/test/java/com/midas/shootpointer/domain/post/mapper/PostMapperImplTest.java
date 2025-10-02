@@ -143,6 +143,30 @@ class PostMapperImplTest {
     }
 
     @Test
+    @DisplayName("리스트 형태의 게시물 Entity를 PostListResponseDto로 변환 시 비어있는 값이면 빈 리스트로 반환합니다. ")
+    void entityToListDto_FAILED(){
+        /*
+         * given
+         */
+        Member member=memberRepository.save(makeMockMember());
+        List<PostEntity> postEntities=new ArrayList<>();
+
+        /*
+         * when
+         */
+        PostListResponse postResponse=postMapper.entityToDto(postEntities);
+
+        /*
+         * then
+         */
+        assertThat(postResponse.getLastPostId()).isEqualTo(922337203685477580L);
+        assertThat(postResponse.getPostList()).hasSize(0);
+        assertThat(postResponse.getPostList()).isEmpty();
+
+    }
+
+
+    @Test
     @DisplayName("PostDocument를 PostResponse 형태로 변환합니다.")
     void documentToResponse(){
         //given

@@ -9,6 +9,7 @@ import com.midas.shootpointer.domain.post.entity.PostEntity;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -42,7 +43,7 @@ public class PostMapperImpl implements PostMapper{
     public PostListResponse entityToDto(List<PostEntity> postEntityList) {
         //값이 없는 경우
         if (postEntityList.isEmpty()){
-            return PostListResponse.of(922337203685477580L,List.of());
+            return PostListResponse.of(922337203685477580L, Collections.emptyList());
         }
 
         //게시물 응답 Dto 리스트 변환
