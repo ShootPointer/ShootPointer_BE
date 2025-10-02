@@ -408,20 +408,110 @@ class PostCustomElasticSearchRepositoryImplTest {
         /*
         ============= 자동 완성 정확도 =================
         */
+
+         /*
+          ============= 엣지 케이스 =================
+        */
+        @Nested
+        @DisplayName("게시물 엣지 케이스 테스트")
+        class edgeCaseTest{
+            @AfterEach
+            void cleanUp(){
+                elasticSearchRepository.deleteAll();
+            }
+
+            @DisplayName("검색어와 일치하는 게시물이 존재하지 않으면 빈 리스트를 반환합니다.")
+            @Test
+            void ifNotExistPostReturnToEmptyList(){
+                PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                LocalDateTime now=LocalDateTime.now();
+                Long likeCnt=123L;
+                String keyword="알 수 없음";
+
+                String title1="엘라스틱 테스트 테스트";
+                String title2="엘라스틱 테스트 테스트 테스트";
+                String title3="엘라스틱 테스트 테스트 테스트 테스트";
+                String title4="엘라스틱 테스트 테스트 테스트 테스트 테스트";
+
+                String content="내용";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocument(now,title1,content,1L,likeCnt),
+                        makePostDocument(now,title2,content,2L,likeCnt),
+                        makePostDocument(now,title3,content,3L,likeCnt),
+                        makePostDocument(now,title4,content,4L,likeCnt)
+                ));
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.search(keyword,5,sort);
+
+                //then
+                assertThat(result).isEmpty();
+            }
+
+             @DisplayName("빈 문자열 검색에 대해 빈 리스트를 반환합니다.")
+             @Test
+             void ifEmptyKeywordReturnToEmptyList(){
+                 PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                 LocalDateTime now=LocalDateTime.now();
+                 Long likeCnt=123L;
+                 String keyword1="";
+                 String keyword2=" ";
+
+                 String title1="엘라스틱 테스트 테스트";
+                 String title2="엘라스틱 테스트 테스트 테스트";
+                 String title3="엘라스틱 테스트 테스트 테스트 테스트";
+                 String title4="엘라스틱 테스트 테스트 테스트 테스트 테스트";
+
+                 String content="내용";
+
+                 elasticSearchRepository.saveAll(List.of(
+                         makePostDocument(now,title1,content,1L,likeCnt),
+                         makePostDocument(now,title2,content,2L,likeCnt),
+                         makePostDocument(now,title3,content,3L,likeCnt),
+                         makePostDocument(now,title4,content,4L,likeCnt)
+                 ));
+
+                 //when
+                 SearchHits<PostDocument> result1=elasticSearchRepository.search(keyword1,5,sort);
+                 SearchHits<PostDocument> result2=elasticSearchRepository.search(keyword2,5,sort);
+
+                 //then
+                 assertThat(result1).isEmpty();
+                 assertThat(result2).isEmpty();
+             }
+
+             @DisplayName("size의 개수가 0일 시 빈 리스트를 반환합니다.")
+             @Test
+             void ifSizeIsZeroReturnToEmptyList(){
+                 PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                 LocalDateTime now=LocalDateTime.now();
+                 Long likeCnt=123L;
+                 String keyword="테스트";
+
+                 String title1="엘라스틱 테스트 테스트";
+                 String title2="엘라스틱 테스트 테스트 테스트";
+                 String title3="엘라스틱 테스트 테스트 테스트 테스트";
+                 String title4="엘라스틱 테스트 테스트 테스트 테스트 테스트";
+
+                 String content="내용";
+
+                 elasticSearchRepository.saveAll(List.of(
+                         makePostDocument(now,title1,content,1L,likeCnt),
+                         makePostDocument(now,title2,content,2L,likeCnt),
+                         makePostDocument(now,title3,content,3L,likeCnt),
+                         makePostDocument(now,title4,content,4L,likeCnt)
+                 ));
+
+                 //when
+                 SearchHits<PostDocument> result=elasticSearchRepository.search(keyword,0,sort);
+
+                 //then
+                 assertThat(result).isEmpty();
+             }
+
+         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Mock PostDocument
