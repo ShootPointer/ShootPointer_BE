@@ -917,7 +917,7 @@ class PostCustomElasticSearchRepositoryImplTest {
     class suggestCompleteByHashTag{
 
         @Nested
-        @DisplayName("검색어 자동 완성 정확성 테스트")
+        @DisplayName("검색어 자동 완성 - 해시태그 정확성 테스트")
         class accuracyTest{
             @AfterEach
             void cleanUp(){
@@ -959,6 +959,42 @@ class PostCustomElasticSearchRepositoryImplTest {
 
         }
 
+        @Nested
+        @DisplayName("검색어 자동 완성 - 해시태그 엣지 케이스 테스트")
+        class edgeTest{
+
+            private static final String[] TITLES = {
+                    "고양이", "강아지", "여행", "프로그래밍", "커피", "음악", "스포츠", "게임", "책", "영화",
+                    "바다", "산", "도시", "학교", "도서관", "캠핑", "사진", "노래", "비밀", "추억",
+                    "도전", "성공", "실패", "열정", "휴식", "식사", "저녁", "아침", "점심", "계획"
+            };
+
+            @AfterEach
+            void cleanUp(){
+                elasticSearchRepository.deleteAll();
+            }
+
+            @DisplayName("자동 완성 검색어-해시태그의 개수를 최대 5개까지 반환합니다.")
+            @Test
+            void ifInputEmptyKeywordReturnToEmptyList() throws IOException {
+                LocalDateTime now=LocalDateTime.now();
+                Long likeCnt=123L;
+                String keyword="2점슛";
+                String title="테스";
+
+                for (int i=0;i<10;i++){
+                    elasticSearchRepository.save(
+                            makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt, (long) (i + 1),title)
+                    );
+                }
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.suggestCompleteByHashTag(keyword);
+
+                //then
+                assertThat(result.getSearchHits()).hasSize(5);
+            }
+        }
     }
     /**
      * Mock PostDocument
