@@ -15,6 +15,7 @@ import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,15 +31,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PostCustomElasticSearchRepositoryImplTest {
     /**
      * ============ Test scenario ================
-
+     * [ 게시물 검색 ]
      * 검색 정확도 (제목/내용 가중치)
-
      * 정렬 정확성 (score → likeCnt → postId 우선순위)
-
-     * 자동완성 정확성 (prefix 매칭과 결과 제한 확인)
-
      * 엣지 케이스 (빈 검색어, 없는 값, null 등)
 
+     * [ 검색 자동 완성 ]
+     * 자동완성 정확성 (prefix 매칭과 결과 제한 확인)
+     * 엣지 케이스 (빈 검색어, 없는 값, null 등)
      */
 
     @Autowired
@@ -48,9 +48,8 @@ class PostCustomElasticSearchRepositoryImplTest {
     ========================================
                [ 게시물 검색 테스트 ]
     ========================================
-
-
      */
+
     @Nested
     @DisplayName("게시물 검색 테스트")
     class searchTest{
@@ -404,13 +403,8 @@ class PostCustomElasticSearchRepositoryImplTest {
 
         }
 
-
-        /*
-        ============= 자동 완성 정확도 =================
-        */
-
          /*
-          ============= 엣지 케이스 =================
+        =============== 엣지 케이스 ===================
         */
         @Nested
         @DisplayName("게시물 엣지 케이스 테스트")
@@ -512,6 +506,86 @@ class PostCustomElasticSearchRepositoryImplTest {
 
          }
     }
+
+    /*
+    ========================================
+             [ 검색어 자동완성 테스트 ]
+    ========================================
+     */
+    @Nested
+    @DisplayName("검색어 자동 완성 테스트")
+    class suggestComplete{
+
+        @Nested
+        @DisplayName("검색어 자동 완성 정확성 테스트")
+        class accuracyTest{
+            @AfterEach
+            void cleanUp(){
+                elasticSearchRepository.deleteAll();
+            }
+
+            @DisplayName("검색어(제목 기준) prefix로 제목이 시작되는 경우 자동완성 결과에 포함합니다.")
+            @Test
+            void suggestComplete() throws IOException {
+                LocalDateTime now=LocalDateTime.now();
+                Long likeCnt=123L;
+                String keyword="테스";
+
+                String title1="엘라스틱 테스";//포함 X
+                String title2="이거는 테스트";//포함 X
+                String title3="테스 테스트 테스트 테스트";
+                String title4="테스트 테스트 테스트 테스트";
+
+                String content="내용";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocument(now,title1,content,1L,likeCnt),
+                        makePostDocument(now,title2,content,2L,likeCnt),
+                        makePostDocument(now,title3,content,3L,likeCnt),
+                        makePostDocument(now,title4,content,4L,likeCnt)
+                ));
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.suggestCompleteByKeyword(keyword);
+
+                //then
+                assertThat(result.getSearchHits().size()).isEqualTo(2);
+                result.stream().forEach(pd->{
+                    assertThat(pd.getContent().getPostId()).isGreaterThanOrEqualTo(3L);
+                });
+            }
+
+            @DisplayName("검색어 prefix로 내용에 대한 키워드는 포함되지 않습니다.")
+            @Test
+            void suggestCompleteNotIncludeContent() throws IOException {
+                LocalDateTime now=LocalDateTime.now();
+                Long likeCnt=123L;
+                String keyword="내용";
+
+                String title1="엘라스틱 테스";
+                String title2="이거는 테스트";
+                String title3="테스 테스트 테스트 테스트";
+                String title4="테스트 테스트 테스트 테스트";
+
+                String content="내용";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocument(now,title1,content,1L,likeCnt),
+                        makePostDocument(now,title2,content,2L,likeCnt),
+                        makePostDocument(now,title3,content,3L,likeCnt),
+                        makePostDocument(now,title4,content,4L,likeCnt)
+                ));
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.suggestCompleteByKeyword(keyword);
+
+                //then
+                assertThat(result.getSearchHits().size()).isEqualTo(0);
+            }
+
+        }
+    }
+
 
     /**
      * Mock PostDocument

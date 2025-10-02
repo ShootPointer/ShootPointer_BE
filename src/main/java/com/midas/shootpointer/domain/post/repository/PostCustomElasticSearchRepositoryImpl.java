@@ -64,9 +64,9 @@ public class PostCustomElasticSearchRepositoryImpl implements PostCustomElasticS
     @Override
     public SearchHits<PostDocument> suggestCompleteByKeyword(String keyword) throws IOException {
         NativeQuery nativeQuery=NativeQuery.builder()
-                .withQuery(q->q.matchPhrasePrefix(p->p
-                        .field("title")
-                        .query(keyword)
+                .withQuery(q->q.prefix(p->p
+                        .field("title.keyword")
+                        .value(keyword)
                 ))
                 .withMaxResults(5)
                 .build();
