@@ -112,8 +112,8 @@ public class PostCustomElasticSearchRepositoryImpl implements PostCustomElasticS
      */
     @Override
     public SearchHits<PostDocument> suggestCompleteByHashTag(String keyword) {
-        NativeQuery nativeQuery=NativeQuery.builder()
-                .withQuery(q->q.prefix(p->p
+        NativeQuery nativeQuery = NativeQuery.builder()
+                .withQuery(q -> q.prefix(p -> p
                         .field("hashTag")
                         .value(keyword)
                 ))

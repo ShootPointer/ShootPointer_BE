@@ -810,7 +810,7 @@ class PostCustomElasticSearchRepositoryImplTest {
         }
 
         /*
-       =============== 엣지 케이스 ===================
+        =============== 엣지 케이스 ===================
        */
         @Nested
         @DisplayName("게시물 엣지 케이스 테스트")
@@ -902,6 +902,59 @@ class PostCustomElasticSearchRepositoryImplTest {
 
                 //then
                 assertThat(result).isEmpty();
+            }
+
+        }
+    }
+
+    /*
+    ========================================
+          [ 검색어 자동완성 - 해시태그 테스트 ]
+    ========================================
+     */
+    @Nested
+    @DisplayName("검색어 자동 완성 - 해시태그 테스트")
+    class suggestCompleteByHashTag{
+
+        @Nested
+        @DisplayName("검색어 자동 완성 정확성 테스트")
+        class accuracyTest{
+            @AfterEach
+            void cleanUp(){
+                elasticSearchRepository.deleteAll();
+            }
+
+            @DisplayName("검색어(해시태그 기준) prefix로 해시태그로 시작되는 경우 자동완성 결과에 포함합니다.")
+            @Test
+            void suggestComplete() throws IOException {
+                LocalDateTime now=LocalDateTime.now();
+                Long likeCnt=123L;
+                String title="엘라스틱";
+
+                String keyword1="2";
+                String keyword2="2점";
+                String keyword3="2점슛";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocumentWithHashTag(now,now,HashTag.TREE_POINT,likeCnt,1L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TREE_POINT,likeCnt,2L,title),
+
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,3L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,4L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,5L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,6L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,7L,title)
+                ));
+
+                //when
+                SearchHits<PostDocument> result1=elasticSearchRepository.suggestCompleteByHashTag(keyword1);
+                SearchHits<PostDocument> result2=elasticSearchRepository.suggestCompleteByHashTag(keyword2);
+                SearchHits<PostDocument> result3=elasticSearchRepository.suggestCompleteByHashTag(keyword3);
+
+                //then
+                assertThat(result1.getSearchHits()).hasSize(5);
+                assertThat(result2.getSearchHits()).hasSize(5);
+                assertThat(result3.getSearchHits()).hasSize(5);
             }
 
         }
