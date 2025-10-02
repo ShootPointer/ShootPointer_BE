@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -583,6 +584,46 @@ class PostCustomElasticSearchRepositoryImplTest {
                 assertThat(result.getSearchHits().size()).isEqualTo(0);
             }
 
+        }
+
+        @Nested
+        @DisplayName("검색어 자동 완성 엣지 케이스 테스트")
+        class edgeTest{
+
+            private static final String[] TITLES = {
+                    "고양이", "강아지", "여행", "프로그래밍", "커피", "음악", "스포츠", "게임", "책", "영화",
+                    "바다", "산", "도시", "학교", "도서관", "캠핑", "사진", "노래", "비밀", "추억",
+                    "도전", "성공", "실패", "열정", "휴식", "식사", "저녁", "아침", "점심", "계획"
+            };
+
+            @AfterEach
+            void cleanUp(){
+                elasticSearchRepository.deleteAll();
+            }
+
+            @DisplayName("자동 완성 검색어의 개수를 최대 5개까지 반환합니다.")
+            @Test
+            void ifInputEmptyKeywordReturnToEmptyList() throws IOException {
+                LocalDateTime now=LocalDateTime.now();
+                Long likeCnt=123L;
+                String keyword="테스";
+
+                String title="테스";
+                String content="내용";
+                Random random=new Random();
+
+                for (int i=0;i<10;i++){
+                    elasticSearchRepository.save(
+                            makePostDocument(now,title+TITLES[random.nextInt(30)],content,Long.parseLong(String.valueOf(i+1)),likeCnt)
+                    );
+                }
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.suggestCompleteByKeyword(keyword);
+
+                //then
+                assertThat(result.getSearchHits()).hasSize(5);
+            }
         }
     }
 
