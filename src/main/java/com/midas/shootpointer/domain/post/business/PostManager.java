@@ -165,12 +165,22 @@ public class PostManager {
         }
 
         /**
-         * 1. 게시물 정렬 조건 + 검색어 게시물 검색 , _score 조회
+         * 1. size 및 검색값 유효성 검증.
+         */
+        postHelper.isValidSize(size);
+        if (!postHelper.isValidInput(search)){
+            //빈 값인 경우 -> 빈 리스트 반환.
+            return PostListResponse.withSort(sort.lastPostId(), Collections.emptyList(),sort);
+        }
+
+
+        /**
+         * 2. 게시물 정렬 조건 + 검색어 게시물 검색 , _score 조회
          */
         List<PostSearchHit> responses=postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search,size,sort);
 
         /**
-         * 2. PostListResponse 형태로 반환 - 마지막 게시물의 정렬 값 보내기.
+         * 3. PostListResponse 형태로 반환 - 마지막 게시물의 정렬 값 보내기.
          */
 
         //결과값이 없는 경우 - 이전에 보낸 정렬값(기본값) 그대로 전송
@@ -188,7 +198,7 @@ public class PostManager {
         );
 
         /**
-         * 3. List<PostDocument> -> List<PostResponse> 형태로 변환
+         * 4. List<PostDocument> -> List<PostResponse> 형태로 변환
          */
         List<PostResponse> postResponses=responses.stream()
                 .map(hit->postMapper.documentToResponse(hit.doc()))
@@ -208,8 +218,17 @@ public class PostManager {
             //일반 검색
             return Collections.emptyList();
         }
+
         /**
-         * 1. 자동 검색어 목록 조회
+         * 1.검색값 유효성 검증.
+         */
+        if (!postHelper.isValidInput(keyword)){
+            //빈 값인 경우 -> 빈 리스트 반환.
+            return Collections.emptyList();
+        }
+
+        /**
+         * 2. 자동 검색어 목록 조회
          */
         List<String> searchAutoCompleteTitles=postElasticSearchHelper.suggestCompleteSearch(keyword);
 

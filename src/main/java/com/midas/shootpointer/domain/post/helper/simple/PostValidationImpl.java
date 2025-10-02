@@ -14,6 +14,8 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class PostValidationImpl implements PostValidation{
+    private static final int MAX_SIZE=500;
+
     private final HighlightQueryRepository highlightQueryRepository;
 
     /*==========================
@@ -65,6 +67,41 @@ public class PostValidationImpl implements PostValidation{
         if(!postEntity.getMember().getMemberId().equals(member.getMemberId())){
             throw new CustomException(ErrorCode.IS_NOT_MEMBERS_POST);
         }
+    }
+
+    /*==========================
+    *
+    *PostValidationImpl
+    *
+    * @parm size : 조회 시, 개수 제한
+    * @return MAX_SIZE 초과 OR size가 음수 값 입력 시 CustomException 발생
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 10. 2.
+    *
+    ==========================**/
+
+    @Override
+    public void isValidSize(int size) {
+        if (size<0 || size>MAX_SIZE){
+            throw new CustomException(ErrorCode.IS_NOT_VALID_SIZE);
+        }
+    }
+
+    /*==========================
+    *
+    *PostValidationImpl
+    *
+    * @parm input : 입력값
+    * @return 입력값이 빈 문자열 ->
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 10. 2.
+    *
+    ==========================**/
+    @Override
+    public boolean isValidInput(String input) {
+        return !input.isBlank();
     }
 
 }
