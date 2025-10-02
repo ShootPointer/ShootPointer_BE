@@ -16,6 +16,7 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -153,11 +154,11 @@ class PostCustomElasticSearchRepositoryImplTest {
 
                 for (SearchHit<PostDocument> document:result){
                     PostDocument postDocument=document.getContent();
-                    if (document.getContent().getPostId().equals(1L)) {
+                    if (postDocument.getPostId().equals(1L)) {
                         post_1_score = document.getScore();
-                    }else if (document.getContent().getPostId().equals(2L)){
+                    }else if (postDocument.getPostId().equals(2L)){
                         post_2_score=document.getScore();
-                    }else if (document.getContent().getPostId().equals(3L)){
+                    }else if (postDocument.getPostId().equals(3L)){
                         post_3_score=document.getScore();
                     }else{
                         post_4_score=document.getScore();
@@ -169,26 +170,256 @@ class PostCustomElasticSearchRepositoryImplTest {
                 assertThat(post_4_score).isGreaterThan(post_3_score);
             }
         }
+
+        /*
+        ============= 정렬 정확도 =================
+        */
+         @Nested
+         @DisplayName("정렬 정확도 테스트")
+         class sortAccuracyTest{
+            @AfterEach
+            void cleanUp(){
+                elasticSearchRepository.deleteAll();
+            }
+
+            @DisplayName("_score 값에 따라 내림차순으로 정렬됩니다.")
+            @Test
+            void searchOrderBy_score(){
+                //given
+                PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                LocalDateTime now=LocalDateTime.now();
+                Long likeCnt=123L;
+                String keyword="테스트";
+
+                String title1="엘라스틱 테스트 테스트";
+                String title2="엘라스틱 테스트 테스트 테스트";
+                String title3="엘라스틱 테스트 테스트 테스트 테스트";
+                String title4="엘라스틱 테스트 테스트 테스트 테스트 테스트";
+
+                String content="내용";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocument(now,title1,content,1L,likeCnt),
+                        makePostDocument(now,title2,content,2L,likeCnt),
+                        makePostDocument(now,title3,content,3L,likeCnt),
+                        makePostDocument(now,title4,content,4L,likeCnt)
+                ));
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.search(keyword,5,sort);
+
+                //then
+                /*
+                 _score DESC : 4L->3L->2L->1L 순서
+                 */
+                Long initPostId=4L;
+                for (SearchHit<PostDocument> hit:result){
+                    assertThat(hit.getContent().getPostId()).isEqualTo(initPostId);
+                    initPostId--;
+                }
+
+            }
+
+            @DisplayName("좋아요 개수(likeCnt) 값에 따라 내림차순 정렬됩니다.")
+            @Test
+            void searchOrderBy_likeCnt(){
+                //given
+                PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                LocalDateTime now=LocalDateTime.now();
+                Long likeCnt=123L;
+                String keyword="테스트";
+
+                String title="엘라스틱 테스트 테스트";
+
+                String content="내용";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocument(now,title,content,1L,likeCnt+232L),
+                        makePostDocument(now,title,content,2L,likeCnt+112L),
+                        makePostDocument(now,title,content,3L,likeCnt+12L),
+                        makePostDocument(now,title,content,4L,likeCnt+3333L)
+                ));
+                List<Long> expectedList=List.of(4L,1L,2L,3L);
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.search(keyword,5,sort);
+                List<Long> postIdList=new ArrayList<>();
+
+                for (SearchHit<PostDocument> document:result){
+                    postIdList.add(document.getContent().getPostId());
+                }
+
+                //then
+                //예상 순서 (postId) : 4L -> 1L -> 2L -> 3L
+                for (int idx=0;idx<4;idx++){
+                    assertThat(postIdList.get(idx)).isEqualTo(expectedList.get(idx));
+                }
+            }
+
+            @DisplayName("postId 값에 따라 내림차순 정렬됩니다.")
+            @Test
+            void searchOrderByPostId(){
+                //given
+                PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                LocalDateTime now=LocalDateTime.now();
+                Long likeCnt=123L;
+                String keyword="테스트";
+
+                String title="엘라스틱 테스트 테스트";
+
+                String content="내용";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocument(now,title,content,11L,likeCnt),
+                        makePostDocument(now,title,content,2234L,likeCnt),
+                        makePostDocument(now,title,content,123L,likeCnt),
+                        makePostDocument(now,title,content,43L,likeCnt)
+                ));
+                //예상 순서 : 2234L->123L->43L->11L
+                List<Long> expectedList=List.of(2234L,123L,43L,11L);
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.search(keyword,5,sort);
+
+                //then
+                int idx=0;
+                for (SearchHit<PostDocument> document:result){
+                    assertThat(document.getContent().getPostId()).isEqualTo(expectedList.get(idx));
+                    idx++;
+                }
+            }
+
+            @DisplayName("_score 값이 좋아요 개수(likeCnt) 값보다 정렬 우선순위가 높은지 확인합니다.")
+            @Test
+            void searchOrdersByScoreBeforeLikeCount(){
+                //given
+                PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                LocalDateTime now=LocalDateTime.now();
+
+                Long likeCnt1=123L;
+                Long likeCnt2=3824792831123123423L;
+                Long likeCnt3=123219310923123L;
+
+                String keyword="테스트";
+
+                String title1="엘라스틱 테스트 테스트 테스트 테스트 테스트 테스트 테스트 테스트 테스트 테스트";
+                String title2="엘라스틱 테스트 테스트 테스트 테스트";
+                String title3="엘라스틱 테스트";
+
+                String content="내용";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocument(now,title1,content,1L,likeCnt1),
+                        makePostDocument(now,title2,content,2L,likeCnt2),
+                        makePostDocument(now,title3,content,3L,likeCnt3)
+                ));
+                //예상 순서 : 1L -> 2L -> 3L
+                List<Long> expectedList=List.of(1L,2L,3L);
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.search(keyword,5,sort);
+
+                //then
+                int idx=0;
+                for (SearchHit<PostDocument> document:result){
+                    assertThat(document.getContent().getPostId()).isEqualTo(expectedList.get(idx));
+                    idx++;
+                }
+
+            }
+
+            @DisplayName("_score 값이 postId 값보다 정렬 우선순위가 높은지 확인합니다.")
+            @Test
+            void searchOrdersByScoreBeforePostId(){
+                //given
+                PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                LocalDateTime now=LocalDateTime.now();
+
+                Long likeCnt=123L;
+
+                String keyword="테스트";
+
+                String title1="엘라스틱 테스트 테스트 테스트 테스트 테스트 테스트 테스트 테스트 테스트 테스트";
+                String title2="엘라스틱 테스트 테스트 테스트 테스트";
+                String title3="엘라스틱 테스트";
+
+                String content="내용";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocument(now,title1,content,1L,likeCnt),
+                        makePostDocument(now,title2,content,212124L,likeCnt),
+                        makePostDocument(now,title3,content,999999999999L,likeCnt)
+                ));
+                //예상 순서 : 1L -> 2L -> 3L
+                List<Long> expectedList=List.of(1L,212124L,999999999999L);
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.search(keyword,5,sort);
+
+                //then
+                int idx=0;
+                for (SearchHit<PostDocument> document:result){
+                    assertThat(document.getContent().getPostId()).isEqualTo(expectedList.get(idx));
+                    idx++;
+                }
+
+
+            }
+
+            @DisplayName("likeCnt 값이 postId 값보다 정렬 우선순위가 높은지 확인합니다.")
+            @Test
+            void searchOrdersByLikeCntBeforePostId(){
+                //given
+                PostSort sort=new PostSort(922337203685477580L,922337203685477580L,922337203685477580L);
+                LocalDateTime now=LocalDateTime.now();
+
+                Long likeCnt1=123L;
+                Long likeCnt2=3824792831123123423L;
+                Long likeCnt3=123219310923123L;
+
+                String keyword="테스트";
+
+                String title="엘라스틱 테스트 테스트 테스트 테스트 테스트 테스트 테스트 테스트 테스트 테스트";
+                String content="내용";
+
+                elasticSearchRepository.saveAll(List.of(
+                        makePostDocument(now,title,content,1L,likeCnt1),
+                        makePostDocument(now,title,content,2L,likeCnt2),
+                        makePostDocument(now,title,content,3L,likeCnt3)
+                ));
+                //예상 순서 : 2L -> 3L -> 1L
+                List<Long> expectedList=List.of(2L,3L,1L);
+
+                //when
+                SearchHits<PostDocument> result=elasticSearchRepository.search(keyword,5,sort);
+
+                //then
+                int idx=0;
+                for (SearchHit<PostDocument> document:result){
+                    assertThat(document.getContent().getPostId()).isEqualTo(expectedList.get(idx));
+                    idx++;
+                }
+
+            }
+
+        }
+
+
+        /*
+        ============= 자동 완성 정확도 =================
+        */
     }
 
 
 
-    /*
-    ============= 정렬 정확도 =================
-     */
 
 
 
 
-    /*
-    ============= 자동 완성 정확도 =================
-     */
 
 
 
-    /*
-    ============= 엣지 케이스 =================
-     */
+
 
 
 
