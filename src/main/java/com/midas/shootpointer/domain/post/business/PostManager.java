@@ -207,7 +207,6 @@ public class PostManager {
         return PostListResponse.withSort(lastResponse.getPostId(),postResponses,newSort);
 
     }
-    //TODO: keyword-> null & size 음수 및 매우 큰 값 예외 핸들링 필요
 
     @Transactional(readOnly = true)
     public List<SearchAutoCompleteResponse> searchAutoCompleteResponse(String keyword){

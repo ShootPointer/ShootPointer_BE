@@ -75,6 +75,55 @@ public class PostCustomElasticSearchRepositoryImpl implements PostCustomElasticS
     }
 
     /**
+     * @param search : 검색어 - 해시태그로 검색시
+     * @param size : 요청 사이즈
+     * @param sort : 정렬 기준
+     * @return : 조건에 맞는 해시태그로 게시물 조회
+     *           [ 정렬 기준 ]
+     *           1. _score 내림차 순
+     *           2. 최신순
+     *           3. likeCnt 내림차 순
+     */
+    @Override
+    public SearchHits<PostDocument> searchByHashTag(String search, int size, PostSort sort) {
+        Criteria criteria=Criteria.where("hashTag").matches(search);
+        CriteriaQuery boolQuery=new CriteriaQuery(criteria);
+
+        NativeQueryBuilder builder = NativeQuery.builder()
+                .withQuery(boolQuery)
+                // sort: _score desc, modifiedAt desc, likeCnt desc
+                .withSort(SortOptions.of(s -> s.score(sc -> sc.order(SortOrder.Desc))))
+                .withSort(SortOptions.of(s -> s.field(f -> f.field("modifiedAt").order(SortOrder.Desc))))
+                .withSort(SortOptions.of(s -> s.field(f -> f.field("likeCnt").order(SortOrder.Desc))))
+                .withMaxResults(size);
+
+        if (sort != null) {
+            builder.withSearchAfter(sortToList(sort));
+        }
+
+        NativeQuery query = builder.build();
+        return operations.search(query, PostDocument.class);
+    }
+
+    /**
+     * 해시태그 기반 검색어 자동 완성
+     * @param keyword 해시태그 검색어
+     * @return 해시태그 조건에 맞는 자동 검색어 리스트 조회
+     */
+    @Override
+    public SearchHits<PostDocument> suggestCompleteByHashTag(String keyword) {
+        NativeQuery nativeQuery=NativeQuery.builder()
+                .withQuery(q->q.prefix(p->p
+                        .field("hashTag")
+                        .value(keyword)
+                ))
+                .withMaxResults(5)
+                .build();
+
+        return operations.search(nativeQuery,PostDocument.class);
+    }
+
+    /**
      * search_after용 리스트 반환
      */
     private List<Object> sortToList(PostSort sort) {

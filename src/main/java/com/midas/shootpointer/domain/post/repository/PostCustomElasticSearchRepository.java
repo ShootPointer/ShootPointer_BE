@@ -8,4 +8,6 @@ import java.io.IOException;
 public interface PostCustomElasticSearchRepository {
     SearchHits<PostDocument> search(String search, int size, PostSort sort);
     SearchHits<PostDocument> suggestCompleteByKeyword(String keyword) throws IOException;
+    SearchHits<PostDocument> searchByHashTag(String search,int size, PostSort sort);
+    SearchHits<PostDocument> suggestCompleteByHashTag(String keyword);
 }

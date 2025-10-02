@@ -6,7 +6,6 @@ import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.mapper.PostElasticSearchMapper;
 import com.midas.shootpointer.domain.post.repository.PostElasticSearchRepository;
-import com.midas.shootpointer.global.annotation.CustomLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -55,7 +54,7 @@ public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
     }
 
     @Override
-    @CustomLog
+    @Transactional(readOnly = true)
     public List<String> suggestCompleteSearch(String keyword)  {
 
         try {
