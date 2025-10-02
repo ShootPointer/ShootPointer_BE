@@ -156,6 +156,8 @@ public class PostManager {
 
     @Transactional(readOnly = true)
     public PostListResponse getPostByPostTitleOrPostContentByElasticSearch(String search,int size,PostSort sort){
+        PostListResponseFactory factory=new PostListResponseFactory(postMapper);
+
         /**
          * 0. ElasticSearch가 사용 가능한 경우에만 실행
           */
@@ -173,43 +175,29 @@ public class PostManager {
             return PostListResponse.withSort(sort.lastPostId(), Collections.emptyList(),sort);
         }
 
+        /**
+         * 2. 해시태그 기반인지 일반 검색어 기반인지 확인
+         * 해시태그 기반인 경우
+         */
+        if (postElasticSearchHelper.isHashTagSearch(search)){
+            String cleanedSearch=postElasticSearchHelper.refinedHashTag(search);
+            List<PostSearchHit> postByHashTagByElasticSearch = postElasticSearchHelper.getPostByHashTagByElasticSearch(cleanedSearch, size, sort);
+
+            return factory.build(postByHashTagByElasticSearch,sort);
+        }
 
         /**
-         * 2. 게시물 정렬 조건 + 검색어 게시물 검색 , _score 조회
+         * 3. 일반 검색어 기반 게시물 검색 조회
+         *    게시물 정렬 조건 + 검색어 게시물 검색 , _score 조회
          */
         List<PostSearchHit> responses=postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search,size,sort);
 
-        /**
-         * 3. PostListResponse 형태로 반환 - 마지막 게시물의 정렬 값 보내기.
-         */
-
-        //결과값이 없는 경우 - 이전에 보낸 정렬값(기본값) 그대로 전송
-        if(responses.isEmpty()){
-            return PostListResponse.withSort(sort.lastPostId(), Collections.emptyList(),sort);
-        }
-
-        //결과값이 존재하는 경우 - 마지막 게시물의 정렬 기준 전송
-        int last=responses.size()-1;
-
-        PostDocument lastResponse=responses.get(last).doc();
-        PostSort newSort=new PostSort(responses.get(last)._score(),
-                lastResponse.getLikeCnt(),
-                lastResponse.getPostId()
-        );
-
-        /**
-         * 4. List<PostDocument> -> List<PostResponse> 형태로 변환
-         */
-        List<PostResponse> postResponses=responses.stream()
-                .map(hit->postMapper.documentToResponse(hit.doc()))
-                .toList();
-
-        return PostListResponse.withSort(lastResponse.getPostId(),postResponses,newSort);
-
+        return factory.build(responses,sort);
     }
 
     @Transactional(readOnly = true)
     public List<SearchAutoCompleteResponse> searchAutoCompleteResponse(String keyword){
+        PostListResponseFactory factory=new PostListResponseFactory(postMapper);
         /**
          * 0. ElasticSearch가 사용 가능한 경우에만 실행
          */
@@ -226,14 +214,68 @@ public class PostManager {
             return Collections.emptyList();
         }
 
-        /**
-         * 2. 자동 검색어 목록 조회
+        /*
+          2. 해시태그 기반인지 일반 검색어 기반인지 확인
+          해시태그 기반인 경우
          */
-        List<String> searchAutoCompleteTitles=postElasticSearchHelper.suggestCompleteSearch(keyword);
+        if (postElasticSearchHelper.isHashTagSearch(keyword)){
+            String cleanedKeyword=postElasticSearchHelper.refinedHashTag(keyword);
+            List<String> postByHashTagByElasticSearch = postElasticSearchHelper.suggestCompleteSearchWithHashTag(cleanedKeyword);
 
-        return searchAutoCompleteTitles.stream()
-                .map(SearchAutoCompleteResponse::of)
-                .toList();
+            return factory.build(postByHashTagByElasticSearch);
+        }
+
+        /**
+         * 3. 일반 검색어 자동 완성
+         */
+
+        List<String> postByHashTagByElasticSearch = postElasticSearchHelper.suggestCompleteSearch(keyword);
+
+        return factory.build(postByHashTagByElasticSearch);
+    }
+
+    /**
+     * List<PostSearchHit> -> PostListResponse 변환 inner class
+     */
+    @RequiredArgsConstructor
+    private static class PostListResponseFactory{
+        private final PostMapper mapper;
+
+        public PostListResponse build(List<PostSearchHit> responses,PostSort sort){
+            if (responses.isEmpty()){
+                //빈 값인 경우 -> 빈 리스트 반환.
+                return PostListResponse.withSort(sort.lastPostId(), Collections.emptyList(),sort);
+            }
+
+            //결과값이 존재하는 경우 - 마지막 게시물의 정렬 기준 전송
+            int last=responses.size()-1;
+
+            PostDocument lastResponse=responses.get(last).doc();
+            PostSort newSort=new PostSort(responses.get(last)._score(),
+                    lastResponse.getLikeCnt(),
+                    lastResponse.getPostId()
+            );
+
+            /**
+             *  List<PostDocument> -> List<PostResponse> 형태로 변환
+             */
+            List<PostResponse> postResponses=responses.stream()
+                    .map(hit->mapper.documentToResponse(hit.doc()))
+                    .toList();
+
+            return PostListResponse.withSort(lastResponse.getPostId(),postResponses,newSort);
+        }
+        public List<SearchAutoCompleteResponse> build(List<String> responses){
+            /**
+             * 1. responses가 빈 값인지 확인
+             */
+            if (responses==null) return Collections.emptyList();
+
+            return responses.stream()
+                    .map(SearchAutoCompleteResponse::of)
+                    .toList();
+        }
+
     }
 
 }

@@ -68,6 +68,7 @@ public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PostSearchHit> getPostByHashTagByElasticSearch(String search, int size, PostSort sort) {
         SearchHits<PostDocument> postDocumentSearchHits=postElasticSearchRepository.searchByHashTag(search,size,sort);
 
@@ -88,6 +89,7 @@ public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<String> suggestCompleteSearchWithHashTag(String hashTag) {
         SearchHits<PostDocument> postDocumentSearchHits=postElasticSearchRepository.suggestCompleteByHashTag(hashTag);
 
