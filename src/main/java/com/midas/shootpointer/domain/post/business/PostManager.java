@@ -238,7 +238,7 @@ public class PostManager {
      * List<PostSearchHit> -> PostListResponse 변환 inner class
      */
     @RequiredArgsConstructor
-    private static class PostListResponseFactory{
+    static class PostListResponseFactory{
         private final PostMapper mapper;
 
         public PostListResponse build(List<PostSearchHit> responses,PostSort sort){
