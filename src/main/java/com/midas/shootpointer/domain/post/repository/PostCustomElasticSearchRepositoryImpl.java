@@ -13,7 +13,6 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -62,7 +61,7 @@ public class PostCustomElasticSearchRepositoryImpl implements PostCustomElasticS
     }
 
     @Override
-    public SearchHits<PostDocument> suggestCompleteByKeyword(String keyword) throws IOException {
+    public SearchHits<PostDocument> suggestCompleteByKeyword(String keyword) {
         NativeQuery nativeQuery=NativeQuery.builder()
                 .withQuery(q->q.prefix(p->p
                         .field("title.keyword")

@@ -13,7 +13,6 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -56,15 +55,11 @@ public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
     @Override
     @Transactional(readOnly = true)
     public List<String> suggestCompleteSearch(String keyword)  {
+        SearchHits<PostDocument> postDocumentSearchHits=postElasticSearchRepository.suggestCompleteByKeyword(keyword);
+        if (postDocumentSearchHits==null) return Collections.emptyList();
 
-        try {
-            SearchHits<PostDocument> postDocumentSearchHits=postElasticSearchRepository.suggestCompleteByKeyword(keyword);
-            return postDocumentSearchHits
+        return postDocumentSearchHits
                     .map(hit->hit.getContent().getTitle()).toList();
-
-        }catch (IOException e){
-            return Collections.emptyList();
-        }
     }
 
     @Override
@@ -113,7 +108,9 @@ public class PostElasticSearchUtilImpl implements PostElasticSearchUtil{
      */
     @Override
     public String refinedHashTag(String hashTag) {
-        return hashTag.replaceFirst("^#", "");//맨 앞의 #제거.
+        return hashTag
+                .replaceFirst("^#", "")//맨 앞의 #제거.
+                .replaceAll(" ","");
     }
 
 }
