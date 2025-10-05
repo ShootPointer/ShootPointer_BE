@@ -47,7 +47,7 @@ jobs:
           --health-retries=5
           
     env:
-      DOCKER_HOST: tcp://docker:2375
+      DOCKER_HOST: unix:///var/run/docker.sock
       TESTCONTAINERS_RYUK_DISABLED: true
       SPRING_PROFILES_ACTIVE: test,es
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
