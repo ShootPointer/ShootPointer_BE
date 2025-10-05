@@ -9,7 +9,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    container:
+      image: docker:27.0.3-dind
+      options: --privileged
+
     services: 
+      docker:
+        image: docker:dind
+        options: --privileged
+        ports:
+          - 2375:2375
+        env:
+          DOCKER_TLS_CERTDIR: ""
+
       postgres:
         image: postgres:15
         ports:
@@ -34,15 +46,14 @@ jobs:
           --health-timeout=5s
           --health-retries=5
           
-      elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:8.6.0
-        ports:
-          - 9200:9200
-        env:
-          discovery.type: single-node
-          xpack.security.enabled: "false"
-          xpack.security.http.ssl.enabled: "false"
-          
+    env:
+      DOCKER_HOST: tcp://docker:2375
+      TESTCONTAINERS_RYUK_DISABLED: true
+      SPRING_PROFILES_ACTIVE: test,es
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -58,11 +69,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Test with Gradle
-        run: SPRING_PROFILES_ACTIVE=test,es ./gradlew clean test jacocoTestReport --info --stacktrace
-        env: 
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
-          SPRING_DATASOURCE_USERNAME: postgres
-          SPRING_DATASOURCE_PASSWORD: postgres
+        run: ./gradlew clean test jacocoTestReport --info --stacktrace
 
       - name: Upload JUnit Test Report
         if: always()
