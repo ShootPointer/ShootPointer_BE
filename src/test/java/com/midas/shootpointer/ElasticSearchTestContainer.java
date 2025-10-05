@@ -8,6 +8,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.time.Duration;
 
@@ -15,7 +16,9 @@ import java.time.Duration;
 @Testcontainers
 @TestConfiguration(proxyBeanMethods = false)
 public class ElasticSearchTestContainer {
-    private final static String IMAGE_NAME="tkv00/elasticsearch-nori:7.17.9";
+    private static final DockerImageName IMAGE_NAME =
+            DockerImageName.parse("tkv00/elasticsearch-nori:7.17.9")
+                    .asCompatibleSubstituteFor("docker.elastic.co/elasticsearch/elasticsearch");
 
     @Container
     private static final ElasticsearchContainer container=new ElasticsearchContainer(IMAGE_NAME)
