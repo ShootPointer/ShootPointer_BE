@@ -26,7 +26,6 @@ public class ElasticSearchTestContainer {
             .withEnv("xpack.security.enabled", "false")
             .withEnv("xpack.security.http.ssl.enabled", "false")
             .withEnv("bootstrap.memory_lock", "false")
-            .withEnv("bootstrap.system_call_filter", "false")
             .withEnv("ES_JAVA_OPTS", "-Xms512m -Xmx512m")
            // .withCommand("sh", "-c", "elasticsearch-plugin install analysis-nori && elasticsearch")
             .waitingFor(Wait.forHttp("/").forStatusCode(200).withStartupTimeout(Duration.ofSeconds(90)));
