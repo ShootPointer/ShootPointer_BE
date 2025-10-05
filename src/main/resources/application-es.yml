@@ -13,3 +13,5 @@ spring:
 logging:
   level:
     org.springframework.data.elasticsearch: DEBUG
+    org.testcontainers: DEBUG
+    org.testcontainers.utility: TRACE
