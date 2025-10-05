@@ -9,19 +9,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    container:
-      image: docker:27.0.3-dind
-      options: --privileged
-
     services: 
-      docker:
-        image: docker:dind
-        options: --privileged
-        ports:
-          - 2375:2375
-        env:
-          DOCKER_TLS_CERTDIR: ""
-
       postgres:
         image: postgres:15
         ports:
@@ -47,7 +35,7 @@ jobs:
           --health-retries=5
           
     env:
-      DOCKER_HOST: unix:///var/run/docker.sock
+      DOCKER_HOST: unix:///var/run/docker.sock   
       TESTCONTAINERS_RYUK_DISABLED: true
       SPRING_PROFILES_ACTIVE: test,es
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
