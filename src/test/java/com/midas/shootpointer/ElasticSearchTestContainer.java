@@ -32,7 +32,8 @@ public class ElasticSearchTestContainer {
 
     static {
         //local 에서만 test container 실행
-        String mode=System.getProperty("spring.elasticsearch.mode","container");
+        String mode=System.getProperty("spring.elasticsearch.mode",
+                System.getenv().getOrDefault("SPRING_ELASTICSEARCH_MODE", "container"));
         if("container".equalsIgnoreCase(mode)) {
             container.start();
         }
@@ -42,7 +43,8 @@ public class ElasticSearchTestContainer {
 
     @DynamicPropertySource
     static void setElasticsearchProperties(DynamicPropertyRegistry registry){
-        String mode=System.getProperty("spring.elasticsearch.mode","container");
+        String mode=System.getProperty("spring.elasticsearch.mode",
+                System.getenv().getOrDefault("SPRING_ELASTICSEARCH_MODE", "container"));
 
         if ("container".equalsIgnoreCase(mode)){
             registry.add("spring.elasticsearch.uris",container::getHttpHostAddress);
