@@ -25,19 +25,32 @@ public class ElasticSearchTestContainer {
             .withEnv("discovery.type", "single-node")
             .withEnv("xpack.security.enabled", "false")
             .withEnv("xpack.security.http.ssl.enabled", "false")
+            .withEnv("bootstrap.memory_lock", "false")
+            .withEnv("bootstrap.system_call_filter", "false")
             .withEnv("ES_JAVA_OPTS", "-Xms512m -Xmx512m")
            // .withCommand("sh", "-c", "elasticsearch-plugin install analysis-nori && elasticsearch")
             .waitingFor(Wait.forHttp("/").forStatusCode(200).withStartupTimeout(Duration.ofSeconds(90)));
 
     static {
-        container.start();
+        //local 에서만 test container 실행
+        String mode=System.getProperty("spring.elasticsearch.mode","container");
+        if("container".equalsIgnoreCase(mode)) {
+            container.start();
+        }
     }
 
 
 
     @DynamicPropertySource
     static void setElasticsearchProperties(DynamicPropertyRegistry registry){
-        registry.add("spring.elasticsearch.uris",container::getHttpHostAddress);
+        String mode=System.getProperty("spring.elasticsearch.mode","container");
+
+        if ("container".equalsIgnoreCase(mode)){
+            registry.add("spring.elasticsearch.uris",container::getHttpHostAddress);
+        }else{
+            //CI 환경 - Jacoco
+            registry.add("spring.elasticsearch.uris",()->"http://localhost:9200");
+        }
     }
 
 }
