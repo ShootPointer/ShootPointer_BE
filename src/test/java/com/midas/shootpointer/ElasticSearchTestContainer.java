@@ -15,7 +15,7 @@ import java.time.Duration;
 @Testcontainers
 @TestConfiguration(proxyBeanMethods = false)
 public class ElasticSearchTestContainer {
-    private final static String IMAGE_NAME="docker.elastic.co/elasticsearch/elasticsearch:8.6.0";
+    private final static String IMAGE_NAME="docker.elastic.co/elasticsearch/elasticsearch:7.17.9";
 
     @Container
     private static final ElasticsearchContainer container=new ElasticsearchContainer(IMAGE_NAME)
