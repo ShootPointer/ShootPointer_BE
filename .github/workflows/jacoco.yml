@@ -58,6 +58,8 @@ jobs:
 
       - name: Test with Gradle
         run: ./gradlew clean test jacocoTestReport --info --stacktrace
+        env:
+          SPRING_ELASTICSEARCH_MODE: external
 
       - name: Upload JUnit Test Report
         if: always()
