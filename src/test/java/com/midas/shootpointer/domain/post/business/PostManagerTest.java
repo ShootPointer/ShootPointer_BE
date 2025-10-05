@@ -7,10 +7,10 @@ import com.midas.shootpointer.domain.post.dto.response.*;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.helper.elastic.PostElasticSearchHelper;
 import com.midas.shootpointer.domain.post.helper.simple.PostHelper;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
-import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
-import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,6 +18,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles({"dev", "es"})
 class PostManagerTest {
     @InjectMocks
     private PostManager postManager;
@@ -40,13 +43,15 @@ class PostManagerTest {
     private HighlightHelper highlightHelper;
 
     @Mock
-    private PostCommandRepository postCommandRepository;
-
-    @Mock
-    private PostQueryRepository postQueryRepository;
-
-    @Mock
     private PostMapper postMapper;
+
+    @Mock
+    private PostElasticSearchHelper elasticSearchHelper;
+
+    @BeforeEach
+    void setUp() {
+        ReflectionTestUtils.setField(postManager, "postElasticSearchHelper", elasticSearchHelper);
+    }
 
     @Test
     @DisplayName(
@@ -257,6 +262,251 @@ class PostManagerTest {
         verify(postMapper, times(1)).entityToDto(postEntityList);
     }
 
+    @DisplayName("제목과 내용을 기반으로 한 ElasticSearch로 게시물을 검색합니다.")
+    @Test
+    void getPostByPostTitleOrPostContentByElasticSearch() {
+        //given
+        int size = 10;
+        String search = "title";
+        PostSort sort = new PostSort(0.7f, 1234567L, 1234567L);
+
+        PostDocument doc1 = makeDocument(HashTag.TWO_POINT, "title1", "content1", 12L, 12312L);
+        PostDocument doc2 = makeDocument(HashTag.TWO_POINT, "title2", "content2", 20L, 12314122L);
+        PostDocument doc3 = makeDocument(HashTag.TWO_POINT, "title3", "content3", 142L, 12322212L);
+
+        PostResponse response1 = makePostResponse(doc1);
+        PostResponse response2 = makePostResponse(doc2);
+        PostResponse response3 = makePostResponse(doc3);
+
+        List<PostSearchHit> responses = List.of(
+                new PostSearchHit(doc1, 0.5f),
+                new PostSearchHit(doc2, 0.6f),
+                new PostSearchHit(doc3, 0.7f)
+        );
+
+        //when
+        doNothing().when(postHelper).isValidSize(size);
+        when(postHelper.isValidInput(search)).thenReturn(true);
+        when(elasticSearchHelper.isHashTagSearch(search)).thenReturn(false);
+        when(elasticSearchHelper.getPostByTitleOrContentByElasticSearch(search, size, sort))
+                .thenReturn(responses);
+        when(postMapper.documentToResponse(doc1)).thenReturn(response1);
+        when(postMapper.documentToResponse(doc2)).thenReturn(response2);
+        when(postMapper.documentToResponse(doc3)).thenReturn(response3);
+
+        PostListResponse result = postManager.getPostByPostTitleOrPostContentByElasticSearch(search, size, sort);
+
+        //then
+        assertThat(result.getPostList()).hasSize(3);
+        assertThat(result.getLastPostId()).isEqualTo(142L);
+        assertThat(result.getSort().likeCnt()).isEqualTo(12322212L);
+        assertThat(result.getSort().lastPostId()).isEqualTo(142L);
+        assertThat(result.getSort()._score()).isEqualTo(0.7f);
+
+        assertThat(result.getPostList().get(0).getPostId()).isEqualTo(12L);
+        assertThat(result.getPostList().get(1).getPostId()).isEqualTo(20L);
+        assertThat(result.getPostList().get(2).getPostId()).isEqualTo(142L);
+
+        // 검증
+        verify(postHelper).isValidSize(size);
+        verify(postHelper).isValidInput(search);
+        verify(elasticSearchHelper).isHashTagSearch(search);
+        verify(elasticSearchHelper).getPostByTitleOrContentByElasticSearch(search, size, sort);
+        verify(postMapper, times(3)).documentToResponse(any(PostDocument.class));
+    }
+
+    @DisplayName("ElasticSearchHelper가 주입되지 않으면 일반 SQL 쿼리로 검색을 실행합니다.")
+    @Test
+    void getPostByPostTitleOrPostContentByElasticSearch_POSTELASTICSEARCH_NULL(){
+        //given
+        String search="keyword";
+        int size=10;
+        PostSort sort=new PostSort(0.7f,1213L,123124L);
+        // elasticSearchHelper를 null로 설정
+        ReflectionTestUtils.setField(postManager, "postElasticSearchHelper", null);
+
+        List<PostEntity> entities = new ArrayList<>();
+        PostListResponse expectedResponse = PostListResponse.of(123124L, new ArrayList<>());
+
+        when(postHelper.getPostEntitiesByPostTitleOrPostContent(search,123124L,size)).thenReturn(entities);
+        when(postMapper.entityToDto(entities)).thenReturn(expectedResponse);
+
+        //when
+        postManager.getPostByPostTitleOrPostContentByElasticSearch(search,size,sort);
+
+        //then
+        verify(postHelper,times(1)).getPostEntitiesByPostTitleOrPostContent(search,123124L,size);
+        verify(postMapper,times(1)).entityToDto(entities);
+        verifyNoInteractions(elasticSearchHelper);
+    }
+
+    @DisplayName("제목과 내용을 기반으로 한 ElasticSearch로 게시물 검색 시 검색어가 빈 문자열이면 빈 리스트를 반환합니다.")
+    @Test
+    void getPostByPostTitleOrPostContentByElasticSearch_RETURN_EMPTYLIST() {
+        //given
+        String search = "search";
+        int size = 10;
+        PostSort sort = new PostSort(0.5f, 1000L, 10000L);
+
+        //when
+        doNothing().when(postHelper).isValidSize(size);
+        when(postHelper.isValidInput(search)).thenReturn(false);
+
+        //then
+        PostListResponse result = postManager.getPostByPostTitleOrPostContentByElasticSearch(search, size, sort);
+        assertThat(result.getPostList()).isEqualTo(Collections.EMPTY_LIST);
+        assertThat(result.getSort()).isEqualTo(sort);
+        assertThat(result.getLastPostId()).isEqualTo(sort.lastPostId());
+    }
+
+    @DisplayName("제목과 내용을 기반으로 한 ElasticSearch로 게시물 검색 시 해시태그 형식이면 postElasticSearchHelper의 getPostByHashTagByElasticSearch을 호출합니다,")
+    @Test
+    void getPostByPostTitleOrPostContentByElasticSearch_BY_HASHTAG() {
+        //given
+        String search = "#해시태그";
+        String refinedSearch = "해시태그";
+        int size = 10;
+        PostSort sort = new PostSort(0.7f, 1234567L, 1234567L);
+
+        PostDocument doc1 = makeDocument(HashTag.TWO_POINT, "title1", "content1", 12L, 12312L);
+        PostDocument doc2 = makeDocument(HashTag.TWO_POINT, "title2", "content2", 20L, 12314122L);
+
+        PostResponse response1 = makePostResponse(doc1);
+        PostResponse response2 = makePostResponse(doc2);
+
+        List<PostSearchHit> responses = List.of(
+                new PostSearchHit(doc1, 0.5f),
+                new PostSearchHit(doc2, 0.6f)
+        );
+
+        //when
+        doNothing().when(postHelper).isValidSize(size);
+        when(postHelper.isValidInput(search)).thenReturn(true);
+        when(elasticSearchHelper.isHashTagSearch(search)).thenReturn(true);
+        when(elasticSearchHelper.refinedHashTag(search)).thenReturn(refinedSearch);
+        when(elasticSearchHelper.getPostByHashTagByElasticSearch(refinedSearch, size, sort))
+                .thenReturn(responses);
+        when(postMapper.documentToResponse(doc1)).thenReturn(response1);
+        when(postMapper.documentToResponse(doc2)).thenReturn(response2);
+
+        PostListResponse result = postManager.getPostByPostTitleOrPostContentByElasticSearch(search, size, sort);
+
+        //then
+        assertThat(result).isNotNull();
+        assertThat(result.getPostList()).hasSize(2);
+        assertThat(result.getLastPostId()).isEqualTo(20L);
+
+        verify(postHelper).isValidSize(size);
+        verify(postHelper).isValidInput(search);
+        verify(elasticSearchHelper).isHashTagSearch(search);
+        verify(elasticSearchHelper).refinedHashTag(search);
+        verify(elasticSearchHelper).getPostByHashTagByElasticSearch(refinedSearch, size, sort);
+        verify(postMapper, times(2)).documentToResponse(any(PostDocument.class));
+    }
+
+    @DisplayName("제목을 기반으로 검색어 자동완성 리스트를 조회합니다,")
+    @Test
+    void searchAutoCompleteResponse() {
+        //given
+        String keyword = "keyword";
+        List<String> expected = List.of(
+                "keyword1",
+                "keyword2",
+                "keyword3",
+                "keyword4"
+        );
+
+        //when
+        when(postHelper.isValidInput(keyword)).thenReturn(true);
+        when(elasticSearchHelper.isHashTagSearch(keyword)).thenReturn(false);
+        when(elasticSearchHelper.suggestCompleteSearch(keyword)).thenReturn(expected);
+
+        List<SearchAutoCompleteResponse> result = postManager.searchAutoCompleteResponse(keyword);
+
+        //then
+        assertThat(result).isNotEmpty();
+        assertThat(result.get(0).getSuggest()).isEqualTo("keyword1");
+        assertThat(result.get(1).getSuggest()).isEqualTo("keyword2");
+        assertThat(result.get(2).getSuggest()).isEqualTo("keyword3");
+        assertThat(result.get(3).getSuggest()).isEqualTo("keyword4");
+
+        verify(postHelper).isValidInput(keyword);
+        verify(elasticSearchHelper).isHashTagSearch(keyword);
+        verify(elasticSearchHelper).suggestCompleteSearch(keyword);
+    }
+
+    @DisplayName("ElasticSearchHelper가 주입되지 않으면 빈 리스트를 반환합니다.")
+    @Test
+    void searchAutoCompleteResponse_POSTELASTICSEARCH_NULL(){
+        //given
+        // elasticSearchHelper를 null로 설정
+        ReflectionTestUtils.setField(postManager, "postElasticSearchHelper", null);
+        String keyword="keyword";
+
+        //when
+        List<SearchAutoCompleteResponse> result=postManager.searchAutoCompleteResponse(keyword);
+
+        //then
+        assertThat(result).isEqualTo(Collections.EMPTY_LIST);
+    }
+
+    @Test
+    @DisplayName("제목을 기반으로 검색어 자동 완성 시 빈 문자열이면 빈 리스트를 반환합니다.")
+    void searchAutoCompleteResponse_RETURN_EMPTYLIST() {
+        //given
+        String keyword = "keyword";
+
+        //when
+        when(postHelper.isValidInput(keyword)).thenReturn(false);
+        List<SearchAutoCompleteResponse> result = postManager.searchAutoCompleteResponse(keyword);
+
+        //then
+        assertThat(result).isEqualTo(Collections.EMPTY_LIST);
+    }
+
+    @Test
+    @DisplayName("제목을 기반으로 검색어 자동 완성 시 해시태그 형식이면 postElasticSearchHelper.suggestCompleteSearchWithHashTag을 호출합니다.")
+    void searchAutoCompleteResponse_BY_HASHTAG() {
+        //given
+        String keyword = "#keyword";
+        String refinedKeyword = "keyword";
+        List<String> expected = List.of("keyword1", "keyword2", "keyword3");
+
+        //when
+        when(postHelper.isValidInput(keyword)).thenReturn(true);
+        when(elasticSearchHelper.isHashTagSearch(keyword)).thenReturn(true);
+        when(elasticSearchHelper.refinedHashTag(keyword)).thenReturn(refinedKeyword);
+        when(elasticSearchHelper.suggestCompleteSearchWithHashTag(refinedKeyword)).thenReturn(expected);
+
+        List<SearchAutoCompleteResponse> result = postManager.searchAutoCompleteResponse(keyword);
+
+        //then
+        assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(3);
+        assertThat(result.get(0).getSuggest()).isEqualTo("keyword1");
+        assertThat(result.get(1).getSuggest()).isEqualTo("keyword2");
+        assertThat(result.get(2).getSuggest()).isEqualTo("keyword3");
+
+        // 검증
+        verify(postHelper).isValidInput(keyword);
+        verify(elasticSearchHelper).isHashTagSearch(keyword);
+        verify(elasticSearchHelper).refinedHashTag(keyword);
+        verify(elasticSearchHelper).suggestCompleteSearchWithHashTag(refinedKeyword);
+    }
+
+    private PostResponse makePostResponse(PostDocument doc) {
+        return PostResponse.builder()
+                .content(doc.getContent())
+                .likeCnt(doc.getLikeCnt())
+                .highlightUrl(doc.getHighlightUrl())
+                .modifiedAt(doc.getModifiedAt())
+                .memberName(doc.getMemberName())
+                .createdAt(doc.getCreatedAt())
+                .hashTag(doc.getHashTag())
+                .postId(doc.getPostId())
+                .title(doc.getTitle())
+                .build();
+    }
 
     /**
      * mock 하이라이트 영상
@@ -308,6 +558,18 @@ class PostManagerTest {
                 .build();
     }
 
+    private PostDocument makeDocument(HashTag tag, String title, String content, Long postId, Long likeCnt) {
+        return PostDocument.builder()
+                .highlightUrl("url")
+                .content(content)
+                .title(title)
+                .hashTag(tag.getName())
+                .memberName("name")
+                .likeCnt(likeCnt)
+                .postId(postId)
+                .build();
+    }
+
     @Nested
     @DisplayName("PostListResponseFactory 테스트")
     class PostListResponseFactoryTest {
@@ -356,7 +618,7 @@ class PostManagerTest {
 
         @DisplayName("response 값이 비어있으면  빈 리스트 값을 반환합니다.")
         @Test
-        void build_PostSearchHit_To_PostListResponse_RETURN_EMPTYLIST(){
+        void build_PostSearchHit_To_PostListResponse_RETURN_EMPTYLIST() {
             //given
             List<PostSearchHit> responses = new ArrayList<>();
             PostSort sort = new PostSort(1000f, 100000L, 100000L);
@@ -377,15 +639,15 @@ class PostManagerTest {
 
         @DisplayName("SearchAutoCompleteResponse 형태로 변환합니다.")
         @Test
-        void build_String_To_SearchAutoCompleteResponse(){
+        void build_String_To_SearchAutoCompleteResponse() {
             //given
-            List<String> responses=List.of(
-                    "title1","title2","title3"
+            List<String> responses = List.of(
+                    "title1", "title2", "title3"
             );
 
             //when
-            PostManager.PostListResponseFactory factory=new PostManager.PostListResponseFactory(mapper);
-            List<SearchAutoCompleteResponse> result=factory.build(responses);
+            PostManager.PostListResponseFactory factory = new PostManager.PostListResponseFactory(mapper);
+            List<SearchAutoCompleteResponse> result = factory.build(responses);
 
             //then
             assertThat(result).hasSize(3);

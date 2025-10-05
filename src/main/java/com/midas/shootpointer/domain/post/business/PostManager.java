@@ -239,8 +239,8 @@ public class PostManager {
      */
     @RequiredArgsConstructor
     static class PostListResponseFactory{
-        private final PostMapper mapper;
 
+        private final PostMapper mapper;
         public PostListResponse build(List<PostSearchHit> responses,PostSort sort){
             if (responses.isEmpty()){
                 //빈 값인 경우 -> 빈 리스트 반환.
