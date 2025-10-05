@@ -25,8 +25,14 @@ public class ElasticSearchTestContainer {
             .withEnv("discovery.type", "single-node")
             .withEnv("xpack.security.enabled", "false")
             .withEnv("xpack.security.http.ssl.enabled", "false")
-            .withCommand("sh", "-c", "elasticsearch-plugin install analysis-nori && elasticsearch")
-            .waitingFor(Wait.forHttp("/").forStatusCode(200).withStartupTimeout(Duration.ofSeconds(90)));;
+            .withEnv("ES_JAVA_OPTS", "-Xms512m -Xmx512m")
+           // .withCommand("sh", "-c", "elasticsearch-plugin install analysis-nori && elasticsearch")
+            .waitingFor(Wait.forHttp("/").forStatusCode(200).withStartupTimeout(Duration.ofSeconds(90)));
+
+    static {
+        container.start();
+    }
+
 
 
     @DynamicPropertySource
