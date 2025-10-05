@@ -23,6 +23,7 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+
       redis:
         image: redis:7
         ports:
@@ -33,6 +34,10 @@ jobs:
           --health-timeout=5s
           --health-retries=5
           
+    env:
+      TESTCONTAINERS_RYUK_DISABLED: true
+      DOCKER_HOST: unix:///var/run/docker.sock
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -44,21 +49,18 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Test with Gradle
-        run: SPRING_PROFILES_ACTIVE=test ./gradlew clean test jacocoTestReport --info --stacktrace
+        run: SPRING_PROFILES_ACTIVE=test,es ./gradlew clean test jacocoTestReport --info --stacktrace
         env: 
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: postgres
 
-
-
       - name: Upload JUnit Test Report
-        if: always()   # 실패해도 업로드되도록
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: junit-test-report
@@ -80,4 +82,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 30
           min-coverage-changed-files: 50
-  
