@@ -38,6 +38,6 @@ public class PostQueryServiceImpl implements PostQueryService{
 
     @Override
     public List<SearchAutoCompleteResponse> suggest(String keyword) {
-        return postManager.searchAutoCompleteResponse(keyword);
+        return postManager.suggest(keyword);
     }
 }

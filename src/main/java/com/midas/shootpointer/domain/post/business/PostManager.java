@@ -196,7 +196,7 @@ public class PostManager {
     }
 
     @Transactional(readOnly = true)
-    public List<SearchAutoCompleteResponse> searchAutoCompleteResponse(String keyword){
+    public List<SearchAutoCompleteResponse> suggest(String keyword){
         PostListResponseFactory factory=new PostListResponseFactory(postMapper);
         /**
          * 0. ElasticSearch가 사용 가능한 경우에만 실행
