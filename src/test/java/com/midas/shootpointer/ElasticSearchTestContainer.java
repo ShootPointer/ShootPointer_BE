@@ -13,7 +13,7 @@ import org.testcontainers.utility.DockerImageName;
 @Profile({"es","test"})
 @Testcontainers
 @TestConfiguration(proxyBeanMethods = false)
-@ConditionalOnExpression("!'{SPRING_ELASTICSEARCH_MODE:local}'.equals('external')")
+@ConditionalOnExpression("!'${SPRING_ELASTICSEARCH_MODE:local}'.equals('external')")
 public class ElasticSearchTestContainer {
     private static final DockerImageName IMAGE_NAME =
             DockerImageName.parse("tkv00/elasticsearch-nori:7.17.9")
