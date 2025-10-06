@@ -44,6 +44,6 @@ public class CommentCommandController {
 		Member member = SecurityUtils.getCurrentMember();
 		commentCommandService.delete(commentId, member.getMemberId());
 		
-		return ResponseEntity.ok(ApiResponse.ok(null));
+		return ResponseEntity.noContent().build();
 	}
 }
