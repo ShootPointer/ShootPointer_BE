@@ -102,11 +102,11 @@ class PostQueryServiceImplTest {
         String keyword="keyword";
 
         //when
-        when(postManager.searchAutoCompleteResponse(keyword)).thenReturn(searchAutoCompleteResponses);
+        when(postManager.suggest(keyword)).thenReturn(searchAutoCompleteResponses);
         postQueryService.suggest(keyword);
 
         //then
-        verify(postManager,times(1)).searchAutoCompleteResponse(keyword);
+        verify(postManager,times(1)).suggest(keyword);
     }
     private PostResponse makePostResponse(LocalDateTime time,Long postId){
         return PostResponse.builder()

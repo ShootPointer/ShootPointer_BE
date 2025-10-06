@@ -421,7 +421,7 @@ class PostManagerTest {
         when(elasticSearchHelper.isHashTagSearch(keyword)).thenReturn(false);
         when(elasticSearchHelper.suggestCompleteSearch(keyword)).thenReturn(expected);
 
-        List<SearchAutoCompleteResponse> result = postManager.searchAutoCompleteResponse(keyword);
+        List<SearchAutoCompleteResponse> result = postManager.suggest(keyword);
 
         //then
         assertThat(result).isNotEmpty();
@@ -444,7 +444,7 @@ class PostManagerTest {
         String keyword="keyword";
 
         //when
-        List<SearchAutoCompleteResponse> result=postManager.searchAutoCompleteResponse(keyword);
+        List<SearchAutoCompleteResponse> result=postManager.suggest(keyword);
 
         //then
         assertThat(result).isEqualTo(Collections.EMPTY_LIST);
@@ -458,7 +458,7 @@ class PostManagerTest {
 
         //when
         when(postHelper.isValidInput(keyword)).thenReturn(false);
-        List<SearchAutoCompleteResponse> result = postManager.searchAutoCompleteResponse(keyword);
+        List<SearchAutoCompleteResponse> result = postManager.suggest(keyword);
 
         //then
         assertThat(result).isEqualTo(Collections.EMPTY_LIST);
@@ -478,7 +478,7 @@ class PostManagerTest {
         when(elasticSearchHelper.refinedHashTag(keyword)).thenReturn(refinedKeyword);
         when(elasticSearchHelper.suggestCompleteSearchWithHashTag(refinedKeyword)).thenReturn(expected);
 
-        List<SearchAutoCompleteResponse> result = postManager.searchAutoCompleteResponse(keyword);
+        List<SearchAutoCompleteResponse> result = postManager.suggest(keyword);
 
         //then
         assertThat(result).isNotEmpty();
