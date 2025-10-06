@@ -31,7 +31,7 @@ jobs:
           --health-retries=5
           
       elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+        image: tkv00/elasticsearch-nori
         ports:
           - 9200:9200
         env:
