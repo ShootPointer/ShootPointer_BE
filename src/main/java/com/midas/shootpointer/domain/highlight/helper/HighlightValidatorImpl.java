@@ -8,13 +8,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Set;
 import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class HighlightValidatorImpl implements HighlightValidator{
+    private static final Set<String> ALLOWED_VIDEO_TYPES = Set.of(
+            "video/mp4"
+    );
     /**
      * 영상 크기 제한 500MB
      */
@@ -45,7 +50,7 @@ public class HighlightValidatorImpl implements HighlightValidator{
     @Override
     public void isValidMp4File(MultipartFile file) {
         String contentType=file.getContentType();
-        if(!contentType.equals("video/mp4")){
+        if(!ALLOWED_VIDEO_TYPES.contains(contentType)){
             throw new CustomException(ErrorCode.INVALID_FILE_TYPE);
         }
     }
@@ -60,6 +65,17 @@ public class HighlightValidatorImpl implements HighlightValidator{
 
     @Override
     public boolean isExistDirectory(String directory) {
-        return Files.exists(Paths.get(directory));
+        if (directory == null || directory.isBlank()) {
+            return false;
+        }
+
+        Path path;
+        try {
+            path = Paths.get(directory);
+        } catch (InvalidPathException e) {
+            return false;
+        }
+
+        return Files.exists(path) && Files.isDirectory(path);
     }
 }
