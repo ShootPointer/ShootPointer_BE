@@ -33,6 +33,10 @@ public class ElasticSearchTestContainer {
 
     static {
         String mode = System.getenv("SPRING_ELASTICSEARCH_MODE");
+        if (mode == null) {
+            mode = System.getProperty("spring.elasticsearch.mode");
+        }
+
         log.info("========== [ElasticSearchTestContainer] Mode: {} ==========", mode);
 
         if ("external".equalsIgnoreCase(mode)) {
