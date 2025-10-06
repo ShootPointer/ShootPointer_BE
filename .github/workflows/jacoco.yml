@@ -31,7 +31,7 @@ jobs:
           --health-retries=5
           
       elasticsearch:
-        image: tkv00/elasticsearch-nori
+        image: tkv00/elasticsearch-nori:7.17.9
         ports:
           - 9200:9200
         env:
