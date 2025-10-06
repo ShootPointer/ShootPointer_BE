@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 @Configuration
 @EnableElasticsearchRepositories
-@Profile("es")
+@Profile({"es","test"})
 public class ElasticSearchConfig  {
     @Value("${spring.elasticsearch.uris}")
     private String host;
