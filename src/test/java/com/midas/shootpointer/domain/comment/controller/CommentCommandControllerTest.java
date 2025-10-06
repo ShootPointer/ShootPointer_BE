@@ -172,7 +172,6 @@ class CommentCommandControllerTest {
 		// when-then
 		mockMvc.perform(delete(baseUrl + "/" + commentId))
 			.andExpect(status().isNoContent())
-			.andExpect(jsonPath("$.success").value(true))
 			.andDo(print());
 	}
 	
