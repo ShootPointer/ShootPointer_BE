@@ -42,6 +42,7 @@ jobs:
           discovery.type: single-node
           xpack.security.enabled: "false"
           xpack.security.http.ssl.enabled: "false"
+          ES_JAVA_OPTS: "-Xms256m -Xmx256m"
         options: >-
           --health-cmd "curl -f http://localhost:9200/_cluster/health || exit 1"
           --health-interval=10s
