@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.times;
 
 import com.midas.shootpointer.domain.comment.business.CommentManager;
 import com.midas.shootpointer.domain.comment.entity.Comment;
@@ -18,10 +20,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CommentCommandService 테스트")
@@ -48,6 +46,46 @@ class CommentCommandServiceImplTest {
 		// then
 		assertThat(result).isEqualTo(expectedCommentId);
 		then(commentManager).should().save(comment);
+	}
+	
+	@Test
+	@DisplayName("댓글 삭제 성공")
+	void delete_Success() {
+		// given
+		Long commentId = 1L;
+		UUID memberId = UUID.randomUUID();
+		
+		willDoNothing().given(commentManager).delete(commentId, memberId);
+		
+		// when
+		commentCommandService.delete(commentId, memberId);
+		
+		// then
+		then(commentManager).should(times(1)).delete(commentId, memberId);
+	}
+	
+	@Test
+	@DisplayName("여러 댓글 삭제 성공")
+	void delete_Multiple_Success() {
+		// given
+		UUID memberId = UUID.randomUUID();
+		Long commentId1 = 1L;
+		Long commentId2 = 2L;
+		Long commentId3 = 3L;
+		
+		willDoNothing().given(commentManager).delete(commentId1, memberId);
+		willDoNothing().given(commentManager).delete(commentId2, memberId);
+		willDoNothing().given(commentManager).delete(commentId3, memberId);
+		
+		// when
+		commentCommandService.delete(commentId1, memberId);
+		commentCommandService.delete(commentId2, memberId);
+		commentCommandService.delete(commentId3, memberId);
+		
+		// then
+		then(commentManager).should(times(1)).delete(commentId1, memberId);
+		then(commentManager).should(times(1)).delete(commentId2, memberId);
+		then(commentManager).should(times(1)).delete(commentId3, memberId);
 	}
 	
 	private Comment createComment() {

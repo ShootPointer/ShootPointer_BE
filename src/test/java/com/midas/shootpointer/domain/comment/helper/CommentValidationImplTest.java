@@ -5,10 +5,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
+import com.midas.shootpointer.domain.comment.entity.Comment;
+import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,4 +74,44 @@ class CommentValidationImplTest {
 			.isInstanceOf(CustomException.class)
 			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.IS_NOT_EXIST_POST);
 	}
+	
+	@Test
+	@DisplayName("댓글 작성자 검증 성공 - 동일한 작성자")
+	void validateCommentOwner_Success() {
+		// given
+		UUID memberId = UUID.randomUUID();
+		Member member = Member.builder()
+			.memberId(memberId)
+			.build();
+		
+		Comment comment = Comment.builder()
+			.member(member)
+			.build();
+		
+		// when-then
+		assertThatNoException().isThrownBy(() ->
+			commentValidation.validateCommentOwner(comment, memberId));
+	}
+	
+	@Test
+	@DisplayName("댓글 작성자 검증 실패 - 다른 작성자")
+	void validateCommentOwner_Failed_Forbidden() {
+		// given
+		UUID commentOwnerId = UUID.randomUUID();
+		UUID InvalidOwnerId = UUID.randomUUID(); // 다른 UUID
+		
+		Member member = Member.builder()
+			.memberId(commentOwnerId)
+			.build();
+		
+		Comment comment = Comment.builder()
+			.member(member)
+			.build();
+		
+		// when-then
+		assertThatThrownBy(() -> commentValidation.validateCommentOwner(comment, InvalidOwnerId))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_DELETE);
+	}
+	
 }

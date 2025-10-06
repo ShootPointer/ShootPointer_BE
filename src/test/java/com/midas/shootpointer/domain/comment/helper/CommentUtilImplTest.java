@@ -1,18 +1,25 @@
 package com.midas.shootpointer.domain.comment.helper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.Mockito.times;
 
 import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.comment.repository.command.CommentCommandRepository;
 import com.midas.shootpointer.domain.comment.repository.query.CommentQueryRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.global.common.ErrorCode;
+import com.midas.shootpointer.global.exception.CustomException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -104,9 +111,81 @@ class CommentUtilImplTest {
 		then(commentQueryRepository).should().findAllByPostIdOrderByCreatedAtDesc(postId);
 	}
 	
+	@Test
+	@DisplayName("댓글 ID로 댓글 조회 성공")
+	void findCommentByCommentId_Success() {
+		// given
+		Comment comment = createComment();
+		Long commentId = comment.getCommentId();
+		
+		given(commentQueryRepository.findCommentByCommentId(commentId))
+			.willReturn(Optional.of(comment));
+		
+		// when
+		Comment result = commentUtil.findCommentByCommentId(commentId);
+		
+		// then
+		assertThat(result).isEqualTo(comment);
+		assertThat(result.getCommentId()).isEqualTo(commentId);
+		assertThat(result.getContent()).isEqualTo("테스트 댓글입니다.");
+		then(commentQueryRepository).should().findCommentByCommentId(commentId);
+	}
+	
+	@Test
+	@DisplayName("댓글 ID로 댓글 조회 실패 - 존재하지 않는 댓글")
+	void findCommentByCommentId_Failed_NotFound() {
+		// given
+		Long commentId = 999L;
+		
+		given(commentQueryRepository.findCommentByCommentId(commentId))
+			.willReturn(Optional.empty());
+		
+		// when-then
+		assertThatThrownBy(() -> commentUtil.findCommentByCommentId(commentId))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.IS_NOT_EXIST_COMMENT);
+		
+		then(commentQueryRepository).should().findCommentByCommentId(commentId);
+	}
+	
+	@Test
+	@DisplayName("댓글 삭제 성공 - soft delete 수행")
+	void delete_Success() {
+		// given
+		Comment comment = createComment();
+		
+		given(commentCommandRepository.save(comment)).willReturn(comment);
+		
+		// when
+		commentUtil.delete(comment);
+		
+		// then
+		then(commentCommandRepository).should(times(1)).save(comment);
+	}
+	
+	@Test
+	@DisplayName("여러 댓글 삭제 성공")
+	void delete_Multiple_Success() {
+		// given
+		Comment comment1 = createComment();
+		Comment comment2 = createComment();
+		Comment comment3 = createComment();
+		
+		given(commentCommandRepository.save(any(Comment.class)))
+			.willAnswer(invocation -> invocation.getArgument(0));
+		
+		// when
+		commentUtil.delete(comment1);
+		commentUtil.delete(comment2);
+		commentUtil.delete(comment3);
+		
+		// then
+		then(commentCommandRepository).should(times(3)).save(any(Comment.class));
+	}
+	
 	private Comment createComment() {
 		Member member = Member.builder()
-			.memberId(java.util.UUID.randomUUID())
+			.memberId(UUID.randomUUID())
 			.email("test@naver.com")
 			.username("test")
 			.build();
