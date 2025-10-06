@@ -1,11 +1,11 @@
 package com.midas.shootpointer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.output.OutputFrame;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -18,6 +18,7 @@ import java.time.Duration;
 @Testcontainers
 @TestConfiguration(proxyBeanMethods = false)
 @ConditionalOnExpression("!'${SPRING_ELASTICSEARCH_MODE:local}'.equals('external')")
+@Slf4j
 public class ElasticSearchTestContainer {
     private static final DockerImageName IMAGE_NAME =
             DockerImageName.parse("tkv00/elasticsearch-nori:7.17.9")
@@ -35,20 +36,17 @@ public class ElasticSearchTestContainer {
             Wait.forHttp("/")
                             .forStatusCode(200)
                             .withStartupTimeout(Duration.ofSeconds(180))
-            )
-            .withLogConsumer(outputFrame -> {
-                String log = outputFrame.getUtf8String();
-                if (outputFrame.getType() == OutputFrame.OutputType.STDERR ||
-                    (log != null && log.contains("ERROR"))) {
-                    System.err.print("[Elasticsearch ERROR] " + log);
-                }
-            });
+            );
 
     static {
-        System.out.println("========== [ElasticSearchTestContainer] Starting ==========");
-        container.start();
-        System.out.println("========== [ElasticSearchTestContainer] Started at: "
-                           + container.getHttpHostAddress() + " ==========");
+        log.info("========== [ElasticSearchTestContainer] Starting ==========");
+        try {
+            container.start();
+            log.info("========== [ElasticSearchTestContainer] Started at: {} ==========", container.getHttpHostAddress());
+        } catch (Exception e) {
+            log.error("Failed to start Elasticsearch container: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 
 
