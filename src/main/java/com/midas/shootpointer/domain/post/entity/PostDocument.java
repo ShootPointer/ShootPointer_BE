@@ -10,9 +10,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
 import java.time.LocalDateTime;
-@Profile("!dev")  // dev 프로파일이 아닐 때만 활성화
+
+@Profile("es")
 @Getter
-@Document(indexName = "post",createIndex = true)
+@Document(indexName = "post", createIndex = true)
 @Mapping(mappingPath = "elasticsearch/post-mapping.json")
 @Setting(settingPath = "elasticsearch/post-setting.json")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -29,7 +30,7 @@ public class PostDocument {
     private String content;
 
     @Field(type = FieldType.Keyword)
-    private HashTag hashTag;
+    private String hashTag;
 
     @Field(type = FieldType.Long)
     private Long likeCnt;
@@ -37,10 +38,10 @@ public class PostDocument {
     @Field(type = FieldType.Text)
     private String memberName;
 
-    @Field(type = FieldType.Date,format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
+    @Field(type = FieldType.Date, format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
     private LocalDateTime createdAt;
 
-    @Field(type = FieldType.Date,format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
+    @Field(type = FieldType.Date, format = {DateFormat.date_hour_minute_second_millis, DateFormat.epoch_millis})
     private LocalDateTime modifiedAt;
 
     @Field(type = FieldType.Text)
@@ -50,21 +51,21 @@ public class PostDocument {
     public PostDocument(Long postId,
                         String title,
                         String content,
-                        HashTag hashTag,
+                        String hashTag,
                         Long likeCnt,
                         String memberName,
                         LocalDateTime createdAt,
                         LocalDateTime modifiedAt,
                         String highlightUrl
-    ){
-        this.content=content;
-        this.hashTag=hashTag;
-        this.postId=postId;
-        this.title=title;
-        this.memberName=memberName;
-        this.likeCnt=likeCnt;
-        this.createdAt=createdAt;
-        this.modifiedAt=modifiedAt;
-        this.highlightUrl=highlightUrl;
+    ) {
+        this.content = content;
+        this.hashTag = hashTag;
+        this.postId = postId;
+        this.title = title;
+        this.memberName = memberName;
+        this.likeCnt = likeCnt;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+        this.highlightUrl = highlightUrl;
     }
 }

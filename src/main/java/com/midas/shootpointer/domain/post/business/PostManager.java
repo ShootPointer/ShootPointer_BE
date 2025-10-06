@@ -3,8 +3,8 @@ package com.midas.shootpointer.domain.post.business;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
-import com.midas.shootpointer.domain.post.dto.response.PostResponse;
+import com.midas.shootpointer.domain.post.dto.response.*;
+import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.helper.elastic.PostElasticSearchHelper;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.simple.PostHelper;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -154,19 +155,127 @@ public class PostManager {
     }
 
     @Transactional(readOnly = true)
-    public PostListResponse getPostByPostTitleOrPostContentByElasticSearch(String search,Long postId,int size){
-        // ElasticSearch가 사용 가능한 경우에만 실행
-        if (postElasticSearchHelper != null) {
-            List<PostResponse> elasticSearch =
-                    postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search, postId, size);
+    public PostListResponse getPostByPostTitleOrPostContentByElasticSearch(String search,int size,PostSort sort){
+        PostListResponseFactory factory=new PostListResponseFactory(postMapper);
 
-            if (!elasticSearch.isEmpty()){
-                return PostListResponse.of(elasticSearch.get(elasticSearch.size()-1).getPostId(),elasticSearch);
-            }
+        /**
+         * 0. ElasticSearch가 사용 가능한 경우에만 실행
+          */
+        if (postElasticSearchHelper == null) {
+            //일반 검색
+            return getPostEntitiesByPostTitleOrPostContent(search, sort.lastPostId(), size);
         }
-        
-        // ElasticSearch가 없거나 결과가 없는 경우 일반 검색
-        return getPostEntitiesByPostTitleOrPostContent(search, postId, size);
+
+        /**
+         * 1. size 및 검색값 유효성 검증.
+         */
+        postHelper.isValidSize(size);
+        if (!postHelper.isValidInput(search)){
+            //빈 값인 경우 -> 빈 리스트 반환.
+            return PostListResponse.withSort(sort.lastPostId(), Collections.emptyList(),sort);
+        }
+
+        /**
+         * 2. 해시태그 기반인지 일반 검색어 기반인지 확인
+         * 해시태그 기반인 경우
+         */
+        if (postElasticSearchHelper.isHashTagSearch(search)){
+            String cleanedSearch=postElasticSearchHelper.refinedHashTag(search);
+            List<PostSearchHit> postByHashTagByElasticSearch = postElasticSearchHelper.getPostByHashTagByElasticSearch(cleanedSearch, size, sort);
+
+            return factory.build(postByHashTagByElasticSearch,sort);
+        }
+
+        /**
+         * 3. 일반 검색어 기반 게시물 검색 조회
+         *    게시물 정렬 조건 + 검색어 게시물 검색 , _score 조회
+         */
+        List<PostSearchHit> responses=postElasticSearchHelper.getPostByTitleOrContentByElasticSearch(search,size,sort);
+
+        return factory.build(responses,sort);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SearchAutoCompleteResponse> suggest(String keyword){
+        PostListResponseFactory factory=new PostListResponseFactory(postMapper);
+        /**
+         * 0. ElasticSearch가 사용 가능한 경우에만 실행
+         */
+        if (postElasticSearchHelper == null) {
+            //일반 검색
+            return Collections.emptyList();
+        }
+
+        /**
+         * 1.검색값 유효성 검증.
+         */
+        if (!postHelper.isValidInput(keyword)){
+            //빈 값인 경우 -> 빈 리스트 반환.
+            return Collections.emptyList();
+        }
+
+        /*
+          2. 해시태그 기반인지 일반 검색어 기반인지 확인
+          해시태그 기반인 경우
+         */
+        if (postElasticSearchHelper.isHashTagSearch(keyword)){
+            String cleanedKeyword=postElasticSearchHelper.refinedHashTag(keyword);
+            List<String> postByHashTagByElasticSearch = postElasticSearchHelper.suggestCompleteSearchWithHashTag(cleanedKeyword);
+
+            return factory.build(postByHashTagByElasticSearch);
+        }
+
+        /**
+         * 3. 일반 검색어 자동 완성
+         */
+
+        List<String> postByHashTagByElasticSearch = postElasticSearchHelper.suggestCompleteSearch(keyword);
+
+        return factory.build(postByHashTagByElasticSearch);
+    }
+
+    /**
+     * List<PostSearchHit> -> PostListResponse 변환 inner class
+     */
+    @RequiredArgsConstructor
+    static class PostListResponseFactory{
+
+        private final PostMapper mapper;
+        public PostListResponse build(List<PostSearchHit> responses,PostSort sort){
+            if (responses.isEmpty()){
+                //빈 값인 경우 -> 빈 리스트 반환.
+                return PostListResponse.withSort(sort.lastPostId(), Collections.emptyList(),sort);
+            }
+
+            //결과값이 존재하는 경우 - 마지막 게시물의 정렬 기준 전송
+            int last=responses.size()-1;
+
+            PostDocument lastResponse=responses.get(last).doc();
+            PostSort newSort=new PostSort(responses.get(last)._score(),
+                    lastResponse.getLikeCnt(),
+                    lastResponse.getPostId()
+            );
+
+            /**
+             *  List<PostDocument> -> List<PostResponse> 형태로 변환
+             */
+            List<PostResponse> postResponses=responses.stream()
+                    .map(hit->mapper.documentToResponse(hit.doc()))
+                    .toList();
+
+            return PostListResponse.withSort(lastResponse.getPostId(),postResponses,newSort);
+        }
+        public List<SearchAutoCompleteResponse> build(List<String> responses){
+            /**
+             * 1. responses가 빈 값인지 확인
+             */
+            if (responses==null) return Collections.emptyList();
+
+            return responses.stream()
+                    .map(SearchAutoCompleteResponse::of)
+                    .toList();
+        }
+
     }
 
 }

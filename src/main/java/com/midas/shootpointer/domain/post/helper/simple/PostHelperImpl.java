@@ -35,6 +35,16 @@ public class PostHelperImpl implements PostHelper{
     }
 
     @Override
+    public void isValidSize(int size) {
+        postValidation.isValidSize(size);
+    }
+
+    @Override
+    public boolean isValidInput(String input) {
+        return postValidation.isValidInput(input);
+    }
+
+    @Override
     public PostOrderType isValidAndGetPostOrderType(String type) {
         return postUtil.isValidAndGetPostOrderType(type);
     }

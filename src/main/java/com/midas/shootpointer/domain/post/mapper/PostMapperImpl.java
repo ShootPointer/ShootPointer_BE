@@ -6,8 +6,10 @@ import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -26,7 +28,7 @@ public class PostMapperImpl implements PostMapper{
     public PostResponse entityToDto(PostEntity post) {
         return PostResponse.builder()
                 .memberName(post.getMember().getUsername())
-                .hashTag(post.getHashTag())
+                .hashTag(post.getHashTag().getName())
                 .postId(post.getPostId())
                 .title(post.getTitle())
                 .modifiedAt(post.getModifiedAt())
@@ -41,7 +43,7 @@ public class PostMapperImpl implements PostMapper{
     public PostListResponse entityToDto(List<PostEntity> postEntityList) {
         //값이 없는 경우
         if (postEntityList.isEmpty()){
-            return PostListResponse.of(922337203685477580L,List.of());
+            return PostListResponse.of(922337203685477580L, Collections.emptyList());
         }
 
         //게시물 응답 Dto 리스트 변환
@@ -54,18 +56,19 @@ public class PostMapperImpl implements PostMapper{
         return PostListResponse.of(postResponses.get(size-1).getPostId(),postResponses);
     }
 
+    @Profile("es")
     @Override
-    public PostDocument documentToEntity(PostEntity entity) {
-        return PostDocument.builder()
-                .postId(entity.getPostId())
-                .modifiedAt(entity.getModifiedAt())
-                .createdAt(entity.getCreatedAt())
-                .content(entity.getContent())
-                .hashTag(entity.getHashTag())
-                .highlightUrl(entity.getHighlight().getHighlightURL())
-                .likeCnt(entity.getLikeCnt())
-                .memberName(entity.getMember().getUsername())
-                .title(entity.getTitle())
+    public PostResponse documentToResponse(PostDocument document) {
+         return PostResponse.builder()
+                .title(document.getTitle())
+                .content(document.getContent())
+                .createdAt(document.getCreatedAt())
+                .memberName(document.getMemberName())
+                .hashTag(document.getHashTag())
+                .highlightUrl(document.getHighlightUrl())
+                .likeCnt(document.getLikeCnt())
+                .modifiedAt(document.getModifiedAt())
+                .postId(document.getPostId())
                 .build();
     }
 }

@@ -1,0 +1,17 @@
+#elastic search 환경
+spring:
+  elasticsearch:
+    uris: http://localhost:9200
+    # repository 활성화
+    repositories:
+      enabled: true
+
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+logging:
+  level:
+    org.springframework.data.elasticsearch: DEBUG
+    org.testcontainers: DEBUG
+    org.testcontainers.utility: TRACE

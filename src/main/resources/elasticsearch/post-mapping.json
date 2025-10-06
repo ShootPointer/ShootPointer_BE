@@ -1,11 +1,14 @@
 {
   "properties": {
-    "id": {
+    "postId": {
       "type": "long"
     },
     "title": {
       "type": "text",
-      "analyzer": "nori"
+      "analyzer": "nori",
+      "fields": {
+        "keyword": { "type": "keyword" }
+      }
     },
     "content": {
       "type": "text",
@@ -13,6 +16,20 @@
     },
     "hashTag": {
       "type": "keyword"
+    },
+    "likeCnt": {
+      "type": "long"
+    },
+    "createdAt": {
+      "type": "date",
+      "format": "yyyy-MM-dd'T'HH:mm:ss.SSS||yyyy-MM-dd'T'HH:mm:ss||epoch_millis"
+    },
+    "modifiedAt": {
+      "type": "date",
+      "format":"yyyy-MM-dd'T'HH:mm:ss.SSS||yyyy-MM-dd'T'HH:mm:ss||epoch_millis"
+    },
+    "highlightUrl": {
+      "type": "text"
     }
   }
 }
