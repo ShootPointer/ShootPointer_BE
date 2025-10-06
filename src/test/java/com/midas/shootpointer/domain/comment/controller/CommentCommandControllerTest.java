@@ -2,9 +2,13 @@ package com.midas.shootpointer.domain.comment.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -21,6 +25,7 @@ import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -152,6 +157,89 @@ class CommentCommandControllerTest {
 				.content(objectMapper.writeValueAsString(requestDto)))
 			.andExpect(status().is2xxSuccessful())
 			.andDo(print());
+	}
+	
+	
+	@Test
+	@DisplayName("댓글 삭제 성공")
+	@WithMockCustomMember
+	void delete_Success() throws Exception {
+		// given
+		Long commentId = 1L;
+		
+		willDoNothing().given(commentCommandService).delete(commentId, UUID.fromString("00000000-0000-0000-0000-000000000000"));
+		
+		// when-then
+		mockMvc.perform(delete(baseUrl + "/" + commentId))
+			.andExpect(status().isNoContent())
+			.andDo(print());
+	}
+	
+	@Test
+	@DisplayName("댓글 삭제 실패 - 존재하지 않는 댓글")
+	@WithMockCustomMember
+	void delete_Failed_CommentNotFound() throws Exception {
+		// given
+		Long commentId = 999L;
+		
+		willThrow(new CustomException(ErrorCode.IS_NOT_EXIST_COMMENT))
+			.given(commentCommandService).delete(eq(commentId), any(UUID.class));
+		
+		// when-then
+		mockMvc.perform(delete(baseUrl + "/" + commentId))
+			.andExpect(status().is2xxSuccessful())
+			.andDo(print());
+		
+		verify(commentCommandService, times(1)).delete(eq(commentId), any(UUID.class));
+	}
+	
+	@Test
+	@DisplayName("댓글 삭제 실패 - 권한 없음 (작성자가 아님)")
+	@WithMockCustomMember
+	void delete_Failed_Forbidden() throws Exception {
+		// given
+		Long commentId = 1L;
+		
+		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_DELETE))
+			.given(commentCommandService).delete(eq(commentId), any(UUID.class));
+		
+		// when-then
+		mockMvc.perform(delete(baseUrl + "/" + commentId))
+			.andExpect(status().is2xxSuccessful())
+			.andDo(print());
+		
+		verify(commentCommandService, times(1)).delete(eq(commentId), any(UUID.class));
+	}
+	
+	@Test
+	@DisplayName("여러 댓글 순차적 삭제 성공")
+	@WithMockCustomMember
+	void delete_Multiple_Success() throws Exception {
+		// given
+		Long commentId1 = 1L;
+		Long commentId2 = 2L;
+		Long commentId3 = 3L;
+		
+		willDoNothing().given(commentCommandService).delete(eq(commentId1), any(UUID.class));
+		willDoNothing().given(commentCommandService).delete(eq(commentId2), any(UUID.class));
+		willDoNothing().given(commentCommandService).delete(eq(commentId3), any(UUID.class));
+		
+		// when-then
+		mockMvc.perform(delete(baseUrl + "/" + commentId1))
+			.andExpect(status().isNoContent())
+			.andDo(print());
+		
+		mockMvc.perform(delete(baseUrl + "/" + commentId2))
+			.andExpect(status().isNoContent())
+			.andDo(print());
+		
+		mockMvc.perform(delete(baseUrl + "/" + commentId3))
+			.andExpect(status().isNoContent())
+			.andDo(print());
+		
+		verify(commentCommandService, times(1)).delete(eq(commentId1), any(UUID.class));
+		verify(commentCommandService, times(1)).delete(eq(commentId2), any(UUID.class));
+		verify(commentCommandService, times(1)).delete(eq(commentId3), any(UUID.class));
 	}
 	
 	private Member createMember() {

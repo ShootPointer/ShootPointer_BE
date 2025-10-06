@@ -105,9 +105,10 @@ public enum ErrorCode {
 
     //607(post-business) part
     IS_NOT_EXIST_POST(60701,HttpStatus.FORBIDDEN,"존재하지 않는 게시물입니다."),
-
+    
     // 806(comment - helper) part
-    INVALID_COMMENT_CONTENT(80601, HttpStatus.BAD_REQUEST, "유효하지 않은 댓글 내용입니다.");
+    IS_NOT_EXIST_COMMENT(80601, HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다."),
+    FORBIDDEN_COMMENT_DELETE(80602, HttpStatus.FORBIDDEN, "댓글 삭제 권한이 없습니다.");
 
 
     private final Integer code;

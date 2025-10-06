@@ -10,6 +10,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 
 import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.comment.helper.CommentHelper;
@@ -20,6 +21,7 @@ import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -167,6 +169,8 @@ class CommentManagerTest {
 		then(commentHelper).should(never()).findAllByPostIdOrderByCreatedAtDesc(anyLong());
 	}
 	
+	
+	
 	private Comment createComment() {
 		Member member = Member.builder()
 			.memberId(java.util.UUID.randomUUID())
@@ -183,6 +187,145 @@ class CommentManagerTest {
 			.member(member)
 			.post(post)
 			.build();
+	}
+	
+	@Test
+	@DisplayName("댓글 삭제 성공 - 댓글 작성자가 삭제")
+	void delete_Success() {
+		// given
+		Comment comment = createComment();
+		Long commentId = comment.getCommentId();
+		UUID memberId = comment.getMember().getMemberId();
+		
+		given(commentHelper.findCommentByCommentId(commentId)).willReturn(comment);
+		willDoNothing().given(commentHelper).validateCommentOwner(comment, memberId);
+		willDoNothing().given(commentHelper).delete(comment);
+		
+		// when
+		commentManager.delete(commentId, memberId);
+		
+		// then
+		then(commentHelper).should(times(1)).findCommentByCommentId(commentId);
+		then(commentHelper).should(times(1)).validateCommentOwner(comment, memberId);
+		then(commentHelper).should(times(1)).delete(comment);
+	}
+	
+	@Test
+	@DisplayName("댓글 삭제 실패 - 존재하지 않는 댓글")
+	void delete_Failed_CommentNotFound() {
+		// given
+		Long commentId = 999L;
+		UUID memberId = UUID.randomUUID();
+		
+		given(commentHelper.findCommentByCommentId(commentId))
+			.willThrow(new CustomException(ErrorCode.IS_NOT_EXIST_COMMENT));
+		
+		// when-then
+		assertThatThrownBy(() -> commentManager.delete(commentId, memberId))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.IS_NOT_EXIST_COMMENT);
+		
+		then(commentHelper).should(times(1)).findCommentByCommentId(commentId);
+		then(commentHelper).should(never()).validateCommentOwner(any(), any());
+		then(commentHelper).should(never()).delete(any());
+	}
+	
+	@Test
+	@DisplayName("댓글 삭제 실패 - 댓글 작성자가 아닌 사용자")
+	void delete_Failed_NotCommentOwner() {
+		// given
+		UUID otherMemberId = UUID.randomUUID();
+		Comment comment = createComment();
+		Long commentId = comment.getCommentId();
+		
+		given(commentHelper.findCommentByCommentId(commentId)).willReturn(comment);
+		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_DELETE))
+			.given(commentHelper).validateCommentOwner(comment, otherMemberId);
+		
+		// when-then
+		assertThatThrownBy(() -> commentManager.delete(commentId, otherMemberId))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_DELETE);
+		
+		then(commentHelper).should(times(1)).findCommentByCommentId(commentId);
+		then(commentHelper).should(times(1)).validateCommentOwner(comment, otherMemberId);
+		then(commentHelper).should(never()).delete(any());
+	}
+	
+	@Test
+	@DisplayName("댓글 삭제 실패 - null 댓글 ID")
+	void delete_Failed_NullCommentId() {
+		// given
+		UUID memberId = UUID.randomUUID();
+		
+		given(commentHelper.findCommentByCommentId(null))
+			.willThrow(new CustomException(ErrorCode.IS_NOT_EXIST_COMMENT));
+		
+		// when-then
+		assertThatThrownBy(() -> commentManager.delete(null, memberId))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.IS_NOT_EXIST_COMMENT);
+		
+		then(commentHelper).should(times(1)).findCommentByCommentId(null);
+		then(commentHelper).should(never()).validateCommentOwner(any(), any());
+		then(commentHelper).should(never()).delete(any());
+	}
+	
+	@Test
+	@DisplayName("댓글 삭제 실패 - null 회원 ID")
+	void delete_Failed_NullMemberId() {
+		// given
+		Comment comment = createComment();
+		Long commentId = comment.getCommentId();
+		
+		given(commentHelper.findCommentByCommentId(commentId)).willReturn(comment);
+		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_DELETE))
+			.given(commentHelper).validateCommentOwner(comment, null);
+		
+		// when-then
+		assertThatThrownBy(() -> commentManager.delete(commentId, null))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_DELETE);
+		
+		then(commentHelper).should(times(1)).findCommentByCommentId(commentId);
+		then(commentHelper).should(times(1)).validateCommentOwner(comment, null);
+		then(commentHelper).should(never()).delete(any());
+	}
+	
+	@Test
+	@DisplayName("여러 댓글 순차적 삭제 성공")
+	void delete_Multiple_Success() {
+		// given
+		UUID memberId = UUID.randomUUID();
+		Long commentId1 = 1L;
+		Long commentId2 = 2L;
+		Long commentId3 = 3L;
+		
+		Comment comment1 = createCommentWithOwner(commentId1, memberId);
+		Comment comment2 = createCommentWithOwner(commentId2, memberId);
+		Comment comment3 = createCommentWithOwner(commentId3, memberId);
+		
+		given(commentHelper.findCommentByCommentId(commentId1)).willReturn(comment1);
+		given(commentHelper.findCommentByCommentId(commentId2)).willReturn(comment2);
+		given(commentHelper.findCommentByCommentId(commentId3)).willReturn(comment3);
+		
+		willDoNothing().given(commentHelper).validateCommentOwner(comment1, memberId);
+		willDoNothing().given(commentHelper).validateCommentOwner(comment2, memberId);
+		willDoNothing().given(commentHelper).validateCommentOwner(comment3, memberId);
+		
+		willDoNothing().given(commentHelper).delete(comment1);
+		willDoNothing().given(commentHelper).delete(comment2);
+		willDoNothing().given(commentHelper).delete(comment3);
+		
+		// when
+		commentManager.delete(commentId1, memberId);
+		commentManager.delete(commentId2, memberId);
+		commentManager.delete(commentId3, memberId);
+		
+		// then
+		then(commentHelper).should(times(1)).delete(comment1);
+		then(commentHelper).should(times(1)).delete(comment2);
+		then(commentHelper).should(times(1)).delete(comment3);
 	}
 	
 	private Comment createCommentWithId(Long commentId, String content, PostEntity post) {
@@ -205,6 +348,25 @@ class CommentManagerTest {
 			.memberId(java.util.UUID.randomUUID())
 			.email("test@naver.com")
 			.username("test")
+			.build();
+	}
+	
+	private Comment createCommentWithOwner(Long commentId, UUID ownerId) {
+		Member owner = Member.builder()
+			.memberId(ownerId)
+			.email("owner@test.com")
+			.username("owner")
+			.build();
+		
+		PostEntity post = PostEntity.builder()
+			.postId(1L)
+			.build();
+		
+		return Comment.builder()
+			.commentId(commentId)
+			.content("테스트 댓글")
+			.member(owner)
+			.post(post)
 			.build();
 	}
 }

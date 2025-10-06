@@ -16,6 +16,7 @@ import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -130,9 +131,93 @@ class CommentHelperImplTest {
 		then(commentUtil).should().findAllByPostIdOrderByCreatedAtDesc(postId);
 	}
 	
+	@Test
+	@DisplayName("댓글 ID로 댓글 조회 성공")
+	void findCommentByCommentId_Success() {
+		// given
+		Comment comment = createComment();
+		Long commentId = comment.getCommentId();
+		
+		given(commentUtil.findCommentByCommentId(commentId)).willReturn(comment);
+		
+		// when
+		Comment result = commentHelper.findCommentByCommentId(commentId);
+		
+		// then
+		assertThat(result).isEqualTo(comment);
+		assertThat(result.getCommentId()).isEqualTo(commentId);
+		then(commentUtil).should().findCommentByCommentId(commentId);
+	}
+	
+	@Test
+	@DisplayName("댓글 ID로 댓글 조회 실패 - 존재하지 않는 댓글")
+	void findCommentByCommentId_Failed_NotFound() {
+		// given
+		Long commentId = 999L;
+		
+		given(commentUtil.findCommentByCommentId(commentId))
+			.willThrow(new CustomException(ErrorCode.IS_NOT_EXIST_COMMENT));
+		
+		// when-then
+		assertThatThrownBy(() -> commentHelper.findCommentByCommentId(commentId))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.IS_NOT_EXIST_COMMENT);
+		
+		then(commentUtil).should().findCommentByCommentId(commentId);
+	}
+	
+	@Test
+	@DisplayName("댓글 삭제 성공")
+	void delete_Success() {
+		// given
+		Comment comment = createComment();
+		
+		willDoNothing().given(commentUtil).delete(comment);
+		
+		// when
+		commentHelper.delete(comment);
+		
+		// then
+		then(commentUtil).should().delete(comment);
+	}
+	
+	@Test
+	@DisplayName("댓글 작성자 검증 성공")
+	void validateCommentOwner_Success() {
+		// given
+		Comment comment = createComment();
+		UUID memberId = comment.getMember().getMemberId();
+		
+		willDoNothing().given(commentValidation).validateCommentOwner(comment, memberId);
+		
+		// when
+		commentHelper.validateCommentOwner(comment, memberId);
+		
+		// then
+		then(commentValidation).should().validateCommentOwner(comment, memberId);
+	}
+	
+	@Test
+	@DisplayName("댓글 작성자 검증 실패 - 권한 없음")
+	void validateCommentOwner_Failed_Forbidden() {
+		// given
+		UUID otherMemberId = UUID.randomUUID();
+		Comment comment = createComment();
+		
+		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_DELETE))
+			.given(commentValidation).validateCommentOwner(comment, otherMemberId);
+		
+		// when-then
+		assertThatThrownBy(() -> commentHelper.validateCommentOwner(comment, otherMemberId))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_DELETE);
+		
+		then(commentValidation).should().validateCommentOwner(comment, otherMemberId);
+	}
+	
 	private Comment createComment() {
 		Member member = Member.builder()
-			.memberId(java.util.UUID.randomUUID())
+			.memberId(UUID.randomUUID())
 			.email("test@naver.com")
 			.username("test")
 			.build();
@@ -150,7 +235,7 @@ class CommentHelperImplTest {
 	
 	private Comment createCommentWithId(Long commentId, String content, PostEntity post) {
 		Member member = Member.builder()
-			.memberId(java.util.UUID.randomUUID())
+			.memberId(UUID.randomUUID())
 			.email("test@naver.com")
 			.username("test")
 			.build();

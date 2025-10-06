@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.comment.repository.query;
 
 import com.midas.shootpointer.domain.comment.entity.Comment;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +16,6 @@ public interface CommentQueryRepository extends JpaRepository<Comment, Long> {
 		"WHERE c.post.postId = :postId " +
 		"ORDER BY c.createdAt DESC")
 	List<Comment> findAllByPostIdOrderByCreatedAtDesc(@Param("postId") Long postId);
+	
+	Optional<Comment> findCommentByCommentId(Long commentId);
 }
