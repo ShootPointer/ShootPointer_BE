@@ -171,7 +171,7 @@ class CommentCommandControllerTest {
 		
 		// when-then
 		mockMvc.perform(delete(baseUrl + "/" + commentId))
-			.andExpect(status().isOk())
+			.andExpect(status().isNoContent())
 			.andExpect(jsonPath("$.success").value(true))
 			.andDo(print());
 	}
@@ -227,15 +227,15 @@ class CommentCommandControllerTest {
 		
 		// when-then
 		mockMvc.perform(delete(baseUrl + "/" + commentId1))
-			.andExpect(status().isOk())
+			.andExpect(status().isNoContent())
 			.andDo(print());
 		
 		mockMvc.perform(delete(baseUrl + "/" + commentId2))
-			.andExpect(status().isOk())
+			.andExpect(status().isNoContent())
 			.andDo(print());
 		
 		mockMvc.perform(delete(baseUrl + "/" + commentId3))
-			.andExpect(status().isOk())
+			.andExpect(status().isNoContent())
 			.andDo(print());
 		
 		verify(commentCommandService, times(1)).delete(eq(commentId1), any(UUID.class));
