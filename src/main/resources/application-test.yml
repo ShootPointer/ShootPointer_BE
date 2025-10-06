@@ -15,3 +15,8 @@ spring:
   elasticsearch:
     mode: ${SPRING_ELASTICSEARCH_MODE:local}
     uris: ${SPRING_ELASTICSEARCH_URIS:http://localhost:9200}
+    connection-timeout: 10s
+    socket-timeout: 30s
+    restclient:
+      sniffer:
+        interval: 5m
