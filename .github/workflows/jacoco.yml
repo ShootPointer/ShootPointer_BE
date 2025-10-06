@@ -78,6 +78,7 @@ jobs:
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: postgres
           TESTCONTAINERS_RYUK_DISABLED: true
+          SPRING_ELASTICSEARCH_MODE: external 
       
       - name: Upload JUnit Test Report
         if: always()
