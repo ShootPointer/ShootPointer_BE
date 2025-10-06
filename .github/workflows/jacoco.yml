@@ -40,11 +40,11 @@ jobs:
           xpack.security.http.ssl.enabled: "false"
           ES_JAVA_OPTS: "-Xms256m -Xmx256m"
         options: >-
-          --health-cmd "curl -f http://localhost:9200/_cluster/health || exit 1"
-          --health-interval=10s
+          --health-cmd "curl -s http://localhost:9200/_cluster/health?wait_for_status=yellow > /dev/null || exit 1"
+          --health-interval=15s
           --health-timeout=10s
-          --health-retries=20
-          --health-start-period=60s
+          --health-retries=30
+          --health-start-period=90s
     
     steps:
       - uses: actions/checkout@v3
