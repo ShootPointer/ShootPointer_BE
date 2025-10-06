@@ -8,4 +8,8 @@ public interface CommentUtil {
 	Comment save(Comment comment);
 	
 	List<Comment> findAllByPostIdOrderByCreatedAtDesc(Long postId);
+	
+	Comment findCommentByCommentId(Long commentId);
+	
+	void delete(Comment comment);
 }

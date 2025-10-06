@@ -4,6 +4,7 @@ import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.comment.helper.CommentHelper;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,5 +28,12 @@ public class CommentManager {
 		postHelper.findPostByPostId(postId);
 		
 		return commentHelper.findAllByPostIdOrderByCreatedAtDesc(postId); // 최신순으로 댓글을 모두 조회
+	}
+	
+	@Transactional
+	public void delete(Long commentId, UUID memberId) {
+		Comment comment = commentHelper.findCommentByCommentId(commentId);
+		commentHelper.validateCommentOwner(comment, memberId);
+		commentHelper.delete(comment);
 	}
 }

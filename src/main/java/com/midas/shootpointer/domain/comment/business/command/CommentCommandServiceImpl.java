@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.comment.business.command;
 
 import com.midas.shootpointer.domain.comment.business.CommentManager;
 import com.midas.shootpointer.domain.comment.entity.Comment;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,4 +19,9 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 		return commentManager.save(comment);
 	}
 	
+	@Override
+	@Transactional
+	public void delete(Long commentId, UUID memberId) {
+		commentManager.delete(commentId, memberId);
+	}
 }
