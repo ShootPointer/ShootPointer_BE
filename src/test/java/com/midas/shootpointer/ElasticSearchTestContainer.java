@@ -18,7 +18,7 @@ import java.time.Duration;
 @Testcontainers
 @TestConfiguration(proxyBeanMethods = false)
 @ConditionalOnProperty(
-        name = "SPRING_ELASTICSEARCH_MODE",
+        name = "spring.elasticsearch.mode",
         havingValue = "local",
         matchIfMissing = true  // 환경변수가 없으면 local로 간주 (기본값)
 )
