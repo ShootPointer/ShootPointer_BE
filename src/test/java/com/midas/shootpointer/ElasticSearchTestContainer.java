@@ -1,7 +1,7 @@
 package com.midas.shootpointer;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -17,7 +17,11 @@ import java.time.Duration;
 @Profile({"es","test"})
 @Testcontainers
 @TestConfiguration(proxyBeanMethods = false)
-@ConditionalOnExpression("!'${SPRING_ELASTICSEARCH_MODE:local}'.equals('external')")
+@ConditionalOnProperty(
+        name = "SPRING_ELASTICSEARCH_MODE",
+        havingValue = "local",
+        matchIfMissing = true  // 환경변수가 없으면 local로 간주 (기본값)
+)
 @Slf4j
 public class ElasticSearchTestContainer {
     private static final DockerImageName IMAGE_NAME =

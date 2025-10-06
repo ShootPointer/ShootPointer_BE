@@ -13,4 +13,5 @@ spring:
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create-drop}
 
   elasticsearch:
-    mode: container
+    mode: ${SPRING_ELASTICSEARCH_MODE:local}
+    uris: ${SPRING_ELASTICSEARCH_URIS:http://localhost:9200}
