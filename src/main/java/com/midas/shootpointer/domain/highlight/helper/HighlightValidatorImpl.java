@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -77,5 +78,13 @@ public class HighlightValidatorImpl implements HighlightValidator{
         }
 
         return Files.exists(path) && Files.isDirectory(path);
+    }
+
+    @Override
+    public void areValidFiles(List<MultipartFile> files) {
+        files.forEach(file->{
+            isValidFileSize(file);
+            isValidMp4File(file);
+        });
     }
 }

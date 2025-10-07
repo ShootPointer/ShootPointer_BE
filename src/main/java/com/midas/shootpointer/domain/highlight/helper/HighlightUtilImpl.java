@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.highlight.helper;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -25,6 +27,7 @@ public class HighlightUtilImpl implements HighlightUtil{
 
     private final HighlightQueryRepository highlightQueryRepository;
 
+    private final HighlightCommandRepository highlightCommandRepository;
 
     @Override
     public String getDirectoryPath(String highlightKey) {
@@ -45,6 +48,11 @@ public class HighlightUtilImpl implements HighlightUtil{
     public HighlightEntity findHighlightByHighlightId(UUID highlightId) {
         return highlightQueryRepository.findByHighlightId(highlightId)
                 .orElseThrow(()->new CustomException(ErrorCode.NOT_EXIST_HIGHLIGHT));
+    }
+
+    @Override
+    public List<HighlightEntity> savedAll(List<HighlightEntity> entities) {
+        return highlightCommandRepository.saveAll(entities);
     }
 
 }

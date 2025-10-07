@@ -25,6 +25,7 @@ public enum ErrorCode {
 
      * <p>
      * - Package
+     * entity                      0
      * controller:                 1
      * service:                    2
      * repository:                 3
@@ -93,9 +94,11 @@ public enum ErrorCode {
     INVALID_DELETE_LIKE(70602,HttpStatus.BAD_REQUEST,"잘못된 좋아요 요청입니다."),
     NOT_FOUND_LIKE(70603,HttpStatus.NOT_FOUND,"좋아요를 찾을 수 없습니다."),
 
+    //200(highlight - entity) part
+    IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID(20001,HttpStatus.FORBIDDEN,"유저의 하이라이트 영상이 아닙니다."),
+    EXISTED_SELECTED(20002,HttpStatus.BAD_REQUEST,"이미 선택된 하이라이트 영상입니다."),
 
-    //206(highlight - helper) part
-    IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID(20601,HttpStatus.FORBIDDEN,"유저의 하이라이트 영상이 아닙니다."),
+    //206(highlight - helper) part,
     IS_NOT_CORRECT_HASH_TAG(20602,HttpStatus.BAD_REQUEST,"잘못된 카테고리 입력입니다."),
     NOT_EXIST_HIGHLIGHT(20603,HttpStatus.FORBIDDEN,"존재하지 않는 하이라이트 영상입니다."),
 
@@ -107,6 +110,9 @@ public enum ErrorCode {
 
     //607(post-business) part
     IS_NOT_EXIST_POST(60701,HttpStatus.FORBIDDEN,"존재하지 않는 게시물입니다."),
+
+
+
     ;
 
 

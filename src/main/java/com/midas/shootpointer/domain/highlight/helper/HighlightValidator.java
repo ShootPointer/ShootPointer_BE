@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.highlight.helper;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface HighlightValidator {
@@ -11,4 +12,5 @@ public interface HighlightValidator {
     void isValidMp4File(MultipartFile file);
     void isValidFileSize(MultipartFile file);
     boolean isExistDirectory(String directory);
+    void areValidFiles(List<MultipartFile> files);
 }

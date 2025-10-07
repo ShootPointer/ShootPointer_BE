@@ -28,4 +28,16 @@ public class Member extends BaseEntity {
     @Convert(converter = EncryptionHelper.class)
     private String email;
 
+    @Override
+    public boolean equals(Object o){
+        if(this==o) return true;
+        if(!(o instanceof Member)) return false;
+        Member other=(Member) o;
+        return Objects.equals(memberId,other.memberId);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hashCode(memberId);
+    }
 }
