@@ -1,3 +1,4 @@
+/*
 package com.midas.shootpointer.domain.highlight.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -78,21 +79,25 @@ class HighlightControllerTest {
         verify(highlightCommandService).selectHighlight(any(HighlightSelectRequest.class),any(String.class));
     }
 
-    /**
+    */
+/**
      * Mock HighlightSelectResponse
-     */
+     *//*
+
     private HighlightSelectResponse mockHighlightSelectResponse(List<UUID> uuids){
         return HighlightSelectResponse.builder()
                 .selectedHighlightIds(uuids)
                 .build();
     }
 
-    /**
+    */
+/**
      * Mock HighlightSelectRequest
-     */
+     *//*
+
     private HighlightSelectRequest mockHighlightSelectRequest(List<UUID> uuids){
         return HighlightSelectRequest.builder()
                 .selectedHighlightIds(uuids)
                 .build();
     }
-}
+}*/

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -20,6 +21,11 @@ public class HighlightHelperImpl implements HighlightHelper{
     @Override
     public HighlightEntity findHighlightByHighlightId(UUID highlightId) {
         return highlightUtil.findHighlightByHighlightId(highlightId);
+    }
+
+    @Override
+    public List<HighlightEntity> savedAll(List<HighlightEntity> entities) {
+        return highlightUtil.savedAll(entities);
     }
 
     @Override
@@ -50,5 +56,10 @@ public class HighlightHelperImpl implements HighlightHelper{
     @Override
     public boolean isExistDirectory(String directory) {
         return highlightValidator.isExistDirectory(directory);
+    }
+
+    @Override
+    public void areValidFiles(List<MultipartFile> files) {
+
     }
 }

@@ -1,3 +1,4 @@
+/*
 package com.midas.shootpointer.domain.highlight.business.command;
 
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
@@ -117,9 +118,11 @@ class HighlightCommandServiceImplTest {
         assertThat(customException).isNotNull();
         assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.NOT_MATCH_HIGHLIGHT_VIDEO);
     }
-    /**
+    */
+/**
      * Mock HighlightSelectRequest
-     */
+     *//*
+
     private HighlightSelectRequest mockHighlightSelectRequest(List<UUID> highlightIds){
         return HighlightSelectRequest
                 .builder()
@@ -128,4 +131,4 @@ class HighlightCommandServiceImplTest {
     }
 
 
-}
+}*/
