@@ -1,13 +1,12 @@
 package com.midas.shootpointer.domain.highlight.helper;
 
-import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,20 +14,18 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class HighlightValidatorImplTest {
     @InjectMocks
+    @Spy
     private HighlightValidatorImpl highlightValidator;
-
-    @Mock
-    private HighlightQueryRepository highlightQueryRepository;
 
 
     @Test
@@ -169,5 +166,35 @@ class HighlightValidatorImplTest {
 
         //when & then
         assertThat(highlightValidator.isExistDirectory(tempDir)).isFalse();
+    }
+
+    @Test
+    @DisplayName("여러 파일들의 사이즈 유효성 검증과 mp4파일 유효성 검증을 실시합니다.")
+    void areValidFiles(){
+        //given
+        byte[] content = new byte[(int) (10 * 1024)];
+        MultipartFile file1 = new MockMultipartFile(
+                "file",
+                "test1.mp4",
+                "video/mp4",
+                content
+        );
+        MultipartFile file2 = new MockMultipartFile(
+                "file",
+                "test2.mp4",
+                "video/mp4",
+                content
+        );
+
+        List<MultipartFile> files=List.of(file1,file2);
+
+        //when
+        highlightValidator.areValidFiles(files);
+
+        //then
+        verify(highlightValidator,times(2))
+                .isValidFileSize(any(MultipartFile.class));
+        verify(highlightValidator,times(2))
+                .isValidMp4File(any(MultipartFile.class));
     }
 }
