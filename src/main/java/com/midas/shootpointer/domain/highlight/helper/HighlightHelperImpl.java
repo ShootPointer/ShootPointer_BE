@@ -11,7 +11,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class HighlightHelperImpl implements HighlightHelper{
-    private final HighlightUtilImpl highlightUtil;
+    private final HighlightUtil highlightUtil;
     private final HighlightValidator highlightValidator;
     @Override
     public String getDirectoryPath(String highlightKey) {
@@ -50,7 +50,7 @@ public class HighlightHelperImpl implements HighlightHelper{
 
     @Override
     public void isValidFileSize(MultipartFile file) {
-        highlightValidator.isValidMp4File(file);
+        highlightValidator.isValidFileSize(file);
     }
 
     @Override
@@ -60,6 +60,6 @@ public class HighlightHelperImpl implements HighlightHelper{
 
     @Override
     public void areValidFiles(List<MultipartFile> files) {
-
+        highlightValidator.areValidFiles(files);
     }
 }
