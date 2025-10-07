@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class HighlightCommandServiceImpl implements HighlightCommandService {
-    private HighlightManager manager;
+    private final HighlightManager manager;
     /*==========================
     *
     *HighlightCommandServiceImpl
