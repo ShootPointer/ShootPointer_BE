@@ -1,8 +1,8 @@
 package com.midas.shootpointer.infrastructure.presigned.service;
 
 import com.midas.shootpointer.global.util.encrypt.HmacSigner;
+import com.midas.shootpointer.infrastructure.openCV.OpenCVProperties;
 import com.midas.shootpointer.infrastructure.presigned.dto.PresignedUrlResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +10,17 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class PresignedUrlService {
-    private final HmacSigner signer;
+    public PresignedUrlService(
+            HmacSigner signer,
+            OpenCVProperties openCVProperties
+    ){
+        this.opeCvBaseUrl= openCVProperties.getUrl();
+        this.ttlMilliSeconds=openCVProperties.getExpire().getExpirationTime();
+        this.signer=signer;
+    }
+
+    private HmacSigner signer;
     /**
      * openCv server Url
      */
