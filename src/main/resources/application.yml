@@ -45,7 +45,7 @@ spring:
   # JPA 설정
   jpa:
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create-drop}
     database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
     properties:
       hibernate:
@@ -119,10 +119,10 @@ kakao:
     uri: https://kapi.kakao.com
 
 opencv:
-  url: http://localhost:8888
+  url: http://tkv00.ddns.net:8000
   api:
     post:
-      send-image: /api/send-img
+      send-image: /player/ocr
     get:
       fetch-video: /api/fetch-video
     proxy:
