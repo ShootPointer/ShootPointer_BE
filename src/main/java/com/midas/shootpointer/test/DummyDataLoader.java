@@ -31,11 +31,10 @@ public class DummyDataLoader implements CommandLineRunner {
     private final HighlightCommandRepository highlightCommandRepository;
     private final PostElasticSearchRepository postElasticSearchRepository;
     private final PostElasticSearchMapper mapper;
-
     private final int batchSize=1_000;
     private final int insertSize=1_000;
     private final PostQueryRepository postQueryRepository;
-
+  
     @Override
     public void run(String... args) throws Exception {
         Member member = memberRepository.save(Member.builder()
@@ -88,7 +87,6 @@ public class DummyDataLoader implements CommandLineRunner {
                 batchArgs.clear();
                 System.out.println("DB 배치 : "+i+"건 삽입 완료");
             }
-
         }
 
         if (!batchArgs.isEmpty()){
