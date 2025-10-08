@@ -1,4 +1,4 @@
-package com.midas.shootpointer.domain.highlight.service.query;
+package com.midas.shootpointer.domain.highlight.business.query;
 
 import org.springframework.stereotype.Service;
 

@@ -20,3 +20,6 @@ spring:
     restclient:
       sniffer:
         interval: 5m
+
+video:
+  path: ${java.io.tmpdir}/videos
