@@ -6,6 +6,7 @@ import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.dto.response.SearchAutoCompleteResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface PostQueryService {
     PostResponse singleRead(Long decode);
@@ -17,4 +18,6 @@ public interface PostQueryService {
     PostListResponse searchByElastic(String search, int size,PostSort sort);
 
     List<SearchAutoCompleteResponse> suggest(String keyword);
+    
+    PostListResponse getMyPosts(UUID memberId);
 }

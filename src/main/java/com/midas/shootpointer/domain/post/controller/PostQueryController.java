@@ -1,11 +1,13 @@
 package com.midas.shootpointer.domain.post.controller;
 
+import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.business.query.PostQueryService;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.dto.response.SearchAutoCompleteResponse;
 import com.midas.shootpointer.global.dto.ApiResponse;
+import com.midas.shootpointer.global.security.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -175,5 +177,10 @@ public class PostQueryController {
     public ResponseEntity<ApiResponse<List<SearchAutoCompleteResponse>>> searchSuggest(@RequestParam(value = "keyword",required = true) String keyword){
         return ResponseEntity.ok(ApiResponse.ok(postQueryService.suggest(keyword)));
     }
-
+    
+    @GetMapping("/mypage")
+    public ResponseEntity<ApiResponse<PostListResponse>> getMyPosts() {
+        Member member = SecurityUtils.getCurrentMember();
+        return ResponseEntity.ok(ApiResponse.ok(postQueryService.getMyPosts(member.getMemberId())));
+    }
 }

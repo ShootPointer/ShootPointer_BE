@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.post.repository;
 
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import jakarta.persistence.LockModeType;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -63,4 +64,20 @@ public interface PostQueryRepository extends JpaRepository<PostEntity,Long>{
 
     @Query(value = "SELECT p FROM PostEntity p JOIN FETCH p.member m JOIN FETCH p.highlight h")
     List<PostEntity> findAllWithMemberAndHighlight();
+    
+    /**
+     * 회원이 작성한 모든 게시물 ID 조회
+     */
+    @Query(value = "SELECT p.post_id FROM post AS p " +
+        "WHERE p.member_id = :memberId " +
+        "ORDER BY p.post_id DESC",
+        nativeQuery = true)
+    List<Long> findPostIdsByMemberId(@Param(value = "memberId") UUID memberId);
+    
+    @Query(value = "SELECT p FROM PostEntity p " +
+        "JOIN FETCH p.member m " +
+        "JOIN FETCH p.highlight h " +
+        "WHERE p.postId IN :postIds " +
+        "ORDER BY p.postId DESC")
+    List<PostEntity> findPostsByPostIds(@Param(value = "postIds") List<Long> postIds);
 }

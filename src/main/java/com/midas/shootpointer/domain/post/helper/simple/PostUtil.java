@@ -5,6 +5,7 @@ import com.midas.shootpointer.domain.post.business.PostOrderType;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface PostUtil {
     PostEntity findPostByPostId(Long postId);
@@ -15,4 +16,6 @@ public interface PostUtil {
     List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId,int size);
     PostOrderType isValidAndGetPostOrderType(String type);
     List<PostEntity> getPostEntitiesByPostTitleOrPostContent(String search,Long postId,int size);
+    List<Long> findPostIdsByMemberId(UUID memberId);
+    List<PostEntity> findPostsByPostIds(List<Long> postIds);
 }
