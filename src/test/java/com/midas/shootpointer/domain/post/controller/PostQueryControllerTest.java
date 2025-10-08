@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.domain.post.business.query.PostQueryService;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
-import com.midas.shootpointer.domain.post.entity.HashTag;
+import com.midas.shootpointer.domain.post.dto.response.PostSort;
+import com.midas.shootpointer.domain.post.dto.response.SearchAutoCompleteResponse;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -192,6 +193,142 @@ class PostQueryControllerTest {
 
     }
 
+    @Test
+    @DisplayName("게시물 검색 조회(Elasticsearch) GET 요청 성공 시 PostListResponse를 반환합니다._SUCCESS")
+    void searchElastic() throws Exception {
+        //given
+        int size=10;
+        float _score=1231231f;
+        Long postId=2132131221L;
+        Long likeCnt=12123123L;
+        String search="title";
+        PostSort sort=new PostSort(_score,likeCnt,postId);
+
+        PostListResponse response=PostListResponse.withSort(
+                postId,
+                List.of(makePostResponse(LocalDateTime.now(),1L,123L,"title1","content1"),
+                        makePostResponse(LocalDateTime.now(),2L,124L,"title2","content2")
+                        ),
+                sort
+                );
+
+        //when
+        when(postQueryService.searchByElastic(search,size,sort)).thenReturn(response);
+
+        //then
+        mockMvc.perform(get(baseUrl+"/list-elastic")
+                        .param("postId",postId.toString())
+                        .param("size", String.valueOf(size))
+                        .param("search",search)
+                        .param("_score", String.valueOf(sort._score()))
+                        .param("likeCnt",String.valueOf(likeCnt)))
+
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.success").value(true))
+
+                .andExpect(jsonPath("$.data.postList[0].postId").value(1L))
+                .andExpect(jsonPath("$.data.postList[0].likeCnt").value(123L))
+                .andExpect(jsonPath("$.data.postList[0].title").value("title1"))
+                .andExpect(jsonPath("$.data.postList[0].content").value("content1"))
+
+                .andExpect(jsonPath("$.data.postList[1].postId").value(2L))
+                .andExpect(jsonPath("$.data.postList[1].likeCnt").value(124L))
+                .andExpect(jsonPath("$.data.postList[1].title").value("title2"))
+                .andExpect(jsonPath("$.data.postList[1].content").value("content2"))
+
+                .andExpect(jsonPath("$.data.lastPostId").value(postId))
+                .andDo(print());
+
+        verify(postQueryService,times(1)).searchByElastic(search,size,sort);
+
+
+    }
+
+    @Test
+    @DisplayName("게시물 검색 조회(Elasticsearch) GET 요청 성공 시 parameter = search 빈 값이면 최신순으로 게시물을 반환합니다._SUCCESS")
+    void searchElastic_BLANK() throws Exception {
+        //given
+        int size=10;
+        float _score=1231231f;
+        Long postId=2132131221L;
+        Long likeCnt=12123123L;
+        String search="";
+        PostSort sort=new PostSort(_score,likeCnt,postId);
+
+        PostListResponse response=PostListResponse.withSort(
+                postId,
+                List.of(makePostResponse(LocalDateTime.now(),1L,123L,"title1","content1"),
+                        makePostResponse(LocalDateTime.now(),2L,124L,"title2","content2")
+                ),
+                sort
+        );
+
+        //when
+        when(postQueryService.multiRead(postId,size,"latest")).thenReturn(response);
+
+        //then
+        mockMvc.perform(get(baseUrl+"/list-elastic")
+                        .param("postId",postId.toString())
+                        .param("size", String.valueOf(size))
+                        .param("search",search)
+                        .param("_score", String.valueOf(sort._score()))
+                        .param("likeCnt",String.valueOf(likeCnt)))
+
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.success").value(true))
+
+                .andExpect(jsonPath("$.data.postList[0].postId").value(1L))
+                .andExpect(jsonPath("$.data.postList[0].likeCnt").value(123L))
+                .andExpect(jsonPath("$.data.postList[0].title").value("title1"))
+                .andExpect(jsonPath("$.data.postList[0].content").value("content1"))
+
+                .andExpect(jsonPath("$.data.postList[1].postId").value(2L))
+                .andExpect(jsonPath("$.data.postList[1].likeCnt").value(124L))
+                .andExpect(jsonPath("$.data.postList[1].title").value("title2"))
+                .andExpect(jsonPath("$.data.postList[1].content").value("content2"))
+
+                .andExpect(jsonPath("$.data.lastPostId").value(postId))
+                .andDo(print());
+
+        verify(postQueryService,times(1)).multiRead(postId,size,"latest");
+
+
+
+    }
+
+    @Test
+    @DisplayName("게시물 검색 자동 완성 조회(Elasticsearch) GET 요청 성공 시 SearchAutoCompleteResponse를 반환합니다._SUCCESS")
+    void searchSuggest() throws Exception {
+        //given
+        List<SearchAutoCompleteResponse> responses = new ArrayList<>(List.of(
+                SearchAutoCompleteResponse.of("title1"),
+                SearchAutoCompleteResponse.of("title2"),
+                SearchAutoCompleteResponse.of("title3")
+        ));
+        String search="title";
+
+        //when
+        when(postQueryService.suggest(search)).thenReturn(responses);
+
+        //then
+        mockMvc.perform(get(baseUrl+"/suggest")
+                        .param("keyword",search))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.success").value(true))
+
+                .andExpect(jsonPath("$.data[0].suggest").value("title1"))
+                .andExpect(jsonPath("$.data[1].suggest").value("title2"))
+                .andExpect(jsonPath("$.data[2].suggest").value("title3"))
+
+                .andDo(print());
+
+        verify(postQueryService,times(1)).suggest(search);
+    }
+
+
     @NotNull
     private static String getCreatedDateFormat(PostResponse response) {
         return response.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -211,7 +348,7 @@ class PostQueryControllerTest {
                 .highlightUrl("test")
                 .postId(postId)
                 .title(title)
-                .hashTag(HashTag.TWO_POINT)
+                .hashTag("2점슛")
                 .build();
 
     }

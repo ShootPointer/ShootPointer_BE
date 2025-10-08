@@ -2,7 +2,6 @@ package com.midas.shootpointer.domain.post.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.midas.shootpointer.domain.post.entity.HashTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,7 +42,7 @@ public class PostResponse {
     private LocalDateTime modifiedAt;
 
     //해시 태그
-    private HashTag hashTag;
+    private String hashTag;
 
     //작성자 이름
     private String memberName;

@@ -4,8 +4,10 @@ import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
+import com.midas.shootpointer.domain.post.repository.PostElasticSearchRepository;
+import com.midas.shootpointer.domain.post.mapper.PostElasticSearchMapper;
 import com.midas.shootpointer.domain.post.entity.HashTag;
-import com.midas.shootpointer.global.util.jwt.JwtUtil;
+import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -27,23 +29,21 @@ public class DummyDataLoader implements CommandLineRunner {
     private final MakeRandomWord makeRandomWord;
     private final MemberCommandRepository memberRepository;
     private final HighlightCommandRepository highlightCommandRepository;
-    private final JwtUtil jwtUtil;
-    
-    private final int batchSize=10_000;
-    private final int insertSize=10_000;
-
+    private final PostElasticSearchRepository postElasticSearchRepository;
+    private final PostElasticSearchMapper mapper;
+    private final int batchSize=1_000;
+    private final int insertSize=1_000;
+    private final PostQueryRepository postQueryRepository;
+  
     @Override
     public void run(String... args) throws Exception {
-        Member member=memberRepository.save(Member.builder()
+        Member member = memberRepository.save(Member.builder()
                 .email("test@naver.com")
                 .username("test")
                 .build()
         );
-        
-        String accessToken = jwtUtil.createToken(member.getMemberId(), member.getEmail(),
-            member.getUsername());
-        
-        HighlightEntity highlight=highlightCommandRepository.save(
+
+        HighlightEntity highlight = highlightCommandRepository.save(
                 HighlightEntity.builder()
                         .highlightURL("test")
                         .highlightKey(UUID.randomUUID())
@@ -70,7 +70,7 @@ public class DummyDataLoader implements CommandLineRunner {
             String content=makeRandomWord.generateContent();
 
             //좋아요 개수
-            int likeCnt = random.nextInt(100_000) + 1; // 1 ~ 100000
+            long likeCnt = random.nextInt(100_000) + 1; // 1 ~ 100000
 
             // 랜덤 날짜
             long start = threeYearsAgo.toEpochSecond(ZoneOffset.UTC);
@@ -81,10 +81,11 @@ public class DummyDataLoader implements CommandLineRunner {
 
             batchArgs.add(new Object[]{title,content, HashTag.TREE_POINT.name(),highlightId,memberId,likeCnt,randomDateTime,randomDateTime});
 
+
             if (i > 0 && i%batchSize == 0){
                 jdbcTemplate.batchUpdate(sql,batchArgs);
                 batchArgs.clear();
-                System.out.println(i+"건 삽입 완료");
+                System.out.println("DB 배치 : "+i+"건 삽입 완료");
             }
         }
         System.out.println("Access Token : " + accessToken);
@@ -93,5 +94,30 @@ public class DummyDataLoader implements CommandLineRunner {
             jdbcTemplate.batchUpdate(sql,batchArgs);
         }
 
+        /**
+         * Elastic Search 배치 처리
+         */
+/*        long esStart = System.currentTimeMillis();
+        System.out.println("ES 배치 시작 시간: " + LocalDateTime.now());
+        int page = 0;
+
+        Page<PostEntity> result;
+        do {
+            result  = postQueryRepository.findAllWithMemberAndHighlight(PageRequest.of(page, batchSize));
+
+            // PostEntity → PostDocument 변환
+            List<PostDocument> docs = result.stream()
+                    .map(mapper::entityToDoc)
+                    .toList();
+
+            postElasticSearchRepository.saveAll(docs);
+
+            System.out.println("ES 배치 : " + ((page + 1) * batchSize) + "건 삽입 완료");
+            page++;
+        } while (result.hasNext());
+
+        long esEnd = System.currentTimeMillis();
+        System.out.println("ES 배치 종료 시간: " + LocalDateTime.now());
+        System.out.println("ES 전체 소요 시간(ms): " + (esEnd - esStart));*/
     }
 }

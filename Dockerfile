@@ -4,6 +4,9 @@ ARG JAR_FILE=build/libs/shootpointer-0.0.1-SNAPSHOT.jar
 
 COPY ${JAR_FILE} app.jar
 
+ENV SPRING_PROFILES_ACTIVE=es,test-real-data
+
+
 RUN apt-get update \
     && apt-get install -y tzdata \
     && ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime \

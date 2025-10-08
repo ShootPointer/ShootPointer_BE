@@ -2,11 +2,9 @@ package com.midas.shootpointer.domain.backnumber.business;
 
 import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
-import com.midas.shootpointer.domain.backnumber.helper.BackNumberHelper;
 import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
-import com.midas.shootpointer.domain.memberbacknumber.helper.MemberBackNumberHelper;
 import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import com.midas.shootpointer.infrastructure.openCV.dto.OpenCVResponse;
 import com.midas.shootpointer.infrastructure.openCV.service.OpenCVClient;
@@ -46,12 +44,6 @@ class BackNumberManagerTest {
     @Autowired
     private MemberBackNumberRepository memberBackNumberRepository;
 
-    @Autowired
-    private BackNumberHelper backNumberHelper;
-
-    @Autowired
-    private MemberBackNumberHelper memberBackNumberHelper;
-
     @MockitoBean
     private OpenCVClient openCVClient;
 
@@ -82,11 +74,6 @@ class BackNumberManagerTest {
                 "image/png",
                 "fake img".getBytes()
         );
-        OpenCVResponse<?> mockResponse = OpenCVResponse.builder()
-                .data(List.of(mockMultipartFile))
-                .status(100)
-                .success(true)
-                .build();
 
         //when
         when(openCVClient.sendBackNumberInformation(any(UUID.class), anyInt(), any(MultipartFile.class)))

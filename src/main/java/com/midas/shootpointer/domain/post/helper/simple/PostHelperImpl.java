@@ -1,4 +1,4 @@
-package com.midas.shootpointer.domain.post.helper;
+package com.midas.shootpointer.domain.post.helper.simple;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -32,6 +32,16 @@ public class PostHelperImpl implements PostHelper{
     @Override
     public void isMembersPost(PostEntity postEntity, Member member) {
         postValidation.isMembersPost(postEntity,member);
+    }
+
+    @Override
+    public void isValidSize(int size) {
+        postValidation.isValidSize(size);
+    }
+
+    @Override
+    public boolean isValidInput(String input) {
+        return postValidation.isValidInput(input);
     }
 
     @Override

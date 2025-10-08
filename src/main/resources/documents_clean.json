@@ -1,0 +1,802 @@
+[
+  {
+    "id": 1,
+    "title": "기상청 날씨누리: 홈",
+    "content": "19부 3처 20청 별표를 누르면 관심지역으로 등록 또는 삭제할 수 있습니다 별표를 누르면 관심지역으로 등록 또는 삭제할 수 있습니다     내 위치의 위험기상·지진정보를 실시간으로 알려주는  앱 서비스를 시작합니다. 담당관리 : 본청 문의 : 전국 국번없이 131(기상상담전화, 유료) 대전 (35208) 대전광역시 서구 청사로 189 정부대전청사 1동 11~14층 서울 (07062) 서울특별시 동작구 여의대방로16길 61 전화 (02)2181-0900, (042)481-7500 | 전자우편(웹사이트 관련 문의): webmasterkma@korea.kr 기상청 업무에 관한 문의는 국민신문고 를 이용해주시기 바랍니다. Copyright@2022 KMA. All Rights RESERVED. ※ 지역 선택이 안 될 경우: 클릭 ※ '24.5.30. 이전에 전북특별자치도 지역을 관심지역에 추가하신 분은 행정동 코드변경(45→52)에 따라 기존 관심지역을 삭제하시고 새로 추가해주시기 바랍니다. ※ 지역 선택이 안 될 경우: 클릭 ※ '24.5.30. 이전에 전북특별자치도 지역을 관심지역에 추가하신 분은 행정동 코드변경(45→52)에 따라 기존 관심지역을 삭제하시고 새로 추가해주시기 바랍니다. 기본화면 : 현재날씨 및 시계열 정보가 포함된 첫화면 지도화면 : 날씨지도 화면을 첫화면으로 표출 풍속단위를 바꿀 수 있습니다. 현재위치 우선 : PC브라우저의 위치정보나 스마트폰의 GPS정보로 현위치를 확인하여 표출합니다. 관심지역 우선 : 관심지역으로 추가된 지점을 우선 표출합니다. 위치 미확인 : 브라우저에서 위치확인을 요청하지 않습니다. 조회한 지역이 없을 경우 기상청 서울청사 위치를 보여줍니다. 날씨 우선 : 조회지점의 현재날씨 및 시계열 정보가 포함된 첫화면 전국 우선 : 전국지역의 날씨를 간략하게 표출 3가지 타입의 날씨아이콘을 선택할 수 있습니다. 3시간 간격 : 시간별 예보를 3시간 간격으로 표출 1시간 간격 : 시간별 예보를 1시간 간격으로 표출",
+    "keyword": "날씨",
+    "url": "https://www.weather.go.kr/",
+    "likeCnt": 53
+  },
+  {
+    "id": 2,
+    "title": "네이버 날씨",
+    "content": "별 모양 버튼을 클릭해 관심지역으로 추가할 수 있습니다. 이(가) 관심지역으로 추가되었습니다. 이(가) 관심지역에서 삭제되었습니다. 인천광역시 남동구 예술로138 에 대한 검색 결과가 없습니다. 네이버 날씨는 각 정시 위에 날씨를 표현하나 날씨 요소 별 특성에 따라 구간 또는 정시기준이 다릅니다.                     이를 참고해 날씨 데이터를 해석하시기 바랍니다. 기상청, 국민건강보험공단 발표, 웨더아이 제공 한국환경공단 에어코리아가 제공하는 전국 측정소 정보입니다. 도시대기, 도로변대기 측정 정보를 활용하며, 이는 시/도 보건환경연구원에서 운영하는 측정소의 베타선법으로 측정한 수치입니다. 한국환경공단 에어코리아 제공, 기상청 바다예보 데이터가 제공됩니다. 해역별 마커에 표기되는 파고 정보는 현재 시점 기준입니다. 기상청이 제공하는 관측 강수량 자료를 제공합니다. 전국에 설치된 기상청 AWS(Automatic Weather System)의 매 정시 자료를 활용합니다. 관측 장비의 고장 및 점검으로 인해 관측 수치가 '-'으로 표출될 수 있습니다. 기상청의 유・무인관측소에서 측정된 적설량 정보를 제공합니다. 일 신적설량 정보는 전국 95개 관측소 중, 서울 등 23개 유인 관측소에서만 측정이 이뤄집니다. 이외 무인 관측소에서는 신적설량 자료가 제공되지 않으며, 이 경우 ‘-’으로 표출됩니다. 관측 장비의 고장 및 점검으로 인해 관측 수치가 '-'으로 표출될 수 있습니다. 국립환경과학원 대기질통합예보센터가 제공하는 '대기질 예측모델결과' 자료입니다. 본 자료는 PM10 및 PM2.5 모델 예측 결과를 시각화한 것으로, 한반도 해상도(9km)와 동아시아 해상도(27km) 자료를 각각 제공합니다. 자료는 매일 05시, 17시에 도출된 모델 결과를 반영합니다.    최신 자료 수신이 지연되고 있습니다. 잠시 후 다시 시도해 주세요. 한국환경공단 에어코리아가 제공하는 전국 측정소 정보입니다. 도시대기, 도로변대기 측정 정보를 활용하며, 이는 시/도 보건환경연구원에서 운영하는 측정소의 베타선법으로 측정한 수치입니다. 한국환경공단 에어코리아 제공, 기상청 바다예보 데이터가 제공됩니다. 해역별 마커에 표기되는 파고 정보는 현재 시점 기준입니다. 기상청이 제공하는 관측 강수량 자료를 제공합니다. 전국에 설치된 기상청 AWS(Automatic Weather System)의 매 정시 자료를 활용합니다. 관측 장비의 고장 및 점검으로 인해 관측 수치가 '-'으로 표출될 수 있습니다. 기상청의 유・무인관측소에서 측정된 적설량 정보를 제공합니다. 일 신적설량 정보는 전국 95개 관측소 중, 서울 등 23개 유인 관측소에서만 측정이 이뤄집니다. 이외 무인 관측소에서는 신적설량 자료가 제공되지 않으며, 이 경우 ‘-’으로 표출됩니다. 관측 장비의 고장 및 점검으로 인해 관측 수치가 '-'으로 표출될 수 있습니다. 국립환경과학원 대기질통합예보센터가 제공하는 '대기질 예측모델결과' 자료입니다. 본 자료는 PM10 및 PM2.5 모델 예측 결과를 시각화한 것으로, 한반도 해상도(9km)와 동아시아 해상도(27km) 자료를 각각 제공합니다. 자료는 매일 05시, 17시에 도출된 모델 결과를 반영합니다.    최신 자료 수신이 지연되고 있습니다. 잠시 후 다시 시도해 주세요. 한국환경공단 에어코리아가 제공하는 전국 측정소 정보입니다. 도시대기, 도로변대기 측정 정보를 활용하며, 이는 시/도 보건환경연구원에서 운영하는 측정소의 베타선법으로 측정한 수치입니다. 한국환경공단 에어코리아 제공, 기상청 바다예보 데이터가 제공됩니다. 해역별 마커에 표기되는 파고 정보는 현재 시점 기준입니다. 기상청이 제공하는 관측 강수량 자료를 제공합니다. 전국에 설치된 기상청 AWS(Automatic Weather System)의 매 정시 자료를 활용합니다. 관측 장비의 고장 및 점검으로 인해 관측 수치가 '-'으로 표출될 수 있습니다. 기상청의 유・무인관측소에서 측정된 적설량 정보를 제공합니다. 일 신적설량 정보는 전국 95개 관측소 중, 서울 등 23개 유인",
+    "keyword": "날씨",
+    "url": "https://weather.naver.com/",
+    "likeCnt": 285
+  },
+  {
+    "id": 3,
+    "title": "수도권기상청",
+    "content": "기관 소개 주요 업무 정보 공개 알림·소식 소속기관안내    기관 소개 주요 업무 정보 공개 알림·소식 소속기관안내  현재날씨 예보 날씨 기온 풍향 풍속 강수유무 1시간강수 일강수 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천        파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 별표를 누르면 관심지역으로 등록 또는 삭제할 수 있습니다 공지사항 보도자료 날씨요약 기상정보 기상특보 날씨해설 수도권청 페이스북 날씨알리미 기상전망 1개월 기상전망 3개월 3개월전망 해설서 가뭄정보 [ 19부 ] [ 3처 ] [ 20청 ] 기상청 (16623) 경기도 수원시 권선구 권선로 276 수도권기상청 T. 대표전화 031-8025-5051 (평일 9:00~18:00, 야간휴일은 당직실 연결) 본 홈페이지에 게시된 이메일 주소가 자동 수집되는 것을 거부하며, 이를 위반시 정보통신망법에 의해 처벌됨을 유념하시기 바랍니다. Copyright © 2009 KMA. All Rights RESERVED",
+    "keyword": "날씨",
+    "url": "http://www.kma.go.kr/metropolitan/html/main/index.jsp",
+    "likeCnt": 554
+  },
+  {
+    "id": 4,
+    "title": "뉴욕, NY 3일 날씨 예보",
+    "content": "뉴욕 뉴욕 전 세계 PM 9:32 53분 후 비가 내릴 예정 오늘 밤 9. 25. 저녁에 몇 차례 뇌우; 대체로 흐림 금 9. 26. 오전에 안개가 낌; 약간 흐림 약간 흐림 토 9. 27. 점차 흐려짐 흐림, 따뜻하고 습하며 밤 늦게 때때로 비가 내림 일 9. 28. 대체로 흐리고 습하며 소나기가 내림 약간 흐림 월 9. 29. 대체로 흐림 대체로 흐리고 따뜻함 화 9. 30. 약간 흐리고 쾌적함 약간 흐림 수 10. 1. 약간 흐림 대체로 맑음 목 10. 2. 맑음 맑음 금 10. 3. 맑음 맑음 토 10. 4. 맑음 맑음 대기 오염이 심각한 상태이며 민감군에 유해합니다. 호흡 곤란이나 목 자극과 같은 증상이 발생할 경우 야외 활동 시간을 줄이시기 바랍니다.",
+    "keyword": "날씨",
+    "url": "https://www.accuweather.com/ko/us/new-york/10021/weather-forecast/349727",
+    "likeCnt": 847
+  },
+  {
+    "id": 5,
+    "title": "애틀랜타, GA, 미국 일기예보 및 날씨 - The Weather Channel ...",
+    "content": "강한 비는 오후 10:00에 그치겠습니다. 그 이후 비가 내릴 가능성이 있습니다. 07:28 19:29 대기 품질이 좋으며 공해 물질도 위험 수준이 낮거나 거의 없습니다. 해당 지역 돼지풀 꽃가루 농도 낮음 데이터와 기술을 선의의 목적으로 활용할 책임 의식을 가지고 있습니다. 데이터 벤더와 데이터를 사용하거나 공유할 수 있습니다. 데이터를 통제하세요. The Weather Company 에서 의뢰하여 진행한 ForecastWatch의 연구( 전 세계 및 지역별 일기 예보 정확도 개요 , 2021-2024)에 따르면 The Weather Channel은 세계 최고의 정확도를 제공하는 예보 기관입니다. Weather Channel © The Weather Company, LLC 2025",
+    "keyword": "날씨",
+    "url": "https://weather.com/ko-KR/weather/today/l/Atlanta+GA+United+States?canonicalCityId=5e31d30099c21fa9f77280443980bc98",
+    "likeCnt": 417
+  },
+  {
+    "id": 6,
+    "title": "기상청 날씨알리미 on the App Store",
+    "content": "ê¸°ìì²­ìì ì§ì  ì ê³µíë ë ì¨ìë¦¬ë¯¸ë ì§ì§, ê¸°ìí¹ë³´ ë±ì ìíê¸°ìì ë³´ë¥¼ ì¬ì©ì ìì¹ê¸°ë°ì¼ë¡ ìë ¤ì£¼ë ë§ì¶¤í ìë¦¼ìë¹ì¤ìëë¤. ì± ì¤í ì ë´ê° ìíë ì§ì­ì ë ì¨ìí©ì í ëì ë³¼ ì ìê³  ì§ì§, ê¸°ìí¹ë³´ ë± ìíê¸°ì ìë¦¼ì ìë¦¼ì ë³´ë¥¼ ë°ë¡ íì¸í  ì ììµëë¤. ëí ì§ì§ ë ì¨ ë± í¹ì´íìì ì ë³´íê³  ê³µì íë ê¸°ë¥ì´ í¬í¨ëì´ ììµëë¤. í° íë©´ìì ê°í¸íê² ë ì¨íì¸ì´ ê°ë¥í ë ì¨ìì ¯ ê¸°ë¥ì ì ê³µí©ëë¤. Version 2.2.7 ìì ¯ ì¤ë¥ ìì  14 Ratings ê°ì¥ ìì ìì ¯ì¼ë¡ ì¤ì íë©´ ê¸°ì¨ ì«ìê° ì§¤ë ¤ì ë³´ì´ì§ë ìë¤ì ê¸°ë³¸ì ì¸ ê²ìë ìíëì??? ì´ì©ì ë¶í¸ì ëë ¤ ì£ì¡í©ëë¤. íì¸íì¬ ì¡°ì¹íëë¡ íê² ìµëë¤. ê·¸ë¦¬ê³  ì ì¼ ìì ìì ¯ììë ì´ì  ê¸°ì¨ê³¼ ë¹êµ ë³´ì¬ ì£¼ì¸ì ë¨ë ìë¦¬ë ë§ìë° ì¢ ë³´ì¬ì£¼ì¸ì ìì´ê¸°ë³¸ ìì´í°ìì ì± ì¤ì ì¼ë¡ ì¸ì´ë¥¼ íêµ­ì´ë¡ í´ë ìë¬¸ì¼ë¡ ëì¤ë¤ì ìë°ì´í¸ ì ìë ì ëëë°.. íë¡ê·¸ë¨ ì¤ë¥ë¤ì ì± ì´ì©ì ë¶í¸ì ëë ¤ ì£ì¡í©ëë¤. ìµê·¼ ê´ë ¨ë ë¶ë¶ì ì ê²íì¬ ì± ìë°ì´í¸ë¥¼ íììµëë¤. ìì¼ë¡ë ë¶í¸í¨ ìì´ í¸ë¦¬íê² ì¬ì©íì¤ ì ìëë¡ íê² ìµëë¤. ê°ì¬í©ëë¤. The developer, ê¸°ìì²­ , indicated that the appâs privacy practices may include handling of data as described below. For more information, see the developerâs privacy policy . The developer does not collect any data from this app. Privacy practices may vary, for example, based on the features you use or your age. LearnÂ More English, Korean ìê¸°ë ì¨ - ë¯¸ì¸ë¨¼ì§, ê¸°ìì²­, ë ì¨ ì¼ì´ì¨ë ë ì¨ ë¯¸ì¸ë¯¸ì¸ - ë¯¸ì¸ë¨¼ì§, ì´ë¯¸ì¸ë¨¼ì§, ë ì¨ ê°ì°ë ì´ë - ì´ë¨ê¸° ê°ììì¸¡ ê¸°ìì²­ ë ì´ë íëì¹´ë ì¨ë Dusts - ë¯¸ì¸ë¨¼ì§, ì´ë¯¸ì¸ë¨¼ì§, íµí©ëê¸° Copyright Â© 2025 Apple Inc. All rights res",
+    "keyword": "날씨",
+    "url": "https://apps.apple.com/us/app/%EA%B8%B0%EC%83%81%EC%B2%AD-%EB%82%A0%EC%94%A8%EC%95%8C%EB%A6%AC%EB%AF%B8/id1495603760",
+    "likeCnt": 816
+  },
+  {
+    "id": 7,
+    "title": "로스앤젤레스, CA, 미국 일기예보 및 날씨 - The Weather Channel ...",
+    "content": "06:43 18:45 대기 품질은 양호한 수준이지만 일부 공해 물질들로 인해 공기 오염에 민감한 사람들 극소수의 건강에 영향을 줄 수 있습니다. 해당 지역 돼지풀 꽃가루 농도 보통 데이터와 기술을 선의의 목적으로 활용할 책임 의식을 가지고 있습니다. 데이터 벤더와 데이터를 사용하거나 공유할 수 있습니다. 데이터를 통제하세요. The Weather Company 에서 의뢰하여 진행한 ForecastWatch의 연구( 전 세계 및 지역별 일기 예보 정확도 개요 , 2021-2024)에 따르면 The Weather Channel은 세계 최고의 정확도를 제공하는 예보 기관입니다. Weather Channel © The Weather Company, LLC 2025",
+    "keyword": "날씨",
+    "url": "https://weather.com/ko-KR/weather/today/l/Los+Angeles+CA+United+States?canonicalCityId=7d3c65d8b80674fb48647ddbc936bb8b",
+    "likeCnt": 254
+  },
+  {
+    "id": 8,
+    "title": "수도권기상청",
+    "content": "기관 소개 주요 업무 정보 공개 알림·소식 소속기관안내    기관 소개 주요 업무 정보 공개 알림·소식 소속기관안내  현재날씨 예보 날씨 기온 풍향 풍속 강수유무 1시간강수 일강수 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천        파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 파주 동주천 백령도 강화 인천 서울 수원 양평 이천 별표를 누르면 관심지역으로 등록 또는 삭제할 수 있습니다 공지사항 보도자료 날씨요약 기상정보 기상특보 날씨해설 수도권청 페이스북 날씨알리미 기상전망 1개월 기상전망 3개월 3개월전망 해설서 가뭄정보 [ 19부 ] [ 3처 ] [ 20청 ] 기상청 (16623) 경기도 수원시 권선구 권선로 276 수도권기상청 T. 대표전화 031-8025-5051 (평일 9:00~18:00, 야간휴일은 당직실 연결) 본 홈페이지에 게시된 이메일 주소가 자동 수집되는 것을 거부하며, 이를 위반시 정보통신망법에 의해 처벌됨을 유념하시기 바랍니다. Copyright © 2009 KMA. All Rights RESERVED",
+    "keyword": "날씨",
+    "url": "https://www.kma.go.kr/metropolitan/",
+    "likeCnt": 953
+  },
+  {
+    "id": 9,
+    "title": "포트리, NJ, 미국 일기예보 및 날씨 - The Weather Channel | Weather ...",
+    "content": "06:46 18:47 대기 품질은 양호한 수준이지만 일부 공해 물질들로 인해 공기 오염에 민감한 사람들 극소수의 건강에 영향을 줄 수 있습니다. 해당 지역 돼지풀 꽃가루 농도 보통 데이터와 기술을 선의의 목적으로 활용할 책임 의식을 가지고 있습니다. 데이터 벤더와 데이터를 사용하거나 공유할 수 있습니다. 데이터를 통제하세요. The Weather Company 에서 의뢰하여 진행한 ForecastWatch의 연구( 전 세계 및 지역별 일기 예보 정확도 개요 , 2021-2024)에 따르면 The Weather Channel은 세계 최고의 정확도를 제공하는 예보 기관입니다. Weather Channel © The Weather Company, LLC 2025",
+    "keyword": "날씨",
+    "url": "https://weather.com/ko-KR/weather/today/l/Fort+Lee+NJ+United+States?canonicalCityId=3743b16a3532d133c0fb4fc86b3b06f3",
+    "likeCnt": 146
+  },
+  {
+    "id": 10,
+    "title": "제주지방기상청",
+    "content": "기관 소개 주요 업무 정보 공개 알림·소식 원클릭 제주날씨 오늘의 공항날씨    기관 소개 주요 업무 정보 공개 알림·소식 원클릭 제주날씨 오늘의 공항날씨  현재날씨 예보 날씨 기온 풍향 풍속 강수유무 1시간강수 일강수 제주 성산 서귀포 고산 제주 성산 서귀포 고산 제주 성산 서귀포 고산 제주 성산 서귀포 고산 제주 성산 서귀포 고산 제주 성산 서귀포 고산 제주 성산 서귀포 고산        제주 성산 서귀포 고산 제주 성산 서귀포 고산 제주 성산 서귀포 고산 제주 성산 서귀포 고산 제주 성산 서귀포 고산 제주 성산 서귀포 고산 제주 성산 서귀포 고산 별표를 누르면 관심지역으로 등록 또는 삭제할 수 있습니다 제주특별자치도 보건환경연구원 제주특별자치도 보건환경연구원 한라산·오름·올레·둘레길 도로날씨 바다날씨 상세한 날씨해설 지상관측자료 관측환경정보 제주지방기상청 페이스북 제주지방기상청 인스타그램 과거날씨 주말날씨 지진정보 제주 밭작물 제주 축산(양돈) 맞춤형 해양기상정보 공지사항 보도자료 탐나는기상 기상청 (63278) 제주특별자치도 제주시 만덕로 6길 32 T. 대표전화 064-909-3900 (평일 9:00 ~ 18:00) | E-mail. webmasterkma@kma.go.kr 본 홈페이지에 게시된 이메일 주소가 자동 수집되는 것을 거부하며, 이를 위반시 정보통신망법에 의해 처벌됨을 유념하시기 바랍니다. Copyright © 2009 KMA. All Rights RESERVED",
+    "keyword": "날씨",
+    "url": "https://jeju.kma.go.kr/",
+    "likeCnt": 195
+  },
+  {
+    "id": 11,
+    "title": "개발 - 나무위키",
+    "content": "이 저작물은 CC BY-NC-SA 2.0 KR 에 따라 이용할 수 있습니다. (단, 라이선스가 명시된 일부 문서 및 삽화 제외) 기여하신 문서의 저작권은 각 기여자에게 있으며, 각 기여자는 기여하신 부분의 저작권을 갖습니다. 나무위키는 백과사전이 아니며 검증되지 않았거나, 편향적이거나, 잘못된 서술이 있을 수 있습니다. 나무위키는 위키위키입니다. 여러분이 직접 문서를 고칠 수 있으며, 다른 사람의 의견을 원할 경우 직접 토론을 발제할 수 있습니다. This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply. This site is protected by hCaptcha and its Privacy Policy and Terms of Service apply.",
+    "keyword": "개발",
+    "url": "https://namu.wiki/w/%EA%B0%9C%EB%B0%9C",
+    "likeCnt": 564
+  },
+  {
+    "id": 12,
+    "title": "KDI 한국개발연구원",
+    "content": "KDI 한국개발연구원은 1971년에 설립된 대한민국 최초의 사회과학 분야 종합정책 연구소이다. 경제·사회 제반 분야의 연구를 통해 정부 정책 수립과 제도개혁에 기여 ...",
+    "keyword": "개발",
+    "url": "https://www.kdi.re.kr/",
+    "likeCnt": 350
+  },
+  {
+    "id": 13,
+    "title": "개발과 계발의 차이 : 네이버 블로그",
+    "content": "개발과 계발의 차이 2018. 3. 11. 14:23 자기개발이라는 말과 자기계발이라는 말이 혼용되어 쓰이고 있는데 어떤 말이 맞을까? ​ 우선 두 단어의 사전적 의미를 살펴보자. 다음 국어사전에 의하면 ▶ 개발(開發) 1.새로운 것을 연구하여 만들어 냄 예) 정보시스템 개발, 신기술 개발 2.자원 따위를 개척하여 유용한 것으로 만듦 예) 간척지 개발, 신도시 개발 3.산업이나 경제 따위를 흥하도록 발전시킴 예) 경제 개발, 관광사업 개발 ▶계발 ( 啓發 ) 재능이나 정신 따위를 깨우쳐 열어 줌 예) 창의성 계발, 어학능력 계발 ​ 계발의 뜻은 잠재적 능력을 깨우쳐준다는 뜻 하나밖에 없는데, 개발은 다양한 의미로 쓰인다. 계발의 啓 자와 개발의 開 는 모두 연다는 뜻을 가진 한자이지만 쓰임이 약간 다르다. 계자는 정신적이거나 인지활동과 관련된 단어에 주로 쓰이고, 그 존재 자체를 잘 모르고 있던 잠재력을 일깨워준다는 의미가 있다. 한편 개자는 사물과 정신, 구체적, 추상적인 것에 모두 쓰이면서 현재 상태보다 발전시키거나 향상시킨다, 또는 새롭게 만들어낸다는 의미가 있다. 경제나 기술, 자원 등은 인간의 정신이 아니기 때문에 계발한다는 말을 쓰지 않고 개발한다고 한다. 창의성이나 어학능력 등은 인간의 정신적 역량이므로 계발한다는 말을 쓰지만 부족한 능력을 향상시킨다는 의미에서 개발이라고 해도 괜찮다. 어떤 자를 써야할 지 불분명할 때는 안전하게 개발이라고 쓰면 된다. 따라서 자기계발이나 자기개발이나 사람의 정신적 능력을 발전시키는 것이므로 둘 다 맞다. 다만 의미상으로 자기계발은 자기가 미처 깨닫지 못했던 잠재적 역량을 발견하기 위한 노력인데 반해, 자기개발은 자신이 부족하다고 이미 알고 있는 능력을 더 향상시키기 위해 노력하는 것을 말한다.",
+    "keyword": "개발",
+    "url": "https://m.blog.naver.com/ntiskang/221226428644",
+    "likeCnt": 582
+  },
+  {
+    "id": 14,
+    "title": "능력개발교육원",
+    "content": "안녕하세요! 로그인 후 이용해주세요. 31079) 충남 천안시 서북구 과수원길 18 한국기술교육대학교 능력개발교육원 통신판매업자 정보 자세히보기 사업자등록번호 : 312-82-03357 / 통신판매업신고 : 제2016-충남천안-0210호 한국기술교육대학교 / 대표자 : 유길상 COPYRIGHT © 2022 BY KOREATECH HRDI ALL RIGHTS RESERVED. ARS 연결 번호 안내 ①번 : 직업훈련교·강사 ②번 : 직업계고교원 교육 ④번 : 가입 로그인 관련 홈페이지 ⑤번 : NCS확인강사 심사 ⑥번 : 고용서비스 전문인력 양성교육 ⑦번 : 훈련교사 자격증 심사 ※ 일학습 전담인력 교육 : 041-521-8030",
+    "keyword": "개발",
+    "url": "https://hrdi.koreatech.ac.kr/",
+    "likeCnt": 158
+  },
+  {
+    "id": 15,
+    "title": "국가신약개발사업",
+    "content": "KDDF, 국가신약개발재단, 국가신약개발사업, 코로나19치료제·백신신약개발사업, 범부처전주기신약개발사업, 임상시험.",
+    "keyword": "개발",
+    "url": "https://kddf.org/",
+    "likeCnt": 605
+  },
+  {
+    "id": 16,
+    "title": "롯데관광개발",
+    "content": "비즈니스 클래스 탑승 신화의 나라 그리스, 유라시아의 중심 튀르키예 ◎ [NO옵션 $260상당 포함관광] [글로벌 5대 월드체인 '프리미엄' 5성급 .. #월드체인호텔 #거리마다 펼쳐지는 먹거리 탐험 #친구, 연인, 가족 모두가 만족하.. #NO옵션 #월드체인5성호텔 #$260상당포함 #미슐랭선정3회포함(6大특식) #자.. 【 크루즈 여행은 역시 롯데관광 】 # 시즌 한정! 평균 날씨 15도~25도 사이로 여행 최적기!! # 23년 첫출항! 최신 18만톤급 MSC 유리비아 발코니 선실 제공 # 프리미엄 국적기 대한항공[KE] 두바이 직항 탑승 # 두바이 & 아부다비 관광 ALL 포함 [아부다비 왕궁 내부입장] # 뷰맛집에서 식사하면서 즐기는 두바이몰 분수쇼 # ONLY크루즈라서 가능! 카타르,바레인+아랍에미리트의 최대 자연섬 '시르바니야스 섬'까지 기항 ▣ Special 롯데관광 단독 포함관광 추가 혜택▣ ① 끝없이 펼쳐진 황금빛 사막 위에 자리한 럭셔리 오아시스 테라 솔리스 ② 멕시코 예술가 호르헤 마린이 제작한 천사 날개형상의 금속 조각이 있는 사진 촬영지 Wings of Mexico 해외여행 1577-3000 국내여행 1577-3700 부산 지사 1688-1105 대전 지사 1688-1102 대구 지사 1688-1103 광주 지사 1688-1104 정보제공 표준안 참여여행사 copyright © lottetour.com All rights reserved. Contact web master for more information. 2024 한국서비스대상 15회 수상 대한민국 최우수여행사 21년 연속 수상 2019 콜센터품질지수 KS-CQI 여행사부문 1위 금탑산업훈장 석탑,철탑,동탑 산업훈장",
+    "keyword": "개발",
+    "url": "https://www.lottetour.com/welcome",
+    "likeCnt": 740
+  },
+  {
+    "id": 17,
+    "title": "MacBook 없이 iOS 개발하는 방법 : r/flutterhelp",
+    "content": "플러터 코드 관련 도움 요청을 위한 커뮤니티입니다. 저는 크로스 플랫폼 앱이 필요한 프로젝트를 위해 Flutter를 배우고 있어요. VS Code, Arch Linux에서 개발하고 있고, 제 Samsung 폰으로 Android 테스트는 성공적으로 하고 있어요. 지금 당장은 Mac을 살 수가 없어요. iOS와 iPadOS용으로 개발할 수 있는 방법이 있을까요? iPad가 있어서 iOS 에뮬레이터는 필요 없을 것 같은데 (제가 맞나요?) 핫 리로드 같은 기능으로 앱의 iOS 버전을 개발해서 제 iPad에서 테스트할 수 있는 방법이 있을까요? Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "개발",
+    "url": "https://www.reddit.com/r/flutterhelp/comments/1gk4iw4/how_to_develop_for_ios_without_macbook/?tl=ko",
+    "likeCnt": 22
+  },
+  {
+    "id": 18,
+    "title": "농촌인적자원개발센터",
+    "content": "(54874) 전북특별자치도 전주시 덕진구 농생명로 420 농촌인적자원개발센터 TEL : 063-238-1800. COPYRIGHT(C) RURAL HUMAN RESOURCE DEVELOPMENT CENTER(RHRDC).",
+    "keyword": "개발",
+    "url": "http://hrd.rda.go.kr/",
+    "likeCnt": 365
+  },
+  {
+    "id": 19,
+    "title": "C#이 안드로이드 앱 개발에 적합한 언어야? : r/dotnet",
+    "content": ".NET 커뮤니티 여러분, C#, VB.NET, F# 혹은 .NET에서 돌아가는 어떤 걸 쓰시든… 여기가 바로 그곳입니다! 안녕! 안드로이드 앱 개발을 위한 유일한 프레임워크가 Xamarin (버려짐)과 MAUI (업데이트되고 유지 관리되는 Xamarin)인 걸 봤어. 근데, 인터넷 게시물들에서 얼마나 별로인지 (오류, 엄청난 메모리 크기, 사용하기 어려움, 중간 복잡한 앱에 안 좋음) 말하는 거 보니까 좀 의기소침해지네. 진짜 그런 거야? Avalonia에 대해서도 들었는데, 좋은 평이 많음에도 불구하고 Xamarin만큼 인기가 있는 것 같진 않더라. Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "개발",
+    "url": "https://www.reddit.com/r/dotnet/comments/1av5y4y/is_c_right_for_developing_android_apps/?tl=ko",
+    "likeCnt": 248
+  },
+  {
+    "id": 20,
+    "title": "국가연구개발혁신법 시행령",
+    "content": "링크 복사 완료되었습니다. CTRL+V 또는 붙여넣기 를 하면 링크가 표시됩니다. 검색결과가 없습니다. * 한국법제연구원이 제공하는 영문법령은 한국법령의 이해를 높이기 위한 참고자료로써, 어떠한 법적 효력이나 공식적 효력도 없습니다. * 법조문 링크는 시스템에서 자동으로 연결하고 있어서, 오류가 발생할 수 있습니다.",
+    "keyword": "개발",
+    "url": "https://elaw.klri.re.kr/kor_service/lawView.do?hseq=67979&lang=KOR",
+    "likeCnt": 309
+  },
+  {
+    "id": 21,
+    "title": "왜 C++은 백엔드 개발에 안 쓰이는 거야? : r/cpp",
+    "content": "C++ 프로그래밍 언어나 C++로 프로그래밍하는 것에 대한 토론, 기사, 뉴스. 부족한 명령 어색한 제안 기다리는 고풍스러운 혼란스러운 수줍은 할아버지 부드러운 이 게시물은 Redact 로 대량 삭제 및 익명 처리되었습니다. Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "백엔드",
+    "url": "https://www.reddit.com/r/cpp/comments/1ffrt3w/why_isnt_c_used_for_backend_development/?tl=ko",
+    "likeCnt": 464
+  },
+  {
+    "id": 22,
+    "title": "웹 백엔드 - 나무위키",
+    "content": "이 저작물은 CC BY-NC-SA 2.0 KR 에 따라 이용할 수 있습니다. (단, 라이선스가 명시된 일부 문서 및 삽화 제외) 기여하신 문서의 저작권은 각 기여자에게 있으며, 각 기여자는 기여하신 부분의 저작권을 갖습니다. 나무위키는 백과사전이 아니며 검증되지 않았거나, 편향적이거나, 잘못된 서술이 있을 수 있습니다. 나무위키는 위키위키입니다. 여러분이 직접 문서를 고칠 수 있으며, 다른 사람의 의견을 원할 경우 직접 토론을 발제할 수 있습니다. This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply. This site is protected by hCaptcha and its Privacy Policy and Terms of Service apply.",
+    "keyword": "백엔드",
+    "url": "https://namu.wiki/w/%EC%9B%B9%20%EB%B0%B1%EC%97%94%EB%93%9C",
+    "likeCnt": 51
+  },
+  {
+    "id": 23,
+    "title": "React에 제일 좋은 백엔드는 뭐야? : r/react",
+    "content": "(비공식) React.js에 관한 모든 것들을 다루는 서브레딧! React는 프론트엔드만 담당하잖아, React에 제일 잘 맞는 백엔드는 뭐야? 사람들은 PHP, Python 아니면 Express를 추천하던데. 고마워! Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "백엔드",
+    "url": "https://www.reddit.com/r/react/comments/18r5nxw/what_is_best_backend_for_react/?tl=ko",
+    "likeCnt": 97
+  },
+  {
+    "id": 24,
+    "title": "타입스크립트가 백엔드 언어로서 얼마나 괜찮아? : r/typescript",
+    "content": "타입스크립트는 대규모 애플리케이션을 위한 자바스크립트 개발 언어야.  자바스크립트의 상위 집합이면서 타입이 추가된 건데, 일반 자바스크립트로 컴파일돼. 안녕, 최근에 Go랑 Java / Kotlin으로 프로그래밍하는 백엔드 개발자 몇 명이랑 얘기했어. 걔네 말로는 타입스크립트가 훨씬 별로고, Go랑 Java / Kotlin이 진짜 요즘 백엔드 언어래. 근데 이유를 물어보니까 딱히 뭐라 꼬집어 말하진 못하더라. 걔네가 말하길, 예를 들어 툴링이 타입스크립트보다 훨씬 좋대. 나는 예전에 프론트엔드 프로그래밍(react) 할 때 타입스크립트 꽤 많이 써봤고, 백엔드 개발은 그렇게 많이 안 해봤어. 근데 타입스크립트가 엄청 강력하고 유연성도 많고 타입도 있어서 좋다고 생각하거든. 백엔드 툴링은 잘 몰라서 걔네 말이 맞을 수도 있겠다 싶어. 근데 마이크로서비스 얘기가 나오면, Go/Kotlin 쓰는 게 타입스크립트보다 딱히 장점이 없어 보이는데. 그냥 도커 컨테이너 쓰고 express endpoint 만들면 끝이잖아. 그리고 백엔드에서 타입스크립트 쓰는 게 프론트엔드랑 백엔드에 같은 언어를 쓸 수 있다는 장점이 있다고 봐. 특히 작은 회사나 스타트업처럼 백엔드/프론트엔드 개발자를 딱 구분하기보다는 풀스택 개발자가 많은 경우에 유용할 수 있잖아. 너는 이 문제에 대해 어떻게 생각해? Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "백엔드",
+    "url": "https://www.reddit.com/r/typescript/comments/rspesf/how_good_is_typescript_as_a_backend_language/?tl=ko",
+    "likeCnt": 435
+  },
+  {
+    "id": 25,
+    "title": "Django가 아직 백엔드 직업에 유용한가요? : r/django",
+    "content": "장고 커뮤니티를 위한 뉴스와 링크들. 안녕하세요, Django 유저분들! 저는 Django를 조금 다뤄본 (중급 기능, 프론트엔드 작업 필요) 주니어 CS 학생입니다. Django를 사용하는 건 재밌지만, 졸업 후 Django로 취업하는 게 걱정돼요. 많은 채용 공고들이 C#과 .NET에 집중하는 것 같아서요. 제 질문은요: Django가 백엔드 개발 포지션에서 여전히 가치 있는 기술인가요? 현재 시장을 고려했을 때, C#과 .NET에 집중하는 것이 더 나은 취업 전망을 제공할까요? 제 딜레마: Django 실력을 계속 키워야 할지, 아니면 더 나은 취업 안정을 위해 C#과 .NET으로 갈아타야 할지 고민이에요. 저는 기술을 향상시키고, 적절한 기술이 부족한 구직자들이 겪는 어려움을 피해야 한다는 압박감을 느끼고 있어요. 그래서 열심히 노력하고 번아웃을 견디면서, 제 능력과 지원 자격을 강화하기 위해 기술을 향상시키려고 노력하고 있어요. 추신: C# 웹 프로그래밍 관련 채용 공고는 대부분 시니어급을 대상으로 한다는 것도 잊었네요. 확실히 엔터프라이즈 레벨 기술이긴 하죠 💀 😓. 망했어 Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "백엔드",
+    "url": "https://www.reddit.com/r/django/comments/1f76jbk/is_django_still_relevant_for_backend_jobs/?tl=ko",
+    "likeCnt": 117
+  },
+  {
+    "id": 26,
+    "title": "프론트엔드 vs 백엔드 프로그램 개발자 차이 1분 정리 : 네이버 블로그",
+    "content": "May 14, 2024 ... 백엔드란 웹/앱에서 사용자의 행동을 처리하고, 정보를 저장·관리·전달하며, 서버와 데이터베이스를 관리하는 역할을 합니다. 프론트엔드가 웹이나 앱의 ' ...",
+    "keyword": "백엔드",
+    "url": "https://blog.naver.com/wishket/223446049763",
+    "likeCnt": 345
+  },
+  {
+    "id": 27,
+    "title": "백엔드 개발자가 되기 위해 필요한 지식 및 기술들",
+    "content": "오늘 9/10일에 드디어 토익을 치고 왔다. 제법 열심히 준비해서 시험도 무난하게 친 것 같지만 , 점수는 나와봐야 알 것 같다. 토익을 공부하느라 그동안 개발에 대해 신경을 쓰지 못했는데, 오늘부터 본격적으로 달려 보고자 한다. 일단 이번 글에서는 들에 대해 탐구해 볼 예정이다.  인터넷에서 가져온 백엔드 로드맵인데, 보시다시피 상당히 복잡하다. 이 사진을 보면서 다시 한번 동기부여가 되었다. 상당히 많은 양을 공부해야 하고 그 과정이 험난할 것으로 예상되지만, 그 과정이 뭔가 재밌을 것 같다 (우매함의 봉우리를 올라가는 중이 아닐까..) 나는 초보 백엔드 개발자이기 때문에, 여러 가지를 고려해 보았을 때 다음과 같은 요소들을 우선적으로 두어 백엔드 공부를 할 예정이다. 밑의 내용은 https://www.developerfastlane.com/blog/things-to-know-for-backend-developer-basic 를 참고하였다 우선 프론트엔드와의 연동을 위한 API 개발이 중요하다. 그 중 REST API를 추천한다고 하는데, 나같은 경우는 REST가 뭔지도 잘 모르고, API에 대한 개념도 모호해서 이 부분에 대해 다른 글을 작성하며 좀 더 탐구해 보도록 하겠다. 어쨌든 REST API를 추천하는 이유는 오랫동안 API 개발에 있어서 표준처럼 사용되어져 왔고, 전반적인 server 개발의 흐름을 이해하는 데 좋기 때문이라고 한다. REST API를 실제로 개발하기 위해 개발 언어 및 프레임워크가 필요하다. 종류로는 NodeJS (JavaScript, TypeScript) , Ruby on Rails , Python Django , Spring Boot (Java, Kotlin) 등 다양한데, 처음 공부하기에는 NodeJS가 좋다고 하고, 최근 프로젝트에서 NodeJS를 사용할 예정이라고 해서 공부하긴 할 예정이나, 나는 Spring Boot 를 메인으로 공부하고 싶다. 국내 시장에서도 java가 압도적인 지위를 차지하고 있기도 하기에 제대로 공부해 둔다면 추후 취업에 큰 도움이 될 것이다. Spring Boot 를 통해 API 개발에 성공하는 날이 온다면, 다음으로 고민해야 할 부분이 바로 “API를 어떻게 서버로 올려서 서비스를 제공할까” 이다. 블로그에서는 AWS 의 EC2 Instance 를 추천하였다. EC2란 AWS에서 제공하는 클라우딩 컴퓨팅 서비스로, Amazon이 사용자들에게 컴퓨터를 임대해주는 서비스라고 할 수 있겠다. 이 서비스를 통해 가상 서버 구축이 가능하고, 보안 / 네트워킹을 구성하게 된다면 개발 및 배포가 보다 빠르게 가능하다. 추후에 AWS EC2 Instance를 이해하게 된다면 AWS Elastic Beanstalk 과 같은 관리형 플랫폼 서비스를 이해하면 좋다고 하는데, 이는 나중에 알아보도록 하자…. REST API의 기반이 되는 HTTP부터 시작해서, 원하는 도메인에 연결 및 서비스하기 위한 DNS, AWS EC2 에 접속하기 위한 SSH 연결 등등… 서버 동작 전체를 잘 이해하기 위해서는 네트워크에 대한 기본 지식이 필수적이다. 백엔드 개발자로서 가장 중요한 분야로 손꼽히고 있고, 나 또한 동의한다. 학교 수업시간에 데이터베이스를 수강해서 간단한 수강신청 프로그램을 만들 때 DB를 설계한 적이 있는데, 상당히 흥미로웠던 동시에 어려웠던 기억이 있다. 필요한 데이터를 보다 체계적으로 저장하려면 어떻게 로직을 짜야 할까? 여러 가지 고민을 해보면서 공부하면 좋겠다. 일단 나는 관계형 데이터베이스 중 하나인 MySQL 에 대해 공부해 볼 것이다. 데이터베이스가 서비스에 필요한 데이터를 저장한다면, 서비스에 피룡한 파일들은 어디에 저장할까? 라고 한다면, 바로 이들을 저장하는 공간이 분산 스토리지라고 설명할 수 있다. AWS S3 가 대표적인 에시이다. 추후 데이터 베이스 공부가 어느 정도 된다면 접해보고자 한다. 백엔드 개발자도 프론트엔드에 대한 기본적인 지식이 필수적이다. 예전에 앱 개발 프로젝트를 한 적이 있는데, 백엔드 연동에서 굉장히 애를 먹었던 기억이 있",
+    "keyword": "백엔드",
+    "url": "https://velog.io/@2000sdh/%EB%B0%B1%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EB%90%98%EA%B8%B0-%EC%9C%84%ED%95%B4-%ED%95%84%EC%9A%94%ED%95%9C-%EC%A7%80%EC%8B%9D-%EB%B0%8F-%EA%B8%B0%EC%88%A0%EB%93%A4",
+    "likeCnt": 886
+  },
+  {
+    "id": 28,
+    "title": "Backend Developer Roadmap: What is Backend Development",
+    "content": "Login or Signup You must be logged in to perform this action. Reset your password?  Track your Progress Login and use one of the options listed below. Click the roadmap topics and use Update Progress dropdown to update your progress. Use the keyboard shortcuts listed below. Partner Get the latest Backend news from our sister site TheNewStack.io Step by step guide to becoming a modern backend developer in 2025 0 % Done 0 of 0 Done Backend development refers to the server-side aspect of web development, focusing on creating and managing the server logic, databases, and APIs. It involves handling user authentication, authorization, and processing user requests, typically using backend development languages such as Python, Java, Ruby, PHP, JavaScript (Node.js), and .NET. A backend developer focuses on creating and maintaining the server-side components of web applications. They are primarily tasked with developing server-side APIs, handling database operations, and ensuring that the backend can manage high traffic volumes efficiently. Key responsibilities include integrating external services such as payment gateways and cloud services, and enhancing the performance and scalability of systems. This role is crucial for processing and securing data, serving as the backbone that supports frontend developers in delivering a seamless user experience. If you are a complete beginner who is just getting started, you can start by learning a backend programming language such as Python, Ruby, Java, Go etc. Once you have got the basic to intermediate understanding of the language, learn about the package manager for that language and learn how to install and use external packages into your applications. Learn the basics of some relational database e.g. PostgreSQL and learn how to run simple CRUD operations. Optionally, you can pick up and learn a web framework for the language of your choice as well. Learn how to build a simple RESTful API and implement simple Authentication/Autho",
+    "keyword": "백엔드",
+    "url": "https://roadmap.sh/backend",
+    "likeCnt": 599
+  },
+  {
+    "id": 29,
+    "title": "백엔드, 누구나 이해할 수 있게 알려드립니다 (백엔드 뜻, 프론트엔드 ...",
+    "content": "백엔드는 웹 사이트나 앱에서 눈에 보이지 않는 \"뒷단\"에 해당합니다. 즉 백엔드 개발이란, 사용자가 볼 수 없는 영역인 데이터베이스나 서버를 관리하는 것을 말하죠.",
+    "keyword": "백엔드",
+    "url": "https://zero-base.co.kr/event/media_insight_contents_BE_background",
+    "likeCnt": 189
+  },
+  {
+    "id": 30,
+    "title": "Backend services overview | Load Balancing | Google Cloud",
+    "content": "A backend service defines how Cloud Load Balancing distributes traffic. The backend service configuration contains a set of values, such as the protocol used to connect to backends, various distribution and session settings, health checks, and timeouts. These settings provide fine-grained control over how your load balancer behaves. To get you started, most of the settings have default values that allow for fast configuration. A backend service is  either global or regional in scope. Load balancers, Envoy proxies, and proxyless gRPC clients use the configuration information in the backend service resource to do the following: You set these values when you create a backend service or add a backend to the backend service. The following table summarizes which load balancers use backend services. The product that you are using also determines the maximum number of backend services, the scope of a backend service, the type of backends supported, and the backend service's load balancing scheme . The load balancing scheme is an identifier that Google uses to classify forwarding rules and backend services. Each load balancing product uses one load balancing scheme for its forwarding rules and backend services. Some schemes are shared among products. For Proxy Network Load Balancers and Passthrough Network Load Balancers, the name of the load balancer is always the same as the name of the backend service. The behavior for each Google Cloud interface is as follows: To learn about how naming works for Application Load Balancers, see URL maps overview: Load balancer naming . A backend is one or more endpoints that receive traffic from a Google Cloud load balancer, a Cloud Service Mesh-configured Envoy proxy, or a proxyless gRPC client. There are several types of backends: You cannot delete a backend instance group or NEG that is associated with a backend service. Before you delete an instance group or NEG, you must first remove it as a backend from all backend services that ref",
+    "keyword": "백엔드",
+    "url": "https://cloud.google.com/load-balancing/docs/backend-service",
+    "likeCnt": 765
+  },
+  {
+    "id": 31,
+    "title": "웹 프론트엔드 - 나무위키",
+    "content": "이 저작물은 CC BY-NC-SA 2.0 KR 에 따라 이용할 수 있습니다. (단, 라이선스가 명시된 일부 문서 및 삽화 제외) 기여하신 문서의 저작권은 각 기여자에게 있으며, 각 기여자는 기여하신 부분의 저작권을 갖습니다. 나무위키는 백과사전이 아니며 검증되지 않았거나, 편향적이거나, 잘못된 서술이 있을 수 있습니다. 나무위키는 위키위키입니다. 여러분이 직접 문서를 고칠 수 있으며, 다른 사람의 의견을 원할 경우 직접 토론을 발제할 수 있습니다. This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply. This site is protected by hCaptcha and its Privacy Policy and Terms of Service apply.",
+    "keyword": "프론트엔드",
+    "url": "https://namu.wiki/w/%EC%9B%B9%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C",
+    "likeCnt": 795
+  },
+  {
+    "id": 32,
+    "title": "파이썬만 알고 있다면 웹 앱의 프론트 엔드를 어떻게 구축해야 할까요 ...",
+    "content": "Pycon US 2025 starts next week! 레딧의 공식 파이썬 커뮤니티! 파이썬 프로그래밍 언어와 관련된 최신 뉴스, 패키지 및 메타 정보를 계속 확인하세요. ---  질문이 있거나 파이썬을 처음 사용하는 경우 r/LearnPython사용하세요 만약 수천 명의 사용자를 위한 분석 대시보드를 포함하는 웹 앱을 만들고 싶다고 가정해 봅시다. 또한 사용자 인증, 구독 모델, 결제 및 SaaS 서비스에 필요한 모든 것이 필요합니다. MVP를 위해 딱 한 달이 있습니다. 백엔드를 쉽게 구축하기 위해 파이썬으로 코딩합니다. 하지만 혼자라면 프론트 엔드를 무엇으로 선택하시겠어요? 제가 생각한 몇 가지 옵션이 있습니다. Flask/Django와 함께 파이썬 템플릿 사용 (Soft UI 대시보드) 스트림릿 프레임워크 사용 JavaScript 프레임워크 배우기 (Next.js, React ?) 노코드 도구 (Bubble, Webflow) 다른 거요? 무엇을 선택하시겠어요? Create your account and connect with a world of communities. Pycon US 2025 starts next week! Anyone can view, post, and comment to this community",
+    "keyword": "프론트엔드",
+    "url": "https://www.reddit.com/r/Python/comments/15z1amc/how_to_build_the_front_end_of_a_web_app_if_you/?tl=ko",
+    "likeCnt": 252
+  },
+  {
+    "id": 33,
+    "title": "프론트엔드 개발자의 인프라 공부",
+    "content": "요즈음 격무에 시달리는지라 블로그에 글을 쓰지 못하고 있었습니다😭 회사에서 일하고, 집에 와서는 그동안 부족하다 생각을 많이 했던 알고리즘이나 인프라 공부를 하고 있어요. AWS같은 클라우드 컴퓨팅 서비스를 비롯한 인프  라는 최근까지도 손에 잡히는 공부는 아니었습니다. 서비스 맨 앞단에서 일을 하고 있는 프론트엔드 개발자라서 그렇다고 생각했었는데요. 인프라를 막상 공부해보니 저 생각이 참 잘못되었다는 느낌이 많이 들었습니다. 역시 개발자 생태계에서 덮어놓고 몰라도 되는 건 없습니다. 이 글에서는 인프라 공부를 하면서 느꼈던 생각들, 특히 대용량 트래픽 처리에 대한 생각을 좀 정리해보고자 합니다. 리서치를 많이 하고 쓰는 글은 아니고, 짧은 시간 공부하고 회사에서 인프라를 살짝 만지면서 느낀 소회를 정리하는 글이 될 것 같습니다. 앞으로 공부해 나가야 할 것도 너무 많습니다만, 이제 첫 단추를 꿴 인프라 어린이의 짧은 회고 쯤으로 보시면 됩니다. 포스팅에 등장하는 인프라 관련 용어들을 따로 설명하지는 않겠습니다. 🙂 프론트엔드도 서버입니다. 웹앱 코드를 배포해놓으면 그건 서버에서 가져다줍니다. 당연히 트래픽도 있습니다. 주소창으로 요청을 하면 볼 수 있는 웹 페이지들은 모두 서버에서 오는 것입니다. S3에 SPA를 올려놓든, 정적 웹페이지를 올려놓든, EC2에 Next같은 SSR 앱 을 올려놓든, 서버리스에 올려놓든, 다양한 형태로 존재할 수 있는 서버는 프론트엔드 개발의 결과물을 서빙합니다. 프론트엔드라는 개발 분야가 생기고 발전하면서 서버, 그리고 배포는 백엔드만의 전유물이 아니게 되었습니다. 프론트엔드의 배포 프로세스는 이제 백엔드와는 독립적으로 진행될 수 있고, 관점도 다릅니다. 1월 중순부터 다니는 회사에서도 프론트엔드 배포는 백엔드 배포와는 물리적으로는 아무 상관이 없습니다. 또한,, 저는 입사하고 나서 배포 파이프라인과 스크립트를 짰고 AWS 리소스들을 어레인지하면서, 저번 직장에서 인턴으로 근무할 때 보다 인프라의 이모저모를 좀 더 접해보게 되었어요. 저는 비교적 최근인 2019년부터 개발을 시작했던지라 이러한 환경을 당연하게 받아들였습니다. 하지만 프론트엔드든 백엔드가 분리되기 전의 배포에는 프론트엔드가 백엔드 배포에 종속이 되는 경우가 많았다고 하더라고요. 서버가 유저가 요구하는 모든 리소스를 보내주던 시절의 웹개발에서는 말입니다. 이런 상황에서...🧐 프론트엔드 개발자도 인프라를 모르면 안 될 것 같다는 생각이 생겼습니다. 프론트엔드 개발자는 이제 클라이언트 코드를 서빙하는 서버와 인프라를 안정적으로 유지할 책임이 있습니다. 프론트엔드 개발자가 인프라에서 추구해야할 목표를 크게 3개로 잡아보았습니다. 안정성은 서버의 최우선 덕목입니다. 클라이언트 웹앱을 서빙하는 서버는 유저에게 클라이언트 앱을 안정적으로, 중단 없이 서빙해야 합니다. 그렇다면 질문을 좀 바꿔서, 어떠한 상황에서 서버가 불안정해질까요? 가장 쉽게 생각할 수 있는 것은 과도한 트래픽입니다. 트래픽이 너무 많아 서버가 처리할 수 없다면 서버는 뻗습니다. 물론 프론트엔드 서버의 트래픽은 백엔드 서버와 비교해봤을 때 많이 적은 수준입니다. 클라이언트 앱을 서버에 요청해 가져오는 것은 유저가 주소창이나 링크로 웹사이트에 접근했을 때와 새로고침을 누를 때 정도에만 발생하고, 그 이후에는 백엔드에 여러 데이터를 여러번 요청합니다. 대강 비율로 따지면 1:N 정도가 됩니다. 유저는 클라이언트 웹앱에 접근한 이후, 한 세션에서 백엔드에 여러번 데이터를 요청할 수 있습니다. 하지만 유저가 무지무지 많다면 프론트엔드 서버에도 가용성을 높일 수 있는 조치가 필요합니다. 프론트엔드 서버에도 트래픽은 존재하기 때문에 서버는 뻗을 수 있습니다. (물론 프론트엔드 서버의 가용성을 높여야할 정도라면 백엔드 트래픽은 정말 무시무시하게 많을 것이라 예상해볼 수 있겠습니다...😯 ) 프론트엔드 배포에 자주 쓰이는 AWS S3 이야기를 해보자면, S3는 안정성이 99.99999999%이고 기본적으로 초당 3500~5500개 정도의 요청을 감당하기 때문에 대형 서비스가",
+    "keyword": "프론트엔드",
+    "url": "https://maxkim-j.github.io/posts/frontend-infrastructure/",
+    "likeCnt": 610
+  },
+  {
+    "id": 34,
+    "title": "모든 프론트엔드 개발자가 구독해야 할 뉴스레터. : r/Frontend",
+    "content": "저는 이메일로 소식을 받는 걸 좋아해요. 아침 커피 한 잔과 함께 모닝 브루나 프론트엔드 위클리 같은 \"브리핑\"을 매일 읽는 게 최신 정보를 얻는 가장 좋은 방법이거든요. 프론트엔드 개발자가 알아야 할 유용한 뉴스레터는 뭐가 있을까요? 특히 JS 프레임워크, Tailwind, Bootstrap, 그리고 무료 웹 개발 리소스에 대한 소식을 공유하는 뉴스레터에 관심이 많아요. Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "프론트엔드",
+    "url": "https://www.reddit.com/r/Frontend/comments/137g7jh/newsletters_that_every_frontend_developer_should/?tl=ko",
+    "likeCnt": 264
+  },
+  {
+    "id": 35,
+    "title": "2년 안에 풀타임 프론트엔드 개발자가 되고 싶은데. 어떻게 해야 할까 ...",
+    "content": "/r/frontend 는 웹을 발전시키고 싶거나 배우고 싶은 프론트엔드 웹 개발자들을 위한 서브레딧입니다. 최신이고 가장 멋진 팁, 링크, 생각, 그리고 프론트 웹 개발 세계에 대한 토론을 찾거나 공유하고 싶다면, 바로 이곳입니다. 안녕! 저, 독일에서 온 27살인데. 학위도 없고, 견습도 안 받았어. 더 높은 교육의 문은 나한테 오래 전에 닫혔지. 집에서 썩어가면서 아무 쓸모 없는 존재가 되는 게 너무 지겨워; 드디어 뭔가 해보고 싶어. 웹사이트 만드는 게 너무 재밌어 보이고, 그걸로 돈도 벌 수 있을 것 같아서. 그래서, 간단하게 말해서, 지금 내 나라에서 열려있는 주니어 프론트엔드 개발자 포지션이랑 요구사항들을 많이 찾아봤어. 놀랍게도, 학위나 견습 없이도 할 수 있더라고, 만약에 실력이랑 멋진 포트폴리오만 있다면... 맞지? 내가 틀렸으면 알려줘. 그리고, 이 글이 엄청 급하게 쓰여졌는데, 빨리 시작하고 싶고 배우고 싶어서 그래! 내가 겨우 두 단락 썼다고 해서 가볍게 생각하는 건 아니라고 생각해줘. 어쨌든, 2년 안에 주니어 프론트엔드 개발자가 되려면 어떻게 해야 해? 조심해야 할 거라도 있어? 어떤 조언이라도 환영해!  Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "프론트엔드",
+    "url": "https://www.reddit.com/r/Frontend/comments/14isxb8/i_want_to_become_a_full_time_frontend_developer/?tl=ko",
+    "likeCnt": 494
+  },
+  {
+    "id": 36,
+    "title": "프런트엔드와 백엔드 - 애플리케이션 개발 간의 차이점 - AWS",
+    "content": "모든 애플리케이션은 크게 프런트엔드와 백엔드로 나뉩니다. 프런트엔드는 버튼, 체크박스, 그래픽, 문자 메시지와 같이 사용자에게 보이는 시각적 요소입니다. 사용자는 이러한 시각적 요소를 통해 애플리케이션과 상호 작용할 수 있습니다. 백엔드는 애플리케이션을 작동하는 데이터 및 인프라입니다. 백엔드는 사용자의 애플리케이션 데이터를 저장하고 처리합니다. 프런트엔드 라는 용어는 탐색 메뉴, 디자인 요소, 버튼, 이미지 및 그래프와 같이 사용자가 직접 상호 작용할 수 있는 그래픽 사용자 인터페이스(GUI)를 의미합니다. 기술적 관점에서 사용자가 여러 UI 구성 요소와 함께 보게 되는 페이지 또는 화면을 문서 객체 모델(DOM) 이라고 합니다. 다음과 같은 세 가지 주요 컴퓨터 언어는 사용자가 프런트엔드와 상호 작용하는 방식에 영향을 미칩니다. JavaScript는 페이지의 변경을 트리거하고 새 정보를 표시할 수 있습니다. 즉, 프런트엔드는 캘린더를 표시하거나 사용자가 유효한 이메일 주소를 입력했는지 확인하는 등의 기본적인 사용자 상호 작용(또는 요청)을 처리할 수 있습니다. 프런트엔드는 더 복잡한 요청을 백엔드로 전달합니다. 서버 측 이라고도 하는 애플리케이션의 백엔드는 웹 애플리케이션의 전반적인 기능을 관리합니다. 사용자가 프런트엔드와 상호 작용하면 해당 상호 작용은 HTTP 형식으로 백엔드에 요청을 보냅니다. 백엔드는 해당 요청을 처리하고 응답을 반환합니다. 백엔드는 요청을 처리할 때 일반적으로 다음과 상호 작용합니다. 백엔드는 여러 통신 프로토콜과 기술을 사용하여 요청을 완료합니다. 또한 수천 개의 별도 요청을 동시에 처리합니다. 백엔드는 동시성 및 병렬 처리 기술을 결합합니다. 예를 들어 요청을 여러 서버에 분산하고, 캐싱하고, 데이터를 복제합니다.  프런트엔드와 백엔드는 애플리케이션의 다양한 기술과 소프트웨어 계층을 논리적으로 그룹화하는 광범위한 용어입니다. 프런트엔드는 사용자가 볼 수 있는 부분에 집중합니다. 반면 애플리케이션의 작동과 관련된 모든 것이 백엔드입니다. 프런트엔드는 자동차의 외관이고 백엔드는 자동차 내부의 모든 기계라고 생각하면 됩니다. 자동차가 아무리 아름답게 설계되었더라도 내부 기계가 제대로 작동해야만 최적의 성능을 발휘합니다. 그러나 외부 디자인도 속도와 성능에 영향을 미칩니다. 마찬가지로 최상의 결과를 얻으려면 애플리케이션의 프런트엔드와 백엔드를 일관성 있게 설계해야 합니다. 다음으로, 프런트엔드와 백엔드의 주요 차이점을 살펴보겠습니다.  풀 스택 개발의 목표는 반응성이 뛰어나고 효율적이며 기능적인 애플리케이션을 만드는 것입니다. 프런트엔드 개발자와 백엔드 개발자는 최종 애플리케이션을 만드는 목표가 서로 다릅니다. 프런트엔드 개발자는 긍정적인 사용자 경험을 개발하고, 애플리케이션의 접근성과 성능을 최적화하고, 빠르게 반응하는 디자인을 만들고자 합니다. 프런트엔드 개발자의 주요 개발 목표는 다양한 플랫폼과 디바이스에서 쉽게 상호 작용할 수 있고, 잘 설계되고, 완벽하게 반응하는 프런트엔드를 만드는 것입니다. 백엔드 개발자는 애플리케이션의 서버 쪽 작업을 구축한 후 유지 관리합니다. 백엔드 개발자의 주요 개발 목표는 애플리케이션 기능을 정확하고 효율적으로 수행하는 신뢰할 수 있는 아키텍처를 만드는 것입니다. 사용자 요구 사항을 충족하면서도 모든 보안 및 비용 고려 사항을 충족하는 것이 이들의 목표입니다. 프런트엔드 개발에서는 웹사이트의 사용자 대면 측면을 다룹니다. 이러한 기술에는 JavaScript, CSS 및 HTML과 같은 컴퓨터 언어가 포함됩니다. 또한 프런트엔드 소프트웨어 개발에서는 프런트엔드 프레임워크를 사용하여 프로덕션 효율성을 높입니다. 백엔드 개발에서는 Ruby, Java 및 Python과 같은 프로그래밍 언어를 사용하여 서버 쪽 로직을 작성합니다. 또한 백엔드 개발자가 데이터베이스, 스토리지 기술 및 API 기술을 사용하므로 애플리케이션과 시스템이 서로 통신합니다. 데이터베이스에 대해 읽어보기 » API에 대해 읽어보기 » 동시성은 애플리케이션이 여러 작업을 동시에 실행할 수",
+    "keyword": "프론트엔드",
+    "url": "https://aws.amazon.com/ko/compare/the-difference-between-frontend-and-backend/",
+    "likeCnt": 392
+  },
+  {
+    "id": 37,
+    "title": "프론트엔드 개발자가 실제로 회사에서 하는 일은? (feat. 업무범위,필수 ...",
+    "content": "- 반면, 프론트엔드 개발자는 웹사이트나 애플리케이션의 사용자 인터페이스(UI)를 구현하는 역할을 맡습니다. 또한 API를 통해 서버와 데이터를 주고 받는 것까지 구현 ...",
+    "keyword": "프론트엔드",
+    "url": "https://zero-base.co.kr/event/media_insight_contents_FE_frontend_job",
+    "likeCnt": 223
+  },
+  {
+    "id": 38,
+    "title": "[번역] 탁월한 프론트엔드 엔지니어가 되는 법 | DailyEngineering",
+    "content": "이 포스트는 구글의 엔지니어인 Philip Walton 의 허락을 받고 How to Become a Great Front-End Engineer 를 번역한 것입니다. 첫 영문 포스트 번역이라 오역이 난무할 수 있으니 댓글로 따끔한 지적 부탁드립니다. 의역을 많이 하고 있으니 가급적 원문도 참고하시는 게 좋습니다. 얼마 전에 내 블로그의 독자로부터 이메일을 하나 받았다. 이유가 뭐든 간에, 많은 생각을 하게되는 이메일이었다. 그 내용은 이랬다. Philip님 안녕하세요. 어떻게 하면 탁월한 프론트엔드 엔지니어가 되셨는지 여쭤봐도 될까요? 조언 부탁합니다. 나는 지금까지 스스로 “탁월한” 프론트엔드 엔지니어라고 생각한 적이 없었기 때문에 무척 놀랐다. 사실, 내가 이 업계에 발을 들여놓은지 얼마 안되던 시절, 솔직히 어떤 일자리도 가질 자격이 없다고 생각했다. 나는 내가 얼마나 모르는지 깨닫지도 못했기 때문에 그냥 지원만 했을 뿐이다. 그리고 날 면접본 사람이 질문을 제대로 하지 못했기 때문에 직업을 얻은 것 뿐이다. 그럼에도 나는 결국 내 역할을 꽤 잘했고 팀에서 가치있는 구성원이 되었다. 내가 팀에서 빠지게 되었을 때(그럴 자격이 없었지만, 다음 도전을 위해서) 나의 대체자를 고용하는 업무를 했었다. 입사 면접 때 내가 어떻게 했었는지 지금 돌아보면, 처음에는 이 분야에 대해 부족했음에도 불구하고 지식에 대해 많은 강조를 했던 것에 충격받았다. 현재의 나는 아마 경험적으로 내가 성공할 가능성이 있다고 알고 있음에도 과거의 나를 고용하지 않았을 것이다. 웹 분야에서 오래 일하면서 그냥 잘하는 사람과 진짜로 잘하는 사람을 구분하는 기준은 “무엇을 아느냐”가 아니라 “어떻게 생각하느냐”라는 사실을 깨닫고 있다. 확실히 지식은 중요하고 어떤 때에는 치명적이다. 하지만 환경은 정말 빠르게 변화하기 때문에 지식을 얻는 방법은 이미 알고 있는 지식보다 항상 더욱 중요하다. 아마도 매일 문제를 해결하기 위해 지식을 활용하는 방법보다도 중요할 것이다. 직업을 얻기 위해 필요한 언어, 프레임워크, 도구들에 대해 말하는 글은 널려있다. 나는 조금 다른 접근을 하고자 했다. 이 포스팅에서는 프론트엔드 엔지니어로서의 마음가짐에 대해서 말할 것이며, 탁월한 프론트엔드 엔지니어가 되는 법 에 대해 조금 더 영구적인 해법이 되었으면 한다. 너무 많은 사람들이 무언가 동작하게 만들기 위해 CSS나 JavaScript를 어설프게(tinker) 손댄다. 나는 항상 코드 리뷰를 할 때마다 이런일이 일어나는 것을 종종 봐왔다. 나는 종종 그들에게 “왜 여기에 float: left 를 추가한 겁니까?” 혹은 “여기에 overflow: hidden 은 정말로 필요한 건가요?”라고 묻는다. 그럼 그들은 대부분 “몰라요. 하지만 제가 그걸 지우면 제대로 동작하지 않습니다.”라고 대답한다. JavaScript에서도 마찬가지였다. setTimeout 을 그저 경쟁 상태(race condition)를 막기 위해 사용하는 사람도 있었고, 다른 이벤트 핸들러에 어떤 영향을 미칠지 에 대한 고려도 없이 event propagation을 멈추는 사람도 있었다. 이것이 당장 동작하는 구현을 필요로 할 때 일어나는 일인 것을 알고있다. 하지만 문제의 원인을 이해하려하지 않는다면 항상 같은 문제를 마주하게 될 것이다. 당신의 해결법이 어떻게 동작하는 지를 이해하는 것은 당장은 시간이 많이 들 수도 있지만 결과적으로 시간을 아끼게 될 것이다. 작업하는 시스템에 대해 완벽히 이해하게 되면 앞으로 불필요한 추측이나 체크하는 작업이 적어질 것이기 때문이다. 프론트엔드 개발과 백엔드 개발의 가장 큰 차이점은 백엔드 코드가 제어할 수 있는 환경에서 돌아가는 반면에, 프론트엔드의 환경은 완전히 제어 밖에 있다는 것이다. 사용자가 사용하는 플랫폼이나 기기는 계속 변하며, 코드는 이것을 모두 지원할 수 있어야 한다. 2011년에 어떤 유명한 자바스크립트 프레임워크가 있어서 한 번 읽어본 적이 있다. 거기에 있던 코드 중 일부분을 소개한다. (단순화한 버전이다.) 아마도 IE6와 그보다 오래된",
+    "keyword": "프론트엔드",
+    "url": "https://hyunseob.github.io/2016/02/21/how-to-become-a-great-frontend-engineer/",
+    "likeCnt": 684
+  },
+  {
+    "id": 39,
+    "title": "AI 툴로 바이브 코딩해보기 — <핸즈온 바이브 코딩: 프론트엔드> 이전 ...",
+    "content": "LinkedIn 동의 후 가입 가입이나 로그인을 하기 위해 계속 버튼을 클릭하면 LinkedIn 사용자약관 , 개인정보 처리방침 , 쿠키정책 에 동의하게 됩니다. Frontend Engineer at Cloudflare | Specializing in React & TypeScript | Leading Women in Tech Communities 🛠 AI 툴로 바이브 코딩해보기 — <핸즈온 바이브 코딩: 프론트엔드>   이전 스타트업에선 정말 매일같이 GPT를 쓰면서 개발했는데, 지금은 회사 보안상 AI 도구를 거의 안 쓰다 보니 실무에서 AI를 어떻게 써야 할지 감을 살짝 잃은 느낌이었습니다.  그래서 이번에 〈핸즈온 바이브 코딩: 프론트엔드〉 강의를 들어봤는데, 생각보다 훨씬 유익했던 내용이 많아서 후기를 다뤄보려고 합니다!  ✅ 좋았던 포인트:  - AI를 그럴듯하게 쓰는 법이 아니라 진짜 코딩에 어떻게 녹여내는지 실전 중심으로 알려줌  - 어떤 개발 역량이 앞으로 더 중요할지에 대한 인사이트 얻음  - 듣기만 하는 강의가 아니라 직접 만들어보고 테스트하고 배포까지 핸즈온으로 다룸  요즘 AI 흐름 따라가기가 막막하거나 실무에서 AI를 거의 안 써서 거리감 느껴졌던 분들께 프론트 개발자 분들께 추천드려봅니다 🫡    👉 쿠폰은 여기서 신청 가능할 것 같습니다: https://lnkd.in/g5zBSAkQ 댓글을 보거나 남기려면 로그인 팔로워 2,162명 무료 계정을 만들거나 로그인하여 검색을 계속하세요.   또는 가입이나 로그인을 하기 위해 계속 버튼을 클릭하면 LinkedIn 사용자약관 , 개인정보 처리방침 , 쿠키정책 에 동의하게 됩니다. LinkedIn이 처음이세요? 회원 가입 또는 LinkedIn이 처음이세요? 회원 가입 가입이나 로그인을 하기 위해 계속 버튼을 클릭하면 LinkedIn 사용자약관 , 개인정보 처리방침 , 쿠키정책 에 동의하게 됩니다.",
+    "keyword": "프론트엔드",
+    "url": "https://kr.linkedin.com/posts/goleedev_ai-%ED%88%B4%EB%A1%9C-%EB%B0%94%EC%9D%B4%EB%B8%8C-%EC%BD%94%EB%94%A9%ED%95%B4%EB%B3%B4%EA%B8%B0-%ED%95%B8%EC%A6%88%EC%98%A8-%EB%B0%94%EC%9D%B4%EB%B8%8C-%EC%BD%94%EB%94%A9-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-activity-7337775760511774720-a8fr",
+    "likeCnt": 713
+  },
+  {
+    "id": 40,
+    "title": "프론트엔드 vs 백엔드 프로그램 개발자 차이 1분 정리 : 네이버 블로그",
+    "content": "May 14, 2024 ... 백엔드란 웹/앱에서 사용자의 행동을 처리하고, 정보를 저장·관리·전달하며, 서버와 데이터베이스를 관리하는 역할을 합니다. 프론트엔드가 웹이나 앱의 ' ...",
+    "keyword": "프론트엔드",
+    "url": "https://blog.naver.com/wishket/223446049763",
+    "likeCnt": 232
+  },
+  {
+    "id": 41,
+    "title": "점심을 요리해요? : r/Korean",
+    "content": "We're here to learn, study, and practice the Korean language. Hey guys! Do Koreans use 점심을 요리해요 in real life? I seldom use 요리하다 if I'm not in the situation saying I'm cooking or I'm cooking something (like chicken or something ingredients-wise). So I usually just say 점심을 만들어요. Somehow 점심 요리를 해요 sounds okay but 점심을 요리해요 is off. What do you guys think? Thank you! Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "점심",
+    "url": "https://www.reddit.com/r/Korean/comments/lyll8r/%EC%A0%90%EC%8B%AC%EC%9D%84_%EC%9A%94%EB%A6%AC%ED%95%B4%EC%9A%94/",
+    "likeCnt": 859
+  },
+  {
+    "id": 42,
+    "title": "점심 - 나무위키",
+    "content": "이 저작물은 CC BY-NC-SA 2.0 KR 에 따라 이용할 수 있습니다. (단, 라이선스가 명시된 일부 문서 및 삽화 제외) 기여하신 문서의 저작권은 각 기여자에게 있으며, 각 기여자는 기여하신 부분의 저작권을 갖습니다. 나무위키는 백과사전이 아니며 검증되지 않았거나, 편향적이거나, 잘못된 서술이 있을 수 있습니다. 나무위키는 위키위키입니다. 여러분이 직접 문서를 고칠 수 있으며, 다른 사람의 의견을 원할 경우 직접 토론을 발제할 수 있습니다. This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply. This site is protected by hCaptcha and its Privacy Policy and Terms of Service apply.",
+    "keyword": "점심",
+    "url": "https://namu.wiki/w/%EC%A0%90%EC%8B%AC",
+    "likeCnt": 172
+  },
+  {
+    "id": 43,
+    "title": "\"요즘 누가 만원 내고 먹어요?\"···직장인 점심 풍경 이렇게 달라졌다는데",
+    "content": "이 글자크기로 변경됩니다. (예시) 가장 빠른 뉴스가 있고 다양한 정보, 쌍방향 소통이 숨쉬는 다음뉴스를 만나보세요. 다음뉴스는 국내외 주요이슈와 실시간 속보, 문화생활 및 다양한 분야의 뉴스를 입체적으로 전달하고 있습니다.  “김치찌개 한 그릇이 1만원을 훌쩍 넘어 점심 먹기가 겁나요” 서울 종로구에서 근무하는 직장인 전모 씨(27)는 요즘 점심시간마다 계산서를 볼 때 한숨이 나온다. 구내식당이 없어 외부 식당을 이용해야 하는데, 주 5일만 먹어도 한 달 점심값이 30만원을 훌쩍 넘는다. “월세보다 점심이 더 부담스럽다”는 푸념이 결코 과장이 아니다. 6일 통계청 국가통계포털(KOSIS)에 따르면 최근 5년간 외식 물가는 25% 올랐다. 김밥 값은 38%, 햄버거 35%, 짜장면은 34%나 상승했다. 직장인들이 저렴하게 끼니를 해결하던 구내식당도 같은 기간 28% 줄어, 매달 100곳 이상 문을 닫았다. 페이코가 올 상반기 900만건의 식권 결제 데이터를 분석한 결과, 직장인 점심 평균 지출액은 9500원으로 2017년 6000원에서 58% 늘었다. 강남·여의도·서초 등 주요 업무지는 1만 3000~1만 5000원까지 올라 전국 평균보다 2000원 이상 비싸다. 최근 ‘런치플레이션(Lunch+Inflation)’이라는 신조어가 생길 만큼 점심 한 끼도 전략적으로 계획해야 하는 시대가 됐다. 외식 물가가 치솟고 구내식당은 급격히 줄면서, 도시락을 정기 배송받는 구독형 서비스가 직장인과 대학생 사이에서 인기를 끌고 있다. 이제 도시락은 단순히 ‘싸게 때우는 밥’이 아니라 맛과 영양, 편리성까지 챙긴 ‘가심비 점심’으로 진화하고 있다.  점심값이 부담되자 직장인들은 ‘구독형 도시락’으로 발길을 돌리고 있다. 최근에는 부서 단위로 도시락을 단체 구독해 먹는 회사도 늘고 있다. 온라인을 중심으로 “여럿이 함께 정기 주문하면 가격이 더 저렴하고, 회의 전후로 사무실에서 바로 식사할 수 있어 효율적이다”, “1만원 안쪽으로 점심을 해결할 수 있다”, “사무실 내 회의실에서 팀별로 도시락을 먹으니 외부 식당을 찾을 필요가 없어 업무 시간도 절약된다”, “한여름·한겨울에 식당 앞에 줄을 서지 않아도 돼 편하다”는 후기가 잇따른다.  서비스 업체 ‘런치랩’은 서울 전역에서 최소 3인 이상만 모이면 매일 정해진 시간에 도시락을 배송한다. 가정식 반찬 도시락부터 식단 관리용 샐러드·샌드위치까지 선택할 수 있으며, 단체 주문 시 30분 이상 지연되면 전액을 보상한다. 가격은 도시락 1개당 8800원, 첫 주문은 50% 할인(4400원)으로 체험할 수 있다. 평균 1만원이 넘지 않는 가격에 영양소를 챙길 수 있어 인기다. 특히 남은 음식을 그대로 박스에 넣어두면 다음 날 회수해 가는 ‘수거 서비스’가 편리하다. 별도의 쓰레기 처리가 필요 없어 사무실에서 간편하게 이용할 수 있다. 강남·서초·송파 등 직장인 밀집 지역에서 운영되는 ‘룸서비스 딜리버리’는 국물류까지 따뜻하게 즐길 수 있는 보온 도시락을 배달해 호응을 얻고 있다. 스테인리스 보온 용기를 사용해 국과 탕이 식지 않으며, 정가는 1만 1000원이지만 정기 구독 시 9500원, 첫 주문 시 5500원으로 이용할 수 있다. 직장인들 사이에서는 “더위에 밖에서 줄 서기 힘든데 사무실까지 배달돼 편리하다”, “잔반은 박스에 넣기만 하면 돼 청소가 필요 없다”, “회사 식당이 없어 하루 1만원 넘게 쓰던 점심값을 절반으로 줄였다”, “메뉴가 매일 달라 질리지 않는다”는 후기가 이어진다.  그러나 수입이 적은 대학생들에게는 구독형 도시락도 부담이다. 게다가 최소 3인 이상 주문해야 하는 경우가 많아 1인 사용이 쉽지 않다. 이런 이유로 최근 대학생들 사이에서는 ‘편의점 픽업 예약 도시락’이 생존 무기로 자리 잡고 있다. 편의점 GS25는 앱 ‘우리동네GS’를 통해 도시락 사전 예약 서비스를 운영한다. 예약 건수는 전년 대비 56.6% 증가했고, 도시락 매출은 전체 간편식 상품의 61%를 차지할 만큼 핵심 상품으로 떠올랐다. 대표 메뉴 ‘정성가득비빔밥’은 600kcal 저칼로리 구성에 국산",
+    "keyword": "점심",
+    "url": "https://v.daum.net/v/20250806181341644",
+    "likeCnt": 810
+  },
+  {
+    "id": 44,
+    "title": "어린이 식판식 점심 모음_만 3세, 6세의 점심메뉴&요리팁 : 네이버 ...",
+    "content": "어린이 식판식 점심 모음_만 3세, 6세의 점심메뉴&요리팁 2021. 4. 20. 4:22 엄청 오랜만에 미용실에 와서 머리를 하고 있어용^^그래서 틈이 나는 관계로ㅎㅎ열심히 포스팅 중입니다. ​ 참고로 저는 미국에 살고 있고, 만 6세 남아 & 만 3세 여아를 키우고 있어요. 코로나로 학교에 안가고 있기 때문에 삼시세끼 집에서 만들어 먹고 있는데 아이들 점심은 식판식으로 차려줘요. ​ 이렇게 모아놓고 보니까 겹치는 메뉴가 상당히 많네요. 주로 김밥, 유부초밥, 마카로니&치즈, 만두, 치킨너겟...ㅋ ​ 매우 준비하기 쉬운 메뉴들이지만, 귀여운 식판에 과일이랑 사이드를 요리조리 올려주면 아이들이 매우 좋아해요. 특히 일주일에 한번 정도는 맥도날드 해피밀처럼 미스테리 장난감도 한개씩 선물로 놓아주기도 하구요^^ ​ 아이들이 좋아하는 점심 식판식 메뉴~아이들 점심 준비에 조금이나마 도움이 되셨으면 좋겠어요❤️ ​ 오늘도 방문해주셔서 진심으로 감사드려요☺️ 트레이더 조에서 판매하는 칠면조 고기로 만든 콘도그. 많이 짜지 않고 맛있어요!마이크로웨이브에 가열하지 마시고, 오븐이나 에어프라이어에 구워서 드시면 겉은 바삭!속은 촉촉 맛있답니다. 아그들이 보자마자 환호성을 질렀던 메뉴구성이예요ㅎㅎ 마카로니&치즈, 콘도그, 과일에 쿠키까지!😄 해피밀 스타일로 장난감까지 챙겨준 식판구성. 토마토 스파게티, 치킨너겟, 사과, 슈크림 청포도 갈아서 포도주스까지^^ 초긴단 만두 점심 셋트ㅋ 물만두, 당근 & 후머스, 고구마, 딸기 마카로니&치즈, 치킨샐러드 샌드위치, 과일 마카로니 & 치즈는 아무리아무리 먹어도 계속 먹고 싶은가보다ㅎㅎ 오렌지 치킨, 밥, 아보카도, 멸치볶음 맛있게 냠냠 또 마카로니 & 치즈!!! 마카로니&치즈, 군고구마, 찐빵, 과일 식판에 음식 담고 있는데 이뿌니가 와서 왕창 꽂은 과일꼬치들ㅎㅎ 요거 간이 좀 쎄다고 생각했는데 귀요미는 맛있다고 엄지척!했던 만두예요. 쪄서 먹으면 맛있어요. 분식집 메뉴구성 만두, 김밥, 과일 귀요미가 햄 두둑히 들어간 김밥을 주문하셔서... 김밥 & 과일 김밥은 자꾸 싸다보니까 세상에 이렇게 준비하기 쉬운 음식이 없는것 같아요ㅎㅎ돌돌 말아서 썰기만 하면 맛있는 김밥^^ 볶음밥은 마지막에 버터 한조각, 계란 넣고 휘리릭 볶아주면 음~맛있어용^^버터의 힘이란...ㅋ 볶음밥 식판 스테이크 볶음밥, 김치, 딸기 또 김밥, 과일, 요거트, 시나몬 롤 안제 먹어도 맛있는 김밥! 귀요미&이뿌니 둘다 너무 좋아하는 유부초밥은 항상 밥보다 부재료가 많게!! 유부초밥 정식ㅋ 유부초밥, 브로콜리&후무스, 과일 치킨너겟, 프렌치프라이, 과일 귀요미가 냉동 치킨너겟을 별로 안좋아하는데, 요건 합격점을 받았어요. 안짜고 괜찮아용^^ 요겁니다!!저는 타겟에서 구입했어요. 마카로니&치즈, 미니버거, 과일 치즈 듬뿍 마카로니&치즈 만드는데 5분도 안걸리는 그릴 치즈 샌드위치 이미 너무 많은 분들이 맛있다고 극찬을 해주신 메뉴ㅎㅎ정말 쉽고 맛있어용^^ 미국에 와서 처음 맛보게 된 음식이 여럿 있지만, 그 중 하나는 그릴치즈 샌드위치다. 내가 아플때 조군이 ... m.blog.naver.com 캘리포니아 롤, 미역국, 반찬, 과일 늘 맛있게 먹어주는 아이들 덕분에 더 신나게 만들게 되는것 같아요. 제 입맛에는 인스턴트 짜장면 중에서는 짜왕이 제일 맛있는것 같아요. 짜왕, 군만두, 과일로 구성된 짝퉁 중국집 메뉴 또 유부초밥! 유부초밥, 삶은 계란, 과일 맛있게 냠냠 야채카레! 뭉근하게 끓이면 맛있어욤^^ 카레밥 치킨너겟, 과일 갑자기 사진보니까 카레가 먹고 싶네요ㅎㅎ 귀요미는 유부초밥, 이뿌니는 파스타를 먹겠다고 해서...반반메뉴 어린아이들은 이렇게 짧은 면의 파스타가 먹기 편한고 좋지요. 또 짜장면!! 이번에는 새로 사본 짜장면을 조리해봤는데 제 입에는 별로였어요. 요거요~팔도 제품이었던 것 같아요. 두 아이를 동시에 만족시키기 위해선 짬짜면 같은 메뉴가 등장할 때가 종종 있어요ㅎㅎ 크림파스타와 김밥?ㅎㅎ 김밥과 군만두는 영원한 친구 이날 재료가 없었는지 허접한 김밥이네요ㅎㅎ 푸드코트 스타일 메뉴 구성ㅎㅎ 피자, 피",
+    "keyword": "점심",
+    "url": "https://m.blog.naver.com/ddochi84/222316193032",
+    "likeCnt": 200
+  },
+  {
+    "id": 45,
+    "title": "점심 - 위키백과, 우리 모두의 백과사전",
+    "content": "점심 (點心), 점심밥 (點心-), 또는 점심 식사 (點心食事)는 낮에 끼니로 먹는 식사 이다. [ 1 ] 오반 (午飯), 오찬 (午餐), 주식 (晝食), 주찬 (晝餐), 중반 (中飯), 중식 (中食)으로도 부른다. 점심을 위한 음식은 다양하며 많은 사람들은 학교 나 노동 환경에서 점심을 먹는다. 회사 와 학교 에서는 보통 하루 중간에 점심 시간을 1시간 정도 제공한다. 하지만 프랑스 의 경우는 식사 문화 때문에 점심 시간이 무려 2시간이 넘는다. 일부 회사나 학교는 셀프 서비스 식당 을 제공한다. 또, 일부 장소에서는 식당 가까이에서 쉽게 먹을 수 있다. 이러한 편의가 주어지지 않는다면 점심을 하루 중 기본 식사 로 충당하는 것은 현실적으로 가능하지 않다. 이러한 경우 상대적으로 단순한 음식 을 도시락 상자 에 담아 학교나 일터로 가져간다. 대부분의 장소에서는 점심을 배달하는 트럭 이 존재한다.",
+    "keyword": "점심",
+    "url": "https://ko.wikipedia.org/wiki/%EC%A0%90%EC%8B%AC",
+    "likeCnt": 979
+  },
+  {
+    "id": 46,
+    "title": "제 생일 축하 가족 점심식사 : 네이버 블로그",
+    "content": "Aug 15, 2018 ... 제 생일 축하 가족 점심식사 ... 제 생일은 일주일 전이었지만 온 가족이 맞는 시간을 찾다보니 오늘에야 점심식사를 하게 되었어요. 장소는 얼마 전에 남편 ...",
+    "keyword": "점심",
+    "url": "https://blog.naver.com/estheryoo5/221339287699?viewType=pc",
+    "likeCnt": 226
+  },
+  {
+    "id": 47,
+    "title": "커뮤니티 점심 프로그램 - Pima Council on Aging",
+    "content": "헬프 라인 (520) 790-7262 자원 디렉토리 TheKatie.org 가상 커뮤니티 센터 방문 가정에서 피마케어(PCAH) NCA (Neighbors Care Alliance) 비상 경보 시스템 바퀴 달린 피마 식사 가정에서의 도움 주택 수리 및 적응 다이렉트 케어 워커 되기 메디 케어 시니어 메디케어 패트롤(SMP) 케이티 더슨 베리 건강 노화 센터 치매 가능 남부 애리조나 메모리 카페 무료 폭포 피트니스 향상 노화 숙달 프로그램 주거 운송 건강한 생활 수업 커뮤니티 점심 프로그램 간병인 지원 그룹 간병인 교육 일대일 간병인 상담 보호자 휴식(휴식) 조부모 양육 손자 아리랑요양원 간병인 리소스 수명 종료 관리 계획 유틸리티 할인 남용 및 착취 법률 지원 장기 요양 옴부즈맨 권리와 혜택 프리 윌 전체 사이트에서 주제 또는 다른 키워드를 검색하십시오 ... 특정 리소스를 찾고 계십니까? 리소스 디렉토리를 검색해보십시오. Pima 카운티에는 1700 개의 리소스가 있습니다. 홈 > 제공 서비스 > 노화 > 커뮤니티 점심 프로그램 우리 지역 사회 점심 프로그램은 노인들에게 건강한 식사를 제공하고, 사회 참여, 학습, 자원봉사의 기회를 제공합니다. PCOA는 Southern Arizona의 Community Food Bank, Tucson 시, La Posada 및 Chicanos Por La Causa와 협력하여 다음과 같은 서비스를 제공하게 되어 자랑스럽게 생각합니다. 6개의 지역 점심 식사 장소 투싼과 그린 밸리 도시권에 위치. 이 프로그램은 위치에 따라 다양한 사교 활동을 제공하고 60세 이상 사람들(연령에 상관없이 배우자도 포함)에게 영양가 있는 식사를 제공합니다. 사회 활동은 위치에 따라 다르며 운동, 게임, 공예, 건강, 영양에 관한 교육 프레젠테이션 등이 포함될 수 있습니다. 프로그램에 참가할 자격이 없는 손님에게는 식사당 $2-$3, 식사당 $8의 기부가 권장됩니다. 사전 등록이 필요하며, 식사 시간, 식사 예약, 영업 요일 및 시간을 위해 사전에 전화하시기 바랍니다. 커뮤니티 점심 지도 2025년 XNUMX월 CPLC 2025년 XNUMX월 점심 메뉴   아모리 파크 시니어* – 220 S. 5th Ave., Tucson 85701 – (520) 791-4070 카사 데 엔칸토 – 250 N. Silverbell Rd., Tucson 85745 – (520) 310-6716 카사 데 푸에블로 – 4975 S. Liberty Ave., Tucson – (520) 310-2915 자유 레크리에이션 센터 – 5000 E. 29th St., Tucson 85711 – (520) 791-4969 라 포사다 커뮤니티 센터 – 780 S. Park Center Ave., Green Valley 85614 – (520) 393-6814 윌리엄 클레멘츠 센터** – 8155 E. Poinciana 박사, 투손 85730 – (520) 791-5787 *저녁식사만 **오후 2시에 마감합니다",
+    "keyword": "점심",
+    "url": "https://pcoa.org/ko/ways-we-help/meals-nutrition.html/",
+    "likeCnt": 812
+  },
+  {
+    "id": 48,
+    "title": "직장인이 가장 즐겨먹는 점심 식사 베스트 10 : 네이버 블로그",
+    "content": "Apr 12, 2018 ... 직장인들이 점심으로 가장 자주 사 먹는 음식은 김치찌개와 된장찌개와 같은 찌개류다. 대한민국 사람이라면 누구나 좋아하는 메뉴로, 다른 밑반찬 없이도 ...",
+    "keyword": "점심",
+    "url": "https://blog.naver.com/hu_daily/223734487034",
+    "likeCnt": 750
+  },
+  {
+    "id": 49,
+    "title": "가벼운 점심 | 도시락",
+    "content": "홈 | HOME 서정아의 건강밥상 | SWEETPEAPOT 건강요리 레시피 | RECIPES 행복한 삶 | LIFE 서정아의 건강밥상 요리책 건강요리 클래스 | COOKING CLASS 주방용품 | SHOP 주방용품 | SHOP 외 저는 건강한 음식은 사람의 삶을 바꿀 수 있다고 믿어요 단순하고 첨가  물 없는 식단을 통해 여러분과 여러분의 사랑하는 사람들의 삶이 보다 더 건강하고 더 행복하기를 바래요 © 2019 서정아의 건강밥상 SweetPeaPot | ssyj2010@gmail.com | ​시카고,일리노이",
+    "keyword": "점심",
+    "url": "https://www.sweetpeapot.com/recipes/categories/%EB%8F%84%EC%8B%9C%EB%9D%BD",
+    "likeCnt": 559
+  },
+  {
+    "id": 50,
+    "title": "예랑이 점심 in the USA - YouTube",
+    "content": "애기도시락싼다~ 생각하구 이뿌게 으쌰으쌰♡ #쑤 #예랑이점심 #점심도시락 #도시락 #블랙타이거새우장 #계란말이 #키위 #아보카도 ...",
+    "keyword": "점심",
+    "url": "https://www.youtube.com/playlist?list=PLAWRRXFYffYN7c6wzKX5oJlbBn7oP4f4a",
+    "likeCnt": 420
+  },
+  {
+    "id": 51,
+    "title": "미쉐린 가이드 - 공식 웹사이트",
+    "content": "무오키 Seoul, 한국 ©Muoki 이미 기대 이상의 만족을 선사하는 세계 최고의 신규 호텔들은 각 여행지를 새롭게 바라보게 하고, 그곳을 경험하는 또 다른 방식을 열어줍니다. 사막과 숲, 해안을 아우르는 특별한 여행지 속에서, 이 호텔들은 단 한 번뿐인 방식으로 현지를 경험할 수 있는 기회를 선사합니다. 웰니스를 철학의 중심에 두는 세계 최고의 호텔은, 스파를 넘어선 특별한 경험을 선사합니다. 럭셔리한 숙박과 세계적인 수준의 미식을 따로 선택할 필요가 없이, 미쉐린 스타 레스토랑을 갖춘 미쉐린 선정 호텔에서는 두 가지를 동시에 경험할 수 있습니다. 단순한 미적 아름다움을 넘어, 세계 최고의 건축·디자인 호텔은 땅 위든, 바다 위든, 심지어 하늘 위든, 그 자체로 완벽하게 몰입할 수 있는 경험을 위해 설계된 공간입니다. 부산 출신 배우가 허성태가 전하는 이열치열 음식과 시원한 바닷가 명소 미쉐린 가이드 싱가포르는 2025년 36개의 신규 레스토랑을 맞이했으며, 신규 2스타 그리고 1스타 레스토랑이 각각 1곳씩 포함되어 싱가포르의 미쉐린 셀렉션 레스토랑은 총 288곳으로 확대되었습니다. 2025년 미쉐린 키 선정 호텔과 신규 어워드 수상 호텔이 올가을 첫 글로벌 행사에서 함께 공개됩니다. 미쉐린 가이드의 역사와 미쉐린 평가원의 삶 지역 및 통화에 맞게 디스플레이 설정을 쉽게 조정하여 사용자 정의하세요! The Plus program provides upgrades and amenities at participating hotels. For this hotel, Plus members will receive: Non-members can add the privileges at checkout through our 30 day free trial, cancellable at anytime.",
+    "keyword": "미슐랭",
+    "url": "http://guide.michelin.com/kr/ko",
+    "likeCnt": 865
+  },
+  {
+    "id": 52,
+    "title": "미쉐린 가이드 - 나무위키",
+    "content": "이 저작물은 CC BY-NC-SA 2.0 KR 에 따라 이용할 수 있습니다. (단, 라이선스가 명시된 일부 문서 및 삽화 제외) 기여하신 문서의 저작권은 각 기여자에게 있으며, 각 기여자는 기여하신 부분의 저작권을 갖습니다. 나무위키는 백과사전이 아니며 검증되지 않았거나, 편향적이거나, 잘못된 서술이 있을 수 있습니다. 나무위키는 위키위키입니다. 여러분이 직접 문서를 고칠 수 있으며, 다른 사람의 의견을 원할 경우 직접 토론을 발제할 수 있습니다. This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply. This site is protected by hCaptcha and its Privacy Policy and Terms of Service apply.",
+    "keyword": "미슐랭",
+    "url": "https://namu.wiki/w/%EB%AF%B8%EC%89%90%EB%A6%B0%20%EA%B0%80%EC%9D%B4%EB%93%9C",
+    "likeCnt": 310
+  },
+  {
+    "id": 53,
+    "title": "미슐랭에 '구분 없음'으로 등재된 식당들은 뭔지 설명해 줄 사람? : r ...",
+    "content": "미식가들을 위한, 특별히 파인 다이닝 경험을 위해 마련된 곳입니다.   사진을 올리거나, 리뷰를 남기거나, 조언을 구하거나, 뭐든지 자유롭게 하세요… 규칙만 잘 지키면요. 근데 사진만 올리고 끝내지 마세요--음식과 식사 경험에 대해서도 /r/FoodPorn--tell 우리랑 이야기 좀 나눠요!   예약 변경은 고정 게시글인 예약 교환 게시글에 올려주세요. 프렌치 런드리 예약은 /r/thefrenchlaundry에 올려주세요. 이게 좀 무식하게 들릴 수도 있는데… 그냥 다른 모든 식당들 아니야? 미슐랭 앱/웹사이트에서 가져온 스크린샷 몇 개 있어. 별 받은 식당이랑 검토자들이 좋아하는 곳들이 목록에 있는 건 이해가 돼. 여기에 아예 목록에 오르려면 어떤 기준 같은 게 있는 건가? 혹시 고려 대상이라서 그런 건가? 분명히 다른 모든 식당들이 다 있는 건 아니니까, 이 카테고리가 뭔지, 여기 있다고 해서 고려해볼 가치가 있는 건지 좀 이해해보려고 하는 중이야. Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "미슐랭",
+    "url": "https://www.reddit.com/r/finedining/comments/1i7g661/can_someone_explain_the_michelin_listed/?tl=ko",
+    "likeCnt": 596
+  },
+  {
+    "id": 54,
+    "title": "샌프란시스코, 파인 다이닝, 미슐랭 쓰리스타 레스토랑, benu, 코리 리 ...",
+    "content": "샌프란시스코, 파인 다이닝, 미슐랭 쓰리스타 레스토랑, benu, 코리 리 셰프, 베누, 샌프란 미슐랭 식당, 한식 컨템퍼러리 레스토랑, 채희원 매니저, coery lee chef 2024. 1. 21. 19:38 작년 2023년 10월 31일 할로윈데이에 저는 여기 샌프란시스코의 미슐랭 쓰리스타 레스토랑 베누에 다녀왔습니다. 사진을 다시 보니 그때의 감동이.. 사실 이런 레스토랑에 자주 다니고 파인 다이닝 경험이 많아질수록 익숙한 코스가 별로 재미있지도 않고.. 맛이라는 것도 다 거기서 거기로 느껴져서 먹을 때 몇 번 맛있네 생각하고도 다시 사진을 보거나 생각해 봐도 메뉴가 어땠는지 잘 기억나지 않는 경우가 대부분이에요. 그런데 여기 샌프란시스코의 한식 컨템퍼러리 코리 리 셰프님의 베누는 그야말로 브라보! 제가 비싼 레스토랑일수록 만족하기가 어렵다고 이야기를 했었는데요. 여기도 비싼 가격 만만치 않은 곳이라 얼마나 만족도가 높을지... 요즘 파인 다이닝에 대한 기대가 별로 없었던 차에.. 진즉 방문할 걸 하는 후회가 들었던 곳. 샌프란시스코에 가자마자 방문했었어야 하는 곳입니다. 진짜 최고! 사실 샌프란시스코에서 한 달을 지내면서 저는 버클리 근처에 있었습니다. 그래서 샌프란시스코 시내에 나왔다가 들어가는 길에 친구 차를 타거나 우버를 불러서 타고 집으로 돌아갈 때에 이곳을 지나며 아주 큰 다리를 건너 바다를 건너가게 되는데 그때 그 옆에 다리로 올라가기 전 큰길에서 주방 옆에 길 쪽으로 난 커다란 창문으로 주방이 훤히 들여다 보이는 풍경을 만나곤 했었는데 저기는 대체 어딘데 저리 주방에 일하는 사람이 많은 거지하고 구글맵을 찾아봤다가 아... 여기가 베누.. 알게 되었던 곳이죠. 사실 그때 예약을 몇 번 하려고 했었는데 만석이라 예약이 어려웠었죠. ​ 지난 10월 말 여기 방문 전날 코리 리 셰프가 운영하는 캐주얼 다이닝인 산호원에 방문했었는데, 거기는 술안주 위주의 메뉴들로 구성된듯해서 메뉴들이 다 간간했고 한식처럼 보이는 메뉴들을 전혀 새롭게 해석한 곳이어서 기대와는 달랐어요. (사실 나는 뉴욕의 아토 보이 처음 같은 곳을 기대했었는데.. 그보다는 훨씬 한국적인 모습이나 메뉴였지만 맛은 훨씬 더 이국적이라는?!) 산호원 포스팅은 조만간 따로 하겠습니다. ​ 첫 번째 사진은 식사를 마치고 나올 때 여기 베누의 한국인 매니저 채희원 매니저님께서 코리 셰프님과 인사도 나누게 해주시고 여기 주방도 보여주셨을 때 제가 코리 셰프님에게 메뉴판에 사인을 부탁드린 모습입니다. 사인하고 계신 셰프님 모습이 너무 귀여우셔서 ㅎㅎ 사실 좀 오래전에 코리 셰프님 책 내셨을 때 한국에 방문해 주셨었는데요.. 그때에도 이태원 쪽 로즈 베이커리에서 잠시 뵌 적은 있었어요. 샌프란시스코, 파인 다이닝, 미슐랭 쓰리스타 레스토랑, benu, 코리 리 셰프, 베누, 샌프란 미슐랭 식당, 한식 컨템퍼러리 레스토랑, 채희원 매니저, coery lee chef ​ ​ 코리 리 셰프님 인상 너무 좋으십니다. ㅎㅎ 뒤에 계신 셰프님들도 모두 인상적이네요. 주방 공간 너무 깔끔하고 보기만 해도 기분 좋아지는 곳이었어요. 샌프란시스코, 파인 다이닝, 미슐랭 쓰리스타 레스토랑, benu, 코리 리 셰프, 베누, 샌프란 미슐랭 식당, 한식 컨템포러리 레스토랑, 채희원 매니저, coery lee chef ​ ​ ​ 사실 이때가 할로윈이면 10월 31일.. 여느 때 같다면 한국이고 여기고 좀 추웠을만한데.. 작년 10월 말은 정말 따뜻했어요. 서울도 그랬다고 하더라고요. 사실 서울에 돌아와서 11월 중순까지도 그냥 초가을 날씨였으니.. 이날 신나서 베누 앞에서 사진을 찍고 ㅎㅎ 여기는 샌프란시스코답지 않게 발레 서비스를 해주는 듯했습니다.  이것도 브라보!! 샌프란시스코, 파인 다이닝, 미슐랭 쓰리스타 레스토랑, benu, 코리 리 셰프, 베누, 샌프란 미슐랭 식당, 한식 컨템포러리 레스토랑, 채희원 매니저, coery lee chef ​ ​ ​ ​ 들어가자마자 오른쪽으로 큰 창이 보이는데 유리창문 안쪽으로 주방이 다 들여다 보입니다. 주방을 잠시 들여다보고",
+    "keyword": "미슐랭",
+    "url": "https://m.blog.naver.com/sweetmilkbox/223329316850",
+    "likeCnt": 843
+  },
+  {
+    "id": 55,
+    "title": "미슐랭 맵 : r/finedining",
+    "content": "미식가들을 위한, 특별히 파인 다이닝 경험을 위해 마련된 곳입니다.   사진을 올리거나, 리뷰를 남기거나, 조언을 구하거나, 뭐든지 자유롭게 하세요… 규칙만 잘 지키면요. 근데 사진만 올리고 끝내지 마세요--음식과 식사 경험에 대해서도 /r/FoodPorn--tell 우리랑 이야기 좀 나눠요!   예약 변경은 고정 게시글인 예약 교환 게시글에 올려주세요. 프렌치 런드리 예약은 /r/thefrenchlaundry에 올려주세요. 여행할 때, 저는 종종 미슐랭 추천 레스토랑을 즉석에서 찾으려고 하는데, 주변에 어떤 곳이 있는지 구글 맵에서 그냥 볼 수 있으면 훨씬 더 쉬울 거예요. 그래서 저는 미슐랭 웹사이트에서 데이터를 추출해 구글 맵에 넣는 웹 스크래퍼를 만들었어요. 제 핸드폰(안드로이드)에서는 이걸 레이어로 볼 수 있어서 앱을 열 whenever 항상 사용할 수 있죠. 저와 몇몇 친구들에게는 꽤 편리했어요. 여러분도 사용하실 수 있도록 복사본을 만들어놨으니 원하시면 말씀해 주세요. 지금은 몇 개 나라만 있지만, 더 보고 싶은 게 있으면 알려주시면 하루 이내에 추가해 드릴게요. 개선을 위한 제안도 언제든지 환영합니다.  https://www.google.com/maps/d/u/1/edit?mid=1MY95ploctR2lAFBRh6DWE1OnTYjqqSo&usp=sharing Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "미슐랭",
+    "url": "https://www.reddit.com/r/finedining/comments/18rtj6q/michelin_map/?tl=ko",
+    "likeCnt": 481
+  },
+  {
+    "id": 56,
+    "title": "New York, 주아, 김호영 셰프, 뉴욕 미슐랭 레스토랑, 뉴욕 파인 다이닝 ...",
+    "content": "Aug 29, 2023 ... 7가지 구성이 지금은 미슐랭 스타 별까지 받고도 135 달러인데, 이전에는 100불이었다고 합니다. *와인 페어링 95불. 이때에도 ...",
+    "keyword": "미슐랭",
+    "url": "https://blog.naver.com/sweetmilkbox/223197049041?viewType=pc",
+    "likeCnt": 359
+  },
+  {
+    "id": 57,
+    "title": "[미슐랭1스타] 에빗 Evett 디너 / 식용 개미를 먹는다는 것 / 내돈내산 ...",
+    "content": "[미슐랭1스타] 에빗 Evett 디너 / 식용 개미를 먹는다는 것 / 내돈내산 솔직리뷰/ 파인다이닝 2022. 8. 3. 14:14 ​ 이씨는 에빗을 2번 방문했다. 1년 전 런치로 방문 후 꽤나 만족스러웠는지 이번에 나를 데리고 디너를 먹으러 갔다. ​ ​ ​ ​ 그런데 이씨가 엥? 에엥? 이러면서 들어가길래 얘가 또 왜 이러나 했더니 매니저왈 최근에 전체 리모델링을 했다고 한다. ​ ​ ​ ​ ​ 식스센스3에 방송된 직후 리모델링을 하여 예전의 오픈 키친/바 테이블이 사라졌다 ​ 딱 4개의 테이블만 놓아 더욱 소수 고객에 집중한다고 했다. ​ ​ 디너 22만원 ​ ​ 여긴 특이하게 코스 구성을 안 보여준다. ​ 안그래도 여기 메뉴들이 하나같이 독특한데 다가올 미래(?)를 모르니 요리가 나올 때 마다 긴장이 됐다. ​ ​ 손 닦고 먹을 준비 ​ ​ 웰컴 주스 ​ 웰컴 주스는 깻잎주스 ​ 케일주스에 새콤한 맛이 추가되고 깻잎의 강한 향이 풀풀 난다고 생각하면 된다. ​ ​ 방아 콤보차 ​ 우리는 인당 8만원 논알코올 페어링을 추가했다. ​ 첫 페어링은 방아 콤보차 방아는 깻잎 같이 생긴 잎사귀다. ​ ​ 시골 할무니께서 보내주신 아주 자알 익은 매실액기스에 탄산을 섞어 톡! 쏘는 듯한 맛이다. ​ ​ ​ ​ ​ 첫 요리가 나왔다. 셰프 두분이 작은 나무를 들고 나오셨다. ​ 여긴 메뉴 설명을 셰프가 직접 해준다. (물론 메인 셰프는 아님. 메인솊은 호주 분인데, 그는 멀리서 우리가 잘 먹나 응시하고 있다. 덕분에 먹을 때 마다 리액션을 크게 해야 했다ㅎ ) ​ ​ ​ ​ 적색 양배추와 홍합으로 만든 김밥. ​ 나무에 열린 열매 마냥 직접 손으로 따서 먹음 된다. 인상 깊은 비주얼이지만 맛은 그냥 그랬다. ​ ​ ​ ​ 두번째 요리ㅋㅋㅋ 시선 강탈 시장에 보리 굴비 엮은 것을 형상화한 것 같다. ​ 보면 메인 셰프가 한국의 문화와 전통에 관심과 애정이 정말 많다는 것을 음식을 통해 알 수 있다. ​ ​ 저 중간에 꽂힌 말이를 뺄 때까지 셰프들이 들고 있기 때문에 후다닥 뺀다. ​ ​ 고추장에 절인 쥐포, 한라방 소스, 젤리, 깻잎 등등을 감태로 둘러 쌌다. ​ 음! 맛있다 쥐포와 감태가 조화롭게 어우러진다. 초반 입맛을 돋군다. ​ ​ 열어보시게나 ​ 세번째 요리. ​ ​ 셰프분이 갖다준 책을 열면 ​ ​ 이 도끼가 니 도끼냐? 아님 말고? ​ 금도끼가 나온다. ​ ㅋㅋㅋㅋㅋ ​ 저 막대기가 스푼이라 막대기 잡고 도끼날 부분을 먹음 된다. ​ 겉면은 화이트 초콜릿 안에는 깻잎 레몬 오일 단새우 갈은 거 ​ 솔직히 화이트 초콜릿이 내 스타일은 아니였다. 속재료와 잘 어울리는지도 모르겠다. ​ 아이디어로 눈이 재밌는 요리 ​ ​ 이래봐도 나도 맥주야 ​ ​ 두번째 페어링은 인삼 생강으로 만든 비어 ​ 혈액순환을 촉진시켜 이거 마시니까 얼굴이 빨개졌다. ​ 사이다 탄산음료 + 생강의 매운 맛 + 인삼의 쓴 맛 ​ 이씨가 맛있다고 벌컥벌컥 마셨다. 인삼이 맛있다고 느껴지면.. 이제 나이가 든거래 ​ ​ ​ 키조개 요리 ​ ​ 네번째 요리 정중앙은 쑥과 미나리로 만든 소스 그 옆을 둘러싼건 키조개살,키조개 내장칩,한련화 ​ 작은 연못 같았다. ​ 부드러운 조갯살과 바삭한 내장칩 향기로운 한련화를 동시에 집어 쑥 미나리 소스에 찍어 먹으니 깨끗한 수풀 위에 있는 듯 했다. ​ ​ ​ 간장게장 ​ ​ 다섯번째 요리는 에빗이 재해석한 간장게장이다. 꽃게의 숭고한 장례식같은 이 모습 ​ 뚜껑을 뒤집으면 ​ ​ ​ ​ ​ 스프가 딱딱하게 달라붙어 있다. ​ ​ ​ ​ 간장 사과 게내장 다릿살을 에빗만의 크림소스로 버무리고 위에는 새우파우더를 뿌렸다. ​ ​ 굉장히 독특하고 실험적인 맛 오래되고 꾸덕한 이태리 치즈 맛이 났다. 치즈 특유의 꾸린내와 느끼함도 느껴졌다. 이게 뭔가 싶어 계속 먹게 되는 맛이었다. 독특하다 독특해 ​ ​ ​ 오미자 막걸리 ​ 다음 페어링은 오미자 막걸리다. ​ 이 곳에 나오는 모든 음료 역시 셰프가 직접 만든다. ​ ​ ​ ​ 막거리 한잔 받으시오. 꾸덕하고 질감이 느껴지는 막걸리 ​ ​ ​ 메주 도넛 ​",
+    "keyword": "미슐랭",
+    "url": "https://m.blog.naver.com/susan654/222838444693",
+    "likeCnt": 380
+  },
+  {
+    "id": 58,
+    "title": "[튀르키예] 이스탄불에서 미슐랭 원스타 즐기기 @Nicole(니콜 ...",
+    "content": "Apr 25, 2024 ... 카테고리 이동 러거부부 여행기 · 1. 뷰가 기가막힌집!​. 이스탄불하면 바다와 모스크의 야경인데. 모든 것을 갖춘 그 곳! ​. ​ · 2. 터키 음식 베이스로 ...",
+    "keyword": "미슐랭",
+    "url": "https://blog.naver.com/amwochenende/223426376197?viewType=pc",
+    "likeCnt": 782
+  },
+  {
+    "id": 59,
+    "title": "미쉐린 가이드 - 위키백과, 우리 모두의 백과사전",
+    "content": "미쉐린 가이드 [ 1 ] (Michelin Guide)는 프랑스 타이어 회사 미쉐린 이 출판하는 가이드북 이다. 프랑스어 로는 '기드 미슐랭( 프랑스어 : Guide Michelin )'이라고 하며, 레스토랑 안내서를 따로 두고 '레드 가이드(Red Guide)'라는 별칭으로도 부른다. 영미권에서도 불어 이름인 미슐랭 가이드로 통칭하나, 한국 에서는 미쉐린 코리아에 의해 미쉐린 가이드가 공식 명칭이 되었다. 1889년에 앙드레 미슐랭 과 에두아르 미슐랭 형제가 세운 타이어 회사인 미쉐린에서 1900년 창간한 책이며 1년마다 판을 바꾼다. 처음에는 자동차 운전자를 위한 안내서였으나 1926년 음식이 맛있다고 소문난 호텔에 별을 붙인 것이 '레드 가이드'의 시초이며, 식당까지 별을 붙이는 현재의 방식이 완성된 것은 1933년이다. 이때부터 전문 심사원에 의한 암행 조사 방식을 취하였으며, 암행 심사원이 손님으로 가서 음식을 먹고 보고서를 작성하면 이를 근거로 심사원 합의에 의해 평가를 한다. [ 2 ] 2016년 11월 현재까지 전 세계에서 스타를 받은 레스토랑은 총 2700여개로, 1스타는 2173개, 2스타 레스토랑은 416개, 3스타 레스토랑 111개다. [ 3 ] 앙드레 미슐랭 은 \"이 책은 20세기의 시작과 함께 태어났으며 20세기가 지속되는 한 남아 있을 것입니다.\"라고 말했다. 미쉐린 스타 또는 미슐랭 스타는 미쉐린 가이드의 레스토랑 안내서인 레드 가이드에서 각 레스토랑에 총 세 가지의 '스타' ( 별점 )을 부여한다. [ 4 ] 한편 별점 외에도 빕 구르망 (Bib Gourmand)이라는 레스토랑 명단이 따로 존재하며, \"합리적인 가격에 훌륭한 음식을 선사하는 친근한 분위기의 레스토랑\"을 기준으로 삼는다. [ 5 ] 1957년에 처음 도입되었으며, 처음 도입되었을 당시 전채 요리, 메인 요리와 후식을 합리적인 가격대에 제공하는 곳을 'R' 심벌 로 표시했었다. [ 6 ] 1997년부터는 미쉐린의 마스코트 비벤덤 이 입맛을 다시는 픽토그램으로 표시되고 있다. [ 6 ] 빕 구르망은 각 나라의 도시별로 구체적인 가격대를 기준으로 맛있는 음식을 제공하는 레스토랑에 부여되는데, 예를 들어 서울 편에서는 평균 4만 5천 원 이하의 가격대에서 높은 수준의 음식을 제공하는 식당들을 대상으로 평가했다. [ 5 ] 2018년에는 ‘더 플레이트(The Plate)’ 타이틀이 새롭게 추가됐다. 더 플레이트는 ‘미쉐린 가이드 파리 2016’에서 최초로 선보인 카테고리로 ‘좋은 요리를 맛볼 수 있는 레스토랑’에 부여하는 타이틀이다. 별을 받거나 가성비 좋은 레스토랑에 주어지는 ‘빕 구르망’에 선정되지 않았지만 그해 가이드에 소개된 미쉐린 추천 레스토랑을 지칭한다. [ 7 ] 한편 레스토랑의 평가 기준에 음식 외에 식기 나 인테리어 , 서비스도 참고한다고 생각하는 경우가 많으나, 스타 평가에 들어가지는 않는다. [ 8 ] 대신 가이드 전체에 적용되는 쿠베르 (Couvert) 픽토그램 중 하나로 이들 요소를 표시하는데, 이 픽토그램은 레스토랑 또는 호텔에 대한 다양한 정보를 심벌로 간단하게 설명해 준다. [ 8 ] 쿠베르 픽토그램 중에서 포크 와 나이프 픽토그램은 레스토랑의 안락함을, 파빌리온 픽토그램은 호텔 의 안락함을 나타낸다. 포크와 나이프 픽토그램을 한 개 받은 레스토랑은 꽤 안락한 곳이고 다섯 개를 받은 레스토랑은 최상의 안락함을 제공한다. 까만색 픽토그램은 기본적인 안락함을, 빨간색 픽토그램은 특별한 안락함을 의미한다. [ 8 ]",
+    "keyword": "미슐랭",
+    "url": "https://ko.wikipedia.org/wiki/%EB%AF%B8%EC%89%90%EB%A6%B0_%EA%B0%80%EC%9D%B4%EB%93%9C",
+    "likeCnt": 379
+  },
+  {
+    "id": 60,
+    "title": "Explore Michelin Tires, Products & More | Michelin USA",
+    "content": "Viewing this video may place cookies by the video provider. Given your current preferences, playback is blocked. To watch, please allow Functional Cookies via the cookie preferences manager which is accessible via the Footer and refresh the page.",
+    "keyword": "미슐랭",
+    "url": "https://www.michelinman.com/",
+    "likeCnt": 401
+  },
+  {
+    "id": 61,
+    "title": "삼겹살 - 나무위키",
+    "content": "이 저작물은 CC BY-NC-SA 2.0 KR 에 따라 이용할 수 있습니다. (단, 라이선스가 명시된 일부 문서 및 삽화 제외) 기여하신 문서의 저작권은 각 기여자에게 있으며, 각 기여자는 기여하신 부분의 저작권을 갖습니다. 나무위키는 백과사전이 아니며 검증되지 않았거나, 편향적이거나, 잘못된 서술이 있을 수 있습니다. 나무위키는 위키위키입니다. 여러분이 직접 문서를 고칠 수 있으며, 다른 사람의 의견을 원할 경우 직접 토론을 발제할 수 있습니다. This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply. This site is protected by hCaptcha and its Privacy Policy and Terms of Service apply.",
+    "keyword": "삼겹살",
+    "url": "https://namu.wiki/w/%EC%82%BC%EA%B2%B9%EC%82%B4",
+    "likeCnt": 596
+  },
+  {
+    "id": 62,
+    "title": "[일상 집에서 삼겹살 구워먹기]삼겹살반찬 삼겹살맛있게먹는법 ...",
+    "content": "Mar 11, 2016 ... 채썬파에 식초,간장,고추가루,설탕,올리브오일을 넣고 조물조물 해주면 됩니다. 요것도 삽겹살 먹을때 빠지면 안되는거! ​.",
+    "keyword": "삼겹살",
+    "url": "https://blog.naver.com/dksmf2626/220651741464",
+    "likeCnt": 592
+  },
+  {
+    "id": 63,
+    "title": "삼겹살 껍질 벗기고 구워야 돼? : r/KoreanFood",
+    "content": "한국 반도에 있는 한국계 이민자들의 모든 음식. 나 삼겹살은 한 번도 안 먹어봤는데, 근처 아시안 마트에서 파는 걸 봤거든. 구워 먹기 전에 껍질을 벗겨야 하나? Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "삼겹살",
+    "url": "https://www.reddit.com/r/KoreanFood/comments/v0q9hl/are_you_supposed_to_remove_the_skin_off_pork/?tl=ko",
+    "likeCnt": 923
+  },
+  {
+    "id": 64,
+    "title": "집에서 삼겹살 맛있게 굽는법 콩나물 삼겹살 굽기 묵은지까지 ...",
+    "content": "집에서 삼겹살 맛있게 굽는법 콩나물 삼겹살 굽기 묵은지까지~ 2025. 1. 14. 8:10 ​ 집에서 삼겹살 맛있게 굽는법 콩나물 삼겹살 굽기 묵은지까지~ ​ ​ ​ 안녕하세요, 제제에요. 어제 저녁 모처럼 삼겹살을 구웠는데 오랫만에 먹는 삼겹살이라 그런지 아니면 콩나물과 묵은지 조합이 너무 좋아서 그런지 제 입에서도 역시 삼겹살이 맛있네~ 이런 말이 저절로 나오더라고요. ​ ​ 숯불에 굽지 않아도 집에서 프라이팬에 구워도 콩나물과 묵은지가 있으니 너무나 맛있는 삼겹살 맛있게 굽는법, ​ ​ 콩나물무침과 묵은지 맛있게 구워 삼겹살과 함께 즐기는 집에서 삼겹살 굽기, 지금부터 시작해볼게요. ​ 집에서 삼겹살 맛있게 굽는법 콩나물삼겹살 굽기 ​ 재료 삼겹살 400g 콩나물 300g 묵은지 1접시(참기름 1큰술) 오이고추 쌈장 청양고추다짐 ​ 콩나물무침 다진마늘 1/2큰술 다진대파 2큰술 고춧가루 1.5큰술 멸치액젓 1큰술 참치액1/2큰술 참기름 1큰술 ​ 큰술=밥수저 콩나물무침 만들기 ​ 콩나물을 씻어서 찜기에 물이 끓으면 넣고 5분 찝니다. ​ ​ 어차피 삼겹살과 함께 구울거니까 비린내만 나지 않게 찌면 됩니다. 콩나물은 일자 두절콩나물을 쓰면 좋은데 고소한 이런 콩나물도 삼겹살 기름에 볶으면 얼마든지 맛있어요. 익힌 콩나물을 꺼내서 펼쳐 둡니다. ​ 집에서 삼겹살 굽기 재료 ​ 삼겹살을 잘 안 먹는데 좋은 브랜드 삼겹살이라고 세일을 하길래 집어 왔어요. 콩나물을 찜기에 쪄서 준비, 묵은지 1접시와 오이고추, 쌈장과 청양고추를 다져서 멸치와 조려 놓은 고추다짐을 준비했어요. 청양고추다짐은 삼겹살 먹을때 정말 잘 어울려요. ​ 콩나물무침 만들기 ​ 익힌 콩나물에 고춧가루,  다진마늘, 멸치액젓, 참치액을 넣고, ​ ​ 참기름을 넣어 조물조물 무칩니다. ​ 삼겹살 굽기 ​ 프라이팬이 달구어지면, ​ ​ 삼겹살을 넣어 구워줍니다. ​ ​ 삼겹살 한 면이 완전히  익으면 뒤집어서 익혀줍니다. ​ ​ 이렇게 삼겹살이 익으면, ​ ​ 먹기 좋은 크기로 잘라줍니다. ​ ​ 삼겹살에서 지글지글 기름이 나오면 묵은지를 넣어 볶아줍니다. ​ ​ 이어 콩나물도 넣어 볶아줍니다. 집에 있는 가장 큰프라이팬에 고기와 콩나물, 묵은지를 넣어 볶아줍니다. 삼겹살은 익어서 접시에 담고, ​ ​ 묵은지에 참기름을 한숟가락 넣어서 더 맛있게  마무리 합니다. ​ ​ 삼겹살을 둘러서 담고, 잘 볶은 콩나물과 묵은지를 가운데에 담아줍니다. ​ ​ 집에서 삼겹살 맛있게 굽는법~ ​ ​ 삼겹살에 묵은지랑 콩나물 올려서 한입 쏙~ 정말 어떤 맛집보다 맛있어요. 딱 맛있게 필요한 것만 있어서 편안하게 집중해서 먹으니 더 맛있는것 같아요. 청양고추다짐 올려서 밥도 한술 먹으면서 ​ ​ 그렇게 겨울 저녁메뉴로 굿인 콩나물 삼겹살 굽기, 묵은지까지 합세해서 정말 맛있는 저녁을 먹었습니다. 제가 고기류를 그다지 좋아하지 않는데 늦게 맛을 알게 된건지 오랫만에 이 조합으로 먹어 좋은건지 모르겠지만 이렇게 저녁메뉴로 집에서 삼겹살 구워보세요. 가족들이 모두 좋아할 거에요. ​ ​ ​ #집에서삼겹살 #삼겹살맛있게굽는법 #콩나물삼겹살 #콩나물삼겹살굽기 #묵은지삼겹살 #김치삼겹살 #삼겹살굽는법 #삼겹살구이 #집에서삼겹살굽기 #삼겹살요리 #저녁메뉴추천 #오늘저녁메뉴",
+    "keyword": "삼겹살",
+    "url": "https://m.blog.naver.com/PostView.naver?blogId=juhyun9909&logNo=223725157378",
+    "likeCnt": 77
+  },
+  {
+    "id": 65,
+    "title": "로즈마리 삼겹살 구이~ : 네이버 블로그",
+    "content": "Jul 10, 2011 ... 로즈마리와 소금, 후추 솔솔 뿌려 마리네이드한 로즈마리 생삼결살 그릴에 올라 갈 준비 완료!!! 달군 그릴판에 올라간 삼겹살들~.",
+    "keyword": "삼겹살",
+    "url": "https://blog.naver.com/sophia_gt/50115423760?viewType=pc",
+    "likeCnt": 709
+  },
+  {
+    "id": 66,
+    "title": "한돈몰",
+    "content": "한가위 정을 담아 함께하는💝 추석 선물세트 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? 싹! 쓸어가세요! 지금이 찬스🔥 반짝특가 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? 보는 순간 침 꿀떡! 취향 저격 🐷한도니 추천 한도니 추천 한돈케이크 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? 한도니 추천 캠피그 기획전 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? 한도니 추천 1인 가구 기획전 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? 한도니 추천 2kg 기획전 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? 👉부위별로 골라 담는 재미! 한돈 부위별 한돈 부위별 삼겹살 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? 한돈 부위별 목살 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? 한돈 부위별 앞/뒷다리살 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? 한돈 부위별 갈비/등갈비/등뼈 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? 한돈 부위별 안심/등심 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? 한돈 부위별 특수부위 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? 한돈 부위별 가공/HMR 상품이 장바구니에 담겼습니다. 바로 확인하시겠습니까? 상품이 찜 리스트에 담겼습니다. 바로 확인하시겠습니까? ⭐한돈을 더 맛있게! 황금레시피⭐ 법인명(상호) : (주)큐브커뮤니케이션코리아 대표자(성명) : 백남수 사업자등록번호 : 105-87-95574 통신판매업신고번호 제 2020-서울마포-4237 호 팩스 : 02-2273-9912 주소 : 서울특별시 마포구 월드컵로 64 301호(서교동) 개인정보보호책임자 : 백남수 cube@cubecomm.co.kr ※ (주)큐브커뮤니케이션코리아는 한돈자조금 한돈 판매촉진 및 판로확대 협력사로 한돈몰 운영대행 업무를 맡고 있습니다. Copyright © (c) mall.han-don.com . All rights reserved.",
+    "keyword": "삼겹살",
+    "url": "https://mall.han-don.com/",
+    "likeCnt": 58
+  },
+  {
+    "id": 67,
+    "title": "삼겹살 (부위) - 위키백과, 우리 모두의 백과사전",
+    "content": "삼겹살 ( 영어 : pork belly )은 돼지고기의 한 부위로, 살코기와 비계층이 3번 겹쳐져 있다고 해서 삼겹살이라는 이름이 붙여졌다. [ 2 ] 실제로는 껍데기 를 제거한 상태에서 살코기와 지방 부분이 네 번 겹쳐져 있는 것이 보통이며, 껍데기가 붙어 있는 경우 오겹살 이라고 한다. 돼지고기의 특정 부위를 지칭하는 용어로써 식재료를 의미하며 동시에 음식 이름으로도 사용되고 있다. [ 3 ] 생체중량 110kg 돼지 한마리에서 약 10kg 정도 생산된다. [ 4 ] 갈비를 떼어낸 부분에서부터 시작하여 복부까지의 넓고 납작한 모양의 부위에 해당하며 풍미가 좋은 것이 특징이다. [ 2 ] 돼지고기 부위 중 가장 고소하지만 기름기가 많아 지방 함유량이 많고 칼로리가 높다. [ 2 ] 구이, 찜, 수육, 볶음, 찌개 등 다양한 조리법이 있으며, 부드러우면서도 쫄깃쫄깃함이 조화를 이루고 있어 특유의 식감을 자랑한다. 한국인들이 가장 선호하는 돼지 고기 부위에 해당한다. [ 3 ] [ 5 ] 한국에는 매년 3월 3일을 ' 삼겹살데이 '(삼삼데이)로 부르는 비공식적인 기념일이 존재하여 [ 6 ] 이날에는 삼겹살을 즐기는 하나의 문화로 정착되어 가고 있다. 이뿐만 아니라 청주 에는 ' 삼겹살 골목 '이 조성되어 있다. [ 7 ] 또한 삼겹살에는 대패삼겹살, 칼집삼겹살, 목삼겹, 녹차삼겹살, 와인삼겹살, 오겹살 등 다양한 형태의 삼겹살이 존재한다. 중국에는 삼겹살로 만든 동파육 이 유명하지만 서양에서는 베이컨 가공, 돼지기름으로 만든 식용유 인 라드 ( 영어 : lard ), 화장품 제조 등에 사용되는 경우가 대부분일뿐 식용으로는 많이 사용하지 않는다. 한국에서는 돼지고기 하면 삼겹살을 떠올릴 정도로 삼겹살 구이 를 즐기며, 내수 공급량이 부족하여 스페인과 칠레 등 전세계 17개국으로부터 약 30%를 수입하여 소비하고 있다. 삼겹살이라는 단어 자체는 1980년대부터 보편적으로 쓰이게 된 단어로 그 역사가 비교적 짧다. [ 8 ] 본래는 '세겹살'로 불리었으며, 1934년 11월 3일자 동아일보 의 기사에 소개되어 처음으로 언론에 등장하였다. [ 9 ] 기사내용을 살펴보면 ‘육류의 좋고 그른 것을 분간해 내는 법’에서는 “도야지 고기의 맛으로 말하면 […] 뒤 넓적다리와 배 사이에 있는 세 겹살이 제일 맛이 있고 그다음으로는 목덜미 살이 맛이 있다”고 소개하고 있다. 포개져 있는 사물의 수량을 나타내거나 중복되고 거듭된 모양을 표현하기 위해 '겹'이라는 [ 10 ] 명사와 함께 수사(數詞)를 사용할 때, 하나, 둘, 셋, 넷, 다섯 이라는 순 우리말 수사(數詞)를 사용하는 것이 자연스럽다. 따라서 20세기 초까지만 해도 '세겹살' 이라고 하였고, 이 표현이 표준 국문법 상에 맞는 표현이지만 이유는 알 수 없으나 언제부터 인가 한자 수사 를 사용한 '삼겹살' 이라는 표현을 사용하게 되었다. 이런 '삼겹살'의 영향 때문인지 '다섯겹살'이 아니라 ' 오겹살 '이라는 말도 사용되고 있다. 한국어에서는 식재료 이름과 음식이름이 동일하게 '삼겹살'로 사용되고 있지만, 영어에서는 식재료 이름으로는 'Pork belly'(돼지뱃살), 음식명으로는 'Samgyeopsal' 로 표기하며, 발음 역시 한국어와 같은 '삼겹살'로 하고 있다. 1993년에는 영국 의 권위 있는 영어 사전인 옥스포드 영어사전(OED) 에도 음식 이름으로써 'Samgyeopsal'이 등재되어 있으며, 추가적으로 'a korea dish'라 설명되어 있다. [ 11 ] 표준국어대사전 에 '삼겹살'이 등재 된 것은 1994년 이라고 알려져있다. [ 8 ] 중국과 동남아 지역에서는 五花肉(오화육) 이라고 한다. 특히 중국에서는 동파육 , 매채수육, 뇌반육 등 다수의 요리를 만드는데 주 재료로 삼겹살을 사용하고 있고 그 역사도 길다. [ 12 ] 일본에서는 三枚肉(삼매육, ばらにく)이라 한다. 한국어로 직역하면 세겹고기 정도로 해석이 가능하다. 이로 인해 한국표준어에서 세겹살과 삼겹살로 부르게 된 것이 일본의 영향일 수 있다는 추론이 가능하나 정확한 것은 알 수 없다. [ 13",
+    "keyword": "삼겹살",
+    "url": "https://ko.wikipedia.org/wiki/%EC%82%BC%EA%B2%B9%EC%82%B4_(%EB%B6%80%EC%9C%84)",
+    "likeCnt": 541
+  },
+  {
+    "id": 68,
+    "title": "에어프라이어 삼겹살 :: 통삼겹 고기 겉은 바삭 속은 촉촉하게 : 네이버 ...",
+    "content": "에어프라이어 삼겹살 :: 통삼겹 고기 겉은 바삭 속은 촉촉하게 2019. 10. 19. 22:41 ​ 오늘은 두세 번의 실패를 거듭하고서 드디어 성공한ㄲㄲ 에어프라이어 삼겹살 레시피를 올려볼까 한다. 아~~주 예전에 다른 분들 블로그 참고해서 똑같은 온도+시간으로 맞추어보았는데 기계 제품이 달라서 그런건지 아님 고기 양의 차이인 건지는 몰라도 겉이 새까맣게 타버렸음. ㅠㅠ 그래서 나중에 다시 도전하면서 다른 분들 레시피를 다시 정독했는데, 아니 왜 오븐구이한 것을 '에어프라이어'라고 써놓지?? 오븐이랑 프라이기랑 엄연히 다른 조리 기구 아닌가요? 완전 속은 기분 -_;; 정말 빡쳐서 뒤로가기를 몇 번을 눌렀는지 모른다 ㅡㅡ;;; ​ 그래서 걍 다른 글 참고 안하고 저번에는 저온으로 1시간 반 가까이 익혔는데 확실히 육질은 부드러웠지만 기름도 좀 덜 빠지고 겉이 파삭한 느낌이 들지 않아 이번에는 조금 더 온도를 올리는 대신 시간도 살짝 줄여서 조리해보기로 했다. 결론적으로는 아주 만족스러웠다는 거ㅎㅎㅎ 만드는 방법과 필요로 하는 재료도 아주 간단하다. 그럼 정리해봐야지. ​ ​ ​ <에어프라이어 통삼겹 재료> ​ 통삼겹살(930g), 삼겹살 소금 약간, 올리브오일, 굵은 후추, 호일, 에어프라이어 + 어느 정도 분량 채우기 하려고 사진을 많이 찍었다만 걍 정독하면 만드는 과정 매우 쉽고 간단한 요리임. 다 만들기까지는 고기 손질하고 익히는 데까지 1시간 정도 소요됨. ++ 나는 마트에서 파는 삼겹살 1팩을 샀고 무게를 확인해보니 930g이었음. 꼭 똑같은 무게로 할 필요는 없고 플러스 마이너스 50g 정도는 별 문제 없이 조리할 수 있지 않을까 싶다. ​ ​ ​ 1. 900g 짜리 통삼겹살을 반으로 가른 뒤, 올리브 오일을 고기 6면에 골고루 묻혀준다. 위생장갑 끼고, 올리브 오일을 눈짐작으로 1큰술 정도 따라준 뒤 발라주면 된다. 참고로 1덩이당 1큰술 가량임. 그러니까 이 과정을 두 번 하면 되는 거. ​ ​ ​ 영상도 한 번 찍어보고~~ 주물주물 움짤도 찍어보고~~ㅎㅎㅎ 올리브 오일을 발라주면 기름기는 빠지되 고기 내부에 있는 육즙은 빠져나가지 않고 붙잡아주는 역할을 한다고 한다. ​ ​ ​ 사진으로 봤을 때는 크게 티는 나지 않는 것 같은데, 여튼 기름으로 마사지해주고 나니까 육질 표면이 번들번들거린다. ㅎㅎ ​ ​ ​ 2. 삼겹살용 소금으로 밑간을 해준다. 영상에 보이는 것처럼 소금을 뿌려가고, 한 손으로는 소금이 고기 표면에 고루 묻고 스며들도록 손으로 바르고 펴주면서 작업해주면 됨. 그냥 소금보다는 이것저것 시즈닝이 조금 더 들어간 삼겹살용 소금을 쓰는 것이 맛이 더 깊으니 참고하면 좋을 것 같다. 정 없으면 일반 소금 써야겠지만 입자 너무 가는 것보다는 어느 정도 굵기가 살아 있는 걸로 쓰길ㄲㄲ ​ ​ ​ 3. 굵은 후춧가루를 골고루 뿌려준다. 후추도 너무 입자가 적은 것보다는 굵은 걸로 쓰면 더 좋음..ㅎㅎ 우리 부부는 후추 향을 좋아해서 좀 많이 뿌렸고, 적당량 취향껏 뿌림 될 거 같다. ​ ​ ​ 다 뿌린 뒤에 남겨진 고기 사진 찍어본 거..ㅎㅎㅎ 여기가 끝이 아님. ​ ​ ​ 간이 구석구석 스며들도록 소금 뿝렸을 때와 마찬가지로 고기 6면을 골고루 뿌려가고 손으로 요래 살살 펴발라주듯이 손질질해준다. 이렇게 해두면 별도의 간이 더 필요 없을 정도로 맛나게 딱 짭잘해짐. ​ ​ ​ 4. 에어프라이어 삼겹살 만들기 다음 단계ㄲㄲ 기계에 고기를 넣어주고 150도로 셋팅한 뒤 30분 동안 익혀준다. 맨 처음 시도했을 때는 어떤 분은 180도로 맞춰두고 30분 구워서 딱 좋았다고 하셨는데.. 우리가 만든 건 다 타버렸음 ㅠㅎㅎㅎ ​ ​ ​ 근데 이것도 꼭 정답이라고 하기엔 좀 조심스러운 게 그분들은 글케 만들어서 성공했는데 똑같이 따라한 우리 부부는 실패했으니..ㄲㄲ 이번에 내가 언급하는 레시피 그대로 한다고 해서 다른 기계에서도 똑같은 값이 나오진 않을 거 같기도..; 그치만 너무 고온으로 돌리는 것보단 차라리 저온으로 익히면 실패 확률이 좀 줄어들긴 하니 걍 써본다. ​ ​ ​ 그리하여 1차 구이 끝",
+    "keyword": "삼겹살",
+    "url": "https://m.blog.naver.com/weeeunjee/221682744288",
+    "likeCnt": 670
+  },
+  {
+    "id": 69,
+    "title": "통삼겹살수육만들기! (돼지고기 요리)",
+    "content": "AI가 내용을 분석하고 있어요. 잠시만 기다려주세요. ⓘ 블로그 글 URL은 네이버, 티스토리만 가능합니다  카메라로 QR 찍고 핸드폰에서 레시피 보기 된장의 짠맛에 따라 양은 가감해주세요. 등록일 : 2017-01-01 수정일 : 2023-06-28 가시장미 일상 우리집 집밥, 맛있는 한끼~! * 폴더는 최대 50개까지 생성이 가능합니다. 레시피를 담을 폴더를 선택해 주세요. 비계를 위로 올려서하니 잔짜 맛있네요. 처음으로 수육 성공했네요. 감사합니다. 항상 너무 기름기 없어 푸석학고 싱겁고 그랬는데.... 맛있게 김장 겉절이랑 먹었어요 먹고남은돼지고기삼겹살이 몇일지나서 냄새나기시작해서수육으로했는데비린내안나고맛나요~~맛있네요 사진 못찍었는데 맛있었어요. 파랑 통후추는 없어서 갈은 후추 조금 넣고 양파랑 마늘을 좀더 넣었어요. 생각보다 간단해서 자주 해먹을 것 같아요 맛있게 먹었습니다! 너무 맛있게 잘해서 먹었네요~누린내하나도 안나요 냄새안나고 부드러워서 너무 맛나게 먹었어요~ 대박 촉촉하고 비린내 안나요 감사합니다 감사해요~♥ 맛나게 먹었어용~^^ 돼지냄새없이 맛있어요 맛나요 간편하고 금방해먹을수있었어요 맛있게 잘먹었습니다~^-^ 간단해서 좋아요 레시피 마다 숫자로된 고유 ID 를 가지고 있습니다. 예시) http://www.10000recipe.com/recipe/6828826 맨끝의 숫자 5~7자리가 레시피ID입니다. 글 작성 시에 '@'뒤에 레시피ID 를 붙이면 해당 레시피 링크가 생성됩니다. 예시) 쯔유소스는 @6843190를 참고해주세요. 복사(Ctrl+C) 후 원하는 곳에 붙여넣기(Ctrl+V)하세요. @6863344 일반 회원은 스크랩 폴더 생성은 3개까지 가능하며, 프리미엄 이용권 구매 시 50개까지 생성 가능합니다. 혜택 상세보기 이용권 구매 일반 회원은 3개의 폴더만 생성 가능하며, 프리미엄 이용권 구매 시 50개까지 자유롭게 생성이 가능 합니다. 혜택 상세보기 이용권 구매 프리미엄 이용권을 구매하시면, 일반 배너 광고를 제거 하실 수 있습니다. (※단, 브랜드쉐프의 상품 광고 제외) 혜택 상세보기 이용권 구매 프리미엄 이용권을 구매하시면, 명예의전당 을 자유롭게 이용하실 수 있습니다. 혜택 상세보기 이용권 구매 프리미엄 이용권을 구매하시면, 엄선된 레시피로 만개의레시피 영양사가 제공하는 식단 을 이용하실 수 있습니다. 혜택 상세보기 이용권 구매 프리미엄 이용권을 구매하시면, 다년간에 걸쳐 축적된 데이타 기반의 추천 알고리즘 서비스를 검색어 입력시에도 받으실 수 있습니다. 혜택 상세보기 이용권 구매 회사소개 · 광고/제휴 | 개인정보처리방침 | 이용약관 | 고객센터 대표 : 이인경 / E : help@10000recipe.com / F : 02) 323-5049 서울 금천구 가산동 371-50 에이스하이엔드타워 3차 1106-1호 문의전화(운영시간 평일 10:00~18:00) 쇼핑문의(만개스토어) : 02-6953-4433 서비스 이용문의 : 070-4896-6416 (주)만개의레시피 / 사업자등록번호 291-81-02485 / 통신판매업신고 2022-서울금천-3089 / 사업자정보확인 서울지방중소기업청 제 031134233-1-01643호 Copyright 만개의레시피 Inc. All Rights Reserved 모바일 만개의 레시피 다운받기 개별회신을 원하시면 여기 에 문의하세요.",
+    "keyword": "삼겹살",
+    "url": "https://www.10000recipe.com/recipe/6863344",
+    "likeCnt": 894
+  },
+  {
+    "id": 70,
+    "title": "마트에서 '이런' 삼겹살 절대 사지 마세요! 그동안 모두 속았습니다 | 텐 ...",
+    "content": "마트에서 삼겹살 아무거나 사지 마세요! 마트 진열대에 놓인 삼겹살, 겉보기엔 다 비슷해 보여도 맛과 품질의 차이가 클 수 있습니다. 오늘은 맛있는 삼겹살 부위 고르는 방법 소개합니다.  삼겹살 드실 때 지방 부위를 유독 싫어하는 분들이 있습니다. 하지만 지방이 없고 살코기만 있는 삼겹살은 퍽퍽하고 육즙이 적어 맛이 떨어질 수 있습니다.  삼겹살의 지방은 단순히 기름기만 더하는 것이 아니라, 부드러운 식감과 고소한 풍미를 살려주는 역할을 합니다. 따라서 가장 맛있는 삼겹살은 살코기와 지방이 1:1 비율로 층층이 섞인 것입니다.  지방이 얇고 넓게 퍼져 있는 부위일수록 고소하면서도 느끼함이 적은 균형 잡힌 맛을 즐길 수 있습니다. 따라서 지방 부위가 아예 없는 삼겹살을 선택하기보다는 살코기와 지방이 적적하게 섞인 것으로 고르세요.  삼겹살 고를 때 가장 많이 하는 실수 중 하나가 \"오돌뼈 없는 부위\"로 선택하는 것입니다. 물론 오돌뼈는 씹을 때 단단하고 거칠어 식감을 방해할 수 있습니다.  하지만 오돌뼈가 있는 부위는 고소한 맛과 쫄깃한 식감을 더해주는 부분이기도 합니다. 오돌뼈 주변에는 콜라겐과 결합조직이 많아, 구우면 쫀득하면서도 감칠맛이 살아납니다.  이는 오돌뼈가 삼겹살 부위 중에서도 맛이 좋은 배와 옆구리 라인에 주로 분포해 있기 때문입니다. 이 부위는 지방과 살코기의 비율이 균형 잡혀 있어 쫄깃함과 고소함이 더욱 풍부합니다.  삼겹살 고를 때 고기의 지방이 희고 윤기가 나는 것이 좋습니다. 반대로 노르스름하거나 회색빛이 도는 경우는 산화나 냉장 보관 기간이 길어져 오래된 고기일 가능성이 있습니다.  삼겹살 고를 때도 마블링을 확인하시면 좋습니다. 삼겹살에서 좋은 지방 분포는 지방이 살코기 속에 얇고 고르게 스며든 상태입니다. 또한 층이 일정하고, 덩어리 형태의 큰 지방이 아닌 고운 결 모양일수록 고기가 부드럽고 촉촉합니다. 📌 유용한 생활꿀팁 시리즈",
+    "keyword": "삼겹살",
+    "url": "https://v.daum.net/v/3S9BCGEQGZ",
+    "likeCnt": 73
+  },
+  {
+    "id": 71,
+    "title": "베스트 일본 여행 일정 | 라쿠텐 트래블",
+    "content": "Jul 31, 2023 ... 베스트 일본 여행 일정 · 1. 도쿄 | 일본의 중심 · 2. 하코네 | 도쿄 근교에서 만끽하는 휴식 · 3. 교토 | 일본의 문화 수도 · 4. 가나자와 | 고풍스러운 ...",
+    "keyword": "일본 여행",
+    "url": "https://travel.rakuten.com/contents/kor/ko-kr/guide/best-japan-itineraries/",
+    "likeCnt": 959
+  },
+  {
+    "id": 72,
+    "title": "일본 여행 갈 때 어느 정도 일본어 실력이 필요해? : r/LearnJapanese",
+    "content": "r/LearnJapanese에 오신 것을 환영합니다. 레딧에서 일본어 학습자들을 위한 *최고의* 허브입니다. 나 일본어 공부 꽤 오래 했는데, 목표를 하나 세우고 싶어졌어. 내년에 일본 여행 갈 건데, 미국처럼 여행하려면 어느 정도 일본어를 알아야 할지 감이 안 와. (나 영어 원어민은 아님) JLPT 같은 시험도 있긴 한데, 그건 좀 그렇고, 솔직히 내 실력이 어느 정도인지도 잘 모르겠어. 그래서 말인데, 내가 어떤 목표를 세우는 게 좋을까? (말하기, 읽기 등등) Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "일본 여행",
+    "url": "https://www.reddit.com/r/LearnJapanese/comments/118cvx9/what_level_of_japanese_is_recommended_when/?tl=ko",
+    "likeCnt": 719
+  },
+  {
+    "id": 73,
+    "title": "역대급 폭탄 온다…일본 여행 예약한 한국인들 초비상 | 한국경제",
+    "content": "한경만의 독자적인 프리미엄 콘텐츠입니다. 한국경제 회원이 되어 보세요 지금 바로 한국경제 회원으로 가입하시고, 독점 혜택을 누려보세요 이미 회원이시면 로그인 을 클릭해 주세요  계정관리 My한경 한경 AI 한경 AI로 맞춤 뉴스와 빠른 검색을 경험하세요! 구독 유료 상품 ADVERTISEMENT ⓒ 한경닷컴, 무단전재 및 재배포 금지 ADVERTISEMENT \"이런 손님은 처음\"…한국인 관광객에 감동한 日 카페 사장 \"손님의 깊은 배려에 한국에 대한 호감도가 올라갔습니다.\"일본의 한 카페 점주가 한국인 손님에 감동한 사연이 온라인상에서 화제다.일본 홋카이도 하코다테에서 카페를 운영한다는 A씨는 사회관계망서비스(SNS)에 최근 가... 日 뒤흔든 지하철 테러…30년 전 '교주' 사진 공개한 이유가 일본 당국이 옴진리교의 지하철 사린가스 테러 사건 발생 30주년을 앞두고 당시 사건을 알리기 위한 특설 홈페이지를 개설할 계획이다.17일 요미우리신문은 이르면 오는 21일 일본 공안조사청이 옴진리교 특설 홈페이지를 ... \"여기에 음란물 버렸는데\"…日 '하얀 우체통' 폐쇄, 왜? 일본에서 음란물을 몰래 폐기하려는 남성들을 위해 등장한 하얀 우체통 '시로포스토(shiroposuto)'가 점차 사라지고 있다.시로포스토는 유해 음란물로부터 아동을 보호하기 위해 1963년 일본 아마가... ADVERTISEMENT 李 대통령 한마디에 주가 날았다…개미들 '환호' \"최장 10일 쉰다\" 들썩이더니…'황금연휴' 예상밖 결과 나왔다 '3000원인데 샤넬급' 대박…다이소 만나 '인생 역전' 썼다 \"아내가 이혼하자네요\"…로또 청약 당첨 후 벌어진 일 \"전세 보증금 올릴게요\" 통보했더니…세입자 '뜻밖의 제안' ADVERTISEMENT ADVERTISEMENT ADVERTISEMENT 로그인이 필요한 서비스 입니다. 로그인 하시겠습니까?  스크랩한 기사를 삭제 하시겠습니까? ADVERTISEMENT Copyright 1999-2025. 한경닷컴 All rights reserved.",
+    "keyword": "일본 여행",
+    "url": "https://www.hankyung.com/article/2025021824277",
+    "likeCnt": 735
+  },
+  {
+    "id": 74,
+    "title": "일본 여행. 페이팔 엔화는 어떻게 써야 할까? : r/JapanFinance",
+    "content": "도쿄에 일주일 동안 갈 거야. 페이팔 계정에 엔화가 있어. 일상적인 구매에 이걸 어떻게 쓸 수 있을까? Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "일본 여행",
+    "url": "https://www.reddit.com/r/JapanFinance/comments/17ol0u0/traveling_to_japan_how_to_use_paypal_yen/?tl=ko",
+    "likeCnt": 206
+  },
+  {
+    "id": 75,
+    "title": "Untitled",
+    "content": "카페홈 가입한 카페의 활동 알림과 댓글알림을 이곳에서 모아볼 수 있어요. 알림의 버튼을 클릭하면, 알림을 설정할 수 있어요.  로그인해주세요 네이버앱 알림 으로 카페앱 설치 경로를 전송했습니다. 네이버앱이 최신버전이 아니거나, 로그아웃 상태여서 알림을 못 받으셨다면 문자 전송으로 카페앱을 설치하실 수도 있습니다. 이 카페의 모든 댓글알림을 받습니다. 내 글, 내 댓글, 내가 댓글 쓴 글에 대한 댓글 알림을 받습니다. 내 글, 내 댓글에 대한 댓글알림을 받습니다. 가입대기 0 멤버목록 비공개 카페 회원님의 안전한 서비스 이용을 위해 비밀번호를 확인해 주세요. IP가 자주 변경되는 네트워크 환경에서 로그인하는 경우 IP보안을 해제 후 이용하시기 바랍니다. 다시 한번 비밀번호 확인 하시면 이용중인 화면으로 돌아가며, 작성 중이던 내용을 정상적으로 전송 또는 등록하실 수 있습니다. 카페에 가입 하시려면 실명 확인을 해주세요. 죄송합니다. 이 카페는 회원만 가입할 수 있습니다. 성별 정보 입력을 위해 본인확인 페이지로 이동하시겠습니까?",
+    "keyword": "일본 여행",
+    "url": "https://cafe.naver.com/jpnstory",
+    "likeCnt": 511
+  },
+  {
+    "id": 76,
+    "title": "일본/관광 - 나무위키",
+    "content": "이 저작물은 CC BY-NC-SA 2.0 KR 에 따라 이용할 수 있습니다. (단, 라이선스가 명시된 일부 문서 및 삽화 제외) 기여하신 문서의 저작권은 각 기여자에게 있으며, 각 기여자는 기여하신 부분의 저작권을 갖습니다. 나무위키는 백과사전이 아니며 검증되지 않았거나, 편향적이거나, 잘못된 서술이 있을 수 있습니다. 나무위키는 위키위키입니다. 여러분이 직접 문서를 고칠 수 있으며, 다른 사람의 의견을 원할 경우 직접 토론을 발제할 수 있습니다. This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply. This site is protected by hCaptcha and its Privacy Policy and Terms of Service apply.",
+    "keyword": "일본 여행",
+    "url": "https://namu.wiki/w/%EC%9D%BC%EB%B3%B8/%EA%B4%80%EA%B4%91",
+    "likeCnt": 977
+  },
+  {
+    "id": 77,
+    "title": "재팬 트래블 - 일본정부관광국(공식 사이트)",
+    "content": "My Favorites ${v.desc | trunc(25)} ${v.desc | trunc(25)} Use the Share your travel photos with us by hashtagging your images with #visitjapanjp LET’S GO JAPAN LET’S GO JAPAN LET’S GO JAPAN 하쓰우리: 일본의 블랙 프라이데이 일본, 내게 스며들다(시마네) 일본, 내게 스며들다(야마구치) 일본, 내게 스며들다(돗토리) 일본 감성필름(미에) 일본 감성필름(나라) 일본, 내게 스며들다(미야기) 일본, 내게 스며들다(야마가타) 살기 위해 여행하고, 여행하기 위해 살라 [영상]LET’S GO JAPAN 열차&음식 편 9월 25, 2025 한일 국교정상화 60주년 기념  ‘2025 춘천 JAPAN WEEK’ 개최 안내 9월 19, 2025 [2025년 한일국교정상화 60주년 기념] 당신만이 알고 있는 일본을 공유해주세요! 소도시 여행기 콘테스트 9월 09, 2025 Japan Safe Travel Information  친구와 함께 도호쿠 트레킹 두 남자의 도호쿠 느리게 걷기 에게 사계절의 다채로운 풍경과 만날 즐거움을 선사합니다. 비자 정보 처음 방문하시는 분들께 숙소 공항 접근성 둘러보기 브로슈어 다운로드 Please Choose Your Language Browse the JNTO site in one of multiple languages",
+    "keyword": "일본 여행",
+    "url": "https://www.japan.travel/ko/kr/",
+    "likeCnt": 169
+  },
+  {
+    "id": 78,
+    "title": "일본여행패키지 - 인터파크",
+    "content": "연관 · 3박 4일 · 인천 출발 · 풀패키지 · 일본, 도쿄, 하코네, 시즈오카 · 제주항공. ASJPP01764. 1,049,900원~. 최대 5% 추가할인. [추석 ...",
+    "keyword": "일본 여행",
+    "url": "https://isearch.interpark.com/result?q=%EC%9D%BC%EB%B3%B8%EC%97%AC%ED%96%89%ED%8C%A8%ED%82%A4%EC%A7%80",
+    "likeCnt": 771
+  },
+  {
+    "id": 79,
+    "title": "나고야 여행: 일본키토식단 여행중키토식단 : LCHF 22일~26일 ...",
+    "content": "2018. 6. 15. 9:37 키토식단 3주차를 넘어가고 3-40인생 통털어 최저 몸무게를 경신하고 있을때 나고야 여행을 다녀왔습니다.  4박 5일동안 기존 여행과 달리 먹방은 했지만 최대한 키토 먹방을 하고 왔습니다.  여행가서 먹고싶은거 다 먹지 뭘 식단을 하냐고하겠지만 키토식단으로  3주정도 습관이 된 상태였기에  다른 과한 탄수를 먹는게 무서웠어요. 그렇다고 탄수를 안먹은건 아니에요. 일단 키토인이라는 생각을 가지고 식당에 갔기에  주문할때도  적합한 음식을 주문하고, 먹을때도 밥을 많이 먹지는 않았어요. 면은 거의 안먹었어요. 어떤 음식 먹었는지 보여들릴께요. 아침 7시 비행기였기에 일본에 도착하니 8시 50분이었던가? 이번에는 수화물도 안 보냈기에 그냥 바로 나왔습니다. 다행히도 일본의 대부분 공항은 지역 맛집이 모두 공항에 들어와있답니다. 나고야도 그런데요,   4층에 올라가면 시내에서는 줄서서 먹어야하는 야바톤도 있고 다른음식도 간단히 먹을수 있으니 저처러 아침일찍 도착하시면 식사를 하고 들어가셔도 됩니다. 반대로 돌아가기전 체크인해두고 짐보내고 식사를 하셔도 됩니다. 첫날 아침 카이센동에 밥 절반을 먹었어요.  역시 이 일본 카이센동 밥은 설탕이 많이 들어가있네요.  맛있네요. 그리고 저 딱새우같은게 들어간 미소시루 너무 맛있네요. 꿀떡꿀떡 그러나 일본은 미소도 달다는.... 남편은 밥없는 참치회 사실은 야바톤에서 돈까스를 첫끼로 하려고 했는데, 이집이 10시반에 문을 열어서 먼저 카이센동으로 입맛을 돋우고 왔어요. 아들의 식사는 돈까스 양념따로 .. 사실 철판도 양념따로 주문했는데, 철판은 양념따로가 안된다네요. 이집은 된장소스인데, 이제 진자 철판에 잘어울어지니 맛있네요. 일반분들은 무조건 뿌려드시고 키토인들은 뿌릴때 양조절 되니 조절해서 드시면됩니다. 일본 돈까스는  돼지 비계가 가득한 부위로 만드니 맘에 드네요. 아침은 많이 먹었더니 점심은 먹지 않았어요. 낮에 아들과 수영장에서 수영하고 놀고 이리 저리 시간을 보내니 저녁 먹을시간 일단은 그냥 라운지로 내려가봅니다. 일단 내려가보고 먹을게 없으면 밖에 나가려했는데, 여기 음식 아들도 만족 저도 만족 술은 드라이한 와인, 아님 보드카, 진등이 좋다해서 저는 화이트와인1잔, 샴페인1잔 마셨어요. 신기한건 남편도 그정도 기본 샐러드에 햄치즈가 다량으로 나오니 오늘은 이걸로~~ 치즈에 와인한잔하니 이것만으로도 너무 좋네요. 호텔 조식 다음날 아침입니다. 이곳은 4일동안 메뉴가 거의 안바꼈어요.  조식당만큼 키토식 하기 좋은곳이 없죠. 여기는 콜리플라워, 브로콜리 찜이 있어서 버터 가득 올리고 베이컨 올려서 먹었어요. 거기에 치즈 가득 넣은 오믈렛입니다.  대신 양이 기존 집에서 먹던것보다 훨씬 많이 먹게 되네요. 3주차가 되니 컨디션도 좋아지고 소화력도 좋아지는 것도 작용한듯합니다. 나고야의 명물 토스트  오구라 토스트에요, 토스트위에 휘핑크림, 앙꼬를 올려먹는데 한입맛봤어요. 나고야의 특미인 미소돈까스,  소바는 정말 맛볼정도로만 먹었어요. 이정도의 치팅은  여행중해야겠죠 빵은 먹지 않다가 글루텐프리 빵이 있다고해서  요청해서 먹어봤어요. 냉동빵을 전자레인지에 구워와서 그냥 맛이 없어서 한입먹고 안먹었어요. 라운지에 커피 한잔 하러갔더니 이런 요거트가  ~ 당 제로에요. 그릭요거트인것같은데 이거 너무 좋아요. 꼭 아이스크림같고~ 당제로 제일 맘에 들어요. 일본가는분 이거 꼭 사서 드셔보세요. 점심은  아보카도 참치덮밥이에요.  저는 밥을 먹었지만 남편은 스테이크에 밥대신 야채달라고했더니  센스있게 구운 야채를 많이 주더라구요.  밥 반공기 먹었어요.  그런데 이날 17천보 정도 걷고 이날부터 2만보씩 걸어서  이정도 탄수 허용했어요. 남편의 우측 스테이크에는 원래 밥이 있어야하지만 초록 야채가 들어갔어요.  스테이크 소스도 따로주니 우리나라보다 키토식 하기 좋은 환경입니다. 감자칩은 모두 아들에게 저녁1차 라운지로 와서 샴페인2잔에 삼겹살 조림, 치즈 먹었어요.  삼겹조림에 당이 들긴했지만 이정도는 먹어야죠. 저녁2차 숙소로 돌아오는길에 해산물",
+    "keyword": "일본 여행",
+    "url": "https://m.blog.naver.com/kimvo97/221299252000",
+    "likeCnt": 928
+  },
+  {
+    "id": 80,
+    "title": "해외여행 필수품 준비물 체크리스트 엑셀 공유 : 유럽, 미국, 일본여행 ...",
+    "content": "Sep 20, 2024 ... 20대 때 퇴사하고 한달 유럽여행 갔을때. 블로그에 공유했던 해외여행 준비물 체크리스트가. 정말 인기가 많았었던,,,.",
+    "keyword": "일본 여행",
+    "url": "https://blog.naver.com/seolaa93/223589962718?viewType=pc",
+    "likeCnt": 607
+  },
+  {
+    "id": 81,
+    "title": "미국 국내 여행 시 여권 필요해? : r/travel",
+    "content": "r/travel 는 전 세계를 탐험하는 커뮤니티예요. 여러분의 사진, 질문, 이야기, 또는 어떤 좋은 콘텐츠든 환영합니다.   클릭베이트, 스팸, 밈, 광고/판매/구매, 브로슈어, 추천, 중고거래, 설문조사 또는 자기 홍보는 삭제될 거예요. 오하이오에서 캘리포니아로 친구 몇 명이서 여행 갈 계획인데. 여권, 연방 신분증, 아니면 그냥 운전면허증만 있으면 되는지 알아보려고 했는데, 정보가 너무 엇갈리거나 애매해서. 미리 고마워 Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "국내 여행",
+    "url": "https://www.reddit.com/r/travel/comments/1814jo1/do_you_need_a_passport_for_domestic_us_travel/?tl=ko",
+    "likeCnt": 559
+  },
+  {
+    "id": 82,
+    "title": "국내여행",
+    "content": "비즈니스 클래스 탑승 김포 도착지 해외여행 1577-3000 국내여행 1577-3700 부산 지사 1688-1105 대전 지사 1688-1102 대구 지사 1688-1103 광주 지사 1688-1104 정보제공 표준안 참여여행사 copyright © lottetour.com All rights reserved. Contact web master for more information. 2024 한국서비스대상 15회 수상 대한민국 최우수여행사 21년 연속 수상 2019 콜센터품질지수 KS-CQI 여행사부문 1위 금탑산업훈장 석탑,철탑,동탑 산업훈장",
+    "keyword": "국내 여행",
+    "url": "https://www.lottetour.com/main/domestic",
+    "likeCnt": 653
+  },
+  {
+    "id": 83,
+    "title": "미국 국내 여행에 여행자 보험이 진짜 필요한 걸까? : r/travel",
+    "content": "r/travel 는 전 세계를 탐험하는 커뮤니티예요. 여러분의 사진, 질문, 이야기, 또는 어떤 좋은 콘텐츠든 환영합니다.   클릭베이트, 스팸, 밈, 광고/판매/구매, 브로슈어, 추천, 중고거래, 설문조사 또는 자기 홍보는 삭제될 거예요. 궁금한 게 있는데, 4일짜리 여행(9/17~9/21)에 대한 여행자 보험을 샀어. 텍사스에서 로스앤젤레스/버뱅크, 캘리포니아로 가는 여행이었지. Squaremouth에서 \"GoReady\"라는 곳의 플랜으로 견적을 받았는데, 돈을 그렇게 많이 쓰진 않았어. Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "국내 여행",
+    "url": "https://www.reddit.com/r/travel/comments/v9z16y/is_travel_insurance_worth_it_for_domesticus_travel/?tl=ko",
+    "likeCnt": 665
+  },
+  {
+    "id": 84,
+    "title": "하나투어, 국내여행",
+    "content": "NEW #해시태그 검색이 가능해졌어요! 인기검색어 마이메뉴는 회원 전용 메뉴 입니다. 최근 본 상품이 없습니다.",
+    "keyword": "국내 여행",
+    "url": "https://www.hanatour.com/package/domestic",
+    "likeCnt": 889
+  },
+  {
+    "id": 85,
+    "title": "국내 여행 코스 총정리 | 대한민국 구석구석",
+    "content": "편리하게 정리하는 여행 일정! 당일치기, 1박 2일 일정별 여행 코스부터, 가족, 연인, 아이와 함께 가기 좋은 상황별 코스, 힐링, 자연, 레포츠, 등산, 드라이브 등 취향별 ...",
+    "keyword": "국내 여행",
+    "url": "https://korean.visitkorea.or.kr/main/cs_main.do",
+    "likeCnt": 891
+  },
+  {
+    "id": 86,
+    "title": "지도로 떠나는 한국관광 100선/꼭 가봐야 할 대표 관광지 100선(목록 ...",
+    "content": "지도로 떠나는 한국관광 100선/꼭 가봐야 할 대표 관광지 100선(목록) 2020. 8. 26. 11:24 한국관광공사가 선정한 한국인이 꼭 가봐야 할 ‘2019~2020 한국관광 100선’을 지역별 관광지도로 소개한다. 한국을 대표하는 관광지 100선에 대한 구체적인 내용은 아래를 참고바란다. https://korean.visitkorea.or.kr/other/otherService.do?otdid=622bcd99-84fa-11e8-8165-020027310001 주요 도시의 관광명소부터 자연과 어우러지는 관광지까지, 국내 및 전 세계에 우리나라의 우수한 관광지를 소개합니다. korean.visitkorea.or.kr https://blog.naver.com/kjchol123/221932324468 해외 유명 관광지 못지않게 인기를 끌고 있는 국내 여행지가 많다. 이미 유명한 곳도 있고 새롭게 개발되는... blog.naver.com 출처: 한국관광공사 한국관광 100선 아래 해당 관광지를 클릭하면 한국관광공사 소개글로 연결된다. ​ ★ 수도권 (26곳) <서울> - N서울타워 - 동대문디자인플라자 - 롯데월드 - 명동거리 - 서울 5대 고궁( 경복궁 , 창덕궁 , 창경궁 , 덕수궁 , 경희궁 ) - 서울로7017 - 스타필드 코엑스몰 - 이태원 테이스티 로드 - 종로 익선동 식당과 카페 - 홍대거리  경복궁 <인천> - 소래포구 - 송도 센트럴파크 - 월미도 - 인천 차이나타운 송도 센트럴파크(출처: 인천투어) <경기> - 가평 아침고요수목원 - 광명동굴 - 남한산성 - 서울대공원 - 수원화성 - 양평 두물머리 - 에버랜드 - 파주DMZ - 포천 아트밸리와 포천석(한탄강 국가지질공원) - 한탄강관광지와 오토캠핑장 - 화담숲 - 화성 제부도 제비꼬리길 출처: 아침고요수목원 ★ 강원권 (13곳) - 강릉 커피거리 - 고성 통일전망대&화진포 - 남이섬 - 대관령 - 삼척 대이리 동굴지대 - 설악산&속초 - 오대산 트래킹 - 원주 뮤지엄 산 - 원주 소금산 출렁다리&원주여행코스 BEST 6 - 인제 원대리 자작나무숲 - 정선 하이원리조트 - 주문진 수산시장 - 홍천 비발디파크 인제 원대리 자작나무 숲(출처: 인제 문화관광) ★ 충청권 (10곳) - 공주 백제유적지 - 괴산 산막이옛길 - 단양 잔도 - 단양팔경 - 대전 계족산 황톳길 - 보령 대천해수욕장 - 부여 백제유적지( 관북리유적과 부소산성 , 서동공원과 궁남지 , 낙화암 ) - 서천 국립생태원 - 청주 청남대 - 태안 안면도 단양잔도 ★ 경상권 (28곳) - 강구항 영덕대게마을 미각여행 - 거제 바람의 언덕 - 거제 외도 보타니아 - 경북 국보순례(경주 불국사, 군위 삼존석굴, 김천 직지사) - 경주 대릉원 일원 - 남해여행(독일마을, 다랭이마을, 양떼목장, 금산과 보리암 등) - 대구 근대골목 , 방천시장 - 대구 서문시장 야시장 - 부산 감천문화마을 - 부산 더베이101 - 송도해상케이블카 - 안동 하회마을 - 영일만과 포항운하 - 영주 부석사 - 울릉도와 독도 - 울산 간월재 - 울산 태화강 십리대숲 - 울진 금강소나무숲길 - 자갈치시장 - 진주성 - 창녕 우포늪 - 청송 주왕산 - 태종대 - 통영루지 - 팔공산 올레길 - 합천 해인사 - 해운대해수욕장 경주 대릉원(출처: 경주 문화관광) 하회마을(출처: 안동관광) ★ 전라권 (14곳) - 강진 가우도 - 곡성 섬진강기차마을 - 광주 양림동 근대문화유산 - 군산 근대사 여행 - 담양(소쇄원, 명옥헌, 창평 슬로시티, 메타세쿼이아길, 죽녹원) - 무등산 억새 - 무주 태권도원 - 보성 한국차박물관 - 순천만자연생태공원 - 여수세계박람회장과 해안 레일바이크 - 전주 한옥마을 - 정읍 내장산국립공원 - 진안 마이산 - 해남 미황사 곡성기차마을(출처: 한국관광공사) 출처: 순천만습지 홈페이지 ★ 제주권 (9곳) - 구좌읍 비자림 - 서귀포 매일올레전통시장 - 섭지코지 - 성산일출봉 - 성읍민속마을 - 올레길 - 우도 - 절물자연휴영림 - 한라산 둘레길 섭지코지(출처: 비짓제주)",
+    "keyword": "국내 여행",
+    "url": "https://m.blog.naver.com/kjchol123/222071310747",
+    "likeCnt": 518
+  },
+  {
+    "id": 87,
+    "title": "해외여행 VS 국내여행, 어디를 가시겠습니까? : 네이버 블로그",
+    "content": "Sep 11, 2017 ... 국내에서 가장 가고 싶은 여행지가 궁금합니다. 1위는 제주, 과반수에 살짝 못미치는 42.4%의 지지를 받았어요. 2위는 강원도. 22.1%를 차지했네요. 3~5위 ...",
+    "keyword": "국내 여행",
+    "url": "https://blog.naver.com/the_trip/221094084378",
+    "likeCnt": 1000
+  },
+  {
+    "id": 88,
+    "title": "국내 여행 가볼만한곳 전국 가족 여행지 추천 베스트 10 : 네이버 블로그",
+    "content": "국내 여행 가볼만한곳 전국 가족 여행지 추천 베스트 10 2023. 11. 6. 12:56 ​ 가족 여행지 추천 베스트 10 ​ 국내 여행 가볼만한곳 ​ ​ 안녕하세요. 하벨입니다. 떠나기 좋은 선선한 날씨가 찾아오니 국내 가족 여행지 찾는 분들이 많은 요즘입니다. 이번엔 부모님, 아이들 다같이 국내 여행 가기 좋은 가볼만한곳 10곳을 추천드리려고 하는데요. 기준은 평지라 걷기 좋으면서도 볼거리가 많은 전국의 명소들로 선정하였답니다. 동시에 같이 가면 좋은 관광지도 함께 소개해볼게요 . 1. 포천 허브아일랜드 ​ 위치 : 경기도 포천시 신북면 청신로947번길 51 ​ ​ 먼저 경기도 포천 허브아일랜드 입니다. 입장료는 어른 기준 주말 12000원, 평일 10000원입니다. 계절별로 라벤더, 핑크뮬리 꽃밭을 볼 수 있는 것은 물론 아기자기하게 꾸며진 마을이라 구경하기 참 좋답니다. ​ ​ ​ ​ ​ ​ 특히 10월에 열리는 핑크뮬리축제는 지금 한창 핫해요. 이 앞에서 그네도 타고, 썰매도 타고 카페에 앉아 아이스크림을 보면 딱이랍니다. 또한 식물원을 지나면 나오는 산타마을은 다가오는 연말에 가면 좋으실 거에요 . ​ ​ ​ ​ ​ ​ 밤이 되면 베네치아마을에 빛이 들어오는데 야경이 또 끝내줍니다. 여기서 배타고 한바퀴 돌면 낭만 가득해요. 마치 동심으로 돌아간듯 즐길거리가 많아서 전 4시간을 관람했었네요. 밥집도 함께 있으니 반나절 코스로 들려보시길 바랄게요. ​ ​ ​ 포천 아트밸리 → 허브아일랜드 → 산정호수 → 비둘기낭폭포 경기도 포천시 신북면 청신로947번길 51 2. 춘천 김유정역 ​ 위치 : 강원도 춘천시 신동면 김유정로 1435 ​ ​ 다음으로 국내 여행으로 가볼만한곳은 춘천 김유정역 입니다. 지금은 폐역이라 전시해둔 기차를 관람할 수 있어요. 안에서 책도 읽고 옛날의 모습, 레트로를 즐기며 사진을 찍을 수 있답니다. ​ ​ ​ ​ ​ ​ 이곳을 가족 여행지로 추천하는 이유는 근처에 레일파크, 김유정문학촌을 함께 둘러볼 수 있기 때문인데요. ​ 액티비티는 물론 고즈넉한 마을을 걸으며 문화 관광을 할 수 있어 즐길거리가 많아요. ​ ​ ​ ​ ​ ​ 김유정역을 시작으로 춘천 소양강댐에서 산과 강뷰를 감상하고 산토리니 카페나 감자밭에서 음료와 디저트를 함께 즐기면 알찬 전국 여행이 되실 거에요. 버스가 잘 되어 있어서 뚜벅이로 가도 괜찮으니 가족과 함께 춘천으로 떠나보세요! ​ ​ ​ ​ 강원도립화목원 → 감자밭 → 소양강댐 → 산토리니카페 → 닭갈비골목 → 김유정역 폐역 → 레일파크 → 김유정문학촌 강원특별자치도 춘천시 신동면 김유정로 1435 3. 동해 무릉별유천지 ​ 위치 : 강원도 동해시 이기로 97 ​ ​ 강원도에서는 동해 무릉별유천지 가 볼거리가 많습니다. 열차를 타고 정거장에 내려 관광하는 곳으로 입장료는 5천원. 여기에 루지, 스카이라이너 등 액티비티를 추가하여 즐길 수 있어요. ​ ​ ​ ​ ​ ​ 계절마다 다른 드넓은 꽃밭에서 인생샷도 건지고 전망대에서 멋진 경치를 바라볼 수도 있답니다. 특히 애매랄드빛 호수의 풍경이 참 아름다워요. 보자마자 감탄사가 절로 나왔었네요. ​ ​ ​ ​ ​ ​ 마무리로 전시 감상하고 특색있는 먹거리, 시멘트 아이스크림까지 먹어주면 알차게 즐길 수 있겠어요. 이외에 동해에선 도째비골 스카이밸리, 천곡황금박쥐동굴, 묵호항 등과 함께 여행 코스를 짜보시길 바랄게요. ​ ​ ​ ​ 강원특별자치도 동해시 이기로 97 무릉별유천지 제2주차장 4. 이천 설봉공원 ​ 위치 : 경기도 이천시 경충대로2709번길 128 ​ ​ 이어서 경기도 이천 설봉공원 입니다. 산책하기 좋은 길이 잘 마련되어 있으며 곳곳에 조형물, 미술관 등 구경거리가 많은 가족 여행지 중 하나입니다. 시기를 잘 맞춰 가면 축제 현장도 볼 수 있어요. ​ ​ ​ ​ ​ ​ 이천은 또 쌀로 유명하죠. 근처에서 한정식 먹고 공원 산책한 뒤, 별빛정원우주에서 야경 보는 코스면 부모님, 아이들 모두 좋아할 거에요. 겨울에 가신다면 뜨끈한 온천도 이천에서 즐길 수 있답니다. ​ 이 코스는 제가 따로 정리해둔 포스팅이",
+    "keyword": "국내 여행",
+    "url": "https://m.blog.naver.com/pkj5456/223256980930",
+    "likeCnt": 109
+  },
+  {
+    "id": 89,
+    "title": "2024년 여행계획 국내여행 가보고싶은 섬 : 네이버 블로그",
+    "content": "Feb 14, 2024 ... 카테고리 이동 린이의 여행일기 ✈️ · ​ · 2023년 여름, 그리고 겨울의 부산 · 우리나라에서 가장 좋아하는 도시가 부산이라 · 부산은 거의 1년에 한번씩 ...",
+    "keyword": "국내 여행",
+    "url": "https://blog.naver.com/princessrin/223353729266",
+    "likeCnt": 192
+  },
+  {
+    "id": 90,
+    "title": "Q-Net 국내여행안내사",
+    "content": "국내여행안내사 · 공지사항 · 시험일정 · 원서접수 · 합격자발표 · 마이페이지. 시험일정 안내. 25회 필기; 25회 면접. 01. 원서접수. 접수기간. 2025.09.",
+    "keyword": "국내 여행",
+    "url": "https://www.q-net.or.kr/site/tourguide",
+    "likeCnt": 54
+  },
+  {
+    "id": 91,
+    "title": "CrazyGames | 무료 온라인 게임 포털 | 지금 바로 플레이!",
+    "content": "CrazyGames는 최신과 최고의 무료 온라인 게임을 제공합니다. 다운로드, 광고, 팝업창과 같은 방해 없이 재미있는 게임을 즐기실 수 있습니다. 웹 브라우저에서 좋아하는 게임을 즉시 로드하여 경험해보세요. 데스크톱 및 모바일 장치에서도 게임을 플레이할 수 있습니다. 데스크톱 PC, 노트북, Chromebook부터 최신의 Apple 및 Android 스마트폰과 태블릿까지 모두 지원됩니다. CrazyGames에는 활발한 커뮤니티가 형성된 온라인 멀티플레이어 게임이 많이 있습니다. .io 게임 페이지에서 최고의 무료 멀티플레이어 게임을 찾아보세요. 이 게임들로 함께하는 친구들과 전세계의 다른 사람들과 온라인으로 플레이할 수 있습니다. CrazyGames는 상상할 수 있는 모든 장르의 4,500개 이상의 재미있는 게임을 보유하고 있습니다. 가장 인기 있는 게임들은 다음과 같습니다: CrazyGames의 주요 카테고리인 클리커 게임 , 운전 게임 , 슈팅 게임 은 모든 페이지 상단에 있으며, 자동차 게임, Minecraft, Fireboy and Watergirl, 2인용 게임, 공포, 마작과 같은 다양한 하위 카테고리도 있어 여러분에게 딱 맞는 게임을 찾을 수 있습니다. CrazyGames에서 찾기 어려운 게임이 있나요? 우리에게 게임 제안 을 해보세요. 우리는 그 게임을 얻을 수 있는 방법을 알아보겠습니다. 단순한 제안이나 개선사항이 있으신 경우에도 언제든지 연락 해주세요. CrazyGames는 Raf Mertens가 2014년에 설립한 무료 브라우저 게임 플랫폼입니다. 그 이후로 이 플랫폼은 월간 이용자 3,000만명 이상으로 성장하였습니다. 우리의 미션은 매우 간단합니다. 전 세계 이용자에게 원할하게 작동하는 브라우저 게임 플랫폼을 만들며, 큰 규모의 개발자와 소규모의 개발자들에게 보상을 제공하는 것입니다. 당사의 기업 사이트를 방문하고 CrazyGames에 대해 더 알아보세요. 저희 공석 을 확인하거나 게임 제작에 관심이 있다면 게임 개발자 플랫폼 을 조회해보세요. ¿Hablas español? Visita nuestra web de juegos en español. Tu parles français ? Découvrez nos jeux sur notre site français.",
+    "keyword": "게임",
+    "url": "https://www.crazygames.co.kr/",
+    "likeCnt": 496
+  },
+  {
+    "id": 92,
+    "title": "Watch Game of Thrones (HBO) | HBO Max",
+    "content": "Oh no! This title currently isn’t available to watch in your country. : The epic HBO drama series based on the acclaimed book series 'A Song of Ice and Fire' by George R.R. Martin. Plans start at $9.99/month. : The epic HBO drama series based on the acclaimed book series 'A Song of Ice and Fire' by George R.R. Martin. Emilia Clarke Peter Dinklage Kit Harington Nikolaj Coster-Waldau Lena Headey Richard Madden Sophie Turner Maisie Williams Rory Mccann Gwendoline Christie Tom Wlaschiha Toby Sebastian Susan Brown Stephen Dillane Souad Faress Sibel Kekilli Sean Bean Rose Leslie Rosabell Laurenti Sellers Ron Roger Allam Richard E. Grant Richard Dormer Pilou Asbæk Peter Vaughan Pedro Pascal Paul Kaye Patrick Malahide Owen Teale Oona Chaplin Nell Tiger Free Natalie Dormer Natalia Tena Miltos Yeromelou Michiel Huisman Michelle Fairley Michael Mcelhatton Mia Soteriou Mark Stanley Mark Addy Mackenzie Crook Lino Facioli Liam Cunningham Kristofer Hivju Kristian Nairn Keisha Castle-Hughes Kate Dickie Julian Glover Joseph Mawle Josef Altin Jonathan Pryce John Stahl Joe Naufahu Joe Dempsie Jim Broadbent Jessica Henwick Jerome Flynn Jamie James Faulkner James Cosmo Jacob Anderson Jack Gleeson Iwan Rheon Isaac Hempstead-Wright Indira Varma Ian Mcshane Ian Mcelhinney Iain Glen Harry Lloyd Hannah Murray Gethin Anthony Gemma Whelan Freddie Stroma Finn Jones Eugene Simon Essie Davis Esme Bianco Emun Elliott Edward Dogliani Donald Sumpter Dominic Carter Diana Rigg Dean-Charles Chapman Daniel Portman Conleth Hill Clive Russell Ciaran Hinds Charles Dance Carice Van Houten Art Parkinson Amrita Acharia Alfie Allen Alexander Siddig Aidan Gillen Nathalie Emmanuel Jason Momoa John Bradley  Lord Ned Stark is troubled by disturbing reports from a Night's Watch deserter; ... More The Lannisters plot to ensure Bran's silence; Jon and Tyrion head to the Wall; N... More Jon impresses Tyrion at Castle Black. Ned confronts his past and future at King'... More Ned probes Arryn's death. Jon takes measures",
+    "keyword": "게임",
+    "url": "https://www.hbomax.com/shows/game-of-thrones/4f6b4985-2dc9-4ab6-ac79-d60f0860b0ac",
+    "likeCnt": 412
+  },
+  {
+    "id": 93,
+    "title": "게임 창을 다른 모니터로 옮기는 방법 [PC] : r/FFVIIRemake",
+    "content": "파이널 판타지 VII 리메이크 시리즈의 비공식 서브레딧에 오신 것을 환영합니다. 이 게임에 모니터 전환 옵션이 없는 건 진짜 멍청한 짓 같아. 디스플레이 설정도 별로고, 게임이 내 주 모니터가 아닌 다른 모니터에 고정돼서 옮길 방법이 없어. 창 모드로 해보려고 했는데, ALT+TAB 안 하면 커서도 안 보이고, 게임 창을 클릭하면 다시 게임 안으로 들어가서 옮길 수도 없어.  혹시 게임을 다른 모니터로 옮기는 방법 아는 사람 있어? Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "게임",
+    "url": "https://www.reddit.com/r/FFVIIRemake/comments/riiwes/how_to_move_the_game_window_to_another_monitor_pc/?tl=ko",
+    "likeCnt": 235
+  },
+  {
+    "id": 94,
+    "title": "GameStop: Consoles, Collectibles, Video Games, and More – Buy ...",
+    "content": "Trending Trading Cards. Shop All. Pokemon Trading Card Game: Scarlet and Violet Journey Together Booster Sleeves Pack (Styles May Vary) ... Trading Card Game: ...",
+    "keyword": "게임",
+    "url": "https://www.gamestop.com/",
+    "likeCnt": 949
+  },
+  {
+    "id": 95,
+    "title": "PC에서 게임이 표시되는 모니터를 어떻게 바꿀 수 있어요? : r ...",
+    "content": "레미디 엔터테인먼트에서 만든 3인칭 초자연 슈팅 게임, 컨트롤에 대한 서브레딧입니다. 보통 게임 설정에 모니터 선택 설정이 있잖아요. 근데 멀티 모니터 환경에서 게임이 표시되는 모니터를 바꾸는 기능을 못 찾겠어요. OS 등을 통해서 바꿀 수는 있는데, 혹시 게임 자체에 이런 설정이 있나 궁금해서요? Create your account and connect with a world of communities. Anyone can view, post, and comment to this community",
+    "keyword": "게임",
+    "url": "https://www.reddit.com/r/controlgame/comments/17euo87/how_can_you_change_which_monitor_the_game/?tl=ko",
+    "likeCnt": 85
+  },
+  {
+    "id": 96,
+    "title": "Arizona Game and Fish",
+    "content": "The mission of the Arizona Game and Fish Department is to conserve Arizona’s diverse wildlife resources and manage for safe, compatible outdoor recreation opportunities for current and future generations. Discover events designed to support and grow your love of the outdoors. The 19th Annual Fly Fishing Film Tour is coming to Phoenix, presented by AZ Fly Shop. Learn More > Learn about Arizona Game and Fish’s library of educational resources and opportunities. Learn More > Learn about black bears with Arizona Game and Fish biologists. Learn More > View the list of upcoming course dates. Learn More > Courses are offered on numerous dates throughout Arizona. Learn More > FishAZ Network events are ongoing and the list is updated frequently. Learn More > Plan that hunting trip or find a fishing hole. Arizona residents and non-residents, 10 years and older need a valid hunting license to hunt in Arizona. There are 50+ community lakes and ponds in Arizona. Make a memory fishing with the family! Be in the know on all things Arizona Game and Fish. Get the latest fishing news, tips, stocking reports, and more. The special-interest holiday Sept. 27 underscores how all outdoor enthusiasts fund conservation. The deadline to apply for spring turkey, javelina, bison, and raptor capture is Tuesday, Oct. 7. Copyright© 2025, Arizona Game and Fish Department. All rights reserved.",
+    "keyword": "게임",
+    "url": "https://www.azgfd.com/",
+    "likeCnt": 416
+  },
+  {
+    "id": 97,
+    "title": "Xbox Game Pass Games Catalog | Xbox",
+    "content": "Xbox Game Pass games         Refine results: These games exit the Game Pass catalog in the next two weeks. To keep playing, buy now and save up to 20% with your member discount. These games exit the Game Pass catalog in the next two weeks. Play games that joined the Game Pass catalog on day one. Enjoy favorites from Xbox Game Studios, Bethesda Softworks, Activision Blizzard, indie studios, and more. Discover and download new games with Game Pass, play games on your Windows PC, and chat with friends across PC, mobile, and console. Plus, get access to services like EA Play and more. PC Game Pass and Ultimate members can access EA Play on Windows via the Xbox app on Windows PC. PC Game Pass and Ultimate members can access select Ubisoft Connect titles on Windows via the Xbox app on Windows PC. Play select games from Riot Games with premium benefits for Game Pass members. Play hundreds of high-quality games on the devices you already have. No games found. Access this game and other EA Play titles with the Xbox app. Already have the Xbox app? Launch the app to play this game on your Windows PC. Download and play this game on your Windows PC using the Xbox app on PC . Download and play this game on your Windows PC using the Xbox app for PC . Access this game and other Riot Games titles with the Xbox app. Already have the Xbox app? Launch the app to play this game on your Windows PC. Download and play this game on your Windows PC using the Xbox app on PC . Download and play this game on your Windows PC using the Xbox app on PC . Access this game and other Ubisoft Connect titles with the Xbox app. Already have the Xbox app? Launch the app to play this game on your Windows PC. Download and play this game on your Windows PC using the Xbox app on PC . Discover, download, play games, and more with PC Game Pass via the Xbox app on Windows PC. Launch games at the click of a button, browse the catalog, view recommendations, and more. Explore the full Game Pass catalog and get cust",
+    "keyword": "게임",
+    "url": "https://www.xbox.com/en-US/xbox-game-pass/games",
+    "likeCnt": 968
+  },
+  {
+    "id": 98,
+    "title": "Poki (포키) - 무료 온라인 게임 - 지금 플레이하세요!",
+    "content": "Poki (포키)는 최고의 무료 온라인 게임 선택지를 제공하며 혼자 또는 친구들과 함께 즐길 수 있는 가장 재미있는 경험을 제공합니다. 다운로드, 로그인, 팝업 또는 기타 방해 요소 없이 모든 게임에 대한 즉시 플레이를 제공합니다. 저희 게임은 데스크톱, 태블릿 및 모바일에서 플레이 가능하므로 집에서든 이동 중이든 언제 어디서든 즐길 수 있습니다. 전 세계에서 매달 9,000만 명 이상의 게이머가 Poki (포키)에서 자신의 좋아하는 게임을 플레이합니다. 게임 개발자들은 매일 플랫폼에서 재미있는 새로운 게임 게임을 출시합니다. 당의 가장 인기 있는 게임 으로는 Subway Surfers , Temple Run 2 , Stickman Hook 및 Rodeo Stampede 등의 히트 게임을 포함합니다. 이러한 게임은 Poki (포키)에서만 플레이 가능합니다. 또한 Moto X3M , Venge.io , Dino Game , Smash Karts , 2048 , Penalty Shooters 2 및 Bad Ice-Cream 과 같은 온라인 클래식 게임도 무료로 제공하고 있습니다. 총 1000개 이상의 게임 타이틀을 제공합니다. 어떤 게임을 할지 잘 모르겠다고요? 홈페이지에서 게임을 찾아보거나 다음 인기 카테고리 중 하나에서 게임을 선택해 보세요: Poki (포키)는 암스테르담에 본사를 두고 있으며 40명의 팀원으로 구성되어 게임 플랫폼을 개발하고 있습니다. 우리의 목표는 최고의 온라인 놀이터를 만드는 것이죠. 모든 분들에게 무료로 열려 있습니다. 우리가 만들고 있는 플랫폼에 대한 자세한 내용은 회사 페이지 에서 확인할 수 있습니다. 웹에서 게임을 성공시키고자 하는 게임 개발자이신 경우, 우리가 제공하는 것을 알아보시고 Poki for Developers 를 통해 연락하세요.",
+    "keyword": "게임",
+    "url": "https://poki.com/kr",
+    "likeCnt": 251
+  },
+  {
+    "id": 99,
+    "title": "Join Xbox Game Pass: Discover Your Next Favorite Game | Xbox",
+    "content": "Xbox Game Pass   Play together with online console multiplayer EA Play membership included Play on PC, phone, tablet, TV, console, and more from the cloud Download console and PC games Premium member deals, discounts, and Perks New games added all the time, including day one releases     ULTIMATE Stream hundreds of games across supported mobile devices, tablets, PCs, VR headsets, Smart TVs, consoles, and more. Plus, now you can stream select cloud playable games ** you own, even games not included with Game Pass. ULTIMATE · PC Members get unlimited access to a collection of top titles, trials of select new games, in-game member rewards, and more. Available on console and PC with Game Pass. ALL PLANS Enjoy member deals and discounts with Game Pass. Explore which offers are available with your Game Pass plan. ULTIMATE · STANDARD · CORE Play together with online console multiplayer and quickly find the people you want to play with – whether it’s friends, family, or the greater Xbox community. ULTIMATE · PC Get in-game benefits in some of the biggest free-to-play games - including seasonal content drops. Instantly unlock items like cosmetics, characters, and more to enhance your gameplay. Plus, choose exactly what you want with in-game currency. ULTIMATE Enjoy free Perks, including in-game content, consumables, partner offers, and more. ULTIMATE · PC · CONSOLE Get a head start in VALORANT, League of Legends, and more of the biggest games from Riot Games. Link your Riot Games account and Xbox profile to unlock the greatest Agents, champions, Little Legends, XP Boosts, and more. Discover your next favorite game. Whether you play on console, PC, or all devices, there's a plan for you. Cancel any time to stop future charges. Get your first 14 days for $1, then $11.99/month Subscription continues automatically. See terms . $9.99/month Subscription continues automatically. See terms . Get your first 14 days for $1, then $14.99/month Subscription continues automatically. See t",
+    "keyword": "게임",
+    "url": "https://www.xbox.com/en-US/xbox-game-pass",
+    "likeCnt": 285
+  },
+  {
+    "id": 100,
+    "title": "App Store iPhone 인기 차트 - Apple(KR)",
+    "content": "1 ëì§í¸ì¨ëë¦¬ 2 Mnet Plus 3 Google Gemini 4 CGV 5 ë¤ì´ë²íë¬ì¤ ì¤í ì´ 6 Plus Chat íë¬ì¤ì± 1 CHAKK - ì¤í ë¦¬ ê¾¸ë¯¸ë ì¬ë¯¸, ì±¡! 2 filmhwa (íë¦í) - íë¯¼ íí° 3 2025 ì¸ê³ë¬¸í ì¼ë ¥ 4 ì ëì½:ê´ê³ ì°¨ë¨ íìì± 5 íêµ­ì¬ ë¥ë ¥ 6 ë² ë¦¬íë¦ Berryfilm - 60ë§ í¬ì´ ì¬ëí íí° 1 ì¼êµ­: ì£¼ê³µ ê°ì± 2 ë¡ë¡ ë§ë²ì¬ 3 íëí°ì¤ì ì¢ë¹ê¹¡í¨ 4 ê°ëì¤ì¤ë: íê·¸ ì¡ì í½ì ííì§ 5 ê°í¸ìì 6 í½ì íì´ë¡ 1 Minecraft: ëë§ì ì¸ê³ë¥¼ ê¿ê¾¸ê³  ë§ë¤ì´ë³´ì¸ì 2 ì±ì¸ì²í: ì¬ì ì íì 3 Stardew Valley 4 Monoposto 5 ìì¸ ìììì¤í¸ 1111: ë¡ê·¸ë¼ì´í¸ 6 Pocket Rogues: Ultimate Copyright Â© 2025 Apple Inc. ëª¨ë  ê¶ë¦¬ ë³´ì .",
+    "keyword": "게임",
+    "url": "https://apps.apple.com/kr/charts/iphone",
+    "likeCnt": 403
+  }
+]

@@ -11,8 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
-@SpringBootTest
+
 @ActiveProfiles("dev")
+@SpringBootTest
 class BackNumberUtilImplTest {
     @Autowired
     private BackNumberUtilImpl backNumberUtil;

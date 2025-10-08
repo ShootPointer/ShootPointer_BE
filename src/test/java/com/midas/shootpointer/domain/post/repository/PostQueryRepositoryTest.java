@@ -6,9 +6,10 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.temporal.ChronoUnit;
@@ -16,7 +17,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@DataJpaTest
 @ActiveProfiles("dev")
 class PostQueryRepositoryTest {
     @Autowired
@@ -30,6 +31,9 @@ class PostQueryRepositoryTest {
 
     @Autowired
     private HighlightCommandRepository highlightCommandRepository;
+
+    @Autowired
+    private EntityManager em;
 
     @BeforeEach
     void setUpClean() {
@@ -106,8 +110,12 @@ class PostQueryRepositoryTest {
                             .likeCnt(10L)
                             .build()
             );
+            em.flush();
+            em.refresh(post);
+
             expectedPostEntities.add(post);
         }
+
         //최신 순의 나열
         expectedPostEntities.sort((a,b)->b.getCreatedAt().compareTo(a.getCreatedAt()));
 
