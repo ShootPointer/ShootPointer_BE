@@ -317,12 +317,14 @@ class CommentManagerTest {
 		given(commentHelper.findCommentByCommentId(commentId)).willReturn(comment);
 		willDoNothing().given(commentHelper).validateCommentOwner(comment, memberId);
 		willDoNothing().given(commentHelper).validateContentNotBlank(newContent);
-		willDoNothing().given(commentHelper).updateContent(comment, newContent);
+		given(commentHelper.updateContent(comment, newContent)).willReturn(comment); // willReturn으로 변경
 		
 		// when
-		commentManager.update(commentId, newContent, memberId);
+		Comment result = commentManager.update(commentId, newContent, memberId);
 		
 		// then
+		assertThat(result).isNotNull();
+		assertThat(result).isEqualTo(comment);
 		then(commentHelper).should(times(1)).findCommentByCommentId(commentId);
 		then(commentHelper).should(times(1)).validateCommentOwner(comment, memberId);
 		then(commentHelper).should(times(1)).validateContentNotBlank(newContent);
@@ -450,14 +452,16 @@ class CommentManagerTest {
 		willDoNothing().given(commentHelper).validateContentNotBlank(content1);
 		willDoNothing().given(commentHelper).validateContentNotBlank(content2);
 		
-		willDoNothing().given(commentHelper).updateContent(comment1, content1);
-		willDoNothing().given(commentHelper).updateContent(comment2, content2);
+		given(commentHelper.updateContent(comment1, content1)).willReturn(comment1);
+		given(commentHelper.updateContent(comment2, content2)).willReturn(comment2);
 		
 		// when
-		commentManager.update(commentId1, content1, memberId);
-		commentManager.update(commentId2, content2, memberId);
+		Comment result1 = commentManager.update(commentId1, content1, memberId);
+		Comment result2 = commentManager.update(commentId2, content2, memberId);
 		
 		// then
+		assertThat(result1).isNotNull().isEqualTo(comment1);
+		assertThat(result2).isNotNull().isEqualTo(comment2);
 		then(commentHelper).should(times(1)).updateContent(comment1, content1);
 		then(commentHelper).should(times(1)).updateContent(comment2, content2);
 	}

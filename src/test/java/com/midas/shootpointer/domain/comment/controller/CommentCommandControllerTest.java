@@ -19,6 +19,7 @@ import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.comment.business.command.CommentCommandService;
 import com.midas.shootpointer.domain.comment.dto.request.CommentRequestDto;
 import com.midas.shootpointer.domain.comment.dto.request.CommentUpdateRequestDto;
+import com.midas.shootpointer.domain.comment.dto.response.CommentResponseDto;
 import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.comment.mapper.CommentMapper;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -253,8 +254,17 @@ class CommentCommandControllerTest {
 			.content("수정된 댓글 내용입니다.")
 			.build();
 		
-		willDoNothing().given(commentCommandService)
-			.update(eq(commentId), eq(updateRequestDto.getContent()), any(UUID.class));
+		Comment updatedComment = createComment();
+		CommentResponseDto responseDto = CommentResponseDto.builder()
+			.commentId(commentId)
+			.content(updateRequestDto.getContent())
+			.memberName("test")
+			.createdAt(java.time.LocalDateTime.now())
+			.build();
+		
+		when(commentCommandService.update(eq(commentId), eq(updateRequestDto.getContent()), any(UUID.class)))
+			.thenReturn(updatedComment);
+		when(commentMapper.entityToDto(updatedComment)).thenReturn(responseDto);
 		
 		// when-then
 		mockMvc.perform(patch(baseUrl + "/" + commentId)
@@ -262,10 +272,13 @@ class CommentCommandControllerTest {
 				.content(objectMapper.writeValueAsString(updateRequestDto)))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.success").value(true))
+			.andExpect(jsonPath("$.data.commentId").value(commentId))
+			.andExpect(jsonPath("$.data.content").value(updateRequestDto.getContent()))
 			.andDo(print());
 		
 		verify(commentCommandService, times(1))
 			.update(eq(commentId), eq(updateRequestDto.getContent()), any(UUID.class));
+		verify(commentMapper, times(1)).entityToDto(updatedComment);
 	}
 	
 	@Test
@@ -368,28 +381,53 @@ class CommentCommandControllerTest {
 			.content("두 번째 수정")
 			.build();
 		
-		willDoNothing().given(commentCommandService)
-			.update(eq(commentId1), eq(updateRequest1.getContent()), any(UUID.class));
-		willDoNothing().given(commentCommandService)
-			.update(eq(commentId2), eq(updateRequest2.getContent()), any(UUID.class));
+		Comment updatedComment1 = createComment();
+		Comment updatedComment2 = createComment();
+		
+		CommentResponseDto responseDto1 = CommentResponseDto.builder()
+			.commentId(commentId1)
+			.content(updateRequest1.getContent())
+			.memberName("test")
+			.createdAt(java.time.LocalDateTime.now())
+			.build();
+		
+		CommentResponseDto responseDto2 = CommentResponseDto.builder()
+			.commentId(commentId2)
+			.content(updateRequest2.getContent())
+			.memberName("test")
+			.createdAt(java.time.LocalDateTime.now())
+			.build();
+		
+		when(commentCommandService.update(eq(commentId1), eq(updateRequest1.getContent()), any(UUID.class)))
+			.thenReturn(updatedComment1);
+		when(commentCommandService.update(eq(commentId2), eq(updateRequest2.getContent()), any(UUID.class)))
+			.thenReturn(updatedComment2);
+		when(commentMapper.entityToDto(updatedComment1)).thenReturn(responseDto1);
+		when(commentMapper.entityToDto(updatedComment2)).thenReturn(responseDto2);
 		
 		// when-then
 		mockMvc.perform(patch(baseUrl + "/" + commentId1)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(updateRequest1)))
 			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.data.commentId").value(commentId1))
+			.andExpect(jsonPath("$.data.content").value(updateRequest1.getContent()))
 			.andDo(print());
 		
 		mockMvc.perform(patch(baseUrl + "/" + commentId2)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(updateRequest2)))
 			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.data.commentId").value(commentId2))
+			.andExpect(jsonPath("$.data.content").value(updateRequest2.getContent()))
 			.andDo(print());
 		
 		verify(commentCommandService, times(1))
 			.update(eq(commentId1), eq(updateRequest1.getContent()), any(UUID.class));
 		verify(commentCommandService, times(1))
 			.update(eq(commentId2), eq(updateRequest2.getContent()), any(UUID.class));
+		verify(commentMapper, times(1)).entityToDto(updatedComment1);
+		verify(commentMapper, times(1)).entityToDto(updatedComment2);
 	}
 	
 	private Member createMember() {

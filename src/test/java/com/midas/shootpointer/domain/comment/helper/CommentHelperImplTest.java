@@ -221,12 +221,14 @@ class CommentHelperImplTest {
 		Comment comment = createComment();
 		String newContent = "수정된 댓글 내용";
 		
-		willDoNothing().given(commentUtil).updateContent(comment, newContent);
+		given(commentUtil.updateContent(comment, newContent)).willReturn(comment);
 		
 		// when
-		commentHelper.updateContent(comment, newContent);
+		Comment result = commentHelper.updateContent(comment, newContent);
 		
 		// then
+		assertThat(result).isNotNull();
+		assertThat(result).isEqualTo(comment);
 		then(commentUtil).should().updateContent(comment, newContent);
 	}
 	
