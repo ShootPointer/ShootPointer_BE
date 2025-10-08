@@ -45,4 +45,7 @@ public class Comment extends BaseEntity {
 	@JoinColumn(name = "post_id", nullable = false)
 	private PostEntity post;
 	
+	public void updateContent(String content) {
+		this.content = content;
+	}
 }

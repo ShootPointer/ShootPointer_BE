@@ -36,4 +36,12 @@ public class CommentManager {
 		commentHelper.validateCommentOwner(comment, memberId);
 		commentHelper.delete(comment);
 	}
+	
+	@Transactional
+	public void update(Long commentId, String content, UUID memberId) {
+		Comment comment = commentHelper.findCommentByCommentId(commentId); // 댓글이 있는지 확인하고
+		commentHelper.validateCommentOwner(comment, memberId); // 해당 댓글을 소유한 사용자인지 확인하고
+		commentHelper.validateContentNotBlank(content); // 빈 수정 내용이 아닌지 확인하고
+		commentHelper.updateContent(comment, content); // 댓글 내용 업데이트 작업
+	}
 }

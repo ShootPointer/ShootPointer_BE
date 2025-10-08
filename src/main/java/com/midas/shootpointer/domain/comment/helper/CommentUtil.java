@@ -12,4 +12,6 @@ public interface CommentUtil {
 	Comment findCommentByCommentId(Long commentId);
 	
 	void delete(Comment comment);
+	
+	void updateContent(Comment comment, String content);
 }

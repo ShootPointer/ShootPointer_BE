@@ -8,4 +8,6 @@ public interface CommentCommandService {
 	Long create(Comment comment);
 	
 	void delete(Long commentId, UUID memberId);
+	
+	void update(Long commentId, String content, UUID memberId);
 }

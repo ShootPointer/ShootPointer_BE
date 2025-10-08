@@ -41,4 +41,14 @@ public class CommentHelperImpl implements CommentHelper {
 	public void validateCommentOwner(Comment comment, UUID memberId) {
 		commentValidation.validateCommentOwner(comment, memberId);
 	}
+	
+	@Override
+	public void updateContent(Comment comment, String content) {
+		commentUtil.updateContent(comment, content);
+	}
+	
+	@Override
+	public void validateContentNotBlank(String content) {
+		commentValidation.validateContentNotBlank(content);
+	}
 }

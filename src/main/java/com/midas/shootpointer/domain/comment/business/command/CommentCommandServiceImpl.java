@@ -9,19 +9,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentCommandServiceImpl implements CommentCommandService {
 	
 	private final CommentManager commentManager;
 	
 	@Override
-	@Transactional
 	public Long create(Comment comment) {
 		return commentManager.save(comment);
 	}
 	
 	@Override
-	@Transactional
 	public void delete(Long commentId, UUID memberId) {
 		commentManager.delete(commentId, memberId);
+	}
+	
+	@Override
+	public void update(Long commentId, String content, UUID memberId) {
+		commentManager.update(commentId, content, memberId);
 	}
 }

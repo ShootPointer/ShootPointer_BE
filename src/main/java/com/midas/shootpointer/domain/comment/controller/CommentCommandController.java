@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.comment.controller;
 
 import com.midas.shootpointer.domain.comment.business.command.CommentCommandService;
 import com.midas.shootpointer.domain.comment.dto.request.CommentRequestDto;
+import com.midas.shootpointer.domain.comment.dto.request.CommentUpdateRequestDto;
 import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.comment.mapper.CommentMapper;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -9,9 +10,11 @@ import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.PostHelper;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import com.midas.shootpointer.global.security.SecurityUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,5 +48,16 @@ public class CommentCommandController {
 		commentCommandService.delete(commentId, member.getMemberId());
 		
 		return ResponseEntity.noContent().build();
+	}
+	
+	@PatchMapping("/{commentId}")
+	public ResponseEntity<ApiResponse<Void>> update(@PathVariable Long commentId,
+		@Valid @RequestBody CommentUpdateRequestDto updateRequestDto) {
+		
+		Member member = SecurityUtils.getCurrentMember();
+		commentCommandService.update(commentId, updateRequestDto.getContent(),
+			member.getMemberId());
+		
+		return ResponseEntity.ok(ApiResponse.okWithOutData());
 	}
 }

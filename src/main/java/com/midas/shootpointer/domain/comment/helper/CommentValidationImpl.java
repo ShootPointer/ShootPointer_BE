@@ -30,4 +30,11 @@ public class CommentValidationImpl implements CommentValidation {
 		}
 	}
 	
+	@Override
+	public void validateContentNotBlank(String content) {
+		if (content == null || content.trim().isEmpty()) {
+			throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
+		}
+	}
+	
 }
