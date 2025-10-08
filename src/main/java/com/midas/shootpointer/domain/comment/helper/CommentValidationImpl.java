@@ -26,7 +26,14 @@ public class CommentValidationImpl implements CommentValidation {
 	@Override
 	public void validateCommentOwner(Comment comment, UUID memberId) {
 		if (!comment.getMember().getMemberId().equals(memberId)) { // 댓글 작성자가 실제 로그인한 사용자가 아닌 경우
-			throw new CustomException(ErrorCode.FORBIDDEN_COMMENT_DELETE);
+			throw new CustomException(ErrorCode.FORBIDDEN_COMMENT_ACCESS);
+		}
+	}
+	
+	@Override
+	public void validateContentNotBlank(String content) {
+		if (content == null || content.trim().isEmpty()) {
+			throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
 		}
 	}
 	

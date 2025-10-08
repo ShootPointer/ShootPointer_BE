@@ -8,4 +8,6 @@ public interface CommentValidation {
 	void validatePostExists(Long postId);
 	
 	void validateCommentOwner(Comment comment, UUID memberId);
+	
+	void validateContentNotBlank(String content);
 }

@@ -36,4 +36,13 @@ public class CommentManager {
 		commentHelper.validateCommentOwner(comment, memberId);
 		commentHelper.delete(comment);
 	}
+	
+	@Transactional
+	public Comment update(Long commentId, String content, UUID memberId) {
+		Comment comment = commentHelper.findCommentByCommentId(commentId);
+		commentHelper.validateCommentOwner(comment, memberId);
+		commentHelper.validateContentNotBlank(content);
+		commentHelper.updateContent(comment, content);
+		return comment;
+	}
 }

@@ -3,7 +3,6 @@ package com.midas.shootpointer.domain.comment.helper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -204,15 +203,80 @@ class CommentHelperImplTest {
 		UUID otherMemberId = UUID.randomUUID();
 		Comment comment = createComment();
 		
-		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_DELETE))
+		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_ACCESS))
 			.given(commentValidation).validateCommentOwner(comment, otherMemberId);
 		
 		// when-then
 		assertThatThrownBy(() -> commentHelper.validateCommentOwner(comment, otherMemberId))
 			.isInstanceOf(CustomException.class)
-			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_DELETE);
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_ACCESS);
 		
 		then(commentValidation).should().validateCommentOwner(comment, otherMemberId);
+	}
+	
+	@Test
+	@DisplayName("댓글 내용 업데이트 성공")
+	void updateContent_Success() {
+		// given
+		Comment comment = createComment();
+		String newContent = "수정된 댓글 내용";
+		
+		given(commentUtil.updateContent(comment, newContent)).willReturn(comment);
+		
+		// when
+		Comment result = commentHelper.updateContent(comment, newContent);
+		
+		// then
+		assertThat(result).isNotNull();
+		assertThat(result).isEqualTo(comment);
+		then(commentUtil).should().updateContent(comment, newContent);
+	}
+	
+	@Test
+	@DisplayName("댓글 내용 공백 검증 성공")
+	void validateContentNotBlank_Success() {
+		// given
+		String validContent = "유효한 댓글 내용";
+		
+		willDoNothing().given(commentValidation).validateContentNotBlank(validContent);
+		
+		// when
+		commentHelper.validateContentNotBlank(validContent);
+		
+		// then
+		then(commentValidation).should().validateContentNotBlank(validContent);
+	}
+	
+	@Test
+	@DisplayName("댓글 내용 공백 검증 실패 - 빈 문자열")
+	void validateContentNotBlank_Failed_EmptyString() {
+		// given
+		String emptyContent = "   ";
+		
+		willThrow(new CustomException(ErrorCode.INVALID_INPUT_VALUE))
+			.given(commentValidation).validateContentNotBlank(emptyContent);
+		
+		// when-then
+		assertThatThrownBy(() -> commentHelper.validateContentNotBlank(emptyContent))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_INPUT_VALUE);
+		
+		then(commentValidation).should().validateContentNotBlank(emptyContent);
+	}
+	
+	@Test
+	@DisplayName("댓글 내용 공백 검증 실패 - null")
+	void validateContentNotBlank_Failed_Null() {
+		// given
+		willThrow(new CustomException(ErrorCode.INVALID_INPUT_VALUE))
+			.given(commentValidation).validateContentNotBlank(null);
+		
+		// when-then
+		assertThatThrownBy(() -> commentHelper.validateContentNotBlank(null))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_INPUT_VALUE);
+		
+		then(commentValidation).should().validateContentNotBlank(null);
 	}
 	
 	private Comment createComment() {

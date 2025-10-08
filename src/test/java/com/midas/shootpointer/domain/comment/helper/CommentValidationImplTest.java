@@ -2,7 +2,6 @@ package com.midas.shootpointer.domain.comment.helper;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 import com.midas.shootpointer.domain.comment.entity.Comment;
@@ -111,7 +110,51 @@ class CommentValidationImplTest {
 		// when-then
 		assertThatThrownBy(() -> commentValidation.validateCommentOwner(comment, InvalidOwnerId))
 			.isInstanceOf(CustomException.class)
-			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_DELETE);
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_ACCESS);
+	}
+	
+	@Test
+	@DisplayName("댓글 내용 공백 검증 성공 - 유효한 내용")
+	void validateContentNotBlank_Success() {
+		// given
+		String validContent = "유효한 댓글 내용입니다.";
+		
+		// when-then
+		assertThatNoException().isThrownBy(() ->
+			commentValidation.validateContentNotBlank(validContent));
+	}
+	
+	@Test
+	@DisplayName("댓글 내용 공백 검증 실패 - 빈 문자열")
+	void validateContentNotBlank_Failed_EmptyString() {
+		// given
+		String emptyContent = "";
+		
+		// when-then
+		assertThatThrownBy(() -> commentValidation.validateContentNotBlank(emptyContent))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_INPUT_VALUE);
+	}
+	
+	@Test
+	@DisplayName("댓글 내용 공백 검증 실패 - 공백만 있는 문자열")
+	void validateContentNotBlank_Failed_BlankString() {
+		// given
+		String blankContent = "   ";
+		
+		// when-then
+		assertThatThrownBy(() -> commentValidation.validateContentNotBlank(blankContent))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_INPUT_VALUE);
+	}
+	
+	@Test
+	@DisplayName("댓글 내용 공백 검증 실패 - null")
+	void validateContentNotBlank_Failed_Null() {
+		// when-then
+		assertThatThrownBy(() -> commentValidation.validateContentNotBlank(null))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_INPUT_VALUE);
 	}
 	
 }

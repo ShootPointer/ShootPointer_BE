@@ -183,6 +183,42 @@ class CommentUtilImplTest {
 		then(commentCommandRepository).should(times(3)).save(any(Comment.class));
 	}
 	
+	@Test
+	@DisplayName("댓글 내용 업데이트 성공")
+	void updateContent_Success() {
+		// given
+		Comment comment = createComment();
+		String newContent = "수정된 댓글 내용";
+		
+		given(commentCommandRepository.save(comment)).willReturn(comment);
+		
+		// when
+		commentUtil.updateContent(comment, newContent);
+		
+		// then
+		then(commentCommandRepository).should(times(1)).save(comment);
+	}
+	
+	@Test
+	@DisplayName("여러 댓글 내용 업데이트 성공")
+	void updateContent_Multiple_Success() {
+		// given
+		Comment comment1 = createComment();
+		Comment comment2 = createComment();
+		String content1 = "첫 번째 수정";
+		String content2 = "두 번째 수정";
+		
+		given(commentCommandRepository.save(any(Comment.class)))
+			.willAnswer(invocation -> invocation.getArgument(0));
+		
+		// when
+		commentUtil.updateContent(comment1, content1);
+		commentUtil.updateContent(comment2, content2);
+		
+		// then
+		then(commentCommandRepository).should(times(2)).save(any(Comment.class));
+	}
+	
 	private Comment createComment() {
 		Member member = Member.builder()
 			.memberId(UUID.randomUUID())

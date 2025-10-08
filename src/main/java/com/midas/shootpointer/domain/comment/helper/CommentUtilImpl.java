@@ -38,5 +38,11 @@ public class CommentUtilImpl implements CommentUtil {
 		commentCommandRepository.save(comment);
 	}
 	
+	@Override
+	public Comment updateContent(Comment comment, String content) {
+		comment.updateContent(content);
+		return commentCommandRepository.save(comment);
+	}
+	
 	
 }
