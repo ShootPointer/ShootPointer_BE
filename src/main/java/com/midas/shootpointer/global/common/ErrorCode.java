@@ -74,7 +74,7 @@ public enum ErrorCode {
     JWT_MEMBER_ID_INVALID(40407, HttpStatus.INTERNAL_SERVER_ERROR, "JWT에서 memberId(UUID) 추출 실패"),
     JWT_REQUEST_NOT_FOUND(40408, HttpStatus.NOT_FOUND, "요청 Context를 찾을 수 없음"),
     JWT_HEADER_NOT_FOUND(40409, HttpStatus.NOT_FOUND, "Authorization 헤더가 없음"),
-
+    HMAC_CREATE_FAIL(40410,HttpStatus.INTERNAL_SERVER_ERROR,"Hmac 암호화 실패"),
     INTERNAL_ERROR_OF_PYTHON_SERVER(40501,HttpStatus.BAD_REQUEST,"파이썬 서버 내부 오류입니다."),
 
     //5XX
