@@ -2,7 +2,7 @@ package com.midas.shootpointer.domain.comment.business;
 
 import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.comment.helper.CommentHelper;
-import com.midas.shootpointer.domain.post.helper.PostHelper;
+import com.midas.shootpointer.domain.post.helper.simple.PostHelper;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

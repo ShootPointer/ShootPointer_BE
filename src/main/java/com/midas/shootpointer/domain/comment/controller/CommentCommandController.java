@@ -8,7 +8,7 @@ import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.comment.mapper.CommentMapper;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
-import com.midas.shootpointer.domain.post.helper.PostHelper;
+import com.midas.shootpointer.domain.post.helper.simple.PostHelper;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import com.midas.shootpointer.global.security.SecurityUtils;
 import jakarta.validation.Valid;
