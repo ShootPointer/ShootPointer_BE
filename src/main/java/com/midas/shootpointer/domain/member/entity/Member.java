@@ -1,10 +1,12 @@
 package com.midas.shootpointer.domain.member.entity;
 
+import com.midas.shootpointer.global.config.JpaAuditingConfig;
 import com.midas.shootpointer.global.entity.BaseEntity;
 import com.midas.shootpointer.global.util.encrypt.EncryptionHelper;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
+import org.springframework.context.annotation.Import;
 
 import java.util.*;
 
@@ -13,6 +15,7 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Import(JpaAuditingConfig.class)
 @Table(name = "member")
 public class Member extends BaseEntity {
 
