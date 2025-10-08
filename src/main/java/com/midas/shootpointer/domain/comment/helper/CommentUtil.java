@@ -13,5 +13,5 @@ public interface CommentUtil {
 	
 	void delete(Comment comment);
 	
-	void updateContent(Comment comment, String content);
+	Comment updateContent(Comment comment, String content);
 }

@@ -14,7 +14,7 @@ public interface CommentHelper extends CommentValidation, CommentUtil {
 	
 	void validateCommentOwner(Comment comment, UUID memberId);
 	
-	void updateContent(Comment comment, String content);
+	Comment updateContent(Comment comment, String content);
 	
 	void validateContentNotBlank(String content);
 }

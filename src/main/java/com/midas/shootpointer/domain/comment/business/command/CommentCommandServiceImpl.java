@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.comment.business.command;
 
 import com.midas.shootpointer.domain.comment.business.CommentManager;
 import com.midas.shootpointer.domain.comment.entity.Comment;
+import com.midas.shootpointer.domain.comment.helper.CommentHelper;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 	}
 	
 	@Override
-	public void update(Long commentId, String content, UUID memberId) {
-		commentManager.update(commentId, content, memberId);
+	public Comment update(Long commentId, String content, UUID memberId) {
+		return commentManager.update(commentId, content, memberId);
 	}
 }

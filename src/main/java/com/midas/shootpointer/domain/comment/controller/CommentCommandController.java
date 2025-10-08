@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.comment.controller;
 import com.midas.shootpointer.domain.comment.business.command.CommentCommandService;
 import com.midas.shootpointer.domain.comment.dto.request.CommentRequestDto;
 import com.midas.shootpointer.domain.comment.dto.request.CommentUpdateRequestDto;
+import com.midas.shootpointer.domain.comment.dto.response.CommentResponseDto;
 import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.comment.mapper.CommentMapper;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -51,13 +52,15 @@ public class CommentCommandController {
 	}
 	
 	@PatchMapping("/{commentId}")
-	public ResponseEntity<ApiResponse<Void>> update(@PathVariable Long commentId,
+	public ResponseEntity<ApiResponse<CommentResponseDto>> update(@PathVariable Long commentId,
 		@Valid @RequestBody CommentUpdateRequestDto updateRequestDto) {
 		
 		Member member = SecurityUtils.getCurrentMember();
-		commentCommandService.update(commentId, updateRequestDto.getContent(),
+		Comment updatedComment = commentCommandService.update(commentId, updateRequestDto.getContent(),
 			member.getMemberId());
 		
-		return ResponseEntity.ok(ApiResponse.okWithOutData());
+		CommentResponseDto responseDto = commentMapper.entityToDto(updatedComment);
+		
+		return ResponseEntity.ok(ApiResponse.ok(responseDto));
 	}
 }

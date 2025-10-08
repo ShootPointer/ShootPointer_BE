@@ -9,5 +9,5 @@ public interface CommentCommandService {
 	
 	void delete(Long commentId, UUID memberId);
 	
-	void update(Long commentId, String content, UUID memberId);
+	Comment update(Long commentId, String content, UUID memberId);
 }

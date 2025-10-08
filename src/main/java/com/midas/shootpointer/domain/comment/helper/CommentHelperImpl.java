@@ -43,8 +43,8 @@ public class CommentHelperImpl implements CommentHelper {
 	}
 	
 	@Override
-	public void updateContent(Comment comment, String content) {
-		commentUtil.updateContent(comment, content);
+	public Comment updateContent(Comment comment, String content) {
+		return commentUtil.updateContent(comment, content);
 	}
 	
 	@Override
