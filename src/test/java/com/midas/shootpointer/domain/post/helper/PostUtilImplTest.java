@@ -235,8 +235,96 @@ class PostUtilImplTest {
             assertThat(expectedPostList.get(i).getPostId()).isEqualTo(findPostList.get(i).getPostId());
         }
     }
-
-
+    
+    @Test
+    @DisplayName("memberId로 게시물 ID 목록을 조회합니다._SUCCESS")
+    void findPostIdsByMemberId_SUCCESS() {
+        //given
+        Member member = memberRepository.save(makeMember());
+        HighlightEntity highlight = highlightCommandRepository.save(makeHighlight(member));
+        
+        PostEntity post1 = postCommandRepository.save(makeMockPost(member, highlight));
+        PostEntity post2 = postCommandRepository.save(makeMockPost(member, highlight));
+        PostEntity post3 = postCommandRepository.save(makeMockPost(member, highlight));
+        
+        //when
+        List<Long> postIds = postUtil.findPostIdsByMemberId(member.getMemberId());
+        
+        //then
+        assertThat(postIds).isNotEmpty();
+        assertThat(postIds).hasSize(3);
+        assertThat(postIds).contains(post1.getPostId(), post2.getPostId(), post3.getPostId());
+    }
+    
+    @Test
+    @DisplayName("memberId로 게시물 ID 목록 조회 시 게시물이 없으면 빈 리스트를 반환합니다._EMPTY")
+    void findPostIdsByMemberId_EMPTY() {
+        //given
+        UUID nonExistentMemberId = UUID.randomUUID();
+        
+        //when
+        List<Long> postIds = postUtil.findPostIdsByMemberId(nonExistentMemberId);
+        
+        //then
+        assertThat(postIds).isEmpty();
+    }
+    
+    @Test
+    @DisplayName("게시물 ID 목록으로 게시물 엔티티들을 조회합니다._SUCCESS")
+    void findPostsByPostIds_SUCCESS() {
+        //given
+        Member member = memberRepository.save(makeMember());
+        HighlightEntity highlight = highlightCommandRepository.save(makeHighlight(member));
+        
+        PostEntity post1 = postCommandRepository.save(makeMockPost(member, highlight));
+        PostEntity post2 = postCommandRepository.save(makeMockPost(member, highlight));
+        PostEntity post3 = postCommandRepository.save(makeMockPost(member, highlight));
+        
+        List<Long> postIds = List.of(post1.getPostId(), post2.getPostId(), post3.getPostId());
+        
+        //when
+        List<PostEntity> posts = postUtil.findPostsByPostIds(postIds);
+        
+        //then
+        assertThat(posts).isNotEmpty();
+        assertThat(posts).hasSize(3);
+        assertThat(posts).extracting(PostEntity::getPostId)
+            .containsExactlyInAnyOrder(post1.getPostId(), post2.getPostId(), post3.getPostId());
+    }
+    
+    @Test
+    @DisplayName("게시물 ID 목록으로 조회 시 존재하는 게시물만 반환합니다._PARTIAL")
+    void findPostsByPostIds_PARTIAL() {
+        //given
+        Member member = memberRepository.save(makeMember());
+        HighlightEntity highlight = highlightCommandRepository.save(makeHighlight(member));
+        
+        PostEntity post1 = postCommandRepository.save(makeMockPost(member, highlight));
+        PostEntity post2 = postCommandRepository.save(makeMockPost(member, highlight));
+        
+        List<Long> postIds = List.of(post1.getPostId(), post2.getPostId(), 999999L); // 999999L은 존재하지 않는 ID
+        
+        //when
+        List<PostEntity> posts = postUtil.findPostsByPostIds(postIds);
+        
+        //then
+        assertThat(posts).hasSize(2);
+        assertThat(posts).extracting(PostEntity::getPostId)
+            .containsExactlyInAnyOrder(post1.getPostId(), post2.getPostId());
+    }
+    
+    @Test
+    @DisplayName("빈 ID 목록으로 조회 시 빈 리스트를 반환합니다._EMPTY")
+    void findPostsByPostIds_EMPTY() {
+        //given
+        List<Long> emptyPostIds = List.of();
+        
+        //when
+        List<PostEntity> posts = postUtil.findPostsByPostIds(emptyPostIds);
+        
+        //then
+        assertThat(posts).isEmpty();
+    }
 
     private PostEntity makeMockPost(Member member,HighlightEntity highlight){
         return PostEntity.builder()

@@ -1,11 +1,15 @@
 package com.midas.shootpointer.domain.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.business.query.PostQueryService;
 import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.dto.response.SearchAutoCompleteResponse;
+import com.midas.shootpointer.global.security.CustomUserDetails;
+import java.util.Collections;
+import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +18,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -327,8 +335,73 @@ class PostQueryControllerTest {
 
         verify(postQueryService,times(1)).suggest(search);
     }
-
-
+    
+    @Test
+    @DisplayName("마이페이지 게시물 조회 GET 요청 성공 시 PostListResponse를 반환합니다._SUCCESS")
+    void getMyPosts() throws Exception {
+        //given
+        UUID testMemberId = UUID.randomUUID();
+        setAuthenticatedMember(testMemberId);
+        
+        List<PostResponse> postResponses = new ArrayList<>();
+        postResponses.add(makePostResponse(LocalDateTime.now(), 1L, 50L, "title1", "content1"));
+        postResponses.add(makePostResponse(LocalDateTime.now(), 2L, 30L, "title2", "content2"));
+        postResponses.add(makePostResponse(LocalDateTime.now(), 3L, 20L, "title3", "content3"));
+        
+        PostListResponse expectedResponse = PostListResponse.of(3L, postResponses);
+        
+        when(postQueryService.getMyPosts(testMemberId)).thenReturn(expectedResponse);
+        
+        //when - then
+        mockMvc.perform(get(baseUrl + "/mypage"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.status").value("OK"))
+            .andExpect(jsonPath("$.success").value(true))
+            
+            .andExpect(jsonPath("$.data.postList[0].postId").value(1L))
+            .andExpect(jsonPath("$.data.postList[0].likeCnt").value(50L))
+            .andExpect(jsonPath("$.data.postList[0].title").value("title1"))
+            .andExpect(jsonPath("$.data.postList[0].content").value("content1"))
+            
+            .andExpect(jsonPath("$.data.postList[1].postId").value(2L))
+            .andExpect(jsonPath("$.data.postList[1].likeCnt").value(30L))
+            .andExpect(jsonPath("$.data.postList[1].title").value("title2"))
+            .andExpect(jsonPath("$.data.postList[1].content").value("content2"))
+            
+            .andExpect(jsonPath("$.data.postList[2].postId").value(3L))
+            .andExpect(jsonPath("$.data.postList[2].likeCnt").value(20L))
+            .andExpect(jsonPath("$.data.postList[2].title").value("title3"))
+            .andExpect(jsonPath("$.data.postList[2].content").value("content3"))
+            
+            .andExpect(jsonPath("$.data.lastPostId").value(3L))
+            .andDo(print());
+        
+        verify(postQueryService, times(1)).getMyPosts(testMemberId);
+    }
+    
+    @Test
+    @DisplayName("마이페이지 게시물 조회 시 게시물이 없으면 빈 리스트를 반환합니다._EMPTY")
+    void getMyPosts_EMPTY() throws Exception {
+        //given
+        UUID testMemberId = UUID.randomUUID();
+        setAuthenticatedMember(testMemberId);
+        PostListResponse expectedResponse = PostListResponse.of(null, List.of());
+        
+        //when
+        when(postQueryService.getMyPosts(testMemberId)).thenReturn(expectedResponse);
+        
+        //then
+        mockMvc.perform(get(baseUrl + "/mypage"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.status").value("OK"))
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.data.postList").isEmpty())
+            .andExpect(jsonPath("$.data.lastPostId").doesNotExist())
+            .andDo(print());
+        
+        verify(postQueryService, times(1)).getMyPosts(testMemberId);
+    }
+    
     @NotNull
     private static String getCreatedDateFormat(PostResponse response) {
         return response.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -352,6 +425,22 @@ class PostQueryControllerTest {
                 .build();
 
     }
-
+    
+    private void setAuthenticatedMember(UUID memberId) {
+        Member testMember = Member.builder()
+            .memberId(memberId)
+            .email("test@naver.com")
+            .build();
+        
+        CustomUserDetails userDetails = new CustomUserDetails(testMember);
+        
+        Authentication auth = new UsernamePasswordAuthenticationToken(
+            userDetails,
+            null,
+            userDetails.getAuthorities()
+        );
+        
+        SecurityContextHolder.getContext().setAuthentication(auth);
+    }
 
 }
