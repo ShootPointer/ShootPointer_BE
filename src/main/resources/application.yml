@@ -119,7 +119,7 @@ kakao:
     uri: https://kapi.kakao.com
 
 opencv:
-  url: http://localhost:8888
+  url: http://tkv00.ddns.net:8000
   api:
     post:
       send-image: /api/send-img

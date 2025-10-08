@@ -1,11 +1,13 @@
 package com.midas.shootpointer.domain.highlight.helper;
 
+import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
@@ -26,6 +28,10 @@ class HighlightValidatorImplTest {
     @InjectMocks
     @Spy
     private HighlightValidatorImpl highlightValidator;
+
+
+    @Mock
+    private HighlightQueryRepository repository;
 
 
     @Test
@@ -60,6 +66,7 @@ class HighlightValidatorImplTest {
         UUID highlightId=UUID.randomUUID();
 
         //when
+        when(repository.existsByHighlightId(highlightId)).thenReturn(false);
         CustomException exception=catchThrowableOfType(()->
                 highlightValidator.isExistHighlightId(highlightId),
                 CustomException.class
@@ -79,6 +86,7 @@ class HighlightValidatorImplTest {
         UUID highlightId=UUID.randomUUID();
 
         //when
+        when(repository.isMembersHighlight(memberId,highlightId)).thenReturn(false);
         CustomException exception=catchThrowableOfType(()->
                         highlightValidator.isValidMembersHighlight(highlightId,memberId),
                 CustomException.class
