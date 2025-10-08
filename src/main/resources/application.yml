@@ -1,5 +1,7 @@
+# 실제 product 환경
 server:
   port: ${SERVER_PORT:9000}
+
 
 encrypt:
   key: dafd6bef1f363a1ba1a32623aa8f0b8741b0736e11b898febaceb58b7bcedcf8
@@ -28,12 +30,11 @@ spring:
       max-file-size: 5000MB
       max-request-size: 5000MB
 
-
   # 데이터소스 설정
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/shootpointer}
-    username: ${SPRING_DATASOURCE_USERNAME:}
-    password: ${SPRING_DATASOURCE_PASSWORD:}
+    username: ${SPRING_DATASOURCE_USERNAME:myuser}
+    password: ${SPRING_DATASOURCE_PASSWORD:rlaehdus00}
     driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
 
     hikari:
@@ -60,15 +61,15 @@ spring:
 
     # Redis 설정
     redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
       timeout: 2000ms
       jedis:
         pool:
           max-active: 8
           max-idle: 8
           min-idle: 0
-  # kakao
+    # kakao
   security:
     oauth2:
       client:
@@ -118,10 +119,10 @@ kakao:
     uri: https://kapi.kakao.com
 
 opencv:
-  url: http://localhost:8888
+  url: http://tkv00.ddns.net:8000
   api:
     post:
-      send-image: /api/send-img
+      send-image: /player/ocr
     get:
       fetch-video: /api/fetch-video
     proxy:

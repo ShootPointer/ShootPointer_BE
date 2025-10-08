@@ -3,6 +3,9 @@ package com.midas.shootpointer.domain.post.helper;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.helper.simple.PostHelperImpl;
+import com.midas.shootpointer.domain.post.helper.simple.PostUtil;
+import com.midas.shootpointer.domain.post.helper.simple.PostValidation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -174,5 +177,44 @@ class PostHelperImplTest {
 
         //then
         verify(postUtil,times(1)).getPostEntitiesByPostTitleOrPostContent(search,lastPostId,size);
+    }
+
+    @Test
+    @DisplayName("게시판 요청 size의 범위가 유효한 지 검사합니다. - postValidation.isValidSize(size) 메서드가 실행되는지 확인합니다.")
+    void isValidSize(){
+        //given
+        int size=10;
+
+        //when
+        postHelper.isValidSize(size);
+
+        //then
+        verify(postValidation,times(1)).isValidSize(size);
+    }
+
+    @Test
+    @DisplayName("게시판 요청 size의 범위가 유효한 지 검사합니다. - postValidation.isValidSize(size) 메서드가 실행되는지 확인합니다.")
+    void isValidInput(){
+        //given
+        String input="input";
+
+        //when
+        postHelper.isValidInput(input);
+
+        //then
+        verify(postValidation,times(1)).isValidInput(input);
+    }
+
+    @Test
+    @DisplayName("게시판 요청 size의 범위가 유효한 지 검사합니다. - postValidation.isValidSize(size) 메서드가 실행되는지 확인합니다.")
+    void isValidAndGetPostOrderType(){
+        //given
+        String type="type";
+
+        //when
+        postHelper.isValidAndGetPostOrderType(type);
+
+        //then
+        verify(postUtil,times(1)).isValidAndGetPostOrderType(type);
     }
 }

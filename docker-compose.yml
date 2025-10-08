@@ -1,4 +1,4 @@
-version: '3.8'
+
 services:
   # PostgreSQL
   postgres:
@@ -48,7 +48,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@example.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - "3306:80"  
+      - "3305:80"
     networks:
       - spring-network
     restart: always
@@ -88,8 +88,11 @@ services:
         condition: service_healthy
       mongo:
         condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+
       # 서버 포트
       SERVER_PORT: 9000
       
@@ -100,7 +103,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       
       # JPA 설정
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
       SPRING_JPA_SHOW_SQL: true
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
@@ -126,6 +129,8 @@ services:
       # 로깅 레벨 조정
       LOGGING_LEVEL_ORG_HIBERNATE_SQL: DEBUG
       LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: TRACE
+
+      SPRING_ELASTICSEARCH_URIS: http://elasticsearch:9200
     ports:
       - "9000:9000"
     networks:
@@ -138,6 +143,48 @@ services:
       retries: 3
       start_period: 60s
 
+  ## ElasticSearch
+  elasticsearch:
+    build:
+      context: .
+      dockerfile: Dockerfile.elesticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - logger.level=debug
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+      - ./es-logs:/usr/share/elasticsearch/logs
+    networks:
+      - spring-network
+    restart: always
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200/_cluster/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  kibana:
+      image: docker.elastic.co/kibana/kibana:8.6.0
+      container_name: kibana
+      environment:
+        - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      ports:
+        - "5601:5601"
+      depends_on:
+        - elasticsearch
+      networks:
+        - spring-network
+      restart: always
+
+
 networks:
   spring-network:
     driver: bridge
@@ -147,3 +194,4 @@ volumes:
   postgres-data:
   mongo-data:
   mongo-config:
+  esdata:

@@ -28,7 +28,7 @@ public class MakeRandomWord {
 
     public String generateTitle() {
         // 2~5개의 랜덤 단어로 제목 생성
-        int wordCount = 10 + random.nextInt(4);
+        int wordCount = 1 + random.nextInt(2);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < wordCount; i++) {
             sb.append(TITLES[random.nextInt(TITLES.length)]);

@@ -1,27 +1,24 @@
 package com.midas.shootpointer.domain.post.helper;
 
-import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.helper.simple.PostValidationImpl;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
-import org.assertj.core.api.Assertions;
-import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowableOfType;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PostValidationImplTest {
@@ -100,43 +97,49 @@ class PostValidationImplTest {
         assertThat(customException.getErrorCode()).isEqualTo(ErrorCode.IS_NOT_MEMBERS_POST);
     }
 
-    /**
-     * mockMember
-     * @return Member
-     */
-    private Member mockMember() {
-        return Member.builder()
-                .memberId(UUID.randomUUID())
-                .email("test@naver.com")
-                .username("test")
-                .build();
+    @Test
+    @DisplayName("게시판 조회 시 유효하지 않은 (size가 음수이거나 500초과) 값 입력 시 IS_NOT_VALID_SIZE 예외가 발생합니다.")
+    void isValidSize(){
+        //given
+        int minusSize=-12;
+        int overSize=1000;
+
+        //when
+        CustomException exception1=catchThrowableOfType(()->
+                        postValidation.isValidSize(minusSize),
+                        CustomException.class
+        );
+        CustomException exception2=catchThrowableOfType(()->
+                        postValidation.isValidSize(overSize),
+                CustomException.class
+        );
+
+        //then
+        assertThat(exception1).isNotNull();
+        assertThat(exception2).isNotNull();
+
+        assertThat(exception1.getErrorCode()).isEqualTo(ErrorCode.IS_NOT_VALID_SIZE);
+        assertThat(exception2.getErrorCode()).isEqualTo(ErrorCode.IS_NOT_VALID_SIZE);
     }
 
-    /**
-     * @param member 유저 엔티티
-     * @param highlight 하이라이트 엔티티
-     * @return PostEntity
-     */
-    private PostEntity mockPost(Member member, HighlightEntity highlight){
-        PostEntity postEntity= PostEntity.builder()
-                .highlight(highlight)
-                .member(member)
-                .hashTag(HashTag.TWO_POINT)
-                .title("title")
-                .content("content")
-                .build();
-        postEntity.delete();
-        return postEntity;
+    @DisplayName("입력값이 공백이면 false를 반환합니다.")
+    @Test
+    void isValidInput(){
+        //given
+        String input1="";
+        String input2=" ";
+        String input3=" input";
+
+        //when
+        boolean bool1=postValidation.isValidInput(input1);
+        boolean bool2=postValidation.isValidInput(input2);
+        boolean bool3=postValidation.isValidInput(input3);
+
+        //then
+        assertThat(bool1).isFalse();
+        assertThat(bool2).isFalse();
+        assertThat(bool3).isTrue();
+
     }
 
-    /**
-     *
-     * @return 하이라이트 엔티티
-     */
-    private HighlightEntity mockHighlight(){
-        return HighlightEntity.builder()
-                .highlightKey(UUID.randomUUID())
-                .highlightURL("test")
-                .build();
-    }
 }

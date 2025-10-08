@@ -20,11 +20,11 @@ public enum ErrorCode {
      * backnumber :                50
      * post:                       60
      * like:                       70
-     * backNumber:                 50
-     * post:                       60
+     * comment:                    80
 
      * <p>
      * - Package
+     * entity                      0
      * controller:                 1
      * service:                    2
      * repository:                 3
@@ -93,9 +93,11 @@ public enum ErrorCode {
     INVALID_DELETE_LIKE(70602,HttpStatus.BAD_REQUEST,"잘못된 좋아요 요청입니다."),
     NOT_FOUND_LIKE(70603,HttpStatus.NOT_FOUND,"좋아요를 찾을 수 없습니다."),
 
+    //200(highlight - entity) part
+    IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID(20001,HttpStatus.FORBIDDEN,"유저의 하이라이트 영상이 아닙니다."),
+    EXISTED_SELECTED(20002,HttpStatus.BAD_REQUEST,"이미 선택된 하이라이트 영상입니다."),
 
-    //206(highlight - helper) part
-    IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID(20601,HttpStatus.FORBIDDEN,"유저의 하이라이트 영상이 아닙니다."),
+    //206(highlight - helper) part,
     IS_NOT_CORRECT_HASH_TAG(20602,HttpStatus.BAD_REQUEST,"잘못된 카테고리 입력입니다."),
     NOT_EXIST_HIGHLIGHT(20603,HttpStatus.FORBIDDEN,"존재하지 않는 하이라이트 영상입니다."),
 
@@ -103,12 +105,15 @@ public enum ErrorCode {
     DELETED_POST(60601,HttpStatus.FORBIDDEN,"삭제된 게시물입니다."),
     IS_NOT_MEMBERS_POST(60602,HttpStatus.FORBIDDEN,"유저의 게시물이 아닙니다."),
     NOT_EXIST_ORDER_TYPE(60603,HttpStatus.BAD_REQUEST,"잘못된 조회 방식입니다."),
+    IS_NOT_VALID_SIZE(60604, HttpStatus.BAD_REQUEST,"유효하지 않은 요청입니다."),
 
     //607(post-business) part
-    IS_NOT_EXIST_POST(60701,HttpStatus.FORBIDDEN,"존재하지 않는 게시물입니다.")
-    ;
-
-
+    IS_NOT_EXIST_POST(60701,HttpStatus.FORBIDDEN,"존재하지 않는 게시물입니다."),
+    
+    // 806(comment - helper) part
+    IS_NOT_EXIST_COMMENT(80601, HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다."),
+    FORBIDDEN_COMMENT_ACCESS(80602, HttpStatus.FORBIDDEN, "댓글 접근 권한이 없습니다."),
+    INVALID_INPUT_VALUE(80603, HttpStatus.BAD_REQUEST, "올바른 입력값이 아닙니다.");
 
     private final Integer code;
     private final HttpStatus httpStatus;
