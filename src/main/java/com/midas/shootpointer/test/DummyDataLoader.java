@@ -8,6 +8,7 @@ import com.midas.shootpointer.domain.post.repository.PostElasticSearchRepository
 import com.midas.shootpointer.domain.post.mapper.PostElasticSearchMapper;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
+import com.midas.shootpointer.global.util.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -29,9 +30,9 @@ public class DummyDataLoader implements CommandLineRunner {
     private final MakeRandomWord makeRandomWord;
     private final MemberCommandRepository memberRepository;
     private final HighlightCommandRepository highlightCommandRepository;
-    private final PostElasticSearchRepository postElasticSearchRepository;
-    private final PostElasticSearchMapper mapper;
-
+//    private final PostElasticSearchRepository postElasticSearchRepository;
+//    private final PostElasticSearchMapper mapper;
+    private final JwtUtil jwtUtil;
     private final int batchSize=1_000;
     private final int insertSize=1_000;
     private final PostQueryRepository postQueryRepository;
@@ -94,6 +95,8 @@ public class DummyDataLoader implements CommandLineRunner {
         if (!batchArgs.isEmpty()){
             jdbcTemplate.batchUpdate(sql,batchArgs);
         }
+        
+        System.out.println("Access Token : " + jwtUtil.createToken(memberId, member.getEmail(), member.getUsername()));
 
         /**
          * Elastic Search 배치 처리
