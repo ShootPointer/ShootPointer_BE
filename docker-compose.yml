@@ -154,13 +154,12 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - logger.level=debug
-      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g -Xlog:disable
     ports:
       - "9200:9200"
       - "9300:9300"
     volumes:
       - ./esdata:/usr/share/elasticsearch/data
-      - ./es-logs:/usr/share/elasticsearch/logs
     networks:
       - spring-network
     restart: always
