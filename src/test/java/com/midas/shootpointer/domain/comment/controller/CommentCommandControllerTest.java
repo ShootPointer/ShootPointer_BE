@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.comment.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -200,7 +199,7 @@ class CommentCommandControllerTest {
 		// given
 		Long commentId = 1L;
 		
-		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_DELETE))
+		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_ACCESS))
 			.given(commentCommandService).delete(eq(commentId), any(UUID.class));
 		
 		// when-then

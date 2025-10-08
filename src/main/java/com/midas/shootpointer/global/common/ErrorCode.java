@@ -108,7 +108,7 @@ public enum ErrorCode {
     
     // 806(comment - helper) part
     IS_NOT_EXIST_COMMENT(80601, HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다."),
-    FORBIDDEN_COMMENT_DELETE(80602, HttpStatus.FORBIDDEN, "댓글 삭제 권한이 없습니다.");
+    FORBIDDEN_COMMENT_ACCESS(80602, HttpStatus.FORBIDDEN, "댓글 접근 권한이 없습니다.");
 
 
     private final Integer code;

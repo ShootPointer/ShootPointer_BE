@@ -1,10 +1,8 @@
 package com.midas.shootpointer.domain.comment.business;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -22,7 +20,6 @@ import com.midas.shootpointer.global.exception.CustomException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -239,13 +236,13 @@ class CommentManagerTest {
 		Long commentId = comment.getCommentId();
 		
 		given(commentHelper.findCommentByCommentId(commentId)).willReturn(comment);
-		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_DELETE))
+		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_ACCESS))
 			.given(commentHelper).validateCommentOwner(comment, otherMemberId);
 		
 		// when-then
 		assertThatThrownBy(() -> commentManager.delete(commentId, otherMemberId))
 			.isInstanceOf(CustomException.class)
-			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_DELETE);
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_ACCESS);
 		
 		then(commentHelper).should(times(1)).findCommentByCommentId(commentId);
 		then(commentHelper).should(times(1)).validateCommentOwner(comment, otherMemberId);
@@ -279,13 +276,13 @@ class CommentManagerTest {
 		Long commentId = comment.getCommentId();
 		
 		given(commentHelper.findCommentByCommentId(commentId)).willReturn(comment);
-		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_DELETE))
+		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_ACCESS))
 			.given(commentHelper).validateCommentOwner(comment, null);
 		
 		// when-then
 		assertThatThrownBy(() -> commentManager.delete(commentId, null))
 			.isInstanceOf(CustomException.class)
-			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_DELETE);
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_ACCESS);
 		
 		then(commentHelper).should(times(1)).findCommentByCommentId(commentId);
 		then(commentHelper).should(times(1)).validateCommentOwner(comment, null);

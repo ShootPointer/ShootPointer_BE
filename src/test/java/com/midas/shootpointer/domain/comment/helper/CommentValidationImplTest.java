@@ -2,7 +2,6 @@ package com.midas.shootpointer.domain.comment.helper;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 import com.midas.shootpointer.domain.comment.entity.Comment;
@@ -111,7 +110,7 @@ class CommentValidationImplTest {
 		// when-then
 		assertThatThrownBy(() -> commentValidation.validateCommentOwner(comment, InvalidOwnerId))
 			.isInstanceOf(CustomException.class)
-			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_DELETE);
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_ACCESS);
 	}
 	
 }
