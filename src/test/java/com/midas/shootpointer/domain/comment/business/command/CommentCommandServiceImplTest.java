@@ -88,6 +88,46 @@ class CommentCommandServiceImplTest {
 		then(commentManager).should(times(1)).delete(commentId3, memberId);
 	}
 	
+	@Test
+	@DisplayName("댓글 수정 성공")
+	void update_Success() {
+		// given
+		UUID memberId = UUID.randomUUID();
+		Long commentId = 1L;
+		String content = "수정된 댓글 내용입니다.";
+		
+		willDoNothing().given(commentManager).update(commentId, content, memberId);
+		
+		// when
+		commentCommandService.update(commentId, content, memberId);
+		
+		// then
+		then(commentManager).should(times(1)).update(commentId, content, memberId);
+	}
+	
+	@Test
+	@DisplayName("여러 댓글 수정 성공")
+	void update_Multiple_Success() {
+		// given
+		UUID memberId = UUID.randomUUID();
+		Long commentId1 = 1L;
+		Long commentId2 = 2L;
+		String content1 = "첫번째 댓글 수정";
+		String content2 = "두번째 댓글 수정";
+		
+		willDoNothing().given(commentManager).update(commentId1, content1, memberId);
+		willDoNothing().given(commentManager).update(commentId2, content2, memberId);
+		
+		// when
+		commentCommandService.update(commentId1, content1, memberId);
+		commentCommandService.update(commentId2, content2, memberId);
+		
+		// then
+		then(commentManager).should(times(1)).update(commentId1, content1, memberId);
+		then(commentManager).should(times(1)).update(commentId2, content2, memberId);
+	}
+	
+	
 	private Comment createComment() {
 		Member member = Member.builder()
 			.memberId(UUID.randomUUID())

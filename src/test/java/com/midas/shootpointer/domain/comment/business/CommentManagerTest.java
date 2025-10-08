@@ -166,26 +166,6 @@ class CommentManagerTest {
 		then(commentHelper).should(never()).findAllByPostIdOrderByCreatedAtDesc(anyLong());
 	}
 	
-	
-	
-	private Comment createComment() {
-		Member member = Member.builder()
-			.memberId(java.util.UUID.randomUUID())
-			.email("test@naver.com")
-			.username("test")
-			.build();
-		
-		PostEntity post = PostEntity.builder()
-			.postId(1L)
-			.build();
-		
-		return Comment.builder()
-			.content("테스트 댓글입니다.")
-			.member(member)
-			.post(post)
-			.build();
-	}
-	
 	@Test
 	@DisplayName("댓글 삭제 성공 - 댓글 작성자가 삭제")
 	void delete_Success() {
@@ -323,6 +303,181 @@ class CommentManagerTest {
 		then(commentHelper).should(times(1)).delete(comment1);
 		then(commentHelper).should(times(1)).delete(comment2);
 		then(commentHelper).should(times(1)).delete(comment3);
+	}
+	
+	@Test
+	@DisplayName("댓글 수정 성공")
+	void update_Success() {
+		// given
+		Long commentId = 1L;
+		String newContent = "수정된 댓글입니다.";
+		UUID memberId = UUID.randomUUID();
+		Comment comment = createCommentWithOwner(commentId, memberId);
+		
+		given(commentHelper.findCommentByCommentId(commentId)).willReturn(comment);
+		willDoNothing().given(commentHelper).validateCommentOwner(comment, memberId);
+		willDoNothing().given(commentHelper).validateContentNotBlank(newContent);
+		willDoNothing().given(commentHelper).updateContent(comment, newContent);
+		
+		// when
+		commentManager.update(commentId, newContent, memberId);
+		
+		// then
+		then(commentHelper).should(times(1)).findCommentByCommentId(commentId);
+		then(commentHelper).should(times(1)).validateCommentOwner(comment, memberId);
+		then(commentHelper).should(times(1)).validateContentNotBlank(newContent);
+		then(commentHelper).should(times(1)).updateContent(comment, newContent);
+	}
+	
+	@Test
+	@DisplayName("댓글 수정 실패 - 존재하지 않는 댓글")
+	void update_Failed_CommentNotFound() {
+		// given
+		Long commentId = 999L;
+		String newContent = "수정된 내용";
+		UUID memberId = UUID.randomUUID();
+		
+		given(commentHelper.findCommentByCommentId(commentId))
+			.willThrow(new CustomException(ErrorCode.IS_NOT_EXIST_COMMENT));
+		
+		// when-then
+		assertThatThrownBy(() -> commentManager.update(commentId, newContent, memberId))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.IS_NOT_EXIST_COMMENT);
+		
+		then(commentHelper).should(times(1)).findCommentByCommentId(commentId);
+		then(commentHelper).should(never()).validateCommentOwner(any(), any());
+		then(commentHelper).should(never()).validateContentNotBlank(any());
+		then(commentHelper).should(never()).updateContent(any(), any());
+	}
+	
+	@Test
+	@DisplayName("댓글 수정 실패 - 댓글 작성자가 아닌 사용자")
+	void update_Failed_NotCommentOwner() {
+		// given
+		Long commentId = 1L;
+		String newContent = "수정된 내용";
+		UUID ownerId = UUID.randomUUID();
+		UUID otherMemberId = UUID.randomUUID();
+		
+		Comment comment = createCommentWithOwner(commentId, ownerId);
+		
+		given(commentHelper.findCommentByCommentId(commentId)).willReturn(comment);
+		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_ACCESS))
+			.given(commentHelper).validateCommentOwner(comment, otherMemberId);
+		
+		// when-then
+		assertThatThrownBy(() -> commentManager.update(commentId, newContent, otherMemberId))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN_COMMENT_ACCESS);
+		
+		then(commentHelper).should(times(1)).findCommentByCommentId(commentId);
+		then(commentHelper).should(times(1)).validateCommentOwner(comment, otherMemberId);
+		then(commentHelper).should(never()).validateContentNotBlank(any());
+		then(commentHelper).should(never()).updateContent(any(), any());
+	}
+	
+	@Test
+	@DisplayName("댓글 수정 실패 - 빈 내용")
+	void update_Failed_BlankContent() {
+		// given
+		Long commentId = 1L;
+		String blankContent = "   ";
+		UUID memberId = UUID.randomUUID();
+		
+		Comment comment = createCommentWithOwner(commentId, memberId);
+		
+		given(commentHelper.findCommentByCommentId(commentId)).willReturn(comment);
+		willDoNothing().given(commentHelper).validateCommentOwner(comment, memberId);
+		willThrow(new CustomException(ErrorCode.INVALID_INPUT_VALUE))
+			.given(commentHelper).validateContentNotBlank(blankContent);
+		
+		// when-then
+		assertThatThrownBy(() -> commentManager.update(commentId, blankContent, memberId))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_INPUT_VALUE);
+		
+		then(commentHelper).should(times(1)).findCommentByCommentId(commentId);
+		then(commentHelper).should(times(1)).validateCommentOwner(comment, memberId);
+		then(commentHelper).should(times(1)).validateContentNotBlank(blankContent);
+		then(commentHelper).should(never()).updateContent(any(), any());
+	}
+	
+	@Test
+	@DisplayName("댓글 수정 실패 - null 내용")
+	void update_Failed_NullContent() {
+		// given
+		Long commentId = 1L;
+		UUID memberId = UUID.randomUUID();
+		
+		Comment comment = createCommentWithOwner(commentId, memberId);
+		
+		given(commentHelper.findCommentByCommentId(commentId)).willReturn(comment);
+		willDoNothing().given(commentHelper).validateCommentOwner(comment, memberId);
+		willThrow(new CustomException(ErrorCode.INVALID_INPUT_VALUE))
+			.given(commentHelper).validateContentNotBlank(null);
+		
+		// when-then
+		assertThatThrownBy(() -> commentManager.update(commentId, null, memberId))
+			.isInstanceOf(CustomException.class)
+			.hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_INPUT_VALUE);
+		
+		then(commentHelper).should(times(1)).findCommentByCommentId(commentId);
+		then(commentHelper).should(times(1)).validateCommentOwner(comment, memberId);
+		then(commentHelper).should(times(1)).validateContentNotBlank(null);
+		then(commentHelper).should(never()).updateContent(any(), any());
+	}
+	
+	@Test
+	@DisplayName("여러 댓글 순차적 수정 성공")
+	void update_Multiple_Success() {
+		// given
+		UUID memberId = UUID.randomUUID();
+		Long commentId1 = 1L;
+		Long commentId2 = 2L;
+		String content1 = "첫 번째 수정 내용";
+		String content2 = "두 번째 수정 내용";
+		
+		Comment comment1 = createCommentWithOwner(commentId1, memberId);
+		Comment comment2 = createCommentWithOwner(commentId2, memberId);
+		
+		given(commentHelper.findCommentByCommentId(commentId1)).willReturn(comment1);
+		given(commentHelper.findCommentByCommentId(commentId2)).willReturn(comment2);
+		
+		willDoNothing().given(commentHelper).validateCommentOwner(comment1, memberId);
+		willDoNothing().given(commentHelper).validateCommentOwner(comment2, memberId);
+		
+		willDoNothing().given(commentHelper).validateContentNotBlank(content1);
+		willDoNothing().given(commentHelper).validateContentNotBlank(content2);
+		
+		willDoNothing().given(commentHelper).updateContent(comment1, content1);
+		willDoNothing().given(commentHelper).updateContent(comment2, content2);
+		
+		// when
+		commentManager.update(commentId1, content1, memberId);
+		commentManager.update(commentId2, content2, memberId);
+		
+		// then
+		then(commentHelper).should(times(1)).updateContent(comment1, content1);
+		then(commentHelper).should(times(1)).updateContent(comment2, content2);
+	}
+	
+	private Comment createComment() {
+		Member member = Member.builder()
+			.memberId(java.util.UUID.randomUUID())
+			.email("test@naver.com")
+			.username("test")
+			.build();
+		
+		PostEntity post = PostEntity.builder()
+			.postId(1L)
+			.build();
+		
+		return Comment.builder()
+			.content("테스트 댓글입니다.")
+			.member(member)
+			.post(post)
+			.build();
 	}
 	
 	private Comment createCommentWithId(Long commentId, String content, PostEntity post) {

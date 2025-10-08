@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.comment.business.command.CommentCommandService;
 import com.midas.shootpointer.domain.comment.dto.request.CommentRequestDto;
+import com.midas.shootpointer.domain.comment.dto.request.CommentUpdateRequestDto;
 import com.midas.shootpointer.domain.comment.entity.Comment;
 import com.midas.shootpointer.domain.comment.mapper.CommentMapper;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -239,6 +241,155 @@ class CommentCommandControllerTest {
 		verify(commentCommandService, times(1)).delete(eq(commentId1), any(UUID.class));
 		verify(commentCommandService, times(1)).delete(eq(commentId2), any(UUID.class));
 		verify(commentCommandService, times(1)).delete(eq(commentId3), any(UUID.class));
+	}
+	
+	@Test
+	@DisplayName("댓글 수정 성공")
+	@WithMockCustomMember
+	void update_Success() throws Exception {
+		// given
+		Long commentId = 1L;
+		CommentUpdateRequestDto updateRequestDto = CommentUpdateRequestDto.builder()
+			.content("수정된 댓글 내용입니다.")
+			.build();
+		
+		willDoNothing().given(commentCommandService)
+			.update(eq(commentId), eq(updateRequestDto.getContent()), any(UUID.class));
+		
+		// when-then
+		mockMvc.perform(patch(baseUrl + "/" + commentId)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(updateRequestDto)))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.success").value(true))
+			.andDo(print());
+		
+		verify(commentCommandService, times(1))
+			.update(eq(commentId), eq(updateRequestDto.getContent()), any(UUID.class));
+	}
+	
+	@Test
+	@DisplayName("댓글 수정 실패 - 존재하지 않는 댓글")
+	@WithMockCustomMember
+	void update_Failed_CommentNotFound() throws Exception {
+		// given
+		Long commentId = 999L;
+		CommentUpdateRequestDto updateRequestDto = CommentUpdateRequestDto.builder()
+			.content("수정된 내용")
+			.build();
+		
+		willThrow(new CustomException(ErrorCode.IS_NOT_EXIST_COMMENT))
+			.given(commentCommandService)
+			.update(eq(commentId), eq(updateRequestDto.getContent()), any(UUID.class));
+		
+		// when-then
+		mockMvc.perform(patch(baseUrl + "/" + commentId)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(updateRequestDto)))
+			.andExpect(status().is2xxSuccessful())
+			.andDo(print());
+		
+		verify(commentCommandService, times(1))
+			.update(eq(commentId), eq(updateRequestDto.getContent()), any(UUID.class));
+	}
+	
+	@Test
+	@DisplayName("댓글 수정 실패 - 권한 없음 (작성자가 아님)")
+	@WithMockCustomMember
+	void update_Failed_Forbidden() throws Exception {
+		// given
+		Long commentId = 1L;
+		CommentUpdateRequestDto updateRequestDto = CommentUpdateRequestDto.builder()
+			.content("수정된 내용")
+			.build();
+		
+		willThrow(new CustomException(ErrorCode.FORBIDDEN_COMMENT_ACCESS))
+			.given(commentCommandService)
+			.update(eq(commentId), eq(updateRequestDto.getContent()), any(UUID.class));
+		
+		// when-then
+		mockMvc.perform(patch(baseUrl + "/" + commentId)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(updateRequestDto)))
+			.andExpect(status().is2xxSuccessful())
+			.andDo(print());
+		
+		verify(commentCommandService, times(1))
+			.update(eq(commentId), eq(updateRequestDto.getContent()), any(UUID.class));
+	}
+	
+	@Test
+	@DisplayName("댓글 수정 실패 - 빈 내용 (@NotBlank 검증)")
+	@WithMockCustomMember
+	void update_Failed_BlankContent() throws Exception {
+		// given
+		Long commentId = 1L;
+		CommentUpdateRequestDto updateRequestDto = CommentUpdateRequestDto.builder()
+			.content("   ")
+			.build();
+		
+		// when-then
+		mockMvc.perform(patch(baseUrl + "/" + commentId)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(updateRequestDto)))
+			.andExpect(status().is2xxSuccessful())
+			.andDo(print());
+	}
+	
+	@Test
+	@DisplayName("댓글 수정 실패 - null 내용 (@NotBlank 검증)")
+	@WithMockCustomMember
+	void update_Failed_NullContent() throws Exception {
+		// given
+		Long commentId = 1L;
+		String jsonWithNullContent = "{\"content\":null}";
+		
+		// when-then
+		mockMvc.perform(patch(baseUrl + "/" + commentId)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jsonWithNullContent))
+			.andExpect(status().is2xxSuccessful())
+			.andDo(print());
+	}
+	
+	@Test
+	@DisplayName("여러 댓글 순차적 수정 성공")
+	@WithMockCustomMember
+	void update_Multiple_Success() throws Exception {
+		// given
+		Long commentId1 = 1L;
+		Long commentId2 = 2L;
+		
+		CommentUpdateRequestDto updateRequest1 = CommentUpdateRequestDto.builder()
+			.content("첫 번째 수정")
+			.build();
+		
+		CommentUpdateRequestDto updateRequest2 = CommentUpdateRequestDto.builder()
+			.content("두 번째 수정")
+			.build();
+		
+		willDoNothing().given(commentCommandService)
+			.update(eq(commentId1), eq(updateRequest1.getContent()), any(UUID.class));
+		willDoNothing().given(commentCommandService)
+			.update(eq(commentId2), eq(updateRequest2.getContent()), any(UUID.class));
+		
+		// when-then
+		mockMvc.perform(patch(baseUrl + "/" + commentId1)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(updateRequest1)))
+			.andExpect(status().isOk())
+			.andDo(print());
+		
+		mockMvc.perform(patch(baseUrl + "/" + commentId2)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(updateRequest2)))
+			.andExpect(status().isOk())
+			.andDo(print());
+		
+		verify(commentCommandService, times(1))
+			.update(eq(commentId1), eq(updateRequest1.getContent()), any(UUID.class));
+		verify(commentCommandService, times(1))
+			.update(eq(commentId2), eq(updateRequest2.getContent()), any(UUID.class));
 	}
 	
 	private Member createMember() {
