@@ -154,7 +154,7 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - logger.level=debug
-      - ES_JAVA_OPTS=-Xms2g -Xmx2g -Xlog:disable
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g -Xlog:gc=off
     ports:
       - "9200:9200"
       - "9300:9300"

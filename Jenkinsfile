@@ -100,7 +100,7 @@ pipeline {
                            mkdir -p esdata es-logs
 
                            # Elasticsearch 기본 UID(1000:1000)에 맞춰 소유권 변경
-                           chown -R 1000:1000 esdata es-logs
+                           chown -R 1000:1000 esdata es-logs || true
 
                            # 읽기/쓰기 권한 부여
                            chmod -R 775 esdata es-logs
