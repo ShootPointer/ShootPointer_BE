@@ -88,7 +88,6 @@ public class DummyDataLoader implements CommandLineRunner {
                 System.out.println("DB 배치 : "+i+"건 삽입 완료");
             }
         }
-        System.out.println("Access Token : " + accessToken);
 
         if (!batchArgs.isEmpty()){
             jdbcTemplate.batchUpdate(sql,batchArgs);
