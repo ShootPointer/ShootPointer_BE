@@ -5,7 +5,6 @@ import com.midas.shootpointer.domain.highlight.repository.HighlightCommandReposi
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,15 +18,19 @@ import java.util.UUID;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class HighlightUtilImpl implements HighlightUtil{
     //영상 저장 경로
-    @Value("${video.path}")
-    private String videoPath;
+    private final String videoPath;
 
     private final HighlightQueryRepository highlightQueryRepository;
 
     private final HighlightCommandRepository highlightCommandRepository;
+
+    public HighlightUtilImpl(@Value("${video.path}") String videoPath, HighlightQueryRepository highlightQueryRepository, HighlightCommandRepository highlightCommandRepository){
+        this.videoPath=videoPath;
+        this.highlightQueryRepository = highlightQueryRepository;
+        this.highlightCommandRepository = highlightCommandRepository;
+    }
 
     @Override
     public String getDirectoryPath(String highlightKey) {
