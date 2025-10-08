@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +47,7 @@ public class HighlightCommandServiceImpl implements HighlightCommandService {
     *
     ==========================**/
     @Override
-    public List<HighlightResponse> uploadHighlights(UploadHighlight request,List<MultipartFile> highlights) {
-        return manager.uploadHighlights(request,highlights);
+    public List<HighlightResponse> uploadHighlights(UploadHighlight request, List<MultipartFile> highlights, UUID memberId) {
+        return manager.uploadHighlights(request,highlights,memberId);
     }
 }

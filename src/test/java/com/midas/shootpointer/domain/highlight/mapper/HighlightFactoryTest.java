@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.highlight.mapper;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.member.entity.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,9 +22,13 @@ class HighlightFactoryTest {
         );
         String highlightKey= UUID.randomUUID().toString();
         UUID key=UUID.fromString(highlightKey);
+        Member member=Member.builder()
+                              .email("test@naver.com")
+                              .username("test")
+                              .build();
 
         //when
-        List<HighlightEntity> result=factory.createHighlightEntities(fileNames,highlightKey);
+        List<HighlightEntity> result=factory.createHighlightEntities(fileNames,highlightKey,member);
 
         //then
         assertThat(result).isNotEmpty();

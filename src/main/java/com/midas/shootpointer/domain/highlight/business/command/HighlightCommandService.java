@@ -8,10 +8,11 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface HighlightCommandService {
     HighlightSelectResponse selectHighlight(HighlightSelectRequest request, Member member);
 
-    List<HighlightResponse> uploadHighlights(UploadHighlight request, List<MultipartFile> highlights);
+    List<HighlightResponse> uploadHighlights(UploadHighlight request, List<MultipartFile> highlights, UUID memberId);
 }
 ////

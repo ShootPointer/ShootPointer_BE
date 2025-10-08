@@ -42,6 +42,6 @@ public class HighlightController {
             @RequestPart(value = "highlights") List<MultipartFile> highlights
     ) {
         //TODO : JWT 유효성 물어봐야함 -> 재성
-        return ResponseEntity.ok(ApiResponse.ok(highlightCommandService.uploadHighlights(request,highlights)));
+        return ResponseEntity.ok(ApiResponse.ok(highlightCommandService.uploadHighlights(request,highlights,memberId)));
     }
 }

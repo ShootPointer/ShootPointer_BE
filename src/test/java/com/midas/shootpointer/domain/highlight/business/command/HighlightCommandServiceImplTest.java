@@ -55,11 +55,12 @@ class HighlightCommandServiceImplTest {
                 .highlightKey("UUID")
                 .build();
         List<MultipartFile> list=new ArrayList<>();
+        UUID memberId=UUID.randomUUID();
 
         //when
-        commandService.uploadHighlights(request,list);
+        commandService.uploadHighlights(request,list,memberId);
 
         //then
-        verify(highlightManager,times(1)).uploadHighlights(request,list);
+        verify(highlightManager,times(1)).uploadHighlights(request,list,memberId);
     }
 }

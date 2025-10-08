@@ -33,7 +33,7 @@ public class Member extends BaseEntity {
         if(this==o) return true;
         if(!(o instanceof Member)) return false;
         Member other=(Member) o;
-        return Objects.equals(memberId,other.memberId);
+        return Objects.equals(this.memberId,other.memberId);
     }
 
     @Override

@@ -10,10 +10,10 @@ import com.midas.shootpointer.domain.highlight.mapper.HighlightFactory;
 import com.midas.shootpointer.domain.highlight.mapper.HighlightMapper;
 import com.midas.shootpointer.domain.highlight.service.HighlightStorageService;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.member.helper.MemberHelper;
 import com.midas.shootpointer.global.annotation.CustomLog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,9 +29,7 @@ public class HighlightManager {
     private final HighlightStorageService highlightStorageService;
     private final HighlightMapper mapper;
     private final HighlightFactory factory;
-
-    @Value("${video.path}")
-    private String videoPath;
+    private final MemberHelper memberHelper;
 
     /*==========================
     *
@@ -79,7 +77,8 @@ public class HighlightManager {
     @Transactional
     public List<HighlightResponse> uploadHighlights(
             UploadHighlight request,
-            List<MultipartFile> highlights
+            List<MultipartFile> highlights,
+            UUID memberId
     ) {
         /**
          * 1. 파일 크기 및 파일 형식 검사
@@ -94,7 +93,8 @@ public class HighlightManager {
         /*
         *   3. 하이라이트 엔티티 생성
          */
-        List<HighlightEntity> entities=factory.createHighlightEntities(storedFiles,request.getHighlightKey());
+        Member member=memberHelper.findMemberById(memberId);
+        List<HighlightEntity> entities=factory.createHighlightEntities(storedFiles,request.getHighlightKey(),member);
 
         /*
             4. DB 저장
