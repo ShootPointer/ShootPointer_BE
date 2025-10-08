@@ -92,6 +92,29 @@ pipeline {
             }
         }
 
+               stage('Fix Elasticsearch Volume Permissions') {
+                   steps {
+                       sh '''
+                           echo "🔧 Fixing Elasticsearch volume permissions..."
+                           # 폴더 없으면 생성
+                           sudo mkdir -p esdata es-logs
+
+                           # Elasticsearch 기본 UID(1000:1000)에 맞춰 소유권 변경
+                           sudo chown -R 1000:1000 esdata es-logs
+
+                           # 읽기/쓰기 권한 부여
+                           sudo chmod -R 775 esdata es-logs
+
+                           echo "✅ Elasticsearch data/log volume permissions fixed."
+                       '''
+                   }
+                   post {
+                       success { sh 'echo "✅ Volume permissions fixed successfully."' }
+                       failure { sh 'echo "❌ Failed to fix volume permissions."' }
+                   }
+               }
+
+
         stage('Build and Deploy with Docker Compose') {
             steps {
                 sh 'echo "🚀 Building and Deploying Containers with Docker Compose"'
