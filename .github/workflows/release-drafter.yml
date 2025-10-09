@@ -1,21 +1,68 @@
-name: Release Drafter
-
+name: draft-release
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [closed]
 
-
-permissions:
-    contents: read
+permissions: write-all
 
 jobs:
-    update_release_draft:
-        permissions:
-            contents: write
-            pull-requests: write
-        runs-on: ubuntu-latest
-        steps:
-            - uses: release-drafter/release-drafter@v5
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  check_labels:
+    name: 'Check PR Labels'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mheap/github-action-required-labels@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          mode: exactly
+          count: 1
+          labels: 'major,minor,patch'
+          
+  draft-release:
+    runs-on: ubuntu-latest
+    needs: check_labels
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Git config
+        run: |
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      
+      - name: Apply version bump (major)
+        if: contains(github.event.pull_request.labels.*.name, 'major')
+        run: |
+          npm version major > version.txt
+      - name: Apply version bump (minor)
+        if: contains(github.event.pull_request.labels.*.name, 'minor')
+        run: |
+          npm version minor > version.txt
+      - name: Apply version bump (patch)
+        if: contains(github.event.pull_request.labels.*.name, 'patch')
+        run: |
+          npm version patch > version.txt
+          
+      - name: Read version.txt
+        id: commit
+        uses: juliangruber/read-file-action@v1
+        with:
+            path: ./version.txt
+
+      - name: Push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+         
+
+      - name: Release drafter
+        uses: release-drafter/release-drafter@v5
+        if: ${{ steps.git_tag_check.outputs.tag == '' }}
+        with:
+          config-name: release-drafter-config.yml
+          version: 'v${{ (steps.commit.outputs.content) }}'
+          publish: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
