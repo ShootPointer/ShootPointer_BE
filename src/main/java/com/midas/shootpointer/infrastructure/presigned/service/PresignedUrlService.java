@@ -6,8 +6,10 @@ import com.midas.shootpointer.infrastructure.openCV.OpenCVProperties;
 import com.midas.shootpointer.infrastructure.presigned.dto.FileMetadataRequest;
 import com.midas.shootpointer.infrastructure.presigned.dto.PresignedUrlResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -16,12 +18,14 @@ public class PresignedUrlService {
     public PresignedUrlService(
             HmacSigner signer,
             OpenCVProperties openCVProperties,
-            FileValidator fileValidator
+            FileValidator fileValidator,
+            RedisTemplate<String,String> redisTemplate
     ){
         this.opeCvBaseUrl= openCVProperties.getUrl();
         this.ttlMilliSeconds=openCVProperties.getExpire().getExpirationTime();
         this.signer=signer;
         this.fileValidator=fileValidator;
+        this.redisTemplate=redisTemplate;
     }
 
     private HmacSigner signer;
@@ -42,12 +46,18 @@ public class PresignedUrlService {
      */
     private FileValidator fileValidator;
 
+    /**
+     *  Redis Template
+     */
+    private RedisTemplate<String,String> redisTemplate;
+    private final String prefix="upload:job:";
+
     public PresignedUrlResponse createPresignedUrl(UUID memberId, FileMetadataRequest request){
         UUID jobId=UUID.randomUUID();
         long expires= Instant.now().plusMillis(ttlMilliSeconds).getEpochSecond();
 
         /**
-         * 파일 유효성 검증
+         * 1.파일 유효성 검증
          */
         fileValidator.isValidFileSize(request.fileSize());
         fileValidator.isValidFileType(request.fileName());
@@ -56,12 +66,16 @@ public class PresignedUrlService {
         String signature=signer.getHmacSignature(message);
 
         /**
-         * Pre-signed Url 생성
+         * 2.Pre-signed Url 생성
          */
-        String preSignedUrl=String.format("%s/upload?expires=%d&memberId=%s&signature=%s",
-                    opeCvBaseUrl,expires,memberId,signature
-        );
+        String preSignedUrl=String.format("%s/upload?signature=%s",opeCvBaseUrl,signature);
 
-        return PresignedUrlResponse.of(preSignedUrl,expires,signature);
+        /**
+         * 3.redis에 jobId : memberId 형태 저장 - TTL : 30분
+         */
+        redisTemplate.opsForValue()
+                .set(prefix+jobId, String.valueOf(memberId), Duration.ofMillis(ttlMilliSeconds));
+
+        return PresignedUrlResponse.of(preSignedUrl,expires,signature,jobId);
     }
 }
