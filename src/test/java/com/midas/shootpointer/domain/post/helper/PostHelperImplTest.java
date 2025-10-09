@@ -6,6 +6,7 @@ import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.simple.PostHelperImpl;
 import com.midas.shootpointer.domain.post.helper.simple.PostUtil;
 import com.midas.shootpointer.domain.post.helper.simple.PostValidation;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class PostHelperImplTest {
@@ -216,5 +218,38 @@ class PostHelperImplTest {
 
         //then
         verify(postUtil,times(1)).isValidAndGetPostOrderType(type);
+    }
+    
+    @Test
+    @DisplayName("memberId로 게시물 ID 목록을 조회합니다 - postUtil.findPostIdsByMemberId(memberId) 메서드가 실행되는지 확인합니다.")
+    void findPostIdsByMemberId() {
+        //given
+        UUID memberId = UUID.randomUUID();
+        List<Long> expectedPostIds = List.of(1L, 2L, 3L);
+        when(postUtil.findPostIdsByMemberId(memberId)).thenReturn(expectedPostIds);
+        
+        //when
+        List<Long> result = postHelper.findPostIdsByMemberId(memberId);
+        
+        //then
+        assertThat(result).hasSize(3);
+        assertThat(result).containsExactly(1L, 2L, 3L);
+        verify(postUtil, times(1)).findPostIdsByMemberId(memberId);
+    }
+    
+    @Test
+    @DisplayName("게시물 ID 목록으로 게시물 엔티티들을 조회합니다 - postUtil.findPostsByPostIds(postIds) 메서드가 실행되는지 확인합니다.")
+    void findPostsByPostIds() {
+        //given
+        List<Long> postIds = List.of(1L, 2L, 3L);
+        List<PostEntity> expectedPosts = List.of(postEntity, newPostEntity, postEntity);
+        when(postUtil.findPostsByPostIds(postIds)).thenReturn(expectedPosts);
+        
+        //when
+        List<PostEntity> result = postHelper.findPostsByPostIds(postIds);
+        
+        //then
+        assertThat(result).hasSize(3);
+        verify(postUtil, times(1)).findPostsByPostIds(postIds);
     }
 }

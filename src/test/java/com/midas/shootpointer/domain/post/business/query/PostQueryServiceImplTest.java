@@ -6,6 +6,7 @@ import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.dto.response.SearchAutoCompleteResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -108,6 +109,21 @@ class PostQueryServiceImplTest {
         //then
         verify(postManager,times(1)).suggest(keyword);
     }
+    
+    @Test
+    @DisplayName("마이페이지 조회 시 postManager - getMyPosts(memberId)의 호출을 확인합니다.")
+    void getMyPosts(){
+        //given
+        UUID memberId = UUID.randomUUID();
+        
+        //when
+        when(postManager.getMyPosts(memberId)).thenReturn(postListResponse);
+        postQueryService.getMyPosts(memberId);
+        
+        //then
+        verify(postManager, times(1)).getMyPosts(memberId);
+    }
+    
     private PostResponse makePostResponse(LocalDateTime time,Long postId){
         return PostResponse.builder()
                 .content("content")
