@@ -15,12 +15,12 @@ exclude-labels:
   - "✅ Test"
   - "🛠 Setting"
  
-// 실제 릴리즈 노트 생성 시 틀
+
 template: |
   ## 📋 변경점
   $CHANGES
   
-// 릴리즈 노트 버전은 PR 라벨로 구분
+
 version-resolver:
   major:
     labels:
