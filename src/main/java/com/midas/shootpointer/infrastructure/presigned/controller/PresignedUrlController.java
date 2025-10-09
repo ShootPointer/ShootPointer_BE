@@ -2,11 +2,13 @@ package com.midas.shootpointer.infrastructure.presigned.controller;
 
 import com.midas.shootpointer.global.dto.ApiResponse;
 import com.midas.shootpointer.global.security.SecurityUtils;
+import com.midas.shootpointer.infrastructure.presigned.dto.FileMetadataRequest;
 import com.midas.shootpointer.infrastructure.presigned.dto.PresignedUrlResponse;
 import com.midas.shootpointer.infrastructure.presigned.service.PresignedUrlService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +21,8 @@ public class PresignedUrlController {
     private final PresignedUrlService presignedUrlService;
 
     @GetMapping("/pre-signed")
-    public ResponseEntity<ApiResponse<PresignedUrlResponse>> getPreSignedUrl(){
+    public ResponseEntity<ApiResponse<PresignedUrlResponse>> getPreSignedUrl(@RequestBody FileMetadataRequest request){
         UUID memberId = SecurityUtils.getCurrentMemberId();
-        return ResponseEntity.ok(ApiResponse.ok(presignedUrlService.createPresignedUrl(memberId)));
+        return ResponseEntity.ok(ApiResponse.ok(presignedUrlService.createPresignedUrl(memberId,request)));
     }
 }

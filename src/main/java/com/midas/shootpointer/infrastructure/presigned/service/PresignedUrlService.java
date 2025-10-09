@@ -33,10 +33,11 @@ public class PresignedUrlService {
     @Value("${opencv.api.expiration_time}")
     private long ttlMilliSeconds;
 
-    public PresignedUrlResponse createPresignedUrl(UUID memberId){
+    public PresignedUrlResponse createPresignedUrl(UUID memberId,String fileName){
+        UUID jobId=UUID.randomUUID();
         long expires= Instant.now().plusMillis(ttlMilliSeconds).getEpochSecond();
 
-        String message=expires+":"+memberId;
+        String message=expires+":"+memberId+":"+jobId+":"+fileName;
         String signature=signer.getHmacSignature(message);
 
         /**
