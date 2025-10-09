@@ -2,9 +2,9 @@ name-template: "v$RESOLVED_VERSION"
 tag-template: "v$RESOLVED_VERSION"
 
 categories:
-  - title: "🚀 Features"
+  - title: "✨ Feature"
     labels: 
-      - "🚀 Feature"
+      - "✨ Feature"
   - title: "🚑 Hotfix"
     labels:
       - "🚑 Hotfix"
@@ -13,7 +13,6 @@ categories:
       - "🐛 BugFix"
 exclude-labels:
   - "✅ Test"
-  - "🛠 Setting"
  
 
 template: |
