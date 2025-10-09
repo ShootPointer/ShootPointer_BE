@@ -5,14 +5,13 @@ on:
     branches:
       - main
 
-// 깃허브 읽기 권한 획득
+
 permissions:
     contents: read
 
 jobs:
     update_release_draft:
         permissions:
-        	// 릴리즈 노트 쓰기 권한 획득
             contents: write
             pull-requests: write
         runs-on: ubuntu-latest
