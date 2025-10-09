@@ -5,10 +5,9 @@ package com.midas.shootpointer.infrastructure.presigned.dto;
  */
 public record FileMetadataRequest(
         String fileName,
-        Long fileSize,
-        String contentType
+        Long fileSize
 ) {
-    public static FileMetadataRequest of(String fileName,Long fileSize,String contentType){
-        return new FileMetadataRequest(fileName, fileSize, contentType);
+    public static FileMetadataRequest of(String fileName,Long fileSize){
+        return new FileMetadataRequest(fileName, fileSize);
     }
 }

@@ -1,7 +1,9 @@
 package com.midas.shootpointer.infrastructure.presigned.service;
 
 import com.midas.shootpointer.global.util.encrypt.HmacSigner;
+import com.midas.shootpointer.global.util.file.FileValidator;
 import com.midas.shootpointer.infrastructure.openCV.OpenCVProperties;
+import com.midas.shootpointer.infrastructure.presigned.dto.FileMetadataRequest;
 import com.midas.shootpointer.infrastructure.presigned.dto.PresignedUrlResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,11 +15,13 @@ import java.util.UUID;
 public class PresignedUrlService {
     public PresignedUrlService(
             HmacSigner signer,
-            OpenCVProperties openCVProperties
+            OpenCVProperties openCVProperties,
+            FileValidator fileValidator
     ){
         this.opeCvBaseUrl= openCVProperties.getUrl();
         this.ttlMilliSeconds=openCVProperties.getExpire().getExpirationTime();
         this.signer=signer;
+        this.fileValidator=fileValidator;
     }
 
     private HmacSigner signer;
@@ -33,11 +37,22 @@ public class PresignedUrlService {
     @Value("${opencv.api.expiration_time}")
     private long ttlMilliSeconds;
 
-    public PresignedUrlResponse createPresignedUrl(UUID memberId,String fileName){
+    /**
+     *  file 유효성 검증
+     */
+    private FileValidator fileValidator;
+
+    public PresignedUrlResponse createPresignedUrl(UUID memberId, FileMetadataRequest request){
         UUID jobId=UUID.randomUUID();
         long expires= Instant.now().plusMillis(ttlMilliSeconds).getEpochSecond();
 
-        String message=expires+":"+memberId+":"+jobId+":"+fileName;
+        /**
+         * 파일 유효성 검증
+         */
+        fileValidator.isValidFileSize(request.fileSize());
+        fileValidator.isValidFileType(request.fileName());
+
+        String message=expires+":"+memberId+":"+jobId+":"+request.fileName();
         String signature=signer.getHmacSignature(message);
 
         /**
