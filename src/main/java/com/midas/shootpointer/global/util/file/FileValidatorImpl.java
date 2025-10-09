@@ -8,8 +8,11 @@ import org.springframework.util.unit.DataSize;
 
 @Component
 public class FileValidatorImpl implements FileValidator{
-    @Value("${video.max-size}")
-    private DataSize maxFileSize;
+    private final DataSize maxFileSize;
+
+    public FileValidatorImpl (@Value("${video.max-size}") DataSize maxFileSize){
+        this.maxFileSize=maxFileSize;
+    }
 
     @Override
     public void isValidFileSize(long size) {
