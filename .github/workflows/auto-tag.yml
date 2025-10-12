@@ -12,11 +12,13 @@ permissions:
 jobs:
   bump-version:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # 모든 태그 가져오기 
+
 
       - name: Get next version from draft
         id: release_drafter
@@ -24,15 +26,25 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+
       - name: Extract version
         id: extract
         run: |
           VERSION=$(echo "${{ steps.release_drafter.outputs.name }}" | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Next version: $VERSION"
-      - name: Create and push tag
+          echo "Next version to release: $VERSION"
+
+     
+      - name: Create and push new tag
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git tag $VERSION
-          git push origin $VERSION
+
+          # 이미 동일 태그가 존재하면 skip
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "⚠️ Tag $VERSION already exists. Skipping."
+          else
+            echo "🏷️ Creating new tag: $VERSION"
+            git tag "$VERSION"
+            git push origin "$VERSION"
+          fi
