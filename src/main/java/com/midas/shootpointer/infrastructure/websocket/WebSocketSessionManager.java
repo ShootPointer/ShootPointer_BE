@@ -1,6 +1,5 @@
 package com.midas.shootpointer.infrastructure.websocket;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class WebSocketSessionManager {
     private final Map<UUID, WebSocketSession> sessions=new ConcurrentHashMap<>();
-    private final ObjectMapper mapper=new ObjectMapper();
 
     /**
      * 웹소켓 세션 추가 메서드

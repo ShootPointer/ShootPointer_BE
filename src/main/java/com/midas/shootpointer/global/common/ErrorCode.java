@@ -115,7 +115,8 @@ public enum ErrorCode {
 
     //901(infra - websocket)
     FAILED_END_WEB_SOCKET_FAILED(90101,HttpStatus.INTERNAL_SERVER_ERROR,"기존 세션 종료를 실패했습니다."),
-    FAILED_SEND_MESSAGE(90102,HttpStatus.INTERNAL_SERVER_ERROR,"websocket 메세지 전송을 싪패했습니다.");
+    FAILED_SEND_MESSAGE(90102,HttpStatus.INTERNAL_SERVER_ERROR,"websocket 메세지 전송을 싪패했습니다."),
+    FAILED_PARSING_JSON(90103,HttpStatus.NOT_IMPLEMENTED,"json 파싱 중 오류가 발생했습니다.");
     private final Integer code;
     private final HttpStatus httpStatus;
     private final String message;

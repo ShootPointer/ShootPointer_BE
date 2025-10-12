@@ -5,6 +5,7 @@ import com.midas.shootpointer.global.util.file.FileValidator;
 import com.midas.shootpointer.infrastructure.openCV.OpenCVProperties;
 import com.midas.shootpointer.infrastructure.presigned.dto.FileMetadataRequest;
 import com.midas.shootpointer.infrastructure.presigned.dto.PresignedUrlResponse;
+import com.midas.shootpointer.infrastructure.websocket.WebSocketProgressPublisher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -19,13 +20,15 @@ public class PresignedUrlService {
             HmacSigner signer,
             OpenCVProperties openCVProperties,
             FileValidator fileValidator,
-            RedisTemplate<String,String> redisTemplate
+            RedisTemplate<String,String> redisTemplate,
+            WebSocketProgressPublisher progressPublisher
     ){
         this.opeCvBaseUrl= openCVProperties.getUrl();
         this.ttlMilliSeconds=openCVProperties.getExpire().getExpirationTime();
         this.signer=signer;
         this.fileValidator=fileValidator;
         this.redisTemplate=redisTemplate;
+        this.progressPublisher=progressPublisher;
     }
 
     private HmacSigner signer;
@@ -38,7 +41,7 @@ public class PresignedUrlService {
     /**
      * 만료 시간
      */
-    @Value("${opencv.api.expiration_time}")
+    @Value("${opencv.expire.expiration-time}")
     private long ttlMilliSeconds;
 
     /**
@@ -51,6 +54,8 @@ public class PresignedUrlService {
      */
     private RedisTemplate<String,String> redisTemplate;
     private final String prefix="upload:job:";
+
+    private WebSocketProgressPublisher progressPublisher;
 
     public PresignedUrlResponse createPresignedUrl(UUID memberId, FileMetadataRequest request){
         UUID jobId=UUID.randomUUID();
@@ -71,10 +76,10 @@ public class PresignedUrlService {
         String preSignedUrl=String.format("%s/upload?signature=%s",opeCvBaseUrl,signature);
 
         /**
-         * 3.redis에 jobId : memberId 형태 저장 - TTL : 30분
+         * 3.redis에 memberId:jobId  형태 저장 - TTL : 30분
          */
         redisTemplate.opsForValue()
-                .set(prefix+jobId, String.valueOf(memberId), Duration.ofMillis(ttlMilliSeconds));
+                .set(prefix+memberId, String.valueOf(jobId), Duration.ofMillis(ttlMilliSeconds));
 
         return PresignedUrlResponse.of(preSignedUrl,expires,signature,jobId);
     }
