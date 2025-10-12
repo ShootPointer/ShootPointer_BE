@@ -1,12 +1,20 @@
 pipeline {
     agent any
-
+    
+    parameters {
+        choice(
+            name: 'PROFILE',
+            choices: ['dev', 'testdata', 'prod'],
+            description: 'Select Spring Profile for deployment'
+        )
+    }
     tools {
         jdk 'openjdk-17-jdk'
     }
 
     environment {
         COMPOSE_FILE = 'docker-compose.yml'
+        SPRING_PROFILES_ACTIVE = "${params.PROFILE}"
     }
 
     stages {
@@ -84,11 +92,34 @@ pipeline {
             }
         }
 
+               stage('Fix Elasticsearch Volume Permissions') {
+                   steps {
+                       sh '''
+                           echo "🔧 Fixing Elasticsearch volume permissions..."
+                           # 폴더 없으면 생성
+                           mkdir -p esdata es-logs
+
+                           # Elasticsearch 기본 UID(1000:1000)에 맞춰 소유권 변경
+                           chown -R 1000:1000 esdata es-logs || true
+
+                           # 읽기/쓰기 권한 부여
+                           chmod -R 775 esdata es-logs
+
+                           echo "✅ Elasticsearch data/log volume permissions fixed."
+                       '''
+                   }
+                   post {
+                       success { sh 'echo "✅ Volume permissions fixed successfully."' }
+                       failure { sh 'echo "❌ Failed to fix volume permissions."' }
+                   }
+               }
+
+
         stage('Build and Deploy with Docker Compose') {
             steps {
                 sh 'echo "🚀 Building and Deploying Containers with Docker Compose"'
                 sh 'docker system prune -a -f'
-                sh 'docker-compose up -d --build'
+                sh 'SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE docker-compose up -d --build'
             }
             post {
                 success { sh 'echo "✅ Successfully Deployed with Docker Compose"' }

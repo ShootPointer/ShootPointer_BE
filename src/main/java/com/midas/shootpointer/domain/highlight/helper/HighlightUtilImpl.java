@@ -1,10 +1,10 @@
 package com.midas.shootpointer.domain.highlight.helper;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,18 +13,24 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class HighlightUtilImpl implements HighlightUtil{
     //영상 저장 경로
-    @Value("${video.path}")
-    private String videoPath;
+    private final String videoPath;
 
     private final HighlightQueryRepository highlightQueryRepository;
 
+    private final HighlightCommandRepository highlightCommandRepository;
+
+    public HighlightUtilImpl(@Value("${video.path}") String videoPath, HighlightQueryRepository highlightQueryRepository, HighlightCommandRepository highlightCommandRepository){
+        this.videoPath=videoPath;
+        this.highlightQueryRepository = highlightQueryRepository;
+        this.highlightCommandRepository = highlightCommandRepository;
+    }
 
     @Override
     public String getDirectoryPath(String highlightKey) {
@@ -45,6 +51,11 @@ public class HighlightUtilImpl implements HighlightUtil{
     public HighlightEntity findHighlightByHighlightId(UUID highlightId) {
         return highlightQueryRepository.findByHighlightId(highlightId)
                 .orElseThrow(()->new CustomException(ErrorCode.NOT_EXIST_HIGHLIGHT));
+    }
+
+    @Override
+    public List<HighlightEntity> savedAll(List<HighlightEntity> entities) {
+        return highlightCommandRepository.saveAll(entities);
     }
 
 }

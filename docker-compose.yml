@@ -91,7 +91,8 @@ services:
       elasticsearch:
         condition: service_healthy
     environment:
-      #SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+
       # 서버 포트
       SERVER_PORT: 9000
       
@@ -153,12 +154,12 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - logger.level=debug
-      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g -Xlog:gc=off
     ports:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - esdata:/usr/share/elasticsearch/data
+      - ./esdata:/usr/share/elasticsearch/data
       - ./es-logs:/usr/share/elasticsearch/logs
     networks:
       - spring-network
