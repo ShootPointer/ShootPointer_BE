@@ -35,7 +35,7 @@ public class SecurityConfig {
                 SessionCreationPolicy.STATELESS
             ))
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/**", "/oauth/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/oauth/**","/api/test-member","/ws/**").permitAll()
                 .anyRequest().authenticated()
             )
             .userDetailsService(customUserDetailsService)
