@@ -120,5 +120,8 @@ public class DummyDataLoader implements CommandLineRunner {
         long esEnd = System.currentTimeMillis();
         System.out.println("ES 배치 종료 시간: " + LocalDateTime.now());
         System.out.println("ES 전체 소요 시간(ms): " + (esEnd - esStart));*/
+		System.out.println(jwtUtil.createToken(member.getMemberId(), member.getEmail(),
+			member.getUsername())
+        );
     }
 }
