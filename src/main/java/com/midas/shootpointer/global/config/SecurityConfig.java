@@ -35,7 +35,16 @@ public class SecurityConfig {
                 SessionCreationPolicy.STATELESS
             ))
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/swagger-ui/**", "/oauth/**","/api/test-member","/ws/**").permitAll()
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/v3/api-docs/**",
+                    "/swagger-resources/**",
+                    "/webjars/**",
+                    "/oauth/**",
+                    "/api/test-member",
+                    "/ws/**"
+                    ).permitAll()
                 .anyRequest().authenticated()
             )
             .userDetailsService(customUserDetailsService)
