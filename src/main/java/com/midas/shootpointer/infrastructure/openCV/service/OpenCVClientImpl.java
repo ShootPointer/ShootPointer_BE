@@ -7,6 +7,8 @@ import com.midas.shootpointer.global.util.file.FileType;
 import com.midas.shootpointer.global.util.file.GenerateFileName;
 import com.midas.shootpointer.infrastructure.openCV.OpenCVProperties;
 import com.midas.shootpointer.infrastructure.openCV.dto.OpenCVResponse;
+import com.midas.shootpointer.infrastructure.openCV.helper.OpenCVValidator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -15,7 +17,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import reactor.util.retry.Retry;
-import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.util.UUID;
@@ -24,7 +26,7 @@ import java.util.concurrent.TimeoutException;
 @Component
 public class OpenCVClientImpl implements OpenCVClient {
     private final GenerateFileName generateFileName;
-
+    private final OpenCVValidator openCVValidator;
     private final WebClient webClient;
     private final String openCVGetApiUrl;
     private final String openCVPostApiUrl;
@@ -32,13 +34,15 @@ public class OpenCVClientImpl implements OpenCVClient {
 
     public OpenCVClientImpl(
             GenerateFileName generateFileName,
-            OpenCVProperties openCVProperties
+            OpenCVProperties openCVProperties,
+            OpenCVValidator openCVValidator
     ) {
         this.webClient = WebClient.builder().baseUrl(openCVProperties.getUrl()).build();
         this.generateFileName = generateFileName;
         this.openCVGetApiUrl = openCVProperties.getApi().getGet().getFetchVideo();
         this.openCVPostApiUrl = openCVProperties.getApi().getPost().getSendImage();
         this.openCVBaseUrl=openCVProperties.getUrl();
+        this.openCVValidator=openCVValidator;
     }
 
 
@@ -55,20 +59,28 @@ public class OpenCVClientImpl implements OpenCVClient {
     ==========================**/
     @Override
     @CustomLog
-    public OpenCVResponse sendBackNumberInformation(UUID memberId, Integer backNumber, MultipartFile image) throws IOException {
+    public OpenCVResponse sendBackNumberInformation(UUID memberId, Integer backNumber, MultipartFile image) {
         //이미지 이름 생성
         String fileName = generateFileName.generate(FileType.IMAGE, image);
         log.info("openCVServerUrl {}",openCVBaseUrl+openCVPostApiUrl);
+
+        ByteArrayResource byteArrayResource;
+        try {
+             byteArrayResource = new ByteArrayResource(image.getBytes()){
+                @Override
+                public String getFilename() {
+                    return fileName;
+                }
+            };
+        }catch (IOException e){
+            throw new CustomException(ErrorCode.IMAGE_CONVERT_FAILED);
+        }
+
         OpenCVResponse response = webClient.post()
                 .uri(openCVBaseUrl+openCVPostApiUrl)
                 .header("X-Member-Id", String.valueOf(memberId))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
-                .body(BodyInserters.fromMultipartData("image", new ByteArrayResource(image.getBytes()) {
-                            @Override
-                            public String getFilename() {
-                                return fileName;
-                            }
-                        })
+                .body(BodyInserters.fromMultipartData("image", byteArrayResource)
                         .with("backNumber", backNumber.toString()))
                 .retrieve()
                 .bodyToMono(OpenCVResponse.class)
@@ -89,26 +101,12 @@ public class OpenCVClientImpl implements OpenCVClient {
                 //동기식 처리
                 .block();
 
+
         //openCV 응답값 예외 처리
-        validateOpenCVResponse(response);
+        openCVValidator.failedOpenCVRequest(response);
+        openCVValidator.notMatchBackNumber(response);
 
         return response;
     }
 
-    /*==========================
-    *
-    *OpenCVClientImpl
-    *
-    * @parm OpenCVResponse : OpenCV 서버 응답 json
-    * @return void
-    * @author kimdoyeon
-    * @version 1.0.0
-    * @date 6/21/25
-    *
-    ==========================**/
-    private void validateOpenCVResponse(OpenCVResponse<?> response) {
-        if (response == null || !response.isSuccess()) {
-            throw new CustomException(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
-        }
-    }
 }
