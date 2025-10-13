@@ -1,15 +1,7 @@
 package com.midas.shootpointer.domain.comment.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.comment.business.query.CommentQueryService;
 import com.midas.shootpointer.domain.comment.dto.response.CommentResponseDto;
 import com.midas.shootpointer.domain.comment.entity.Comment;
@@ -18,9 +10,6 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +20,17 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @DisplayName("CommentQueryController 테스트")
@@ -56,7 +56,7 @@ class CommentQueryControllerTest {
 	void setUp() {
 		objectMapper = new ObjectMapper();
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("게시물 ID로 댓글 목록 조회 성공")
 	void getCommentsByPostId_Success() throws Exception {
@@ -99,7 +99,7 @@ class CommentQueryControllerTest {
 		verify(commentQueryService, times(1)).getCommentsByPostId(postId);
 		verify(commentMapper, times(3)).entityToDto(any(Comment.class));
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("댓글 목록 조회 성공 - 빈 리스트")
 	void getCommentsByPostId_Success_EmptyList() throws Exception {
@@ -121,7 +121,7 @@ class CommentQueryControllerTest {
 		verify(commentQueryService, times(1)).getCommentsByPostId(postId);
 		verify(commentMapper, times(0)).entityToDto(any(Comment.class));
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("댓글 목록 조회 실패 - 존재하지 않는 게시물")
 	void getCommentsByPostId_Failed_PostNotFound() throws Exception {
@@ -143,6 +143,7 @@ class CommentQueryControllerTest {
 	
 	@Test
 	@DisplayName("댓글 목록 조회 실패 - 잘못된 게시물 ID 형식")
+	@WithMockCustomMember
 	void getCommentsByPostId_Failed_InvalidPostIdFormat() throws Exception {
 		// given
 		String invalidPostId = "invalid";
@@ -153,7 +154,7 @@ class CommentQueryControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andDo(print());
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("단일 댓글 조회 성공")
 	void getCommentsByPostId_Success_SingleComment() throws Exception {

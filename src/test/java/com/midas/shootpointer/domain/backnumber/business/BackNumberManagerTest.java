@@ -6,7 +6,6 @@ import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
-import com.midas.shootpointer.infrastructure.openCV.dto.OpenCVResponse;
 import com.midas.shootpointer.infrastructure.openCV.service.OpenCVClient;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -18,10 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
@@ -76,14 +73,14 @@ class BackNumberManagerTest {
         );
 
         //when
-        when(openCVClient.sendBackNumberInformation(any(UUID.class), anyInt(), any(MultipartFile.class)))
+        /*when(openCVClient.sendBackNumberInformation(any(UUID.class), anyInt(), any(MultipartFile.class)))
                 .thenAnswer(invocation -> OpenCVResponse.builder()
                         .data(List.of(mockMultipartFile))
                         .status(100)
                         .success(true)
                         .build()
                 );
-
+*/
         int resultBackNumber = backNumberManager.create(backNumberEntity, mockMultipartFile, member);
 
         //then

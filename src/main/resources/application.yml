@@ -122,7 +122,7 @@ opencv:
   url: http://tkv00.ddns.net:8000
   api:
     post:
-      send-image: /player/ocr
+      send-image: /api/send-img
     get:
       fetch-video: /api/fetch-video
     proxy:

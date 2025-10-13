@@ -4,8 +4,6 @@ import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.backnumber.helper.BackNumberHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.memberbacknumber.helper.MemberBackNumberHelper;
-import com.midas.shootpointer.global.common.ErrorCode;
-import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.infrastructure.openCV.service.OpenCVClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,11 +26,9 @@ public class BackNumberManager {
         memberBackNumberHelper.findOrElseGetMemberBackNumber(member, backNumberEntity);
 
         //3. OpenCv 사진 전송.
-        try {
-            openCVClient.sendBackNumberInformation(member.getMemberId(), backNumberEntity.getBackNumber().getNumber(), image);
-        } catch (Exception e) {
-            throw new CustomException(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
-        }
+
+        openCVClient.sendBackNumberInformation(member.getMemberId(), backNumberEntity.getBackNumber().getNumber(), image);
+
         return backNumberEntity.getBackNumber().getNumber();
     }
 }

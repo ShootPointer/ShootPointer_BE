@@ -1,32 +1,32 @@
 package com.midas.shootpointer.domain.member.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.member.business.command.MemberCommandService;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.security.CustomUserDetails;
-import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -43,7 +43,7 @@ class MemberCommandControllerIntegrationTest {
 	
 	@MockitoBean
 	private MemberCommandService memberCommandService;
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("카카오 로그인 콜백 - 성공")
 	void callback_Success() throws Exception {
@@ -69,7 +69,7 @@ class MemberCommandControllerIntegrationTest {
 		
 		verify(memberCommandService, times(1)).processKakaoLogin(any());
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("회원 탈퇴 - 성공")
 	@WithMockUser
@@ -89,18 +89,19 @@ class MemberCommandControllerIntegrationTest {
 		
 		verify(memberCommandService, times(1)).deleteMember(any(Member.class));
 	}
-	
+
+
 	@Test
 	@DisplayName("회원 탈퇴 - 인증되지 않은 사용자")
 	void deleteMember_Unauthorized() throws Exception {
 		// when & then
 		mockMvc.perform(delete("/kakao"))
 			.andDo(print())
-			.andExpect(status().is2xxSuccessful());
+			.andExpect(status().isUnauthorized());
 		
 		verify(memberCommandService, never()).deleteMember(any(Member.class));
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("회원 정보 조회 - 성공")
 	@WithMockUser
@@ -122,7 +123,7 @@ class MemberCommandControllerIntegrationTest {
 			.andExpect(jsonPath("$.email").value(email))
 			.andExpect(jsonPath("$.username").value(username));
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("회원 정보 조회 - 인증되지 않은 사용자")
 	void getCurrentMember_Unauthorized() throws Exception {

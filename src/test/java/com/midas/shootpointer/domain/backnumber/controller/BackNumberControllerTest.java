@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -89,9 +90,9 @@ class BackNumberControllerTest {
                         .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isOk())
                 .andDo(print())
-                //.andExpect(jsonPath("$.status").value("CREATED"))
-                //.andExpect(jsonPath("$.success").value(true))
-                //.andExpect(jsonPath("$.data").value(mockResponse.getBackNumber()))
+                .andExpect(jsonPath("$.status").value("CREATED"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data").value(mockResponse.getBackNumber()))
                 ;
 
         verify(backNumberCommandService).create(any(Member.class), any(BackNumberEntity.class),any(MultipartFile.class));
