@@ -58,7 +58,7 @@ pipeline {
             steps {
                 sh 'echo "🔌 Checking and Freeing Up Ports (6378, 5431, 27016)"'
                 sh """
-                for port in 6378 5431 27016; do
+                for port in 6378 5431 27016 443; do
                     if lsof -i :\$port; then
                         echo "Port \$port is in use. Killing the process..."
                         sudo kill -9 \$(lsof -ti :\$port) || true
