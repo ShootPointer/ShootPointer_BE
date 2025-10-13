@@ -35,6 +35,7 @@ public class Member extends BaseEntity {
 
     //하이라이트 영상 집계 동의 여부
     @Column(name = "is_aggregation_agreed")
+    @Builder.Default
     private Boolean isAggregationAgreed=false;
 
     @Override

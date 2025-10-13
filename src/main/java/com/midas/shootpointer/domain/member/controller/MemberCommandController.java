@@ -11,14 +11,12 @@ import com.midas.shootpointer.global.security.CustomUserDetails;
 import com.midas.shootpointer.global.security.SecurityUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 
 @RestController
@@ -56,5 +54,11 @@ public class MemberCommandController {
 			.email(currentMember.getEmail())
 			.username(currentMember.getUsername())
 			.build();
+    }
+
+    @PutMapping("/highlight/agree")
+    public ResponseEntity<ApiResponse<UUID>> agree(){
+        Member currentMember=SecurityUtils.getCurrentMember();
+        return ResponseEntity.ok(ApiResponse.ok(memberCommandService.agree(currentMember)));
     }
 }

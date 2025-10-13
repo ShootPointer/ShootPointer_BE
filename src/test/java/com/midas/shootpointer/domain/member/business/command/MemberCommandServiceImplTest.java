@@ -1,17 +1,10 @@
 package com.midas.shootpointer.domain.member.business.command;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.midas.shootpointer.domain.member.business.MemberManager;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.util.jwt.handler.RefreshTokenHandler;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +12,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("MemberCommandService 테스트")
@@ -98,5 +97,16 @@ class MemberCommandServiceImplTest {
 		assertEquals(memberId, result);
 		verify(memberManager, times(1)).deleteMember(memberId, testMember);
 		verify(refreshTokenHandler, times(1)).deleteRefreshToken(testMember.getEmail());
+	}
+
+	@Test
+	@DisplayName("회원의 하이라이트 영상 수집 상태를 true로 변환합니다. - MemberManager-agree메서드가 동작하는지 검증합니다.")
+	void agree(){
+		//given
+
+		//when
+
+		//then
+
 	}
 }
