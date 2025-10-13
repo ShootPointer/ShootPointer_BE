@@ -47,6 +47,14 @@ public class HighlightEntity extends BaseEntity {
     private BackNumberEntity backNumber;
 
 
+    @Column(name = "two_point_count",nullable = true)
+    @Builder.Default
+    private Integer twoPointCount=0;
+
+    @Column(name = "three_point_count",nullable = true)
+    @Builder.Default
+    private Integer threePointCount=0;
+
     /*
     =========== [ 도메인-행위 ] ==============
      */
