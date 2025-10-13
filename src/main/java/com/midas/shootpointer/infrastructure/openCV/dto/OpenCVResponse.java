@@ -1,10 +1,12 @@
 package com.midas.shootpointer.infrastructure.openCV.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OpenCVResponse {
     private Integer status;
 
@@ -21,5 +23,8 @@ public class OpenCVResponse {
 
     //일치 여부
     private Boolean match;
+
+    //오류 시 메세지 내용 (성공 시 Null)
+    private String message;
 
 }

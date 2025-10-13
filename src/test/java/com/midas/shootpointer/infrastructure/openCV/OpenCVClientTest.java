@@ -5,6 +5,7 @@ import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import com.midas.shootpointer.global.util.file.GenerateFileName;
 import com.midas.shootpointer.infrastructure.openCV.dto.OpenCVResponse;
+import com.midas.shootpointer.infrastructure.openCV.helper.OpenCVValidator;
 import com.midas.shootpointer.infrastructure.openCV.service.OpenCVClientImpl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -37,6 +38,9 @@ class OpenCVClientTest {
 
     @Mock
     private OpenCVProperties openCVProperties;
+
+    @Mock
+    private OpenCVValidator openCVValidator;
 
     @BeforeEach
     void setUpServer() throws IOException {
@@ -84,10 +88,10 @@ class OpenCVClientTest {
 
 
         //when
-        OpenCVResponse<?> response = openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile);
+        OpenCVResponse response = openCVClient.sendBackNumberInformation(mockUserId, mockBackNumber, mockMultipartFile);
 
         //then
-        assertThat(response.isSuccess()).isTrue();
+
         assertThat(response.getStatus()).isEqualTo(200);
 
         /**
@@ -223,6 +227,6 @@ class OpenCVClientTest {
     }
 
     private void setupOpenCVClient() {
-        openCVClient = new OpenCVClientImpl(generateFileName, openCVProperties);
+        openCVClient = new OpenCVClientImpl(generateFileName, openCVProperties,openCVValidator);
     }
 }
