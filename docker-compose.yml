@@ -183,7 +183,20 @@ services:
       networks:
         - spring-network
       restart: always
-
+  #Nginx
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    ports:
+      - "443:443"   # SSL 포트 개방
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d               
+      - /etc/letsencrypt:/etc/letsencrypt:ro           
+    depends_on:
+      - shootpointer
+    networks:
+      - spring-network
 
 networks:
   spring-network:
