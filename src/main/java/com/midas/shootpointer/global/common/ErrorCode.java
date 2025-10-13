@@ -79,9 +79,9 @@ public enum ErrorCode {
     INTERNAL_ERROR_OF_PYTHON_SERVER(40501,HttpStatus.BAD_REQUEST,"파이썬 서버 내부 오류입니다."),
 
     //5XX
-    FAILED_SEND_IMAGE_TO_OPENCV(20501,HttpStatus.GATEWAY_TIMEOUT,"OpenCV 등 번호 이미지 전송 실패"),
+    FAILED_SEND_IMAGE_TO_OPENCV(20501,HttpStatus.GATEWAY_TIMEOUT,"OpenCV 등 번호 이미지 전송을 실패했습니다."),
     FAILED_POST_API_RETRY_TO_OPENCV(20502, HttpStatus.REQUEST_TIMEOUT, "OpenCV 파일 전송 횟수가 초과했습니다."),
-
+    NOT_MATCHED_BACK_NUMBER(20503,HttpStatus.NOT_FOUND,"등 번호를 인식할 수 없습니다. 새로운 사진을 전송해주세요."),
 
     // 502(backnumber - service) part
     //* TODO : 현재 멤버 관련 로직이 Kakao 밖에 없어서 Member 도메인에 예외처리가 처음 생긴게 BackNumber 도메인임. << 이 부분은 추후에 Member 도메인에 로직 생기면 바꿀게요~
