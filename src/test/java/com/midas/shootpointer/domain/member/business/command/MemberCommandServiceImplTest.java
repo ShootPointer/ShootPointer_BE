@@ -102,11 +102,12 @@ class MemberCommandServiceImplTest {
 	@Test
 	@DisplayName("회원의 하이라이트 영상 수집 상태를 true로 변환합니다. - MemberManager-agree메서드가 동작하는지 검증합니다.")
 	void agree(){
-		//given
-
 		//when
+		UUID memberId=UUID.randomUUID();
+		when(memberManager.agree(testMember)).thenReturn(memberId);
+		memberCommandService.agree(testMember);
 
 		//then
-
+		verify(memberManager,times(1)).agree(testMember);
 	}
 }
