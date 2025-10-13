@@ -191,7 +191,7 @@ services:
     ports:
       - "443:443"   # SSL 포트 개방
     volumes:
-      - /var/jenkins_home/workspace/shoot-pointer/nginx/conf.d:/etc/nginx/conf.d
+      - /home/opendocs/jenkins/workspace/shoot-pointer/nginx/conf.d:/etc/nginx/conf.d
       - /etc/letsencrypt:/etc/letsencrypt:ro           
     depends_on:
       - shootpointer
