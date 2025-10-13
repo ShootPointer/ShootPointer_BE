@@ -48,7 +48,9 @@ public enum ErrorCode {
     INVALID_FILE_TYPE(20203,HttpStatus.BAD_REQUEST,"지원하지 않는 파일 형식입니다."),
     FILE_SIZE_EXCEEDED(20204,HttpStatus.BAD_REQUEST,"파일의 크기가 초과했습니다.(제한 : 100MB)"),
     FILE_UPLOAD_FAILED(20205,HttpStatus.BAD_REQUEST,"파일 업로드에 실패했습니다."),
-  
+
+    //300(member - entity) part
+    IS_AGGREGATION_TRUE(30001,HttpStatus.BAD_REQUEST,"이미 하이라이트 영상 정보 수집에 동의했습니다."),
     // 302(member - service) part
     INVALID_KAKAO_AUTH_CODE(30201, HttpStatus.BAD_REQUEST, "카카오 토큰 요청 실패"),
     KAKAO_TOKEN_REQUEST_FAIL(30202, HttpStatus.BAD_REQUEST, "카카오 토큰 응답 파싱 실패"),
