@@ -89,14 +89,15 @@ class MemberCommandControllerIntegrationTest {
 		
 		verify(memberCommandService, times(1)).deleteMember(any(Member.class));
 	}
-	@WithMockCustomMember
+
+
 	@Test
 	@DisplayName("회원 탈퇴 - 인증되지 않은 사용자")
 	void deleteMember_Unauthorized() throws Exception {
 		// when & then
 		mockMvc.perform(delete("/kakao"))
 			.andDo(print())
-			.andExpect(status().is2xxSuccessful());
+			.andExpect(status().isUnauthorized());
 		
 		verify(memberCommandService, never()).deleteMember(any(Member.class));
 	}
