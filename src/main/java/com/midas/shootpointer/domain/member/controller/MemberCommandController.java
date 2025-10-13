@@ -55,10 +55,4 @@ public class MemberCommandController {
 			.username(currentMember.getUsername())
 			.build();
     }
-
-    @PutMapping("/highlight/agree")
-    public ResponseEntity<ApiResponse<UUID>> agree(){
-        Member currentMember=SecurityUtils.getCurrentMember();
-        return ResponseEntity.ok(ApiResponse.ok(memberCommandService.agree(currentMember)));
-    }
 }
