@@ -69,4 +69,14 @@ public class HighlightEntity extends BaseEntity {
         }
         this.isSelected=true;
     }
+
+    //2점 슛 계산
+    public int totalTwoPoint(){
+        return 2 * this.twoPointCount;
+    }
+
+    //3점 슛 계산
+    public int totalThreePoint(){
+        return 3 * this.threePointCount;
+    }
 }
