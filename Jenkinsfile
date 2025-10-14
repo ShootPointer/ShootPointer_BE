@@ -9,7 +9,7 @@ pipeline {
         )
     }
     tools {
-        jdk 'openjdk-17-jdk'
+        jdk 'openjdk-21-jdk'
     }
 
     environment {
