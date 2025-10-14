@@ -156,12 +156,12 @@ services:
       xpack.security.enabled: "false"
       logger.level: "debug"
       ES_JAVA_OPTS: "-Xms2g -Xmx2g -Xlog:gc*,gc+age=trace,safepoint:file=/usr/share/elasticsearch/logs/gc.log:utctime,pid,tags:filecount=32,filesize=64m"
-      entrypoint: >
+    entrypoint: >
       bash -c "
-      mkdir -p /usr/share/elasticsearch/logs &&
-      chown -R 1000:1000 /usr/share/elasticsearch/logs &&
-      chmod -R 775 /usr/share/elasticsearch/logs &&
-      /usr/local/bin/docker-entrypoint.sh eswrapper
+        mkdir -p /usr/share/elasticsearch/logs &&
+        chown -R 1000:1000 /usr/share/elasticsearch/logs &&
+        chmod -R 775 /usr/share/elasticsearch/logs &&
+        /usr/local/bin/docker-entrypoint.sh eswrapper
       "
     ports:
       - "9200:9200"
@@ -178,6 +178,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+
 
   # Kibana
   kibana:
