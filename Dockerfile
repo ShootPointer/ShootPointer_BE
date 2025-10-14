@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17.0.11-jdk
+FROM openjdk:17-slim
 
 ARG JAR_FILE=build/libs/shootpointer-0.0.1-SNAPSHOT.jar
 
