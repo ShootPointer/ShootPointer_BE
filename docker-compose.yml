@@ -155,7 +155,14 @@ services:
       discovery.type: "single-node"
       xpack.security.enabled: "false"
       logger.level: "debug"
-      ES_JAVA_OPTS: "-Xms2g -Xmx2g -Xlog:gc=off"
+      ES_JAVA_OPTS: "-Xms2g -Xmx2g -Xlog:gc*,gc+age=trace,safepoint:file=/usr/share/elasticsearch/logs/gc.log:utctime,pid,tags:filecount=32,filesize=64m"
+      entrypoint: >
+      bash -c "
+      mkdir -p /usr/share/elasticsearch/logs &&
+      chown -R 1000:1000 /usr/share/elasticsearch/logs &&
+      chmod -R 775 /usr/share/elasticsearch/logs &&
+      /usr/local/bin/docker-entrypoint.sh eswrapper
+      "
     ports:
       - "9200:9200"
       - "9300:9300"
