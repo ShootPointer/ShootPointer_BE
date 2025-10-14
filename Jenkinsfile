@@ -15,6 +15,7 @@ pipeline {
     environment {
         COMPOSE_FILE = 'docker-compose.yml'
         SPRING_PROFILES_ACTIVE = "${params.PROFILE}"
+        JAVA_TOOL_OPTIONS = "-Dmanagement.metrics.enable.system=false"
     }
 
     stages {
