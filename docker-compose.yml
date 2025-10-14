@@ -151,18 +151,19 @@ services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.6.0
     container_name: elasticsearch
-    user: "0:0"
+    user: "0"
     environment:
       discovery.type: "single-node"
       xpack.security.enabled: "false"
       logger.level: "debug"
-      ES_JAVA_OPTS: "-Xms2g -Xmx2g -Xlog:gc*,gc+age=trace,safepoint:file=/usr/share/elasticsearch/logs/gc.log:utctime,pid,tags:filecount=32,filesize=64m"
+      ES_JAVA_OPTS: "-Xms2g -Xmx2g"
     entrypoint: >
       bash -c "
         mkdir -p /usr/share/elasticsearch/logs &&
-        chown -R 1000:1000 /usr/share/elasticsearch/logs &&
         chmod -R 775 /usr/share/elasticsearch/logs &&
-        /usr/local/bin/docker-entrypoint.sh eswrapper
+        chown -R 1000:1000 /usr/share/elasticsearch &&
+        echo 'Fixed log permissions, starting Elasticsearch as elasticsearch user...' &&
+        su -s /bin/bash elasticsearch -c '/usr/local/bin/docker-entrypoint.sh eswrapper'
       "
     ports:
       - "9200:9200"
