@@ -1,3 +1,4 @@
+version: "3.9"
 
 services:
   # PostgreSQL
@@ -5,10 +6,10 @@ services:
     image: postgres:17
     container_name: postgres
     environment:
-      POSTGRES_DB: shootpointer
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: rlaehdus00
-      TZ: Asia/Seoul
+      POSTGRES_DB: "shootpointer"
+      POSTGRES_USER: "myuser"
+      POSTGRES_PASSWORD: "rlaehdus00"
+      TZ: "Asia/Seoul"
     ports:
       - "5432:5432"
     volumes:
@@ -28,7 +29,7 @@ services:
     image: redis:7
     container_name: redis
     ports:
-      - "6379:6379"  # 포트 통일
+      - "6379:6379"
     volumes:
       - redis-data:/data
     networks:
@@ -40,13 +41,14 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-  #pgadmin     
+
+  # PgAdmin
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: "admin@example.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
     ports:
       - "3305:80"
     networks:
@@ -58,9 +60,9 @@ services:
     image: mongo:8
     container_name: mongo
     environment:
-      MONGO_INITDB_DATABASE: shootpointer
+      MONGO_INITDB_DATABASE: "shootpointer"
     ports:
-      - "27017:27017"  # 포트 통일
+      - "27017:27017"
     volumes:
       - mongo-data:/data/db
       - mongo-config:/data/configdb
@@ -91,46 +93,48 @@ services:
       elasticsearch:
         condition: service_healthy
     environment:
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE}"
 
       # 서버 포트
-      SERVER_PORT: 9000
+      SERVER_PORT: "9000"
       
-      # 데이터베이스 - 연결 문자열 단순화
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shootpointer
-      SPRING_DATASOURCE_USERNAME: myuser
-      SPRING_DATASOURCE_PASSWORD: rlaehdus00
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      # 데이터베이스 설정
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/shootpointer"
+      SPRING_DATASOURCE_USERNAME: "myuser"
+      SPRING_DATASOURCE_PASSWORD: "rlaehdus00"
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
       
       # JPA 설정
-      SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
-      SPRING_JPA_SHOW_SQL: true
-      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: true
+      SPRING_JPA_HIBERNATE_DDL_AUTO: "create-drop"
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_DATABASE_PLATFORM: "org.hibernate.dialect.PostgreSQLDialect"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: "org.hibernate.dialect.PostgreSQLDialect"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
       
-      # 연결 풀 설정 추가
-      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: 20
-      SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: 5
-      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: 30000
-      SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT: 600000
-      SPRING_DATASOURCE_HIKARI_MAX_LIFETIME: 1800000
+      # Hikari 연결 풀
+      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: "20"
+      SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: "5"
+      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: "30000"
+      SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT: "600000"
+      SPRING_DATASOURCE_HIKARI_MAX_LIFETIME: "1800000"
       
       # Redis
-      SPRING_REDIS_HOST: redis
-      SPRING_REDIS_PORT: 6379
+      SPRING_REDIS_HOST: "redis"
+      SPRING_REDIS_PORT: "6379"
       
       # MongoDB
-      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/shootpointer
+      SPRING_DATA_MONGODB_URI: "mongodb://mongo:27017/shootpointer"
       
-      # 타임존 설정
-      TZ: Asia/Seoul
+      # 타임존
+      TZ: "Asia/Seoul"
       
-      # 로깅 레벨 조정
-      LOGGING_LEVEL_ORG_HIBERNATE_SQL: DEBUG
-      LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: TRACE
+      # 로깅 레벨
+      LOGGING_LEVEL_ORG_HIBERNATE_SQL: "DEBUG"
+      LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: "TRACE"
 
-      SPRING_ELASTICSEARCH_URIS: http://elasticsearch:9200
+      # Elasticsearch
+      SPRING_ELASTICSEARCH_URIS: "http://elasticsearch:9200"
+
     ports:
       - "9000:9000"
     networks:
@@ -143,18 +147,15 @@ services:
       retries: 3
       start_period: 60s
 
-  ## ElasticSearch
+  # Elasticsearch
   elasticsearch:
-    build:
-      context: .
-      dockerfile: Dockerfile.elesticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:8.6.0
     container_name: elasticsearch
     environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - logger.level=debug
-      - ES_JAVA_OPTS=-Xms2g -Xmx2g -Xlog:gc=off
+      discovery.type: "single-node"
+      xpack.security.enabled: "false"
+      logger.level: "debug"
+      ES_JAVA_OPTS: "-Xms2g -Xmx2g -Xlog:gc=off"
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -165,34 +166,36 @@ services:
       - spring-network
     restart: always
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9200/_cluster/health" ]
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
 
+  # Kibana
   kibana:
-      image: docker.elastic.co/kibana/kibana:8.6.0
-      container_name: kibana
-      environment:
-        - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      ports:
-        - "5601:5601"
-      depends_on:
-        - elasticsearch
-      networks:
-        - spring-network
-      restart: always
-  #Nginx
+    image: docker.elastic.co/kibana/kibana:8.6.0
+    container_name: kibana
+    environment:
+      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - spring-network
+    restart: always
+
+  # Nginx
   nginx:
     image: nginx:latest
     container_name: nginx
     restart: always
     ports:
-      - "443:443"   # SSL 포트 개방
+      - "443:443"
     volumes:
       - /home/opendocs/jenkins/workspace/shoot-pointer/nginx/conf.d:/etc/nginx/conf.d
-      - /etc/letsencrypt:/etc/letsencrypt:ro           
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - shootpointer
     networks:
