@@ -149,6 +149,9 @@ services:
 
   # Elasticsearch
   elasticsearch:
+    build:
+      context: .
+      dockerfile: Dockerfile.elesticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:8.6.0
     container_name: elasticsearch
     user: "0"
