@@ -107,6 +107,11 @@ dependencies {
 	//MongoDB
 	implementation ('org.springframework.boot:spring-boot-starter-data-mongodb')
 
+	//spring-batch
+	implementation 'org.springframework.batch:spring-batch-core'
+	testImplementation 'org.springframework.batch:spring-batch-test'
+
+
 }
 
 tasks.named('test') {
