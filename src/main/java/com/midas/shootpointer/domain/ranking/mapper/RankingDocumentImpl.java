@@ -1,18 +1,21 @@
 package com.midas.shootpointer.domain.ranking.mapper;
 
-import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
-import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
+import com.midas.shootpointer.batch.dto.HighlightWithMemberDto;
+import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 public class RankingDocumentImpl implements RankingDocumentMapper{
 
     @Override
-    public RankingDocument entityToDoc(HighlightEntity entity, LocalDateTime createdAt) {
-        return RankingDocument.builder()
-                .createdAt(createdAt)
-
+    public RankingEntry dtoToEntity(HighlightWithMemberDto dto) {
+        return RankingEntry.builder()
+                .memberId(dto.getMemberId())
+                .memberName(dto.getMemberName())
+                .rank(dto.getRank())
+                .threeScore(dto.getThreePointTotal())
+                .twoScore(dto.getTwoPointTotal())
+                .totalScore(dto.getTotalScore())
+                .build();
     }
 }

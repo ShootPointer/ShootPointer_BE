@@ -30,13 +30,13 @@ public class RankingReader extends JdbcPagingItemReader<HighlightWithMemberDto> 
     @Bean
     @StepScope
     public JdbcPagingItemReader<HighlightWithMemberDto> highlightReader(
-            @Value("#{jobParameters['rankingType']}")RankingType rankingType
+            @Value("#{jobParameters['rankingType']}")RankingType rankingType,
+            @Value("#{jobParameters['end']}")LocalDateTime end
             ){
         /**
-         * 기간 계산 - weekly / monthly
+         * 기간 계산 - weekly / monthly / daily
          */
-        LocalDateTime end=LocalDateTime.now(); //Job 실행 시점 기준
-        LocalDateTime begin=LocalDateTime.now();
+        LocalDateTime begin=end;
 
         switch (rankingType){
             case DAILY -> begin=end.minusDays(1);
@@ -49,7 +49,11 @@ public class RankingReader extends JdbcPagingItemReader<HighlightWithMemberDto> 
         rankingReader.setName("rankingReader");
         rankingReader.setDataSource(dataSource);
         rankingReader.setFetchSize(FETCH_SIZE);
-        rankingReader.setQueryProvider(pagingQueryProvider(dataSource,begin,end));
+        rankingReader.setQueryProvider(pagingQueryProvider());
+        rankingReader.setParameterValues(Map.of(
+                "begin",begin,
+                "end",end
+        ));
 
         //highlight_with_member mapping
         rankingReader.setRowMapper(((rs, rowNum) -> HighlightWithMemberDto.builder()
@@ -68,7 +72,7 @@ public class RankingReader extends JdbcPagingItemReader<HighlightWithMemberDto> 
     /**
      * 커스텀 PagingQueryProvider
      */
-    private PagingQueryProvider pagingQueryProvider(DataSource dataSource, LocalDateTime begin,LocalDateTime end){
+    private PagingQueryProvider pagingQueryProvider(){
         PostgresPagingQueryProvider queryProvider=new PostgresPagingQueryProvider();
         //Highlight Member 데이터 조회
 

@@ -29,9 +29,6 @@ public class RankingDocument {
     //집계 기준 날짜 - 시작
     private LocalDateTime periodBegin;
 
-    @Indexed
-    //집계 기준 날짜 - 끝
-    private LocalDateTime periodEnd;
 
     private List<RankingEntry> top10;
 
@@ -42,10 +39,9 @@ public class RankingDocument {
     /**
      * Builder pattern
      */
-    public static RankingDocument of(List<RankingEntry> entries,LocalDateTime periodBegin,LocalDateTime periodEnd,RankingType type){
+    public static RankingDocument of(List<RankingEntry> entries,LocalDateTime periodBegin,RankingType type){
         return RankingDocument.builder()
                 .periodBegin(periodBegin)
-                .periodEnd(periodEnd)
                 .top10(entries)
                 .type(type)
                 .typePeriodKey(generatePeriodKey(type,periodBegin))
@@ -67,5 +63,6 @@ public class RankingDocument {
                 return String.format("MONTHLY_%d-%02d",begin.getYear(),begin.getMonthValue());
             }
         }
+        return String.format("DAY_%s",begin.toLocalDate());
     }
 }
