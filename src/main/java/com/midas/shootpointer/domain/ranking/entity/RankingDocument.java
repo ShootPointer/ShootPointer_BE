@@ -33,5 +33,4 @@ public class RankingDocument {
 
     private List<RankingEntry> top10;
 
-    private LocalDateTime createdAt;
 }

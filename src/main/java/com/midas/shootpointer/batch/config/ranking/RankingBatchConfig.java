@@ -2,6 +2,7 @@ package com.midas.shootpointer.batch.config.ranking;
 
 import com.midas.shootpointer.batch.processor.ranking.RankingProcessor;
 import com.midas.shootpointer.batch.reader.ranking.RankingReader;
+import com.midas.shootpointer.batch.validator.RankingValidator;
 import com.midas.shootpointer.batch.writer.ranking.RankingWriter;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ public class RankingBatchConfig extends DefaultBatchConfiguration {
     private final RankingReader rankingItemReader;
     private final RankingProcessor rankingProcessor;
     private final RankingWriter rankingWriter;
+    private final RankingValidator validator;
 
     /**
      * Page Size
@@ -65,6 +67,7 @@ public class RankingBatchConfig extends DefaultBatchConfiguration {
     @Bean
     public Job weeklyRankingJob(){
         return new JobBuilder("weeklyRankingJob",jobRepository)
+                .validator(validator)
                 .start(weeklyRankingStep())
                 .build();
     }
@@ -72,6 +75,7 @@ public class RankingBatchConfig extends DefaultBatchConfiguration {
     @Bean
     public Job monthlyRankingJob(){
         return new JobBuilder("monthlyRankingJob",jobRepository)
+                .validator(validator)
                 .start(monthlyRankingStep())
                 .build();
     }

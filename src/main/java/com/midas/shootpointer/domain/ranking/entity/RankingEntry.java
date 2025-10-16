@@ -1,9 +1,6 @@
 package com.midas.shootpointer.domain.ranking.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -12,10 +9,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RankingEntry {
-    private int rank;
+    @Setter
+    private Integer rank;
     private UUID memberId;
     private String memberName;
-    private int totalScore;
-    private int twoScore;
-    private int threeScore;
+    private Integer totalScore;
+    private Integer twoScore;
+    private Integer threeScore;
 }
