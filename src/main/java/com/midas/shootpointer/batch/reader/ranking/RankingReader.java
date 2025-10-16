@@ -31,11 +31,12 @@ public class RankingReader extends JdbcPagingItemReader<HighlightWithMemberDto> 
     @StepScope
     public JdbcPagingItemReader<HighlightWithMemberDto> highlightReader(
             @Value("#{jobParameters['rankingType']}")RankingType rankingType,
-            @Value("#{jobParameters['end']}")LocalDateTime end
+            @Value("#{jobParameters['end']}")String endStr
             ){
         /**
          * 기간 계산 - weekly / monthly / daily
          */
+        LocalDateTime end=LocalDateTime.parse(endStr);
         LocalDateTime begin=end;
 
         switch (rankingType){
