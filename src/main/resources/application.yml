@@ -103,6 +103,7 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: ${LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER:TRACE}
     org.springframework.data.mongodb: DEBUG
     redis.clients.jedis: DEBUG
+    org.springframework.batch.item.database: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 

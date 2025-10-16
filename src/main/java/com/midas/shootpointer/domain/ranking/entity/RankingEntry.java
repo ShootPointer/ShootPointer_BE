@@ -15,5 +15,7 @@ public class RankingEntry {
     private int rank;
     private UUID memberId;
     private String memberName;
-    private int score;
+    private int totalScore;
+    private int twoScore;
+    private int threeScore;
 }
