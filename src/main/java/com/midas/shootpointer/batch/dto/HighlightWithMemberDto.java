@@ -14,9 +14,6 @@ public class HighlightWithMemberDto {
     /**
      * 하이라이트 필드
      */
-    private UUID highlightId;
-    private String highlightUrl;
-    private UUID highlightKey;
     private Integer twoPointTotal;
     private Integer threePointTotal;
     private Integer totalScore;
@@ -26,4 +23,9 @@ public class HighlightWithMemberDto {
      */
     private UUID memberId;
     private String memberName;
+
+    /**
+     * rank
+     */
+    private Integer rank;
 }

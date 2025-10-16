@@ -5,5 +5,6 @@ import lombok.Getter;
 @Getter
 public enum RankingType {
     MONTHLY,
-    WEEKLY
+    WEEKLY,
+    DAILY
 }

@@ -38,10 +38,10 @@ public class RankingReader extends JdbcPagingItemReader<HighlightWithMemberDto> 
         LocalDateTime end=LocalDateTime.now(); //Job 실행 시점 기준
         LocalDateTime begin=LocalDateTime.now();
 
-        if (rankingType.equals(RankingType.WEEKLY)){
-            begin=end.minusDays(7);
-        }else if (rankingType.equals(RankingType.MONTHLY)){
-            begin=end.minusMonths(1);
+        switch (rankingType){
+            case DAILY -> begin=end.minusDays(1);
+            case WEEKLY -> begin=end.minusDays(7);
+            case MONTHLY -> begin=end.minusMonths(1);
         }
 
         JdbcPagingItemReader<HighlightWithMemberDto> rankingReader=new JdbcPagingItemReader<>();
@@ -53,14 +53,12 @@ public class RankingReader extends JdbcPagingItemReader<HighlightWithMemberDto> 
 
         //highlight_with_member mapping
         rankingReader.setRowMapper(((rs, rowNum) -> HighlightWithMemberDto.builder()
-                .highlightKey((UUID) rs.getObject("highlight_key"))
-                .highlightUrl(rs.getString("highlight_url"))
-                .highlightId((UUID) rs.getObject("highlight_id"))
                 .memberId((UUID) rs.getObject("member_id"))
                 .memberName(rs.getString("member_name"))
                 .threePointTotal(rs.getInt("three_point_total"))
                 .twoPointTotal(rs.getInt("two_point_total"))
                 .totalScore(rs.getInt("total_score"))
+                .rank(rs.getInt("rank"))
                 .build()
         ));
 
@@ -73,28 +71,35 @@ public class RankingReader extends JdbcPagingItemReader<HighlightWithMemberDto> 
     private PagingQueryProvider pagingQueryProvider(DataSource dataSource, LocalDateTime begin,LocalDateTime end){
         PostgresPagingQueryProvider queryProvider=new PostgresPagingQueryProvider();
         //Highlight Member 데이터 조회
+
+        //1. rank 집계 - with절
         queryProvider.setSelectClause("""
-            SELECT
-                h.highlight_id, h.highlight_url, h.highlight_key,
-                m.is_aggregation_agreed, m.member_id, m.member_name,
-                SUM(h.two_point_count) as two_point_total,
-                SUM(h.three_point_count) as three_point_total,
-                (SUM(h.two_point_count) * 2 + SUM(h.three_point_count)) as total_score
-            """);
+            member_id,
+            member_name,
+            total_score,
+            two_point_total,
+            three_point_total,
+            DENSE_RANK() OVER (
+                ORDER BY total_score DESC, three_point_total DESC, two_point_total DESC
+            ) AS rank
+        """);
 
         queryProvider.setFromClause("""
-            FROM highlight h
-            JOIN member m ON h.member_id = m.member_id
-            """);
-
-        queryProvider.setWhereClause("""
-                WHERE m.is_aggregation_agreed = true AND h.is_selected = true
-                    AND h.created_at BETWEEN :begin AND :end
-                """);
-
-        queryProvider.setGroupClause("""
-                GROUP BY m.member_id
-                """);
+            FROM (
+                SELECT
+                    m.member_id,
+                    m.member_name,
+                    SUM(h.two_point_count * 2) AS two_point_total,
+                    SUM(h.three_point_count * 3) AS three_point_total,
+                    (SUM(h.two_point_count * 2) + SUM(h.three_point_count * 3)) AS total_score
+                FROM highlight h
+                JOIN member m ON h.member_id = m.member_id
+                WHERE m.is_aggregation_agreed = true
+                  AND h.is_selected = true
+                  AND h.created_at BETWEEN :begin AND :end
+                GROUP BY m.member_id, m.member_name
+            ) AS member_scores
+        """);
 
         /*
         * 내림차순 정렬
@@ -107,9 +112,6 @@ public class RankingReader extends JdbcPagingItemReader<HighlightWithMemberDto> 
                 "three_point_total",Order.DESCENDING,
                 "two_point_total",Order.DESCENDING
         ));
-
-        //Paging 정렬 - highlight_id 기준 오름차순
-        queryProvider.setSortKeys(Map.of("h.highlight_id", Order.ASCENDING));
 
         return queryProvider;
     }

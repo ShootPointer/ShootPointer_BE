@@ -10,20 +10,6 @@ import java.util.*;
 @Component
 public class RankingProcessor implements ItemProcessor<HighlightWithMemberDto, Map<UUID, RankingEntry>> {
 
-    private final Map<UUID,RankingEntry> rankingEntryMap=new TreeMap<>(new Comparator<UUID>() {
-        @Override
-        public int compare(UUID o1, UUID o2) {
-            //total score 정렬 - 내림차순
-            //three score 정렬 - 내림차순
-            if (Objects.equals(rankingEntryMap.get(o1).getTotalScore(), rankingEntryMap.get(o2).getTotalScore())){
-                return Integer.compare(rankingEntryMap.get(o2).getThreeScore(),rankingEntryMap.get(o1).getThreeScore());
-            }
-            return Integer.compare(rankingEntryMap.get(o2).getTotalScore(),rankingEntryMap.get(o1).getTotalScore());
-        }
-    });
-
-    private final int TWO=2;
-    private final int THREE=3;
 
     @Override
     public Map<UUID, RankingEntry> process(HighlightWithMemberDto item) {
