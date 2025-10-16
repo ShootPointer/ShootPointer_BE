@@ -32,9 +32,9 @@ public class CommentCommandController {
 	private final PostHelper postHelper;
 	
 	@PostMapping
-	public ResponseEntity<ApiResponse<Long>> create(@RequestBody CommentRequestDto requestDto) {
+	public ResponseEntity<ApiResponse<Long>> create(@RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 		
-		Member member = SecurityUtils.getCurrentMember();
+		Member member = customUserDetails.getMember();
 		
 		PostEntity postEntity = postHelper.findPostByPostId(requestDto.getPostId());
 		Comment comment = commentMapper.dtoToEntity(requestDto, member, postEntity);
