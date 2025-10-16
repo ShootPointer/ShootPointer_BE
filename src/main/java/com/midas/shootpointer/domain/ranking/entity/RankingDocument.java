@@ -1,6 +1,9 @@
 package com.midas.shootpointer.domain.ranking.entity;
 
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +19,8 @@ import java.util.List;
 @Builder
 public class RankingDocument {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false,unique = true)
     private String id;
 
     private RankingType type;

@@ -11,14 +11,18 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class HighlightWithMemberDto {
+    /**
+     * 하이라이트 필드
+     */
     private UUID highlightId;
     private String highlightUrl;
     private UUID highlightKey;
-    private Boolean isSelected;
     private Integer twoPointCount;
     private Integer threePointCount;
 
+    /**
+     * 멤버 필드
+     */
     private UUID memberId;
     private String memberName;
-    private Boolean agreeToAggregation;
 }
