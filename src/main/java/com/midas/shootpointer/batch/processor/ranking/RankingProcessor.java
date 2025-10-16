@@ -1,6 +1,7 @@
 package com.midas.shootpointer.batch.processor.ranking;
 
 import com.midas.shootpointer.batch.dto.HighlightWithMemberDto;
+import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
@@ -8,17 +9,11 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class RankingProcessor implements ItemProcessor<HighlightWithMemberDto, Map<UUID, RankingEntry>> {
+public class RankingProcessor implements ItemProcessor<HighlightWithMemberDto, RankingDocument>> {
 
 
     @Override
     public Map<UUID, RankingEntry> process(HighlightWithMemberDto item) {
-        /**
-         * 1. 점수 계산
-         */
-        int twoPointTotal=item.getTwoPointCount() * TWO;
-        int threePointTotal=item.getThreePointCount() * THREE;
-        int totalPoint=twoPointTotal+threePointTotal;
 
         /**
          * 2. RankingEntry 생성
