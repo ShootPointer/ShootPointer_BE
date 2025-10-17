@@ -14,7 +14,7 @@ pipeline {
 
     environment {
         COMPOSE_FILE = 'docker-compose.yml'
-        SPRING_PROFILES_ACTIVE = "${params.PROFILE}"
+        SPRING_PROFILES_ACTIVE = "${params.PROFILE ?: 'es,prod,test-real-data'}"
         JAVA_TOOL_OPTIONS = "-Dmanagement.metrics.enable.system=false"
     }
 

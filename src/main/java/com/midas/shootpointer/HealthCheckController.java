@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -23,7 +25,7 @@ public class HealthCheckController {
     @GetMapping("/test-member")
     public ResponseEntity<String> getJWT(){
         Member member=Member.builder()
-                .email("test@naver.com")
+                .email(UUID.randomUUID() + "test@naver.com")
                 .username("test")
                 .build();
         Member savedMember=memberQueryRepository.save(member);
