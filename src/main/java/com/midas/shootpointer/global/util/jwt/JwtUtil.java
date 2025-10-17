@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -18,6 +19,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
+@Slf4j
 @Component
 public class JwtUtil {
 
@@ -37,12 +39,11 @@ public class JwtUtil {
     @CustomLog("== JWT 생성 ==")
     public String createToken(UUID memberId, String email, String nickname) {
         try {
-            String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
             String encodedNickname = Base64.getEncoder().encodeToString(nickname.getBytes(StandardCharsets.UTF_8));
 
             return Jwts.builder()
                     .setSubject(memberId.toString())
-                    .claim("email", encodedEmail)
+                    .claim("email", email)
                     .claim("nickname", encodedNickname)
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + ACCESS_EXP))
@@ -71,10 +72,9 @@ public class JwtUtil {
     @CustomLog("== 리프레시 토큰 생성 ==")
     public String createRefreshToken(String email) {
         try {
-            String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
             return Jwts.builder()
                     .setSubject(UUID.randomUUID().toString())
-                    .claim("email", encodedEmail)
+                    .claim("email", email)
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + REFRESH_EXP))
                     .signWith(key, SignatureAlgorithm.HS256)
@@ -86,6 +86,7 @@ public class JwtUtil {
     
     public String resolveToken(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");
+
         if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {
             return bearer.substring(7);
         }
@@ -98,14 +99,12 @@ public class JwtUtil {
 
     public String getEmailFromToken(String token) {
         Claims claims = parseToken(token);
-        String encodedEmail = claims.get("email", String.class);
-        return decodeBase64(encodedEmail);
+        return claims.get("email", String.class);
     }
 
     public String getNicknameFromToken(String token) {
         Claims claims = parseToken(token);
-        String encodedNickname = claims.get("nickname", String.class);
-        return decodeBase64(encodedNickname);
+        return claims.get("nickname", String.class);
     }
 
     public UUID getMemberId(String token) {
