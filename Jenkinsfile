@@ -5,7 +5,7 @@ pipeline {
         choice(
             name: 'PROFILE',
             choices: ['dev', 'testdata', 'prod','es,prod,test-real-data'],
-            description: 'Select Spring Profile for deployment'
+            description: 'Select Spring Profile for deployment',
             defaultValue: 'es,prod,test-real-data'
         )
     }
