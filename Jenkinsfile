@@ -122,6 +122,9 @@ pipeline {
                 sh 'docker system prune -a -f'
                 sh 'SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE docker-compose up -d --build'
             }
+            environment {
+                JAVA_TOOL_OPTIONS = "-Dorg.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL=86400"
+            }
             post {
                 success { sh 'echo "✅ Successfully Deployed with Docker Compose"' }
                 failure { sh 'echo "❌ Failed to Deploy with Docker Compose"' }
