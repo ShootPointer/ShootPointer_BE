@@ -39,12 +39,10 @@ public class JwtUtil {
     @CustomLog("== JWT 생성 ==")
     public String createToken(UUID memberId, String email, String nickname) {
         try {
-            String encodedNickname = Base64.getEncoder().encodeToString(nickname.getBytes(StandardCharsets.UTF_8));
-
             return Jwts.builder()
                     .setSubject(memberId.toString())
                     .claim("email", email)
-                    .claim("nickname", encodedNickname)
+                    .claim("nickname", nickname)
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + ACCESS_EXP))
                     .signWith(key, SignatureAlgorithm.HS256)

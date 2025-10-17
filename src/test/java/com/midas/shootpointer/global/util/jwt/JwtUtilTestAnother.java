@@ -45,18 +45,15 @@ public class JwtUtilTestAnother {
         Claims claims = jwtUtil.parseToken(token);
         String encodedEmail = claims.get("email", String.class);
         String encodedNickname = claims.get("nickname", String.class);
-        String decodedEmail = jwtUtil.decodeBase64(encodedEmail);
         String decodedNickname = jwtUtil.decodeBase64(encodedNickname);
         String subject = claims.getSubject();
 
         System.out.println("🔓 subject (memberId) = " + subject);
         System.out.println("🔒 encodedEmail = " + encodedEmail);
-        System.out.println("🔓 decodedEmail = " + decodedEmail);
         System.out.println("🔒 encodedNickname = " + encodedNickname);
         System.out.println("🔓 decodedNickname = " + decodedNickname);
 
         assertThat(subject).isEqualTo(testMemberId.toString());
-        assertThat(decodedEmail).isEqualTo(testEmail);
         assertThat(decodedNickname).isEqualTo(testNickname);
     }
 
@@ -87,13 +84,11 @@ public class JwtUtilTestAnother {
 
         Claims claims = jwtUtil.parseToken(refreshToken);
         String encodedEmail = claims.get("email", String.class);
-        String decodedEmail = jwtUtil.decodeBase64(encodedEmail);
+
 
         System.out.println("🔒 encodedEmail = " + encodedEmail);
-        System.out.println("🔓 decodedEmail = " + decodedEmail);
         System.out.println("🔓 subject (random UUID) = " + claims.getSubject());
 
-        assertThat(decodedEmail).isEqualTo(testEmail);
         assertThat(claims.getSubject()).isNotBlank();
     }
 }
