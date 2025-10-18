@@ -5,6 +5,7 @@ import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
+import org.springframework.batch.item.database.Order;
 import org.springframework.batch.item.database.PagingQueryProvider;
 import org.springframework.batch.item.database.support.PostgresPagingQueryProvider;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,8 +54,8 @@ public class RankingReader{
         rankingReader.setFetchSize(FETCH_SIZE);
         rankingReader.setQueryProvider(pagingQueryProvider());
         rankingReader.setParameterValues(Map.of(
-                "begin",begin,
-                "end",end
+                "end",end,
+                "begin",begin
         ));
 
         //highlight_with_member mapping
@@ -88,14 +89,15 @@ public class RankingReader{
                     m.member_name,
                     SUM(h.two_point_count * 2) AS two_point_total,
                     SUM(h.three_point_count * 3) AS three_point_total,
-                    (SUM(h.two_point_count * 2) + SUM(h.three_point_count * 3)) AS total_score
+                    (SUM(h.two_point_count * 2) + SUM(h.three_point_count * 3)) AS total_score,
+                    MAX(h.created_at) AS max_created_at
                 """);
 
         queryProvider.setFromClause("""
                 FROM
                     highlight AS h
                 JOIN
-                    member AS m ON h.member_id = h.member_id
+                    member AS m ON m.member_id = h.member_id
                 """);
 
         queryProvider.setWhereClause("""
@@ -108,6 +110,8 @@ public class RankingReader{
         queryProvider.setGroupClause("""
                 GROUP BY m.member_id, m.member_name
                 """);
+
+        queryProvider.setSortKeys(Map.of("max_created_at", Order.DESCENDING));
 
         return queryProvider;
     }

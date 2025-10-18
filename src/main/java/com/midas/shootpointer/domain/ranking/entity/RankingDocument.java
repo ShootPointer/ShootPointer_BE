@@ -1,10 +1,10 @@
 package com.midas.shootpointer.domain.ranking.entity;
 
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,9 +17,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 public class RankingDocument {
     @Id
-    @Column(nullable = false,unique = true)
     private String id;
 
     @Indexed
@@ -54,15 +54,15 @@ public class RankingDocument {
     private static String generatePeriodKey(RankingType type,LocalDateTime begin){
         switch (type){
             case DAILY -> {
-                return String.format("DAILY_%s",begin.toLocalDate());
+                return String.format("DAILY_%s",begin.minusDays(1).toLocalDate());
             }
             case WEEKLY -> {
-                return String.format("WEEKLY_%d-W%d",begin.getYear(),begin.get(WeekFields.ISO.weekOfYear()));
+                return String.format("WEEKLY_%d-W%d",begin.minusDays(1).getYear(),begin.minusDays(1).get(WeekFields.ISO.weekOfYear()));
             }
             case MONTHLY -> {
-                return String.format("MONTHLY_%d-%02d",begin.getYear(),begin.getMonthValue());
+                return String.format("MONTHLY_%d-%02d",begin.minusDays(1).getYear(),begin.minusDays(1).getMonthValue());
             }
         }
-        return String.format("DAY_%s",begin.toLocalDate());
+        return String.format("DAY_%s",begin.minusDays(1).toLocalDate());
     }
 }

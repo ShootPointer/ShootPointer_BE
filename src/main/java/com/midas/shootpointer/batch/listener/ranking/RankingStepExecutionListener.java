@@ -22,11 +22,13 @@ public class RankingStepExecutionListener {
     @BeforeStep
     public void rankingBeforeStep(StepExecution stepExecution){
         log.info("""
+                 \n
                  =========== [START] 하이라이트 배치 Step ===========
                  Step name       :{} 
                  createdTime     :{}          
                  Job ExecutionId :{}
                  ================================================
+                 \n
                  """,
                 stepExecution.getStepName(),
                 stepExecution.getCreateTime(),
@@ -50,6 +52,7 @@ public class RankingStepExecutionListener {
                 -1L;
 
         log.info("""
+                 \n
                  =========== [END] 하이라이트 배치 Step ============
                  Step name      :{}
                  Status         :{}
@@ -61,6 +64,7 @@ public class RankingStepExecutionListener {
                  Exit Status    :{}
                  Duration(ms)   :{}
                  ================================================
+                 \n
                  """,
                 stepExecution.getStepName(),
                 stepExecution.getStatus(),

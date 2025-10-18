@@ -97,6 +97,7 @@ dependencies {
 	//test - log
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 
 	//redisson
 	implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'

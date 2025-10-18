@@ -1,21 +1,33 @@
 -- =======================
 -- Batch Test용 검증용 쿼리
 -- =======================
-
+WITH filtered AS (
+    SELECT
+        h.member_id,
+        m.member_name,
+        h.two_point_count,
+        h.three_point_count
+    FROM
+        highlight AS h
+            JOIN
+        member AS m ON h.member_id = m.member_id
+    WHERE
+        m.is_aggregation_agreed = TRUE
+      AND h.is_selected = TRUE
+      AND h.created_at BETWEEN ? AND ?
+)
 SELECT
-    m.member_name,
-    m.member_id,
-    SUM(h.two_point_count * 2) as two_total,
-    SUM(h.three_point_count * 3) as three_total,
-    SUM((h.two_point_count) * 2 +(h.three_point_count) * 3) as total
+    f.member_name,
+    f.member_id,
+    SUM(f.two_point_count * 2) AS two_total,
+    SUM(f.three_point_count * 3) AS three_total,
+    (SUM(f.two_point_count * 2) + SUM(f.three_point_count * 3)) AS total
 FROM
-    highlight as h
-JOIN
-    member as m
-    ON h.member_id = m.member_id
+    filtered AS f
 GROUP BY
-    m.member_name, m.member_id
+    f.member_name, f.member_id
 ORDER BY
-    total DESC, three_total DESC, two_total DESC
-LIMIT
-    10;
+    total DESC,
+    three_total DESC,
+    two_total DESC
+LIMIT 10;

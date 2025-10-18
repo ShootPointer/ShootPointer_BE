@@ -37,7 +37,7 @@ public class RankingBatchScheduler {
     /**
      * 매주 일요일 자정 랭킹 배치 살행
      */
-    @Scheduled(cron = "0 0 0 * * SUN",zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 0 * * MON",zone = "Asia/Seoul")
     public void batchWeeklyRankingJob(){
         runRankingJob(RankingType.WEEKLY);
     }

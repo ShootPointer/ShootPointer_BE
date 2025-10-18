@@ -3,10 +3,6 @@
 -- =======================
 
 -- 1.기존 데이터 삭제
-TRUNCATE TABLE highlight CASCADE;
-TRUNCATE TABLE member_back_number CASCADE;
-TRUNCATE TABLE back_number CASCADE;
-TRUNCATE TABLE member CASCADE;
 
 -- 2.유저 20명 생성
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
@@ -106,10 +102,8 @@ $$
     BEGIN
         FOR m IN SELECT member_id FROM member
             LOOP
-                SELECT * INTO b FROM back_number ORDER BY random() LIMIT 1;
-                FOR i IN 1..5
+                FOR i IN 1..50
                     LOOP
-
                         created_at := NOW() - (random() * INTERVAL '100 days');
 
                         INSERT INTO highlight(highlight_id,

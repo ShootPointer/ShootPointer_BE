@@ -20,16 +20,18 @@ public class RankingJobExecutionListener {
     @BeforeJob
     public void rankingBeforeJob(JobExecution jobExecution){
         log.info("""
+                 \n
                  =========== [START] 하이라이트 배치 Job ============
                  Job name   :{}
                  Job Id     :{}
                  start date :{}
                  parameter  :{}
                  ================================================
+                 \n
                 """,
                 jobExecution.getJobInstance().getJobName(),
                 jobExecution.getJobInstance().getInstanceId(),
-                jobExecution.getJobParameters().getDate("end"),
+                jobExecution.getJobParameters().getString("end"),
                 jobExecution.getJobParameters()
         );
     }
@@ -41,15 +43,17 @@ public class RankingJobExecutionListener {
     @AfterJob
     public void rankingAfterJob(JobExecution jobExecution){
         log.info("""
+                 \n
                  =========== [END] 하이라이트 배치 Job ============
                 Job name    :{} 
                 Job Id      :{} 
                 start date  :{}
                 ================================================
+                \n
                 """ ,
                 jobExecution.getJobInstance().getJobName(),
                 jobExecution.getJobInstance().getInstanceId(),
-                jobExecution.getJobParameters().getDate("end")
+                jobExecution.getJobParameters().getString("end")
         );
     }
 
