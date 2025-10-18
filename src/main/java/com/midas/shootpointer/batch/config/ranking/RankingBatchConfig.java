@@ -1,10 +1,13 @@
 package com.midas.shootpointer.batch.config.ranking;
 
+import com.midas.shootpointer.batch.dto.HighlightWithMemberDto;
+import com.midas.shootpointer.batch.listener.ranking.RankingJobExecutionListener;
+import com.midas.shootpointer.batch.listener.ranking.RankingStepExecutionListener;
 import com.midas.shootpointer.batch.processor.ranking.RankingProcessor;
 import com.midas.shootpointer.batch.reader.ranking.RankingReader;
 import com.midas.shootpointer.batch.validator.RankingValidator;
 import com.midas.shootpointer.batch.writer.ranking.RankingWriter;
-import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -65,40 +68,25 @@ public class RankingBatchConfig extends DefaultBatchConfiguration {
     }
 
     @Bean
-    public Job weeklyRankingJob(){
-        return new JobBuilder("weeklyRankingJob",jobRepository)
+    public Job rankingJob(){
+        return new JobBuilder("RankingJob",jobRepository)
+                .listener(new RankingJobExecutionListener())
                 .validator(validator)
-                .start(weeklyRankingStep())
+                .start(rankingStep())
                 .build();
     }
 
     @Bean
-    public Job monthlyRankingJob(){
-        return new JobBuilder("monthlyRankingJob",jobRepository)
-                .validator(validator)
-                .start(monthlyRankingStep())
-                .build();
-    }
-
-    @Bean
-    public Step weeklyRankingStep(){
-        return new StepBuilder("weeklyRankingStep",jobRepository)
-                .<HighlightEntity,HighlightEntity>chunk(PAGE_SIZE,transactionManager())
+    public Step rankingStep(){
+        return new StepBuilder("RankingStep",jobRepository)
+                .<HighlightWithMemberDto, RankingDocument>chunk(PAGE_SIZE,transactionManager())
+                .listener(new RankingStepExecutionListener())
                 .reader(rankingItemReader)
                 .processor(rankingProcessor)
                 .writer(rankingWriter)
                 .build();
     }
 
-    @Bean
-    public Step monthlyRankingStep(){
-        return new StepBuilder("monthlyRankingStep",jobRepository)
-                .<HighlightEntity,HighlightEntity>chunk(PAGE_SIZE,transactionManager())
-                .reader(rankingItemReader)
-                .processor(rankingProcessor)
-                .writer(rankingWriter)
-                .build();
-    }
 }
 
 
