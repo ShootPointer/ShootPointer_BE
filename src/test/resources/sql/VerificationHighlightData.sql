@@ -14,7 +14,8 @@ WITH filtered AS (
     WHERE
         m.is_aggregation_agreed = TRUE
       AND h.is_selected = TRUE
-      AND h.created_at BETWEEN ? AND ?
+      AND h.created_at >= ?
+      AND h.created_at <  ?
 )
 SELECT
     f.member_name,

@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
@@ -62,16 +61,27 @@ public class RankingBatchJobTest {
         jdbcTemplate.execute(sql);
     }
 
-    @AfterAll
+    @AfterEach
     void cleanUp() {
         //rankingRepository.deleteAll();
     }
 
     @Test
     @DisplayName("ranking job - weekly 통합 테스트를 진행합니다.")
-    @Rollback(false)
-    void rankingJobSuccessfully() throws Exception {
+    void rankingJobSuccessfully_WEEKLY() throws Exception {
         testRankingJob(RankingType.WEEKLY);
+    }
+
+    @Test
+    @DisplayName("ranking job - monthly 통합 테스트를 진행합니다.")
+    void rankingJobSuccessfully_MONTHLY() throws Exception {
+        testRankingJob(RankingType.MONTHLY);
+    }
+
+    @Test
+    @DisplayName("ranking job - daily 통합 테스트를 진행합니다.")
+    void rankingJobSuccessfully_DAILY() throws Exception {
+        testRankingJob(RankingType.DAILY);
     }
 
     /**
@@ -137,16 +147,17 @@ public class RankingBatchJobTest {
 
         System.out.println("=======================================");
         //MongoDB
-        String findKey = String.format(
-                "%s_%d-%s",
-                type.name(),
-                end.minusDays(1).getYear(),
-                type == RankingType.WEEKLY
-                        ? "W" + end.minusDays(1).get(java.time.temporal.WeekFields.ISO.weekOfYear())
-                        : (type == RankingType.MONTHLY
-                        ? "M" + end.minusDays(1).getMonthValue()
-                        : "D" + end.minusDays(1).getDayOfMonth())
-        );
+        String findKey = switch (type) {
+            case DAILY   -> String.format("DAILY_%s", start.toLocalDate());
+            case WEEKLY  -> String.format("WEEKLY_%d-W%d",
+                    start.getYear(),
+                    start.get(java.time.temporal.WeekFields.ISO.weekOfYear()));
+            case MONTHLY -> String.format("MONTHLY_%d-%02d",
+                    start.getYear(),
+                    start.getMonthValue());
+        };
+
+
         RankingDocument document= rankingRepository.findByTypePeriodKey(findKey)
                 .orElse(null);
         assertThat(document).isNotNull();
@@ -165,20 +176,20 @@ public class RankingBatchJobTest {
         }
     }
 
-    private LocalDateTime getPeriodStart(RankingType type,LocalDateTime end){
+    private LocalDateTime getPeriodEnd(RankingType type) {
+        LocalDateTime now = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         return switch (type){
-            case DAILY -> end.minusDays(1);
-            case WEEKLY -> end.minusDays(7);
-            case MONTHLY -> end.minusMonths(1);
+            case DAILY   -> now;                         // 오늘 00:00
+            case WEEKLY  -> now.with(DayOfWeek.MONDAY);  // 이번주 월 00:00
+            case MONTHLY -> now.withDayOfMonth(1);       // 이번달 1일 00:00
         };
     }
 
-    private LocalDateTime getPeriodEnd(RankingType type){
-        LocalDateTime now=LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+    private LocalDateTime getPeriodStart(RankingType type, LocalDateTime end) {
         return switch (type){
-            case DAILY -> now;
-            case WEEKLY -> now.with(DayOfWeek.MONDAY);
-            case MONTHLY -> now.withDayOfMonth(1);
+            case DAILY   -> end.minusDays(1);   // 어제 00:00
+            case WEEKLY  -> end.minusDays(7);   // 지난주 월 00:00
+            case MONTHLY -> end.minusMonths(1); // 지난달 1일 00:00
         };
     }
     /**

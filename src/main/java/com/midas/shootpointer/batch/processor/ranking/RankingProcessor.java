@@ -72,6 +72,12 @@ public class RankingProcessor implements ItemProcessor<HighlightWithMemberDto, R
             top10WithRank.add(entry);
         }
 
-        return RankingDocument.of(top10WithRank,end.minusDays(7),type);
+        LocalDateTime begin = switch (type) {
+            case DAILY   -> end.minusDays(1);      // 어제 00:00
+            case WEEKLY  -> end.minusDays(7);      // 지난주 월 00:00
+            case MONTHLY -> end.minusMonths(1);    // 지난달 1일 00:00
+        };
+
+        return RankingDocument.of(top10WithRank,begin,type);
     }
 }
