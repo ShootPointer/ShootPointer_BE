@@ -39,10 +39,10 @@ public class RankingDocument {
     /**
      * Builder pattern
      */
-    public static RankingDocument of(List<RankingEntry> entries,LocalDateTime periodBegin,RankingType type){
+    public static RankingDocument of(List<RankingEntry> top10,LocalDateTime periodBegin,RankingType type){
         return RankingDocument.builder()
                 .periodBegin(periodBegin)
-                .top10(entries)
+                .top10(top10)
                 .type(type)
                 .typePeriodKey(generatePeriodKey(type,periodBegin))
                 .build();
