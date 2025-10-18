@@ -52,17 +52,18 @@ public class RankingDocument {
      * 집계 구분자 생성
      */
     private static String generatePeriodKey(RankingType type,LocalDateTime begin){
+
         switch (type){
             case DAILY -> {
-                return String.format("DAILY_%s",begin.minusDays(1).toLocalDate());
+                return String.format("DAILY_%s",begin.toLocalDate());
             }
             case WEEKLY -> {
-                return String.format("WEEKLY_%d-W%d",begin.minusDays(1).getYear(),begin.minusDays(1).get(WeekFields.ISO.weekOfYear()));
+                return String.format("WEEKLY_%d-W%d",begin.getYear(),begin.get(WeekFields.ISO.weekOfYear()));
             }
             case MONTHLY -> {
-                return String.format("MONTHLY_%d-%02d",begin.minusDays(1).getYear(),begin.minusDays(1).getMonthValue());
+                return String.format("MONTHLY_%d-%02d",begin.getYear(),begin.getMonthValue());
             }
         }
-        return String.format("DAY_%s",begin.minusDays(1).toLocalDate());
+        return String.format("DAY_%s",begin.toLocalDate());
     }
 }

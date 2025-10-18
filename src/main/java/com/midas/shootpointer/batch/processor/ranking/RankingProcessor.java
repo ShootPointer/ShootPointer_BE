@@ -72,6 +72,6 @@ public class RankingProcessor implements ItemProcessor<HighlightWithMemberDto, R
             top10WithRank.add(entry);
         }
 
-        return RankingDocument.of(top10WithRank,end,type);
+        return RankingDocument.of(top10WithRank,end.minusDays(7),type);
     }
 }

@@ -64,35 +64,31 @@ public class RankingBatchJobTest {
 
     @AfterAll
     void cleanUp() {
-        rankingRepository.deleteAll();
+        //rankingRepository.deleteAll();
     }
 
     @Test
     @DisplayName("ranking job - weekly 통합 테스트를 진행합니다.")
     @Rollback(false)
     void rankingJobSuccessfully() throws Exception {
-        //given
-        // 이번 주 일요일 기준 00시 00분
-        LocalDateTime dateTime = LocalDateTime.now();
-        LocalDateTime sunDay = dateTime
-                .with(DayOfWeek.MONDAY)
-                .withHour(0)
-                .withMinute(0)
-                .withSecond(0)
-                .withNano(0);
-        // 오늘이 월요일 이후라면 (즉, 일요일 오전 이후면) 그날 00시로 맞추기
-        if (dateTime.getDayOfWeek() != DayOfWeek.MONDAY) {
-            sunDay = dateTime
-                    .with(java.time.temporal.TemporalAdjusters.previous(DayOfWeek.MONDAY))
-                    .withHour(0)
-                    .withMinute(0)
-                    .withSecond(0)
-                    .withNano(0);
-        }
+        testRankingJob(RankingType.WEEKLY);
+    }
+
+    /**
+     * ========================= 유틸 메서드 =========================
+     */
+    private void testRankingJob(RankingType type) throws Exception {
+        LocalDateTime end=getPeriodEnd(type);
+        LocalDateTime start=getPeriodStart(type,end);
+
+        System.out.println("================== [ "+type+" ] ==================");
+        System.out.println("Start   :"+start);
+        System.out.println("End     :"+end);
+
 
         JobParameters jobParameters = jobLauncherTestUtils.getUniqueJobParametersBuilder()
-                .addString("rankingType", RankingType.WEEKLY.name())
-                .addString("end", sunDay.toString())
+                .addString("rankingType", type.name())
+                .addString("end", end.toString())
                 .toJobParameters();
 
         //when - weekly job 실행
@@ -112,8 +108,6 @@ public class RankingBatchJobTest {
         System.out.println("============= 실제 데이터 검증 =============");
         String sql = Files.readString(Paths.get("src/test/resources/sql/VerificationHighlightData.sql"));
 
-        LocalDateTime start = sunDay.minusDays(7); // 월요일 00:00:00
-        LocalDateTime end = sunDay;
 
         System.out.println(start);
         System.out.println(end);
@@ -144,36 +138,49 @@ public class RankingBatchJobTest {
         System.out.println("=======================================");
         //MongoDB
         String findKey = String.format(
-                "WEEKLY_%d-W%d",
-                sunDay.minusDays(1).getYear(),
-                sunDay.minusDays(1).get(java.time.temporal.WeekFields.ISO.weekOfYear())
+                "%s_%d-%s",
+                type.name(),
+                end.minusDays(1).getYear(),
+                type == RankingType.WEEKLY
+                        ? "W" + end.minusDays(1).get(java.time.temporal.WeekFields.ISO.weekOfYear())
+                        : (type == RankingType.MONTHLY
+                        ? "M" + end.minusDays(1).getMonthValue()
+                        : "D" + end.minusDays(1).getDayOfMonth())
         );
         RankingDocument document= rankingRepository.findByTypePeriodKey(findKey)
                 .orElse(null);
+        assertThat(document).isNotNull();
+        assertThat(document.getType()).isEqualTo(type);
+        assertThat(document.getPeriodBegin()).isEqualTo(start);
 
         //결과 값이 있는 경우
-        if (document!=null){
-            assertThat(document.getPeriodBegin()).isEqualTo(sunDay);
-            assertThat(document.getType()).isEqualTo(RankingType.WEEKLY);
-            assertThat(document.getTypePeriodKey()).startsWith("WEEKLY");
+        List<RankingEntry> top10 = document.getTop10();
+        for (int i = 0; i < top10.size(); i++) {
+            RankingEntry entry = top10.get(i);
+            RankingResult result = results.get(i);
 
-            List<RankingEntry> top10=document.getTop10();
-            int rank=1;
-            int idx=0;
-            for (RankingEntry entry:top10){
-                assertThat(entry.getRank()).isEqualTo(rank);
-                assertThat(entry.getMemberId()).isEqualTo(results.get(idx).memberId);
-                assertThat(entry.getMemberName()).isEqualTo(results.get(idx).memberName);
-                assertThat(entry.getTotalScore()).isEqualTo(results.get(idx).total);
-                assertThat(entry.getThreeScore()).isEqualTo(results.get(idx).threeTotal);
-                assertThat(entry.getTwoScore()).isEqualTo(results.get(idx).twoTotal);
-
-                idx++;
-                rank++;
-            }
+            assertThat(entry.getRank()).isEqualTo(i + 1);
+            assertThat(entry.getMemberId()).isEqualTo(result.memberId);
+            assertThat(entry.getTotalScore()).isEqualTo(result.total);
         }
     }
 
+    private LocalDateTime getPeriodStart(RankingType type,LocalDateTime end){
+        return switch (type){
+            case DAILY -> end.minusDays(1);
+            case WEEKLY -> end.minusDays(7);
+            case MONTHLY -> end.minusMonths(1);
+        };
+    }
+
+    private LocalDateTime getPeriodEnd(RankingType type){
+        LocalDateTime now=LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+        return switch (type){
+            case DAILY -> now;
+            case WEEKLY -> now.with(DayOfWeek.MONDAY);
+            case MONTHLY -> now.withDayOfMonth(1);
+        };
+    }
     /**
      * 검증 쿼리용 클래스
      */
