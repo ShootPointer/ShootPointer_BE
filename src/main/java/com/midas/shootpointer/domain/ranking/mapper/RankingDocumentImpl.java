@@ -12,7 +12,6 @@ public class RankingDocumentImpl implements RankingDocumentMapper{
         return RankingEntry.builder()
                 .memberId(dto.getMemberId())
                 .memberName(dto.getMemberName())
-                .rank(dto.getRank())
                 .threeScore(dto.getThreePointTotal())
                 .twoScore(dto.getTwoPointTotal())
                 .totalScore(dto.getTotalScore())

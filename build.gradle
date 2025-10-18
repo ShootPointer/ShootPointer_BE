@@ -38,7 +38,10 @@ jacocoTestReport{
 							"ShootPointerApplication.class",
 							"**/domain/**/entity/**",
 							"**/global/annotation/**",
-							"**/test/**"
+							"**/test/**",
+							"**/batch/listener/**",
+							"**/batch/config/**",
+							"**/batch/validator/**"
 					])
 				})
 		)

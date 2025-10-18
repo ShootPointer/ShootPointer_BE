@@ -24,8 +24,4 @@ public class HighlightWithMemberDto {
     private UUID memberId;
     private String memberName;
 
-    /**
-     * rank
-     */
-    private Integer rank;
 }

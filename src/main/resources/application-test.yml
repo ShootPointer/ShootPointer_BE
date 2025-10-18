@@ -21,5 +21,11 @@ spring:
       sniffer:
         interval: 5m
 
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
 video:
   path: ${java.io.tmpdir}/videos

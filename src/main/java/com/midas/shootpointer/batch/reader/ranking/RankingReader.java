@@ -2,11 +2,11 @@ package com.midas.shootpointer.batch.reader.ranking;
 
 import com.midas.shootpointer.batch.dto.HighlightWithMemberDto;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
 import org.springframework.batch.item.database.PagingQueryProvider;
 import org.springframework.batch.item.database.support.PostgresPagingQueryProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,14 +20,13 @@ import java.util.UUID;
  * 조건에 맞는 데이터만 read
  */
 @Configuration
-public class RankingReader extends JdbcPagingItemReader<HighlightWithMemberDto> {
+@RequiredArgsConstructor
+public class RankingReader{
     /**
      * Page Size
      */
     private final int FETCH_SIZE=1_000;
-
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     @Bean
     @StepScope
@@ -65,7 +64,6 @@ public class RankingReader extends JdbcPagingItemReader<HighlightWithMemberDto> 
                 .threePointTotal(rs.getInt("three_point_total"))
                 .twoPointTotal(rs.getInt("two_point_total"))
                 .totalScore(rs.getInt("total_score"))
-                .rank(rs.getInt("rank"))
                 .build()
         ));
 
@@ -90,7 +88,7 @@ public class RankingReader extends JdbcPagingItemReader<HighlightWithMemberDto> 
                     m.member_name,
                     SUM(h.two_point_count * 2) AS two_point_total,
                     SUM(h.three_point_count * 3) AS three_point_total,
-                    (SUM(ht.two_point_count * 2) + SUM(h.three_point_count * 3)) AS total_score
+                    (SUM(h.two_point_count * 2) + SUM(h.three_point_count * 3)) AS total_score
                 """);
 
         queryProvider.setFromClause("""

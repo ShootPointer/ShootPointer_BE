@@ -14,6 +14,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.UUID;
 
@@ -87,7 +88,8 @@ public class MakeHighlightDataLoader implements CommandLineRunner {
             MemberBackNumberEntity memberBackNumberEntity=MemberBackNumberEntity.of(member,backNumberEntity);
             memberBackNumberRepository.save(memberBackNumberEntity);
 
-            for (int j=i;j<3;j++){
+            for (int j=0;j<3;j++){
+                LocalDateTime createdAt=LocalDateTime.now().minusDays(random.nextInt(100));
                 HighlightEntity highlight=HighlightEntity.builder()
                         .highlightURL(videoLink[j])
                         .twoPointCount(random.nextInt(20))
@@ -96,6 +98,7 @@ public class MakeHighlightDataLoader implements CommandLineRunner {
                         .member(member)
                         .backNumber(backNumberEntity)
                         .build();
+                highlight.setCreatedAt(createdAt);
                 highlightCommandRepository.save(highlight);
             }
         }

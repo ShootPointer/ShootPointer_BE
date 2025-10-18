@@ -6,6 +6,7 @@ import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
 import com.midas.shootpointer.domain.ranking.mapper.RankingDocumentMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
+@StepScope
 public class RankingProcessor implements ItemProcessor<HighlightWithMemberDto, RankingDocument> {
     private final RankingDocumentMapper mapper;
 
@@ -41,7 +43,7 @@ public class RankingProcessor implements ItemProcessor<HighlightWithMemberDto, R
     }
 
     /**
-     * 랭킹 집계 및 정렬 수행
+     * 정렬 수행
      */
     public RankingDocument buildDocument(){
 
@@ -60,7 +62,16 @@ public class RankingProcessor implements ItemProcessor<HighlightWithMemberDto, R
                 })
                 .limit(10)
                 .toList();
+        /**
+         * 랭킹 설정
+         */
+        List<RankingEntry> top10WithRank=new ArrayList<>();
+        int rank=1;
+        for (RankingEntry entry:top10){
+            entry.setRank(rank++);
+            top10WithRank.add(entry);
+        }
 
-        return RankingDocument.of(top10,end,type);
+        return RankingDocument.of(top10WithRank,end,type);
     }
 }

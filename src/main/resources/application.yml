@@ -34,6 +34,8 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+    job:
+      enabled: false
 
   # 데이터소스 설정
   datasource:
