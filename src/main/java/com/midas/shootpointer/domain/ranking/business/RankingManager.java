@@ -4,17 +4,18 @@ import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.helper.RankingUtil;
-import com.midas.shootpointer.domain.ranking.mapper.RankingDocumentMapper;
+import com.midas.shootpointer.domain.ranking.mapper.RankingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor
 public class RankingManager {
-    private final RankingDocumentMapper mapper;
+    private final RankingMapper mapper;
     private final RankingUtil rankingUtil;
 
     /**
@@ -23,7 +24,7 @@ public class RankingManager {
      * @param type 집계 유형 - Daily(1일 단위) / Weekly(일주일 단위) / Monthly(1달 단위)
      * @return RankingResponse
      */
-    public RankingResponse fetchLastData(LocalDateTime time, RankingType type){
+    public RankingResponse fetchLastData(LocalDateTime time, RankingType type) throws IOException {
         /**
          * 1. period Key 생성
          */
@@ -35,12 +36,23 @@ public class RankingManager {
         RankingDocument document=rankingUtil.fetchRankingDocumentByPeriodKey(periodKey);
 
         /**
-         * 3. 결과값이 null인 경우 - Top 10 리스트 빈 리스트로
+         * 3. 결과값이 null인 경우 - Top 10 직접 조회
          */
         if (document==null){
-            return mapper.docToResponse(
-                    RankingDocument.of(Collections.emptyList(),time,type)
-            );
+            LocalDateTime start=time;
+            start=start.withHour(0).withMinute(0).withSecond(0).withNano(0);
+            switch (type){
+                case MONTHLY -> {
+                    start=start.withDayOfMonth(1).minusMonths(1);
+                }
+                case WEEKLY ->{
+                    start=start.with(DayOfWeek.MONDAY).minusDays(7);
+                }
+                case DAILY -> {
+                    start=start.minusDays(1);
+                }
+            }
+           return mapper.resultToResponse(rankingUtil.fetchRankingResult(start,time),type);
         }
 
         return mapper.docToResponse(document);
