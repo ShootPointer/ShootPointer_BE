@@ -158,8 +158,7 @@ public class RankingBatchJobTest {
         };
 
 
-        RankingDocument document= rankingRepository.findByTypePeriodKey(findKey)
-                .orElse(null);
+        RankingDocument document= rankingRepository.findByTypePeriodKey(findKey);
         assertThat(document).isNotNull();
         assertThat(document.getType()).isEqualTo(type);
         assertThat(document.getPeriodBegin()).isEqualTo(start);

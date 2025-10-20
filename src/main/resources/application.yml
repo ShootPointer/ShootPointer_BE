@@ -138,3 +138,7 @@ opencv:
 
 video:
   path: /home/ubuntu/shoot-pointer/videos
+
+query:
+  path:
+    ranking: src/main/resources/query/ranking.sql

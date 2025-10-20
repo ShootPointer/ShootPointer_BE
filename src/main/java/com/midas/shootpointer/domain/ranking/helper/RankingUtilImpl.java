@@ -1,19 +1,31 @@
 package com.midas.shootpointer.domain.ranking.helper;
 
+import com.midas.shootpointer.domain.ranking.dto.RankingResult;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.repository.RankingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
+import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class RankingUtilImpl implements RankingUtil {
+    @Value("${query.path.ranking}")
+    private String queryPath;
+
     private final RankingRepository rankingRepository;
+    private final JdbcTemplate jdbcTemplate;
 
 
     /**
@@ -50,5 +62,31 @@ public class RankingUtilImpl implements RankingUtil {
             }
         }
         return "";
+    }
+
+    /**
+     * RankingDoc 정보가 없을 시 DB에서 데이터 조회
+     * @param start
+     * @param end
+     * @return
+     */
+    @Override
+    public List<RankingResult> fetchRankingResult(LocalDateTime start, LocalDateTime end) throws IOException {
+        String sql= Files.readString(Paths.get(queryPath));
+
+        return jdbcTemplate.query(sql,
+                ps -> {
+                    ps.setObject(1,start);
+                    ps.setObject(2,end);
+                },
+                (rs,rowNum)->
+                 new RankingResult(
+                         rs.getString("member_name"),
+                         rs.getObject("member_id", UUID.class),
+                         rs.getInt("total"),
+                         rs.getInt("two_total"),
+                         rs.getInt("three_total")
+                 )
+        );
     }
 }
