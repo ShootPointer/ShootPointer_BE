@@ -63,7 +63,7 @@ public class RankingBatchJobTest {
 
     @AfterEach
     void cleanUp() {
-        //rankingRepository.deleteAll();
+        rankingRepository.deleteAll();
     }
 
     @Test
