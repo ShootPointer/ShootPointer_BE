@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 @Component
@@ -39,20 +38,8 @@ public class RankingManager {
          * 3. 결과값이 null인 경우 - Top 10 직접 조회
          */
         if (document==null){
-            LocalDateTime start=time;
-            start=start.withHour(0).withMinute(0).withSecond(0).withNano(0);
-            switch (type){
-                case MONTHLY -> {
-                    start=start.withDayOfMonth(1).minusMonths(1);
-                }
-                case WEEKLY ->{
-                    start=start.with(DayOfWeek.MONDAY).minusDays(7);
-                }
-                case DAILY -> {
-                    start=start.minusDays(1);
-                }
-            }
-           return mapper.resultToResponse(rankingUtil.fetchRankingResult(start,time),type);
+            LocalDateTime endTime=rankingUtil.getBeginTime(time,type);
+           return mapper.resultToResponse(rankingUtil.fetchRankingResult(endTime,time),type);
         }
 
         return mapper.docToResponse(document);

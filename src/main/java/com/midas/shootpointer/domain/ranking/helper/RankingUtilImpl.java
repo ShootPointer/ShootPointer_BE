@@ -89,4 +89,17 @@ public class RankingUtilImpl implements RankingUtil {
                  )
         );
     }
+
+    @Override
+    public LocalDateTime getBeginTime(LocalDateTime end,RankingType type) {
+        LocalDateTime start=end;
+        start=start.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        switch (type){
+            case MONTHLY -> start=start.withDayOfMonth(1).minusMonths(1);
+            case WEEKLY -> start=start.with(DayOfWeek.MONDAY).minusDays(7);
+            case DAILY -> start=start.minusDays(1);
+
+        }
+        return start;
+    }
 }

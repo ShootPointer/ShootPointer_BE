@@ -12,4 +12,5 @@ public interface RankingUtil {
     RankingDocument fetchRankingDocumentByPeriodKey(String periodKey);
     String getRankingTypeKey(RankingType type,LocalDateTime now);
     List<RankingResult> fetchRankingResult(LocalDateTime start,LocalDateTime end) throws IOException;
+    LocalDateTime getBeginTime(LocalDateTime end,RankingType type);
 }
