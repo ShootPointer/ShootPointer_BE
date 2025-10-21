@@ -4,7 +4,7 @@ import com.midas.shootpointer.batch.dto.HighlightWithMemberDto;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
-import com.midas.shootpointer.domain.ranking.mapper.RankingDocumentMapper;
+import com.midas.shootpointer.domain.ranking.mapper.RankingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @StepScope
 public class RankingProcessor implements ItemProcessor<HighlightWithMemberDto, RankingDocument> {
-    private final RankingDocumentMapper mapper;
+    private final RankingMapper mapper;
 
     private final List<RankingEntry> aggregated=new ArrayList<>();
 

@@ -6,6 +6,7 @@ import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Service
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 public class RankingServiceImpl implements RankingService{
     private final RankingManager rankingManager;
     @Override
-    public RankingResponse fetchLastData(RankingType type, LocalDateTime time) {
+    public RankingResponse fetchLastData(RankingType type, LocalDateTime time) throws IOException {
         return rankingManager.fetchLastData(time,type);
     }
 }

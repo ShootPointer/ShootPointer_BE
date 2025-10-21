@@ -1,4 +1,4 @@
-package com.midas.shootpointer.batch;
+package com.midas.shootpointer.batch.reader.ranking;
 
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;

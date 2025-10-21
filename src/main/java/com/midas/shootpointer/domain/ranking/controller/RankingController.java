@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -36,7 +37,7 @@ public class RankingController {
     @GetMapping("/last-weekly")
     public ResponseEntity<ApiResponse<RankingResponse>> fetchLastWeekRank(
             @RequestParam(value = "date",required = true) @DateTimeFormat(pattern = "yyyy-MM-dd")Date date
-            ){
+            ) throws IOException {
         LocalDateTime revertedDate=date.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
@@ -57,7 +58,7 @@ public class RankingController {
     @GetMapping("/last-month")
     public ResponseEntity<ApiResponse<RankingResponse>> fetchLastMonth(
             @RequestParam(value = "date",required = true)@DateTimeFormat(pattern = "yyyy-MM-dd")Date date
-    ){
+    ) throws IOException {
         LocalDateTime revertedDate=date.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
