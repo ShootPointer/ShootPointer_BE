@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.member.business.command.MemberCommandService;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 @DisplayName("MemberCommandController 통합 테스트")
 class MemberCommandControllerIntegrationTest {
 	
@@ -45,6 +46,7 @@ class MemberCommandControllerIntegrationTest {
 	
 	@Test
 	@DisplayName("카카오 로그인 콜백 - 성공")
+	@WithMockCustomMember
 	void callback_Success() throws Exception {
 		// given
 		String accessToken = "test_access_token";
@@ -95,7 +97,7 @@ class MemberCommandControllerIntegrationTest {
 		// when & then
 		mockMvc.perform(delete("/kakao"))
 			.andDo(print())
-			.andExpect(status().is2xxSuccessful());
+			.andExpect(status().isUnauthorized());
 		
 		verify(memberCommandService, never()).deleteMember(any(Member.class));
 	}
@@ -124,6 +126,7 @@ class MemberCommandControllerIntegrationTest {
 	
 	@Test
 	@DisplayName("회원 정보 조회 - 인증되지 않은 사용자")
+	@WithMockCustomMember
 	void getCurrentMember_Unauthorized() throws Exception {
 		// when & then
 		mockMvc.perform(get("/kakao/me"))

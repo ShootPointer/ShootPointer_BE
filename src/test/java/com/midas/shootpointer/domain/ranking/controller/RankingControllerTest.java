@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 @SpringBootTest
 class RankingControllerTest {
     @Autowired
@@ -127,7 +127,7 @@ class RankingControllerTest {
 
 
         //when
-        when(rankingService.fetchLastData(eq(RankingType.WEEKLY),any(LocalDateTime.class))).thenReturn(expectedResponse);
+        when(rankingService.fetchLastData(eq(RankingType.MONTHLY),any(LocalDateTime.class))).thenReturn(expectedResponse);
 
         //then
         mockMvc.perform(get(baseUrl+"/last-month")

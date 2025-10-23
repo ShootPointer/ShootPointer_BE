@@ -10,7 +10,6 @@ import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
@@ -36,7 +35,6 @@ public class RankingBatchConfig {
     private final int PAGE_SIZE=1_000;
 
     @Bean
-    @JobScope
     public Job rankingJob(Step rankingStep){
         return new JobBuilder("RankingJob",jobRepository)
                 .listener(new RankingJobExecutionListener())

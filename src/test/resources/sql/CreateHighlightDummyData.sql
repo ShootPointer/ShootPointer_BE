@@ -3,6 +3,11 @@
 -- =======================
 
 -- 1.기존 데이터 삭제
+TRUNCATE TABLE highlight CASCADE;
+TRUNCATE TABLE member_back_number CASCADE;
+TRUNCATE TABLE back_number CASCADE;
+TRUNCATE TABLE member CASCADE;
+
 
 -- 2.유저 20명 생성
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";

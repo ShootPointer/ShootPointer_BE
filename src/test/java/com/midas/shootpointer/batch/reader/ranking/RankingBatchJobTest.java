@@ -1,5 +1,9 @@
 package com.midas.shootpointer.batch.reader.ranking;
 
+import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
+import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
+import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
+import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
@@ -29,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * ranking batch 통합 테스트
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ActiveProfiles("test")
+@ActiveProfiles("batch")
 @SpringBootTest
 @SpringBatchTest
 public class RankingBatchJobTest {
@@ -44,6 +48,19 @@ public class RankingBatchJobTest {
 
     @Autowired
     private RankingRepository rankingRepository;
+
+    @Autowired
+    private HighlightCommandRepository highlightCommandRepository;
+
+    @Autowired
+    private MemberCommandRepository memberCommandRepository;
+
+    @Autowired
+    private BackNumberRepository backNumberRepository;
+
+    @Autowired
+    private MemberBackNumberRepository memberBackNumberRepository;
+
     @Autowired
     private MongoTemplate mongoTemplate;
 
