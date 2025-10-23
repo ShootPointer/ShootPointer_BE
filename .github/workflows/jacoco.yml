@@ -83,8 +83,11 @@ jobs:
           docker exec $(docker ps -q -f "ancestor=postgres:15") \
             psql -U postgres -c "ALTER SYSTEM SET shared_buffers = '256MB';"
           docker restart $(docker ps -q -f "ancestor=postgres:15")
-          sleep 5
-          echo "PostgreSQL configured!"
+
+          echo "Waiting for PostgreSQL to restart..."
+          sleep 10
+          timeout 60 bash -c 'until docker exec $(docker ps -q -f "ancestor=postgres:15") pg_isready -U postgres; do echo "Waiting..."; sleep 2; done'
+          echo "PostgreSQL is ready!"
 
       - name: Wait for Elasticsearch
         run: |
