@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * ranking batch 통합 테스트
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ActiveProfiles("batch")
+@ActiveProfiles({"batch","test"})
 @SpringBootTest
 @SpringBatchTest
 public class RankingBatchJobTest {

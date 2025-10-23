@@ -25,7 +25,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@ActiveProfiles({"test","es"})
+@ActiveProfiles("test")
 class PostMapperImplTest {
     @Autowired
     private PostMapperImpl postMapper;
