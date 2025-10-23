@@ -43,7 +43,7 @@ class MemberCommandControllerIntegrationTest {
 	
 	@MockitoBean
 	private MemberCommandService memberCommandService;
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("카카오 로그인 콜백 - 성공")
 	@WithMockCustomMember
@@ -70,7 +70,7 @@ class MemberCommandControllerIntegrationTest {
 		
 		verify(memberCommandService, times(1)).processKakaoLogin(any());
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("회원 탈퇴 - 성공")
 	@WithMockUser
@@ -90,7 +90,8 @@ class MemberCommandControllerIntegrationTest {
 		
 		verify(memberCommandService, times(1)).deleteMember(any(Member.class));
 	}
-	
+
+
 	@Test
 	@DisplayName("회원 탈퇴 - 인증되지 않은 사용자")
 	void deleteMember_Unauthorized() throws Exception {
@@ -101,7 +102,7 @@ class MemberCommandControllerIntegrationTest {
 		
 		verify(memberCommandService, never()).deleteMember(any(Member.class));
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("회원 정보 조회 - 성공")
 	@WithMockUser
@@ -123,7 +124,7 @@ class MemberCommandControllerIntegrationTest {
 			.andExpect(jsonPath("$.email").value(email))
 			.andExpect(jsonPath("$.username").value(username));
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("회원 정보 조회 - 인증되지 않은 사용자")
 	@WithMockCustomMember

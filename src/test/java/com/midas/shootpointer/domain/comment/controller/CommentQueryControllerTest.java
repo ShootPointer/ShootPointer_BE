@@ -56,7 +56,7 @@ class CommentQueryControllerTest {
 	void setUp() {
 		objectMapper = new ObjectMapper();
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("게시물 ID로 댓글 목록 조회 성공")
 	@WithMockCustomMember
@@ -100,7 +100,7 @@ class CommentQueryControllerTest {
 		verify(commentQueryService, times(1)).getCommentsByPostId(postId);
 		verify(commentMapper, times(3)).entityToDto(any(Comment.class));
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("댓글 목록 조회 성공 - 빈 리스트")
 	@WithMockCustomMember
@@ -123,7 +123,7 @@ class CommentQueryControllerTest {
 		verify(commentQueryService, times(1)).getCommentsByPostId(postId);
 		verify(commentMapper, times(0)).entityToDto(any(Comment.class));
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("댓글 목록 조회 실패 - 존재하지 않는 게시물")
 	@WithMockCustomMember
@@ -157,7 +157,7 @@ class CommentQueryControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andDo(print());
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("단일 댓글 조회 성공")
 	@WithMockCustomMember

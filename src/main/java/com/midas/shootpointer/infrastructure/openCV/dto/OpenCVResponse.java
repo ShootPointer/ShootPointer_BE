@@ -1,21 +1,30 @@
 package com.midas.shootpointer.infrastructure.openCV.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Getter
 @Builder
-public class OpenCVResponse<T> {
-    private boolean success;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<T> data;
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class OpenCVResponse {
     private Integer status;
+
+    private Boolean success;
+
+    //등 번호
+    private Integer backNumber;
+
+    //정확도
+    private Double confidence;
+
+    //추출 등번호 값
+    private Integer expectedNumber;
+
+    //일치 여부
+    private Boolean match;
+
+    //오류 시 메세지 내용 (성공 시 Null)
+    private String message;
+
 }
