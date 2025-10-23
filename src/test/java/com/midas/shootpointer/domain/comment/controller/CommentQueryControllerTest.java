@@ -59,7 +59,6 @@ class CommentQueryControllerTest {
 	@WithMockCustomMember
 	@Test
 	@DisplayName("게시물 ID로 댓글 목록 조회 성공")
-	@WithMockCustomMember
 	void getCommentsByPostId_Success() throws Exception {
 		// given
 		Long postId = 1L;
@@ -103,7 +102,6 @@ class CommentQueryControllerTest {
 	@WithMockCustomMember
 	@Test
 	@DisplayName("댓글 목록 조회 성공 - 빈 리스트")
-	@WithMockCustomMember
 	void getCommentsByPostId_Success_EmptyList() throws Exception {
 		// given
 		Long postId = 1L;
@@ -126,7 +124,6 @@ class CommentQueryControllerTest {
 	@WithMockCustomMember
 	@Test
 	@DisplayName("댓글 목록 조회 실패 - 존재하지 않는 게시물")
-	@WithMockCustomMember
 	void getCommentsByPostId_Failed_PostNotFound() throws Exception {
 		// given
 		Long postId = 999L;
@@ -160,7 +157,6 @@ class CommentQueryControllerTest {
 	@WithMockCustomMember
 	@Test
 	@DisplayName("단일 댓글 조회 성공")
-	@WithMockCustomMember
 	void getCommentsByPostId_Success_SingleComment() throws Exception {
 		// given
 		Long postId = 1L;
