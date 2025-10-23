@@ -52,7 +52,7 @@ jobs:
         env:
           MONGO_INITDB_DATABASE: shootpointer
         options: >-
-          --health-cmd "mongosh --username root --password root --eval 'db.adminCommand({ ping: 1 })' || exit 1"
+          --health-cmd "mongosh --eval 'db.adminCommand({ ping: 1 })' || exit 1"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
