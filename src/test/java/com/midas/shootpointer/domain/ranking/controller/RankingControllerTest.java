@@ -6,7 +6,6 @@ import com.midas.shootpointer.domain.ranking.business.service.RankingService;
 import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
-import com.midas.shootpointer.domain.ranking.mapper.RankingMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,9 +40,6 @@ class RankingControllerTest {
 
     @MockitoBean
     private RankingService rankingService;
-
-    @MockitoBean
-    private RankingMapper rankingMapper;
 
     private final String baseUrl = "/api/rank";
 
