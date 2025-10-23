@@ -104,13 +104,13 @@ jobs:
           ./gradlew clean test jacocoTestReport --info --stacktrace \
           -Dspring.elasticsearch.mode=external \
           -Dspring.elasticsearch.uris=http://localhost:9200
-          env:
-            SPRING_PROFILES_ACTIVE: test,es
-            SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
-            SPRING_DATASOURCE_USERNAME: postgres
-            SPRING_DATASOURCE_PASSWORD: postgres
-            TESTCONTAINERS_RYUK_DISABLED: true
-            SPRING_ELASTICSEARCH_MODE: external
+        env:
+          SPRING_PROFILES_ACTIVE: test,es
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: postgres
+          TESTCONTAINERS_RYUK_DISABLED: true
+          SPRING_ELASTICSEARCH_MODE: external
 
       - name: Upload JUnit Test Report
         if: always()
