@@ -89,6 +89,14 @@ jobs:
           timeout 60 bash -c 'until docker exec $(docker ps -q -f "ancestor=postgres:15") pg_isready -U postgres; do echo "Waiting..."; sleep 2; done'
           echo "PostgreSQL is ready!"
 
+      - name: Initialize Spring Batch Schema
+        run: |
+          echo "Initializing Spring Batch schema..."
+          docker cp src/main/resources/schema-batch.sql $(docker ps -q -f "ancestor=postgres:15"):/tmp/schema-batch.sql
+          docker exec $(docker ps -q -f "ancestor=postgres:15") \
+            psql -U postgres -d testdb -f /tmp/schema-batch.sql
+          echo "Spring Batch schema initialized!"
+
       - name: Wait for Elasticsearch
         run: |
           echo "Waiting for Elasticsearch to be ready..."
