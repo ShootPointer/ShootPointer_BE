@@ -45,4 +45,9 @@ public class RankingManager {
         return mapper.docToResponse(document);
     }
 
+    //TODO: Redis-sorted set 이용하여 이번 주/이번 달 랭킹 구현 예정.
+    public RankingResponse fetchThisData(LocalDateTime time,RankingType type){
+        return RankingResponse.builder().build();
+    }
+
 }
