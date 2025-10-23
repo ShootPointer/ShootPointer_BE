@@ -1,7 +1,7 @@
 name: Jacoco Test Coverage Check
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
 permissions: write-all
 
 jobs:
@@ -94,3 +94,44 @@ jobs:
           timeout 120 bash -c "until mongosh --host localhost --port 27017 -u root -p root --authenticationDatabase admin --eval 'db.adminCommand({ ping: 1 })' --quiet > /dev/null 2>&1; do echo 'Waiting...'; sleep 5; done"
           echo "MongoDB is ready!"
           mongosh --host localhost --port 27017 -u root -p root --authenticationDatabase admin --eval 'db.adminCommand({ ping: 1 })'
+
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Test with Gradle
+        run: |
+          ./gradlew clean test jacocoTestReport --info --stacktrace \
+          -Dspring.elasticsearch.mode=external \
+          -Dspring.elasticsearch.uris=http://localhost:9200
+          env:
+            SPRING_PROFILES_ACTIVE: test,es
+            SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
+            SPRING_DATASOURCE_USERNAME: postgres
+            SPRING_DATASOURCE_PASSWORD: postgres
+            TESTCONTAINERS_RYUK_DISABLED: true
+            SPRING_ELASTICSEARCH_MODE: external
+
+      - name: Upload JUnit Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-test-report
+          path: build/reports/tests/test
+
+      - name: Upload JaCoCo HTML Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-html-report
+          path: build/reports/jacoco/test/html
+
+      - name: Test Coverage Report
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.7.1
+        with:
+          title: Test Coverage Report
+          paths: ${{ github.workspace }}/build/reports/jacoco/test/jacocoTestReport.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 30
+          min-coverage-changed-files: 50
