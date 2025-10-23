@@ -31,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles({"test","batch"})
 @SpringBootTest
+@WithMockCustomMember
 class RankingControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -50,7 +51,6 @@ class RankingControllerTest {
 
     @Test
     @DisplayName("저번 주 랭킹 GET 요청 성공시 RankingResponse를 반환합니다._SUCCESS")
-    @WithMockCustomMember
     void fetchLastWeekRank() throws Exception {
         //given
         List<RankingEntry> top10=List.of(
@@ -106,7 +106,6 @@ class RankingControllerTest {
 
     @Test
     @DisplayName("저번 달 랭킹 GET 요청 성공시 RankingResponse를 반환합니다._SUCCESS")
-    @WithMockCustomMember
     void fetchLastMonth() throws Exception {
         //given
         List<RankingEntry> top10=List.of(

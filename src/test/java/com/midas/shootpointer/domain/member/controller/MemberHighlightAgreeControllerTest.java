@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
+@WithMockCustomMember
 class MemberHighlightAgreeControllerTest {
 
     @Autowired
@@ -36,7 +37,6 @@ class MemberHighlightAgreeControllerTest {
     private MemberCommandService memberCommandService;
 
     @Test
-    @WithMockCustomMember
     @DisplayName("회원의 하이라이트 정보 집계동의")
     void agree() throws Exception {
         //given

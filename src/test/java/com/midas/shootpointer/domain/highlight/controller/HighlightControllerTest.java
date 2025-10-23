@@ -33,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 @ActiveProfiles("test")
+@WithMockCustomMember
 class HighlightControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -46,7 +47,6 @@ class HighlightControllerTest {
 
     @Test
     @DisplayName("하이라이트 영상 선택 POST 요청 성공시 HighlightSelectResponse를 반환합니다._SUCCESS")
-    @WithMockCustomMember
     void selectHighlight() throws Exception {
         //given
         String url="/api/highlight/select";
@@ -80,7 +80,6 @@ class HighlightControllerTest {
 
     @Test
     @DisplayName("생성된 하이라이트 영상을 저장하고 성공시 List<HighlightResponse>를 반환합니다.._SUCCESS")
-    @WithMockCustomMember
     void uploadHighlights() throws Exception {
         //given
         String url="/api/highlight/upload-result";

@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@WithMockCustomMember
 class PostCommandControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -51,7 +52,6 @@ class PostCommandControllerTest {
     }
     @Test
     @DisplayName("게시물 직상 POST 요청 성공시 저장된 postId를 반환합니다._SUCCESS")
-    @WithMockCustomMember
     void create_SUCCESS() throws Exception {
         //given
         Long savedPostId=111L;
@@ -78,7 +78,6 @@ class PostCommandControllerTest {
 
     @Test
     @DisplayName("게시물 수정 PUT 요청 성공시 수정된 postId를 반환합니다._SUCCESS")
-    @WithMockCustomMember
     void update_SUCCESS() throws Exception {
         //given
         String postId="111";
@@ -106,7 +105,6 @@ class PostCommandControllerTest {
 
     @Test
     @DisplayName("게시물 삭제 DELETE 요청 성공시 삭제된 postId를 반환합니다._SUCCESS")
-    @WithMockCustomMember
     void delete_SUCCESS() throws Exception {
         //given
         String postId="111";

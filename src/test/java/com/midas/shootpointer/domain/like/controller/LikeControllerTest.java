@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@WithMockCustomMember
 class LikeControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -35,7 +36,6 @@ class LikeControllerTest {
 
     @Test
     @DisplayName("좋아요 생성 POST 요청 성공시 저장된 likeId를 반환합니다._SUCCESS")
-    @WithMockCustomMember
     void create_SUCCESS() throws Exception {
         //given
         Long postId=111L;
@@ -58,7 +58,6 @@ class LikeControllerTest {
 
     @Test
     @DisplayName("좋아요 삭제 DELETE 요청 성공시 삭제된 likeId를 반환합니다._SUCCESS")
-    @WithMockCustomMember
     void delete_SUCCESS() throws Exception {
         //given
         Long postId=111L;
