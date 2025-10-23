@@ -1,0 +1,150 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > LikeHelperImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.domain.like.helper</a>
+</div>
+
+<h1>Coverage Summary for Class: LikeHelperImpl (com.midas.shootpointer.domain.like.helper)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LikeHelperImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.domain.like.helper;
+&nbsp;
+&nbsp;import com.midas.shootpointer.domain.like.entity.LikeEntity;
+&nbsp;import com.midas.shootpointer.domain.member.entity.Member;
+&nbsp;import com.midas.shootpointer.domain.post.entity.PostEntity;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;@Component
+&nbsp;@RequiredArgsConstructor
+&nbsp;public class LikeHelperImpl implements LikeHelper {
+&nbsp;    private final LikeValidation likeValidation;
+&nbsp;    private final LikeUtil likeUtil;
+&nbsp;    @Override
+&nbsp;    public void isValidCreateLike(UUID memberId, Long postId) {
+<b class="fc">&nbsp;        likeValidation.isValidCreateLike(memberId,postId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void increaseLikeCnt(PostEntity post) {
+<b class="fc">&nbsp;        likeUtil.increaseLikeCnt(post);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void decreaseLikeCnt(PostEntity post) {
+<b class="fc">&nbsp;        likeUtil.decreaseLikeCnt(post);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public LikeEntity createLike(PostEntity post, Member member) {
+<b class="fc">&nbsp;        return likeUtil.createLike(post,member);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void deleteLike(LikeEntity like) {
+<b class="fc">&nbsp;        likeUtil.deleteLike(like);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public LikeEntity findByPostIdAndMemberId(UUID memberId, Long postId) {
+<b class="fc">&nbsp;        return likeUtil.findByPostIdAndMemberId(memberId,postId);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-10-23 11:21</div>
+</div>
+</body>
+</html>

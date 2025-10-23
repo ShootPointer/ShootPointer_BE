@@ -1,0 +1,223 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PostValidationImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.domain.post.helper.simple</a>
+</div>
+
+<h1>Coverage Summary for Class: PostValidationImpl (com.midas.shootpointer.domain.post.helper.simple)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PostValidationImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60%
+  </span>
+  <span class="absValue">
+    (6/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.domain.post.helper.simple;
+&nbsp;
+&nbsp;import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
+&nbsp;import com.midas.shootpointer.domain.member.entity.Member;
+&nbsp;import com.midas.shootpointer.domain.post.entity.HashTag;
+&nbsp;import com.midas.shootpointer.domain.post.entity.PostEntity;
+&nbsp;import com.midas.shootpointer.global.common.ErrorCode;
+&nbsp;import com.midas.shootpointer.global.exception.CustomException;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;@Component
+&nbsp;@RequiredArgsConstructor
+&nbsp;public class PostValidationImpl implements PostValidation{
+&nbsp;    private static final int MAX_SIZE=500;
+&nbsp;
+&nbsp;    private final HighlightQueryRepository highlightQueryRepository;
+&nbsp;
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *PostValidationImpl
+&nbsp;    *
+&nbsp;    * @parm member : 멤버 객체 , highlightId : 하이라이트 Id
+&nbsp;    * @return 유저의 하이라이트 영상이면 true, 아니면 CustomException 발생.
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 25. 8. 28.
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;    @Override
+&nbsp;    public void isValidateHighlightId(Member member, UUID highlightId) {
+<b class="fc">&nbsp;        boolean isValid=highlightQueryRepository.existsByHighlightIdAndMember(highlightId,member.getMemberId());</b>
+<b class="pc">&nbsp;        if(!isValid) throw new CustomException(ErrorCode.IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *PostValidationImpl
+&nbsp;    *
+&nbsp;    * @parm Object 값
+&nbsp;    * @return 기존 설정한 HashTag ENUM의 형태가 아니면 CustomException 발생
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 25. 8. 28.
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;    @Override
+&nbsp;    public void isValidPostHashTag(Object o) {
+<b class="pc">&nbsp;        if(o.getClass() != HashTag.class) throw new CustomException(ErrorCode.IS_NOT_CORRECT_HASH_TAG);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *PostValidationImpl
+&nbsp;    *
+&nbsp;    * @parm postEntity 게시물 엔티티 member 멤버 엔티티
+&nbsp;    * @return 멤버의 게시물 접근 시 CustomException 발생
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 25. 8. 29.
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;    @Override
+&nbsp;    public void isMembersPost(PostEntity postEntity, Member member) {
+<b class="pc">&nbsp;        if(!postEntity.getMember().getMemberId().equals(member.getMemberId())){</b>
+<b class="fc">&nbsp;            throw new CustomException(ErrorCode.IS_NOT_MEMBERS_POST);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *PostValidationImpl
+&nbsp;    *
+&nbsp;    * @parm size : 조회 시, 개수 제한
+&nbsp;    * @return MAX_SIZE 초과 OR size가 음수 값 입력 시 CustomException 발생
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 25. 10. 2.
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void isValidSize(int size) {
+<b class="pc">&nbsp;        if (size&lt;0 || size&gt;MAX_SIZE){</b>
+<b class="fc">&nbsp;            throw new CustomException(ErrorCode.IS_NOT_VALID_SIZE);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *PostValidationImpl
+&nbsp;    *
+&nbsp;    * @parm input : 입력값
+&nbsp;    * @return 입력값이 빈 문자열 -&gt;
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 25. 10. 2.
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;    @Override
+&nbsp;    public boolean isValidInput(String input) {
+<b class="fc">&nbsp;        return !input.isBlank();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-10-23 11:21</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > MakeRandomWord</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.test</a>
+</div>
+
+<h1>Coverage Summary for Class: MakeRandomWord (com.midas.shootpointer.test)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MakeRandomWord</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.test;
+&nbsp;
+&nbsp;import org.springframework.context.annotation.Profile;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;@Component
+&nbsp;@Profile(&quot;testdata&quot;)
+<b class="nc">&nbsp;public class MakeRandomWord {</b>
+<b class="nc">&nbsp;    private static final String[] TITLES = {</b>
+&nbsp;            &quot;고양이&quot;, &quot;강아지&quot;, &quot;여행&quot;, &quot;프로그래밍&quot;, &quot;커피&quot;, &quot;음악&quot;, &quot;스포츠&quot;, &quot;게임&quot;, &quot;책&quot;, &quot;영화&quot;,
+&nbsp;            &quot;바다&quot;, &quot;산&quot;, &quot;도시&quot;, &quot;학교&quot;, &quot;도서관&quot;, &quot;캠핑&quot;, &quot;사진&quot;, &quot;노래&quot;, &quot;비밀&quot;, &quot;추억&quot;,
+&nbsp;            &quot;도전&quot;, &quot;성공&quot;, &quot;실패&quot;, &quot;열정&quot;, &quot;휴식&quot;, &quot;식사&quot;, &quot;저녁&quot;, &quot;아침&quot;, &quot;점심&quot;, &quot;계획&quot;
+&nbsp;    };
+&nbsp;
+<b class="nc">&nbsp;    private static final String[] CONTENT_WORDS = {</b>
+&nbsp;            &quot;오늘&quot;, &quot;정말&quot;, &quot;재미있는&quot;, &quot;코드를&quot;, &quot;작성했다&quot;, &quot;바람이&quot;, &quot;시원하다&quot;, &quot;점심은&quot;, &quot;맛있게&quot;, &quot;먹었다&quot;,
+&nbsp;            &quot;새로운&quot;, &quot;아이디어가&quot;, &quot;떠올랐다&quot;, &quot;도전적인&quot;, &quot;프로젝트&quot;, &quot;좋은&quot;, &quot;경험&quot;, &quot;운동을&quot;, &quot;했다&quot;, &quot;기분이&quot;,
+&nbsp;            &quot;행복하다&quot;, &quot;슬펐다&quot;, &quot;웃었다&quot;, &quot;걷는다&quot;, &quot;달린다&quot;, &quot;배웠다&quot;, &quot;읽었다&quot;, &quot;들었다&quot;, &quot;봤다&quot;, &quot;만났다&quot;,
+&nbsp;            &quot;친구와&quot;, &quot;함께&quot;, &quot;놀았다&quot;, &quot;공부했다&quot;, &quot;잠을&quot;, &quot;잤다&quot;, &quot;하루가&quot;, &quot;길었다&quot;, &quot;짧았다&quot;, &quot;즐거웠다&quot;,
+&nbsp;            &quot;인터넷&quot;, &quot;게임을&quot;, &quot;했다&quot;, &quot;버스를&quot;, &quot;탔다&quot;, &quot;길이&quot;, &quot;막혔다&quot;, &quot;저녁은&quot;, &quot;특별했다&quot;, &quot;시간이&quot;, &quot;빨리&quot;,
+&nbsp;            &quot;흘렀다&quot;, &quot;노을이&quot;, &quot;아름다웠다&quot;, &quot;별이&quot;, &quot;빛났다&quot;, &quot;책을&quot;, &quot;샀다&quot;, &quot;영화를&quot;, &quot;봤다&quot;, &quot;커피를&quot;, &quot;마셨다&quot;,
+&nbsp;            &quot;노래를&quot;, &quot;불렀다&quot;, &quot;연습했다&quot;, &quot;성공했다&quot;, &quot;실패했다&quot;, &quot;도전했다&quot;, &quot;다짐했다&quot;, &quot;회고했다&quot;, &quot;계획했다&quot;
+&nbsp;    };
+&nbsp;
+<b class="nc">&nbsp;    private static final Random random = new Random();</b>
+&nbsp;
+&nbsp;    public String generateTitle() {
+&nbsp;        // 2~5개의 랜덤 단어로 제목 생성
+<b class="nc">&nbsp;        int wordCount = 1 + random.nextInt(2);</b>
+<b class="nc">&nbsp;        StringBuilder sb = new StringBuilder();</b>
+<b class="nc">&nbsp;        for (int i = 0; i &lt; wordCount; i++) {</b>
+<b class="nc">&nbsp;            sb.append(TITLES[random.nextInt(TITLES.length)]);</b>
+<b class="nc">&nbsp;            if (i &lt; wordCount - 1) sb.append(&quot; &quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return sb.toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String generateContent() {
+&nbsp;        // 20~40개의 랜덤 단어로 문장 생성
+<b class="nc">&nbsp;        int wordCount = 50 + random.nextInt(51);</b>
+<b class="nc">&nbsp;        StringBuilder sb = new StringBuilder();</b>
+<b class="nc">&nbsp;        for (int i = 0; i &lt; wordCount; i++) {</b>
+<b class="nc">&nbsp;            sb.append(CONTENT_WORDS[random.nextInt(CONTENT_WORDS.length)]).append(&quot; &quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        sb.append(&quot;.&quot;);</b>
+<b class="nc">&nbsp;        return sb.toString();</b>
+&nbsp;    }
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-10-23 11:21</div>
+</div>
+</body>
+</html>

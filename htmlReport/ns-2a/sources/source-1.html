@@ -1,0 +1,232 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > KakaoApiHelperImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.domain.member.helper</a>
+</div>
+
+<h1>Coverage Summary for Class: KakaoApiHelperImpl (com.midas.shootpointer.domain.member.helper)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">KakaoApiHelperImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (1/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2.5%
+  </span>
+  <span class="absValue">
+    (1/40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.domain.member.helper;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.JsonNode;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;import com.midas.shootpointer.domain.member.dto.KakaoDTO;
+&nbsp;import com.midas.shootpointer.global.common.ErrorCode;
+&nbsp;import com.midas.shootpointer.global.exception.CustomException;
+&nbsp;import org.springframework.beans.factory.annotation.Value;
+&nbsp;import org.springframework.http.*;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;import org.springframework.util.LinkedMultiValueMap;
+&nbsp;import org.springframework.util.MultiValueMap;
+&nbsp;import org.springframework.web.client.RestTemplate;
+&nbsp;
+&nbsp;@Component
+<b class="fc">&nbsp;public class KakaoApiHelperImpl implements KakaoApiHelper {</b>
+&nbsp;	
+&nbsp;	@Value(&quot;${spring.security.oauth2.client.registration.kakao.client-id}&quot;)
+&nbsp;	private String KAKAO_CLIENT_ID;
+&nbsp;	
+&nbsp;	@Value(&quot;${spring.security.oauth2.client.registration.kakao.client-secret}&quot;)
+&nbsp;	private String KAKAO_CLIENT_SECRET;
+&nbsp;	
+&nbsp;	@Value(&quot;${spring.security.oauth2.client.registration.kakao.redirect-uri}&quot;)
+&nbsp;	private String KAKAO_REDIRECT_URI;
+&nbsp;	
+&nbsp;	@Value(&quot;${kakao.auth.uri}&quot;)
+&nbsp;	private String KAKAO_AUTH_URI;
+&nbsp;	
+&nbsp;	@Value(&quot;${kakao.api.uri}&quot;)
+&nbsp;	private String KAKAO_API_URI;
+&nbsp;	
+&nbsp;	@Override
+&nbsp;	public String requestAccessToken(String code) {
+&nbsp;		try {
+<b class="nc">&nbsp;			HttpHeaders headers = new HttpHeaders();</b>
+<b class="nc">&nbsp;			headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);</b>
+&nbsp;			
+<b class="nc">&nbsp;			MultiValueMap&lt;String, String&gt; params = new LinkedMultiValueMap&lt;&gt;();</b>
+<b class="nc">&nbsp;			params.add(&quot;grant_type&quot;, &quot;authorization_code&quot;);</b>
+<b class="nc">&nbsp;			params.add(&quot;client_id&quot;, KAKAO_CLIENT_ID);</b>
+<b class="nc">&nbsp;			params.add(&quot;client_secret&quot;, KAKAO_CLIENT_SECRET);</b>
+<b class="nc">&nbsp;			params.add(&quot;code&quot;, code);</b>
+<b class="nc">&nbsp;			params.add(&quot;redirect_uri&quot;, KAKAO_REDIRECT_URI);</b>
+&nbsp;			
+<b class="nc">&nbsp;			HttpEntity&lt;MultiValueMap&lt;String, String&gt;&gt; httpEntity = new HttpEntity&lt;&gt;(params, headers);</b>
+<b class="nc">&nbsp;			RestTemplate restTemplate = new RestTemplate();</b>
+&nbsp;			
+<b class="nc">&nbsp;			ResponseEntity&lt;String&gt; response = restTemplate.exchange(</b>
+&nbsp;				KAKAO_AUTH_URI + &quot;/oauth/token&quot;,
+&nbsp;				HttpMethod.POST,
+&nbsp;				httpEntity,
+&nbsp;				String.class
+&nbsp;			);
+&nbsp;			
+<b class="nc">&nbsp;			if (!response.getStatusCode().is2xxSuccessful()) {</b>
+<b class="nc">&nbsp;				throw new CustomException(ErrorCode.KAKAO_TOKEN_REQUEST_FAIL);</b>
+&nbsp;			}
+&nbsp;			
+<b class="nc">&nbsp;			ObjectMapper mapper = new ObjectMapper();</b>
+<b class="nc">&nbsp;			JsonNode jsonNode = mapper.readTree(response.getBody());</b>
+&nbsp;			
+<b class="nc">&nbsp;			if (jsonNode.has(&quot;error&quot;)) {</b>
+<b class="nc">&nbsp;				throw new CustomException(ErrorCode.KAKAO_TOKEN_REQUEST_FAIL);</b>
+&nbsp;			}
+&nbsp;			
+<b class="nc">&nbsp;			return jsonNode.get(&quot;access_token&quot;).asText();</b>
+&nbsp;			
+&nbsp;		} catch (Exception e) {
+<b class="nc">&nbsp;			throw new CustomException(ErrorCode.KAKAO_TOKEN_REQUEST_FAIL);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;	
+&nbsp;	@Override
+&nbsp;	public KakaoDTO requestUserInfo(String accessToken) {
+&nbsp;		try {
+<b class="nc">&nbsp;			HttpHeaders headers = new HttpHeaders();</b>
+<b class="nc">&nbsp;			headers.add(&quot;Authorization&quot;, &quot;Bearer &quot; + accessToken);</b>
+&nbsp;			
+<b class="nc">&nbsp;			RestTemplate rt = new RestTemplate();</b>
+<b class="nc">&nbsp;			HttpEntity&lt;?&gt; httpEntity = new HttpEntity&lt;&gt;(headers);</b>
+&nbsp;			
+<b class="nc">&nbsp;			ResponseEntity&lt;String&gt; response = rt.exchange(</b>
+&nbsp;				KAKAO_API_URI + &quot;/v2/user/me&quot;,
+&nbsp;				HttpMethod.GET,
+&nbsp;				httpEntity,
+&nbsp;				String.class
+&nbsp;			);
+&nbsp;			
+<b class="nc">&nbsp;			if (!response.getStatusCode().is2xxSuccessful()) {</b>
+<b class="nc">&nbsp;				throw new CustomException(ErrorCode.KAKAO_USERINFO_FAIL);</b>
+&nbsp;			}
+&nbsp;			
+<b class="nc">&nbsp;			ObjectMapper mapper = new ObjectMapper();</b>
+<b class="nc">&nbsp;			JsonNode root = mapper.readTree(response.getBody());</b>
+&nbsp;			
+<b class="nc">&nbsp;			JsonNode kakaoAccount = root.path(&quot;kakao_account&quot;);</b>
+<b class="nc">&nbsp;			JsonNode profile = kakaoAccount.path(&quot;profile&quot;);</b>
+&nbsp;			
+<b class="nc">&nbsp;			String email = kakaoAccount.path(&quot;email&quot;).asText(null);</b>
+<b class="nc">&nbsp;			String nickname = profile.path(&quot;nickname&quot;).asText(null);</b>
+&nbsp;			
+<b class="nc">&nbsp;			if (email == null || email.isBlank() || nickname == null || nickname.isBlank()) {</b>
+<b class="nc">&nbsp;				throw new CustomException(ErrorCode.KAKAO_USERINFO_FAIL);</b>
+&nbsp;			}
+&nbsp;			
+<b class="nc">&nbsp;			return KakaoDTO.builder()</b>
+<b class="nc">&nbsp;				.email(email)</b>
+<b class="nc">&nbsp;				.nickname(nickname)</b>
+<b class="nc">&nbsp;				.build();</b>
+&nbsp;			
+&nbsp;		} catch (Exception e) {
+<b class="nc">&nbsp;			throw new CustomException(ErrorCode.KAKAO_USERINFO_FAIL);</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-10-23 11:21</div>
+</div>
+</body>
+</html>

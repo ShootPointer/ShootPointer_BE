@@ -1,0 +1,152 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > BackNumberManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.domain.backnumber.business</a>
+</div>
+
+<h1>Coverage Summary for Class: BackNumberManager (com.midas.shootpointer.domain.backnumber.business)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BackNumberManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (4/5)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">BackNumberManager$$SpringCGLIB$$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (4/5)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.domain.backnumber.business;
+&nbsp;
+&nbsp;import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
+&nbsp;import com.midas.shootpointer.domain.backnumber.helper.BackNumberHelper;
+&nbsp;import com.midas.shootpointer.domain.member.entity.Member;
+&nbsp;import com.midas.shootpointer.domain.memberbacknumber.helper.MemberBackNumberHelper;
+&nbsp;import com.midas.shootpointer.global.common.ErrorCode;
+&nbsp;import com.midas.shootpointer.global.exception.CustomException;
+&nbsp;import com.midas.shootpointer.infrastructure.openCV.service.OpenCVClient;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;import org.springframework.web.multipart.MultipartFile;
+&nbsp;
+&nbsp;@Component
+&nbsp;@RequiredArgsConstructor
+&nbsp;public class BackNumberManager {
+&nbsp;    private final BackNumberHelper backNumberHelper;
+&nbsp;    private final MemberBackNumberHelper memberBackNumberHelper;
+&nbsp;    private final OpenCVClient openCVClient;
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public Integer create(BackNumberEntity backNumberEntity, MultipartFile image, Member member) {
+&nbsp;        //1.요청 등 번호가 있는지 확인 -&gt; 없으면 저장.
+<b class="fc">&nbsp;        backNumberEntity = backNumberHelper.findOrElseGetBackNumber(backNumberEntity.getBackNumber());</b>
+&nbsp;
+&nbsp;        //2. 중간테이블 저장.
+<b class="fc">&nbsp;        memberBackNumberHelper.findOrElseGetMemberBackNumber(member, backNumberEntity);</b>
+&nbsp;
+&nbsp;        //3. OpenCv 사진 전송.
+&nbsp;        try {
+<b class="fc">&nbsp;            openCVClient.sendBackNumberInformation(member.getMemberId(), backNumberEntity.getBackNumber().getNumber(), image);</b>
+&nbsp;        } catch (Exception e) {
+<b class="nc">&nbsp;            throw new CustomException(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return backNumberEntity.getBackNumber().getNumber();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-10-23 11:21</div>
+</div>
+</body>
+</html>

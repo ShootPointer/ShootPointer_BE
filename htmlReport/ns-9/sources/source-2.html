@@ -1,0 +1,185 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AdminTokenController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.domain.admin</a>
+</div>
+
+<h1>Coverage Summary for Class: AdminTokenController (com.midas.shootpointer.domain.admin)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdminTokenController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/25)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.domain.admin;
+&nbsp;
+&nbsp;import com.midas.shootpointer.domain.member.entity.Member;
+&nbsp;import com.midas.shootpointer.global.util.jwt.JwtUtil;
+&nbsp;import java.util.UUID;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.HashMap;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequiredArgsConstructor
+&nbsp;@RequestMapping(&quot;/admin/token&quot;)
+&nbsp;public class AdminTokenController {
+&nbsp;    
+&nbsp;    private final AdminTokenProvider tokenProvider;
+&nbsp;    private final AdminService adminService;
+&nbsp;    private final JwtUtil jwtUtil;
+&nbsp;    
+&nbsp;    // AccessToken, RefreshToken 발급
+&nbsp;    @GetMapping
+&nbsp;    public ResponseEntity&lt;Map&lt;String, String&gt;&gt; getTokens() {
+<b class="nc">&nbsp;        UUID adminId = UUID.fromString(&quot;11111111-1111-1111-1111-111111111111&quot;);</b>
+<b class="nc">&nbsp;        String email = &quot;test@naver.com&quot;;</b>
+<b class="nc">&nbsp;        String nickname = &quot;홍길동&quot;;</b>
+&nbsp;        
+<b class="nc">&nbsp;        String accessToken = tokenProvider.createAccessToken(adminId, email, nickname);</b>
+<b class="nc">&nbsp;        String refreshToken = tokenProvider.createAndSaveRefreshToken(email);</b>
+&nbsp;        
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        response.put(&quot;accessToken&quot;, accessToken);</b>
+<b class="nc">&nbsp;        response.put(&quot;refreshToken&quot;, refreshToken);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(response);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    // AccessToken으로 Member 확ㄴ인
+&nbsp;    @PostMapping(&quot;/check&quot;)
+&nbsp;    public ResponseEntity&lt;Map&lt;String, String&gt;&gt; syncMember(@RequestHeader(&quot;Authorization&quot;) String bearerToken) {
+<b class="nc">&nbsp;        String token = extractToken(bearerToken);</b>
+<b class="nc">&nbsp;        String email = jwtUtil.getEmailFromToken(token);</b>
+<b class="nc">&nbsp;        String nickname = jwtUtil.getNicknameFromToken(token);</b>
+&nbsp;        
+<b class="nc">&nbsp;        Member member = adminService.syncMember(email, nickname);</b>
+&nbsp;        
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        response.put(&quot;status&quot;, &quot;synced&quot;);</b>
+<b class="nc">&nbsp;        response.put(&quot;memberId&quot;, member.getMemberId().toString());</b>
+<b class="nc">&nbsp;        response.put(&quot;email&quot;, member.getEmail());</b>
+<b class="nc">&nbsp;        response.put(&quot;nickname&quot;, member.getUsername());</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(response);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    // RefreshToken 조회
+&nbsp;    @GetMapping(&quot;/refresh/{email}&quot;)
+&nbsp;    public ResponseEntity&lt;Map&lt;String, String&gt;&gt; getRefreshToken(@PathVariable String email) {
+<b class="nc">&nbsp;        Map&lt;String, String&gt; response = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        response.put(&quot;refreshToken&quot;, tokenProvider.getRefreshToken(email).orElse(&quot;없음&quot;));</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok(response);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    private String extractToken(String bearerToken) {
+<b class="nc">&nbsp;        if (bearerToken != null &amp;&amp; bearerToken.startsWith(&quot;Bearer &quot;)) {</b>
+<b class="nc">&nbsp;            return bearerToken.substring(7);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        throw new IllegalArgumentException(&quot;Authorization 헤더가 잘못되었습니다.&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-10-23 11:21</div>
+</div>
+</body>
+</html>

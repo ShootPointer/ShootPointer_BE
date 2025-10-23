@@ -1,0 +1,153 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PostRequest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.domain.post.dto.request</a>
+</div>
+
+<h1>Coverage Summary for Class: PostRequest (com.midas.shootpointer.domain.post.dto.request)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PostRequest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.domain.post.dto.request;
+&nbsp;
+&nbsp;import com.midas.shootpointer.domain.post.entity.HashTag;
+&nbsp;import jakarta.validation.constraints.Max;
+&nbsp;import jakarta.validation.constraints.NotBlank;
+&nbsp;import jakarta.validation.constraints.Pattern;
+&nbsp;import lombok.AllArgsConstructor;
+&nbsp;import lombok.Getter;
+&nbsp;import lombok.NoArgsConstructor;
+&nbsp;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;@AllArgsConstructor
+&nbsp;@Getter
+&nbsp;@NoArgsConstructor
+&nbsp;/**
+&nbsp; * 게시물 등록 dto
+&nbsp; */
+&nbsp;public class PostRequest {
+&nbsp;
+&nbsp;    //하이라이트 영상 ID(UUID)
+&nbsp;    @NotBlank(message = &quot;하이라이트 영상 id는 공백일 수 없습니다.&quot;)
+&nbsp;    @Pattern(regexp = &quot;^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$&quot;,
+&nbsp;            message = &quot;하이라이트 영상 id가 유효하지 않습니다.&quot;
+&nbsp;    )
+&nbsp;    private UUID highlightId;
+&nbsp;
+&nbsp;    //제목
+&nbsp;    @NotBlank(message = &quot;제목은 공백일 수 없습니다.&quot;)
+&nbsp;    @Max(value = 20,message = &quot;제목은 20자 이하만 입력가능합니다.&quot;)
+&nbsp;    private String title;
+&nbsp;
+&nbsp;    //내용
+&nbsp;    @NotBlank(message = &quot;내용은 공백일 수 없습니다.&quot;)
+&nbsp;    @Max(value = 1000,message = &quot;내용은 1000자 이하만 입력가능합니다.&quot;)
+&nbsp;    private String content;
+&nbsp;
+&nbsp;    //해시 태그
+&nbsp;    private HashTag hashTag;
+&nbsp;
+&nbsp;    public static PostRequest of(UUID highlightId,
+&nbsp;                                 String title,
+&nbsp;                                 String content,
+&nbsp;                                 HashTag hashTag
+&nbsp;    ){
+<b class="fc">&nbsp;        return new PostRequest(highlightId,title,content,hashTag);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-10-23 11:21</div>
+</div>
+</body>
+</html>

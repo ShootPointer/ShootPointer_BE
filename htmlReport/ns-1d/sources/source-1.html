@@ -1,0 +1,219 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > HighlightEntity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.domain.highlight.entity</a>
+</div>
+
+<h1>Coverage Summary for Class: HighlightEntity (com.midas.shootpointer.domain.highlight.entity)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">HighlightEntity</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">HighlightEntity$HibernateInstantiator</td>
+  </tr>
+  <tr>
+    <td class="name">HighlightEntity$HibernateProxy</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.domain.highlight.entity;
+&nbsp;
+&nbsp;import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
+&nbsp;import com.midas.shootpointer.domain.member.entity.Member;
+&nbsp;import com.midas.shootpointer.global.common.ErrorCode;
+&nbsp;import com.midas.shootpointer.global.entity.BaseEntity;
+&nbsp;import com.midas.shootpointer.global.exception.CustomException;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import lombok.AllArgsConstructor;
+&nbsp;import lombok.Builder;
+&nbsp;import lombok.Getter;
+&nbsp;import lombok.NoArgsConstructor;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;import org.hibernate.annotations.UuidGenerator;
+&nbsp;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;@Entity
+<b class="fc">&nbsp;@Slf4j</b>
+&nbsp;@AllArgsConstructor
+&nbsp;@NoArgsConstructor
+&nbsp;@Builder
+&nbsp;@Getter
+&nbsp;@Table(name = &quot;highlight&quot;)
+&nbsp;public class HighlightEntity extends BaseEntity {
+&nbsp;    @Id
+&nbsp;    @UuidGenerator
+&nbsp;    @Column(name = &quot;highlight_id&quot;,unique = true,nullable = false,columnDefinition = &quot;uuid&quot;)
+&nbsp;    private UUID highlightId;
+&nbsp;
+&nbsp;    @Column(name = &quot;highlight_url&quot;,nullable = false)
+&nbsp;    private String highlightURL;
+&nbsp;
+&nbsp;    @Column(name = &quot;highlight_key&quot;,nullable = false,columnDefinition = &quot;uuid&quot;)
+&nbsp;    private UUID highlightKey;
+&nbsp;
+&nbsp;    @Column(name = &quot;is_selected&quot;)
+&nbsp;    @Builder.Default
+&nbsp;    private Boolean isSelected=false;
+&nbsp;
+&nbsp;    @ManyToOne(fetch = FetchType.LAZY)
+&nbsp;    @JoinColumn(name = &quot;member_id&quot;,nullable = false, columnDefinition = &quot;uuid&quot;)
+&nbsp;    private Member member;
+&nbsp;
+&nbsp;    @ManyToOne(fetch = FetchType.LAZY)
+&nbsp;    @JoinColumn(name = &quot;back_number_id&quot;)
+&nbsp;    private BackNumberEntity backNumber;
+&nbsp;
+&nbsp;
+&nbsp;    @Column(name = &quot;two_point_count&quot;,nullable = true)
+&nbsp;    @Builder.Default
+&nbsp;    private Integer twoPointCount=0;
+&nbsp;
+&nbsp;    @Column(name = &quot;three_point_count&quot;,nullable = true)
+&nbsp;    @Builder.Default
+&nbsp;    private Integer threePointCount=0;
+&nbsp;
+&nbsp;    /*
+&nbsp;    =========== [ 도메인-행위 ] ==============
+&nbsp;     */
+&nbsp;    public void select(Member actor){
+&nbsp;        //유저의 하이라이트 영상이 아닌경우
+<b class="fc">&nbsp;        if (!actor.getMemberId().equals(member.getMemberId())){</b>
+<b class="fc">&nbsp;            throw new CustomException(ErrorCode.IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID);</b>
+&nbsp;        }
+&nbsp;        //이미 선택된 하이라이트 영상인 경우
+<b class="fc">&nbsp;        if (Boolean.TRUE.equals(this.isSelected)){</b>
+<b class="fc">&nbsp;            throw new CustomException(ErrorCode.EXISTED_SELECTED);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        this.isSelected=true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //2점 슛 계산
+&nbsp;    public int totalTwoPoint(){
+<b class="fc">&nbsp;        return 2 * this.twoPointCount;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //3점 슛 계산
+&nbsp;    public int totalThreePoint(){
+<b class="fc">&nbsp;        return 3 * this.threePointCount;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-10-23 11:21</div>
+</div>
+</body>
+</html>

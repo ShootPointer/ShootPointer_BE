@@ -1,0 +1,217 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > LikeUtilImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.domain.like.helper</a>
+</div>
+
+<h1>Coverage Summary for Class: LikeUtilImpl (com.midas.shootpointer.domain.like.helper)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LikeUtilImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.domain.like.helper;
+&nbsp;
+&nbsp;import com.midas.shootpointer.domain.like.entity.LikeEntity;
+&nbsp;import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
+&nbsp;import com.midas.shootpointer.domain.like.repository.LikeQueryRepository;
+&nbsp;import com.midas.shootpointer.domain.member.entity.Member;
+&nbsp;import com.midas.shootpointer.domain.post.entity.PostEntity;
+&nbsp;import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
+&nbsp;import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
+&nbsp;import com.midas.shootpointer.global.annotation.DistributedLock;
+&nbsp;import com.midas.shootpointer.global.common.ErrorCode;
+&nbsp;import com.midas.shootpointer.global.exception.CustomException;
+&nbsp;import jakarta.persistence.OptimisticLockException;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;import org.springframework.jdbc.core.JdbcTemplate;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;@Component
+&nbsp;@RequiredArgsConstructor
+<b class="fc">&nbsp;@Slf4j</b>
+&nbsp;public class LikeUtilImpl implements LikeUtil {
+&nbsp;    private final LikeQueryRepository likeQueryRepository;
+&nbsp;    private final LikeCommandRepository likeCommandRepository;
+&nbsp;
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *LikeUtilImpl
+&nbsp;    * 게시물의 좋아요 개수 증가.
+&nbsp;    * @parm post : 게시물 객체
+&nbsp;    * @return void
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 25. 9. 2.
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;    @Override
+&nbsp;    public void increaseLikeCnt(PostEntity post) {
+<b class="fc">&nbsp;        post.increase();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *LikeUtilImpl
+&nbsp;    * 게시물의 좋아요 개수 감소.
+&nbsp;    * @parm post : 게시물 객체
+&nbsp;    * @return void
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 25. 9. 2.
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;    @Override
+&nbsp;    public void decreaseLikeCnt(PostEntity post) {
+<b class="fc">&nbsp;        post.deleteLike();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *LikeUtilImpl
+&nbsp;    * 좋아요 객체를 저장.
+&nbsp;    * @parm post : 게시물 객체 / member : 유저 객체
+&nbsp;    * @return 저장된 좋아요 객체
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 25. 9. 2.
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;    @Override
+&nbsp;    public LikeEntity createLike(PostEntity post, Member member) {
+<b class="fc">&nbsp;        LikeEntity likeEntity=LikeEntity.builder()</b>
+<b class="fc">&nbsp;                .member(member)</b>
+<b class="fc">&nbsp;                .post(post)</b>
+<b class="fc">&nbsp;                .build();</b>
+<b class="fc">&nbsp;        return likeCommandRepository.save(likeEntity);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *LikeUtilImpl
+&nbsp;    * like를 삭제.
+&nbsp;    * @parm like : 좋아요 객체
+&nbsp;    * @return void
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 25. 9. 2.
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;    @Override
+&nbsp;    public void deleteLike(LikeEntity like) {
+<b class="fc">&nbsp;        likeCommandRepository.delete(like);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *LikeUtilImpl
+&nbsp;    * memberId와 postId로 like 객체 조회.
+&nbsp;    * @parm memberId : 유저Id / postId : 게시판 Id
+&nbsp;    * @return like 객체.
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 25. 9. 2.
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;    @Override
+&nbsp;    public LikeEntity findByPostIdAndMemberId(UUID memberId, Long postId) {
+<b class="fc">&nbsp;        return likeQueryRepository.findByPostIdAndMemberId(postId,memberId)</b>
+<b class="fc">&nbsp;                .orElseThrow(()-&gt; new CustomException(ErrorCode.NOT_FOUND_LIKE));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-10-23 11:21</div>
+</div>
+</body>
+</html>

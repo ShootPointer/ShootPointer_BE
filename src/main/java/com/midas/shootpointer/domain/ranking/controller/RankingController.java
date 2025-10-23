@@ -36,7 +36,7 @@ public class RankingController {
     * @date 25. 10. 20.
     *
     ==========================**/
-    @GetMapping("/last-weekly")
+    @GetMapping("/last-week")
     public ResponseEntity<ApiResponse<RankingResponse>> fetchLastWeekRank(
             @RequestParam(value = "date",required = true) @DateTimeFormat(pattern = "yyyy-MM-dd")Date date
             ) throws IOException {

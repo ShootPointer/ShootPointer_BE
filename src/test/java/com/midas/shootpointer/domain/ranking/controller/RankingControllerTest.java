@@ -74,7 +74,7 @@ class RankingControllerTest {
         when(rankingService.fetchLastData(eq(RankingType.WEEKLY),any(LocalDateTime.class))).thenReturn(expectedResponse);
 
         //then
-        mockMvc.perform(get(baseUrl+"/last-weekly")
+        mockMvc.perform(get(baseUrl+"/last-week")
                 .param("date","2025-10-22"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("OK"))
@@ -130,7 +130,7 @@ class RankingControllerTest {
         when(rankingService.fetchLastData(eq(RankingType.WEEKLY),any(LocalDateTime.class))).thenReturn(expectedResponse);
 
         //then
-        mockMvc.perform(get(baseUrl+"/last-weekly")
+        mockMvc.perform(get(baseUrl+"/last-month")
                         .param("date","2025-10-22"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("OK"))

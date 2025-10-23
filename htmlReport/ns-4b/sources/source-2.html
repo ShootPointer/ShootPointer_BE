@@ -1,0 +1,259 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > JwtUtil</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.global.util.jwt</a>
+</div>
+
+<h1>Coverage Summary for Class: JwtUtil (com.midas.shootpointer.global.util.jwt)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JwtUtil</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86.7%
+  </span>
+  <span class="absValue">
+    (39/45)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">JwtUtil$$SpringCGLIB$$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86.7%
+  </span>
+  <span class="absValue">
+    (39/45)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.global.util.jwt;
+&nbsp;
+&nbsp;import com.midas.shootpointer.global.annotation.CustomLog;
+&nbsp;import com.midas.shootpointer.global.common.ErrorCode;
+&nbsp;import com.midas.shootpointer.global.exception.CustomException;
+&nbsp;import io.jsonwebtoken.Claims;
+&nbsp;import io.jsonwebtoken.Jwts;
+&nbsp;import io.jsonwebtoken.SignatureAlgorithm;
+&nbsp;import io.jsonwebtoken.security.Keys;
+&nbsp;import jakarta.servlet.http.HttpServletRequest;
+&nbsp;import org.springframework.beans.factory.annotation.Value;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;import org.springframework.util.StringUtils;
+&nbsp;
+&nbsp;import java.nio.charset.StandardCharsets;
+&nbsp;import java.security.Key;
+&nbsp;import java.util.Base64;
+&nbsp;import java.util.Date;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;@Component
+&nbsp;public class JwtUtil {
+&nbsp;
+&nbsp;    private final Key key;
+&nbsp;
+&nbsp;    @Value(&quot;${jwt.access_expiration_time}&quot;)
+&nbsp;    private long ACCESS_EXP;
+&nbsp;
+&nbsp;    @Value(&quot;${jwt.refresh_expiration_time}&quot;)
+&nbsp;    private long REFRESH_EXP;
+&nbsp;
+<b class="fc">&nbsp;    public JwtUtil(@Value(&quot;${jwt.secret}&quot;) String secretKey) {</b>
+<b class="fc">&nbsp;        byte[] decodedKey = Base64.getDecoder().decode(secretKey);</b>
+<b class="fc">&nbsp;        this.key = Keys.hmacShaKeyFor(decodedKey);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @CustomLog(&quot;== JWT 생성 ==&quot;)
+&nbsp;    public String createToken(UUID memberId, String email, String nickname) {
+&nbsp;        try {
+<b class="fc">&nbsp;            String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));</b>
+<b class="fc">&nbsp;            String encodedNickname = Base64.getEncoder().encodeToString(nickname.getBytes(StandardCharsets.UTF_8));</b>
+&nbsp;
+<b class="fc">&nbsp;            return Jwts.builder()</b>
+<b class="fc">&nbsp;                    .setSubject(memberId.toString())</b>
+<b class="fc">&nbsp;                    .claim(&quot;email&quot;, encodedEmail)</b>
+<b class="fc">&nbsp;                    .claim(&quot;nickname&quot;, encodedNickname)</b>
+<b class="fc">&nbsp;                    .setIssuedAt(new Date())</b>
+<b class="fc">&nbsp;                    .setExpiration(new Date(System.currentTimeMillis() + ACCESS_EXP))</b>
+<b class="fc">&nbsp;                    .signWith(key, SignatureAlgorithm.HS256)</b>
+<b class="fc">&nbsp;                    .compact();</b>
+&nbsp;        } catch (Exception e) {
+<b class="nc">&nbsp;            throw new CustomException(ErrorCode.JWT_CREATE_FAIL);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @CustomLog(&quot;== JWT 파싱 ==&quot;)
+&nbsp;    public Claims parseToken(String token) {
+&nbsp;        try {
+<b class="fc">&nbsp;            return Jwts.parserBuilder()</b>
+<b class="fc">&nbsp;                    .setSigningKey(key)</b>
+<b class="fc">&nbsp;                    .build()</b>
+<b class="fc">&nbsp;                    .parseClaimsJws(token)</b>
+<b class="fc">&nbsp;                    .getBody();</b>
+&nbsp;        } catch (Exception e) {
+<b class="nc">&nbsp;            throw new CustomException(ErrorCode.JWT_PARSE_FAIL);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    @CustomLog(&quot;== 리프레시 토큰 생성 ==&quot;)
+&nbsp;    public String createRefreshToken(String email) {
+&nbsp;        try {
+<b class="fc">&nbsp;            String encodedEmail = Base64.getEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));</b>
+<b class="fc">&nbsp;            return Jwts.builder()</b>
+<b class="fc">&nbsp;                    .setSubject(UUID.randomUUID().toString())</b>
+<b class="fc">&nbsp;                    .claim(&quot;email&quot;, encodedEmail)</b>
+<b class="fc">&nbsp;                    .setIssuedAt(new Date())</b>
+<b class="fc">&nbsp;                    .setExpiration(new Date(System.currentTimeMillis() + REFRESH_EXP))</b>
+<b class="fc">&nbsp;                    .signWith(key, SignatureAlgorithm.HS256)</b>
+<b class="fc">&nbsp;                    .compact();</b>
+&nbsp;        } catch (Exception e) {
+<b class="nc">&nbsp;            throw new CustomException(ErrorCode.JWT_CREATE_FAIL);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    
+&nbsp;    public String resolveToken(HttpServletRequest request) {
+<b class="fc">&nbsp;        String bearer = request.getHeader(&quot;Authorization&quot;);</b>
+<b class="pc">&nbsp;        if (StringUtils.hasText(bearer) &amp;&amp; bearer.startsWith(&quot;Bearer &quot;)) {</b>
+<b class="nc">&nbsp;            return bearer.substring(7);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String decodeBase64(String encoded) {
+<b class="fc">&nbsp;        return new String(Base64.getDecoder().decode(encoded), StandardCharsets.UTF_8);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getEmailFromToken(String token) {
+<b class="fc">&nbsp;        Claims claims = parseToken(token);</b>
+<b class="fc">&nbsp;        String encodedEmail = claims.get(&quot;email&quot;, String.class);</b>
+<b class="fc">&nbsp;        return decodeBase64(encodedEmail);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getNicknameFromToken(String token) {
+<b class="fc">&nbsp;        Claims claims = parseToken(token);</b>
+<b class="fc">&nbsp;        String encodedNickname = claims.get(&quot;nickname&quot;, String.class);</b>
+<b class="fc">&nbsp;        return decodeBase64(encodedNickname);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public UUID getMemberId(String token) {
+&nbsp;        try {
+<b class="fc">&nbsp;            Claims claims = parseToken(token);</b>
+<b class="fc">&nbsp;            String subject = claims.getSubject();</b>
+<b class="fc">&nbsp;            return UUID.fromString(subject);</b>
+&nbsp;        } catch (IllegalArgumentException | NullPointerException e) {
+<b class="nc">&nbsp;            throw new CustomException(ErrorCode.JWT_MEMBER_ID_INVALID);</b>
+&nbsp;        } catch (CustomException e) {
+&nbsp;            throw e;
+&nbsp;        } catch (Exception e) {
+<b class="nc">&nbsp;            throw new CustomException(ErrorCode.JWT_PARSE_FAIL);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-10-23 11:21</div>
+</div>
+</body>
+</html>

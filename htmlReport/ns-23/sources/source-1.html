@@ -1,0 +1,186 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > LikeController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.domain.like.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: LikeController (com.midas.shootpointer.domain.like.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LikeController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.domain.like.controller;
+&nbsp;
+&nbsp;import com.midas.shootpointer.domain.like.business.command.LikeCommandService;
+&nbsp;import com.midas.shootpointer.domain.member.entity.Member;
+&nbsp;import com.midas.shootpointer.global.dto.ApiResponse;
+&nbsp;import com.midas.shootpointer.global.security.SecurityUtils;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import io.swagger.v3.oas.annotations.media.Content;
+&nbsp;import io.swagger.v3.oas.annotations.media.Schema;
+&nbsp;import io.swagger.v3.oas.annotations.tags.Tag;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/like&quot;)
+&nbsp;@RequiredArgsConstructor
+&nbsp;@Tag(name = &quot;좋아요&quot;,description = &quot;좋아요 등록 및 취소&quot;)
+&nbsp;public class LikeController {
+&nbsp;    private final LikeCommandService likeCommandService;
+&nbsp;
+&nbsp;    @Operation(
+&nbsp;            summary = &quot;좋아요 요청 API - [담당자 : 김도연]&quot;,
+&nbsp;            responses = {
+&nbsp;                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = &quot;201&quot;,description = &quot;좋아요 등록 성공&quot;,
+&nbsp;                            content = @Content(mediaType=&quot;application/json&quot;,
+&nbsp;                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+&nbsp;                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = &quot;4XX&quot;,description = &quot;좋아요 등록 실패&quot;,
+&nbsp;                            content = @Content(mediaType = &quot;application/json&quot;,
+&nbsp;                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+&nbsp;            }
+&nbsp;    )
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *LikeController
+&nbsp;    *
+&nbsp;    * @parm [postId] 게시물 Id
+&nbsp;    * @return org.springframework.http.ResponseEntity&lt;com.midas.shootpointer.global.dto.ApiResponse&lt;java.lang.Long&gt;&gt;
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 25. 9. 2.
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;    @PostMapping(&quot;{postId}&quot;)
+&nbsp;    public ResponseEntity&lt;ApiResponse&lt;Long&gt;&gt; create(
+&nbsp;            @PathVariable(value = &quot;postId&quot;) Long postId
+&nbsp;    ) {
+&nbsp;
+<b class="fc">&nbsp;        Member member= SecurityUtils.getCurrentMember();</b>
+<b class="fc">&nbsp;        return ResponseEntity.ok(ApiResponse.created(likeCommandService.create(postId, member)));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(
+&nbsp;            summary = &quot;좋아요 취소 API - [담당자 : 김도연]&quot;,
+&nbsp;            responses = {
+&nbsp;                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = &quot;200&quot;,description = &quot;좋아요 취소 성공&quot;,
+&nbsp;                            content = @Content(mediaType=&quot;application/json&quot;,
+&nbsp;                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+&nbsp;                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = &quot;4XX&quot;,description = &quot;좋아요 취소 실패&quot;,
+&nbsp;                            content = @Content(mediaType = &quot;application/json&quot;,
+&nbsp;                                    schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+&nbsp;            }
+&nbsp;    )
+&nbsp;    /*==========================
+&nbsp;    *
+&nbsp;    *LikeController
+&nbsp;    *
+&nbsp;    * @parm [postId] 게시물 Id
+&nbsp;    * @return org.springframework.http.ResponseEntity&lt;com.midas.shootpointer.global.dto.ApiResponse&lt;java.lang.Long&gt;&gt;
+&nbsp;    * @author kimdoyeon
+&nbsp;    * @version 1.0.0
+&nbsp;    * @date 25. 9. 2.
+&nbsp;    *
+&nbsp;    ==========================**/
+&nbsp;    @DeleteMapping(&quot;{postId}&quot;)
+&nbsp;    public ResponseEntity&lt;ApiResponse&lt;Long&gt;&gt; delete(
+&nbsp;            @PathVariable(value = &quot;postId&quot;) Long postId
+&nbsp;    ) {
+<b class="fc">&nbsp;        Member member=SecurityUtils.getCurrentMember();</b>
+<b class="fc">&nbsp;        return ResponseEntity.ok(ApiResponse.ok(likeCommandService.delete(postId, member)));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-10-23 11:21</div>
+</div>
+</body>
+</html>

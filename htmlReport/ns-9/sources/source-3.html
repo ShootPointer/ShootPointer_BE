@@ -1,0 +1,139 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AdminTokenProvider</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.midas.shootpointer.domain.admin</a>
+</div>
+
+<h1>Coverage Summary for Class: AdminTokenProvider (com.midas.shootpointer.domain.admin)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdminTokenProvider</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.midas.shootpointer.domain.admin;
+&nbsp;
+&nbsp;import com.midas.shootpointer.global.util.jwt.JwtUtil;
+&nbsp;import com.midas.shootpointer.global.util.jwt.handler.RefreshTokenHandlerImpl;
+&nbsp;import java.util.Optional;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;@Component
+&nbsp;@RequiredArgsConstructor
+&nbsp;public class AdminTokenProvider {
+&nbsp;    
+&nbsp;    private final JwtUtil jwtUtil;
+&nbsp;    private final RefreshTokenHandlerImpl refreshTokenHandler;
+&nbsp;    
+&nbsp;    // AccessToken 생성
+&nbsp;    public String createAccessToken(UUID adminId, String email, String nickname) {
+<b class="nc">&nbsp;        return jwtUtil.createToken(adminId, email, nickname);</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    // RefreshToken 생성 및 Redis 저장
+&nbsp;    public String createAndSaveRefreshToken(String email) {
+<b class="nc">&nbsp;        String refreshToken = jwtUtil.createRefreshToken(email);</b>
+<b class="nc">&nbsp;        refreshTokenHandler.saveRefreshToken(email, refreshToken);</b>
+<b class="nc">&nbsp;        return refreshToken;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    // Redis에서 RefreshToken 조회
+&nbsp;    public Optional&lt;String&gt; getRefreshToken(String email) {
+<b class="nc">&nbsp;        return refreshTokenHandler.getRefreshToken(email); // Optional&lt;String&gt; 그대로 반환</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-10-23 11:21</div>
+</div>
+</body>
+</html>
