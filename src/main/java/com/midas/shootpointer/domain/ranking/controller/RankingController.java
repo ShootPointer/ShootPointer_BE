@@ -4,6 +4,7 @@ import com.midas.shootpointer.domain.ranking.business.service.RankingService;
 import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.global.dto.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.Date;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/rank")
+@Tag(name = "랭킹 - 득점 순위 랭킹 조회")
 public class RankingController {
     private final RankingService rankingService;
 
