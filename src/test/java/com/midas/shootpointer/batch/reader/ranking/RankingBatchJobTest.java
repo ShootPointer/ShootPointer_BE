@@ -1,9 +1,5 @@
 package com.midas.shootpointer.batch.reader.ranking;
 
-import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
-import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
-import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
-import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
@@ -15,7 +11,6 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -48,21 +43,6 @@ public class RankingBatchJobTest {
 
     @Autowired
     private RankingRepository rankingRepository;
-
-    @Autowired
-    private HighlightCommandRepository highlightCommandRepository;
-
-    @Autowired
-    private MemberCommandRepository memberCommandRepository;
-
-    @Autowired
-    private BackNumberRepository backNumberRepository;
-
-    @Autowired
-    private MemberBackNumberRepository memberBackNumberRepository;
-
-    @Autowired
-    private MongoTemplate mongoTemplate;
 
     @PostConstruct
     public void configureJobLauncherTestUtils() throws Exception {

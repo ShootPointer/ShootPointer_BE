@@ -117,7 +117,7 @@ jobs:
           -Dspring.elasticsearch.mode=external \
           -Dspring.elasticsearch.uris=http://localhost:9200
         env:
-          SPRING_PROFILES_ACTIVE: test,es
+          SPRING_PROFILES_ACTIVE: test,es,batch
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: postgres
