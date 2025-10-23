@@ -86,4 +86,5 @@ jobs:
       - name: Wait for MongoDB
         run: |
           echo "Waiting for MongoDB to be ready..."
-          timeout 300 bash -c 'until mongosh --host mongo -u root -p root --authenticationDatabase admin --eval "db.adminCommand({ ping: 1 })" > /dev/null 2
+          timeout 300 bash -c "until mongosh --host mongo -u root -p root --authenticationDatabase admin --eval 'db.adminCommand({ ping: 1 })' > /dev/null 2>&1; do sleep 5; done"
+          echo "MongoDB is ready!"
