@@ -111,6 +111,7 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: postgres
           TESTCONTAINERS_RYUK_DISABLED: true
           SPRING_ELASTICSEARCH_MODE: external
+          SPRING_DATA_MONGODB_URI: mongodb://root:root@localhost:27017/shootpointer?authSource=admin
 
       - name: Upload JUnit Test Report
         if: always()
