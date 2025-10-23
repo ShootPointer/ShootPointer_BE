@@ -75,6 +75,17 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Configure PostgreSQL
+        run: |
+          echo "Configuring PostgreSQL max_connections..."
+          docker exec $(docker ps -q -f "ancestor=postgres:15") \
+            psql -U postgres -c "ALTER SYSTEM SET max_connections = 500;"
+          docker exec $(docker ps -q -f "ancestor=postgres:15") \
+            psql -U postgres -c "ALTER SYSTEM SET shared_buffers = '256MB';"
+          docker restart $(docker ps -q -f "ancestor=postgres:15")
+          sleep 5
+          echo "PostgreSQL configured!"
+
       - name: Wait for Elasticsearch
         run: |
           echo "Waiting for Elasticsearch to be ready..."

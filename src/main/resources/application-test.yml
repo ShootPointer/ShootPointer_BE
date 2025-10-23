@@ -25,7 +25,7 @@ spring:
     jdbc:
       initialize-schema: always
     job:
-      enabled: true
+      enabled: false
 
 video:
   path: ${java.io.tmpdir}/videos
