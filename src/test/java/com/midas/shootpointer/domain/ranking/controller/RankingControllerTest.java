@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@ActiveProfiles({"test","batch"})
 @SpringBootTest
 class RankingControllerTest {
     @Autowired
