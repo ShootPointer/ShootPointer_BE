@@ -66,6 +66,7 @@ class CommentCommandControllerTest {
 	
 	@Test
 	@DisplayName("댓글 생성 성공")
+	@WithMockCustomMember
 	void create_Success() throws Exception {
 		// given
 		CommentRequestDto requestDto = CommentRequestDto.builder()

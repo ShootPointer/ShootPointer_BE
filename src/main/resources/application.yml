@@ -33,7 +33,7 @@ spring:
   # Batch 설정
   batch:
     jdbc:
-      initialize-schema: always
+      initialize-schema: never
     job:
       enabled: false
 
