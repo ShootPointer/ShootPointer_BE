@@ -42,62 +42,59 @@ pipeline {
                               file(credentialsId: 'SECRET_DOCKER_ENV',variable: 'envFile')
                               ]){
                                  sh '''
-                                    echo "Copying application.yml from Jenkins Secret..."
                                     cp $secretFile ./src/main/resources/application.yml
-
-                                    echo "Loading environment variables from Jenkins secret env file..."
                                     set -a
                                     source $envFile
                                     set +a
-
-                                    echo "✅ application.yml replaced and environment variables loaded."
                                     '''
                               }
                           }
                       }
                 }
 
-        stage('Check and Free Up Ports') {
-            steps {
-                sh 'echo "🔌 Checking and Freeing Up Ports (6378, 5431, 27016)"'
-                sh """
-                for port in 6378 5431 27016; do
-                    if lsof -i :\$port; then
-                        echo "Port \$port is in use. Killing the process..."
-                        sudo kill -9 \$(lsof -ti :\$port) || true
-                    fi
-                done
-                echo "Port cleanup complete."
-                """
-            }
-        }
+        stage('Preparation'){
+            parallel{
+                stage('Check and Free Up Ports') {
+                            steps {
+                                sh """
+                                for port in 6378 5431 27016; do
+                                    if lsof -i :\$port; then
+                                        echo "Port \$port is in use. Killing the process..."
+                                        sudo kill -9 \$(lsof -ti :\$port) || true
+                                    fi
+                                done
+                                echo "Port cleanup complete."
+                                """
+                            }
+                        }
 
-        stage('Remove Existing Docker Containers') {
-            steps {
-                sh 'echo "Stopping and Removing Existing Docker Containers except Jenkins"'
-                sh '''
-                JENKINS_CONTAINER=$(docker ps -aqf "name=jenkins")
-                ALL_CONTAINERS=$(docker ps -aq)
+                 stage('Remove Existing Docker Containers') {
+                             steps {
+                                 sh '''
+                                 JENKINS_CONTAINER=$(docker ps -aqf "name=jenkins")
+                                 ALL_CONTAINERS=$(docker ps -aq)
 
-                for CONTAINER in $ALL_CONTAINERS; do
-                    if [ "$CONTAINER" != "$JENKINS_CONTAINER" ]; then
-                        docker stop $CONTAINER || true
-                        docker rm -f $CONTAINER || true
-                    fi
-                done
+                                 for CONTAINER in $ALL_CONTAINERS; do
+                                     if [ "$CONTAINER" != "$JENKINS_CONTAINER" ]; then
+                                         docker stop $CONTAINER || true
+                                         docker rm -f $CONTAINER || true
+                                     fi
+                                 done
 
-                docker-compose down --remove-orphans || true
-                '''
+                                 docker-compose down --remove-orphans || true
+                                 '''
+                             }
+                             post {
+                                 success { sh 'echo "✅ Successfully Removed Docker Containers"' }
+                                 failure { sh 'echo "❌ Failed to Remove Docker Containers"' }
+                             }
+                         }
             }
-            post {
-                success { sh 'echo "✅ Successfully Removed Docker Containers"' }
-                failure { sh 'echo "❌ Failed to Remove Docker Containers"' }
-            }
+
         }
 
         stage('Build and Deploy with Docker Compose') {
             steps {
-                sh 'echo "Building and Deploying Containers with Docker Compose"'
                 sh 'SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE docker-compose up -d --build'
             }
             post {
