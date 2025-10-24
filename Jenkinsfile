@@ -4,7 +4,7 @@ pipeline {
     parameters {
         choice(
             name: 'PROFILE',
-            choices: ['dev', 'testdata', 'prod'],
+            choices: ['dev', 'testdata', 'prod','batch'],
             description: 'Select Spring Profile for deployment'
         )
     }
@@ -15,6 +15,10 @@ pipeline {
     environment {
         COMPOSE_FILE = 'docker-compose.yml'
         SPRING_PROFILES_ACTIVE = "${params.PROFILE}"
+
+        //Build kit
+        DOCKER_BUILDKIT = '1'
+        BUILDKIT_PROGRESS = 'plain'
     }
 
     stages {
@@ -33,26 +37,25 @@ pipeline {
         stage('Replace Properties'){
                       steps{
                           script{
-                              withCredentials([file(credentialsId: 'SECRET_FILE2', variable: 'secretFile')]){
-                                  sh 'cp $secretFile ./src/main/resources/application.yml'
+                              withCredentials([
+                              file(credentialsId: 'SECRET_FILE2', variable: 'secretFile'),
+                              file(credentialsId: 'SECRET_DOCKER_ENV',variable: 'envFile')
+                              ]){
+                                 sh '''
+                                    echo "Copying application.yml from Jenkins Secret..."
+                                    cp $secretFile ./src/main/resources/application.yml
+
+                                    echo "Loading environment variables from Jenkins secret env file..."
+                                    set -a
+                                    source $envFile
+                                    set +a
+
+                                    echo "✅ application.yml replaced and environment variables loaded."
+                                    '''
                               }
                           }
                       }
                 }
-
-        stage('Build Gradle Test') {
-            steps {
-                sh 'echo "🔧 Build Gradle Test Start"'
-                sh 'echo "JAVA_HOME is set to: $JAVA_HOME"'
-                sh 'java -version'
-                sh 'chmod +x gradlew'
-                sh './gradlew clean build -x test --info'
-            }
-            post {
-                success { sh 'echo "✅ Successfully Built Gradle Project"' }
-                failure { sh 'echo "❌ Failed to Build Gradle Project"' }
-            }
-        }
 
         stage('Check and Free Up Ports') {
             steps {
@@ -64,14 +67,14 @@ pipeline {
                         sudo kill -9 \$(lsof -ti :\$port) || true
                     fi
                 done
-                echo "✅ Port cleanup complete."
+                echo "Port cleanup complete."
                 """
             }
         }
 
         stage('Remove Existing Docker Containers') {
             steps {
-                sh 'echo "🛑 Stopping and Removing Existing Docker Containers except Jenkins"'
+                sh 'echo "Stopping and Removing Existing Docker Containers except Jenkins"'
                 sh '''
                 JENKINS_CONTAINER=$(docker ps -aqf "name=jenkins")
                 ALL_CONTAINERS=$(docker ps -aq)
@@ -83,7 +86,7 @@ pipeline {
                     fi
                 done
 
-                docker-compose down --rmi all --remove-orphans || true
+                docker-compose down --remove-orphans || true
                 '''
             }
             post {
@@ -94,8 +97,7 @@ pipeline {
 
         stage('Build and Deploy with Docker Compose') {
             steps {
-                sh 'echo "🚀 Building and Deploying Containers with Docker Compose"'
-                sh 'docker system prune -a -f'
+                sh 'echo "Building and Deploying Containers with Docker Compose"'
                 sh 'SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE docker-compose up -d --build'
             }
             post {
