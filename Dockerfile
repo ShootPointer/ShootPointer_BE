@@ -19,6 +19,6 @@ RUN apk add --no-cache tzdata \
 ENV SPRING_PROFILES_ACTIVE=es,test-real-data,batch
 ENV TZ=Asia/Seoul
 
-COPY --from=builder /shootpointer/build/libs/shootpointer-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=builder /shootpointer/build/libs/*.jar app.jar
 
 ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar", "/app.jar"]
