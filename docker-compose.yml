@@ -6,10 +6,10 @@ services:
     image: postgres:17
     container_name: postgres
     environment:
-      POSTGRES_DB: "shootpointer"
-      POSTGRES_USER: "myuser"
-      POSTGRES_PASSWORD: "rlaehdus00"
-      TZ: "Asia/Seoul"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: ${TZ}
     ports:
       - "5432:5432"
     volumes:
@@ -24,31 +24,13 @@ services:
       retries: 5
       start_period: 30s
 
-  # Redis
-  redis:
-    image: redis:7
-    container_name: redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-    networks:
-      - spring-network
-    restart: always
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-
   # PgAdmin
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: "admin@example.com"
-      PGADMIN_DEFAULT_PASSWORD: "admin"
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     ports:
       - "3305:80"
     networks:
@@ -60,7 +42,7 @@ services:
     image: mongo:8
     container_name: mongo
     environment:
-      MONGO_INITDB_DATABASE: "shootpointer"
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     ports:
       - "27017:27017"
     volumes:
@@ -86,8 +68,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      redis:
-        condition: service_healthy
       mongo:
         condition: service_healthy
       elasticsearch:
@@ -97,43 +77,39 @@ services:
 
       # 서버 포트
       SERVER_PORT: "9000"
-      
+
       # 데이터베이스 설정
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/shootpointer"
-      SPRING_DATASOURCE_USERNAME: "myuser"
-      SPRING_DATASOURCE_PASSWORD: "rlaehdus00"
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
-      
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
+
       # JPA 설정
-      SPRING_JPA_HIBERNATE_DDL_AUTO: "create-drop"
-      SPRING_JPA_SHOW_SQL: "true"
-      SPRING_JPA_DATABASE_PLATFORM: "org.hibernate.dialect.PostgreSQLDialect"
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: "org.hibernate.dialect.PostgreSQLDialect"
-      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
-      
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
+      SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM}
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT}
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL}
+
       # Hikari 연결 풀
-      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: "20"
-      SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: "5"
-      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: "30000"
-      SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT: "600000"
-      SPRING_DATASOURCE_HIKARI_MAX_LIFETIME: "1800000"
-      
-      # Redis
-      SPRING_REDIS_HOST: "redis"
-      SPRING_REDIS_PORT: "6379"
-      
+      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE}
+      SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE}
+      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: ${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT}
+      SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT: ${SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT}
+      SPRING_DATASOURCE_HIKARI_MAX_LIFETIME: ${SPRING_DATASOURCE_HIKARI_MAX_LIFETIME}
+
       # MongoDB
-      SPRING_DATA_MONGODB_URI: "mongodb://mongo:27017/shootpointer"
-      
+      SPRING_DATA_MONGODB_URI: ${SPRING_DATA_MONGODB_URI}
+
       # 타임존
-      TZ: "Asia/Seoul"
-      
+      TZ: ${TZ}
+
       # 로깅 레벨
-      LOGGING_LEVEL_ORG_HIBERNATE_SQL: "DEBUG"
-      LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: "TRACE"
+      LOGGING_LEVEL_ORG_HIBERNATE_SQL: ${LOGGING_LEVEL_ORG_HIBERNATE_SQL}
+      LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: ${LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER}
 
       # Elasticsearch
-      SPRING_ELASTICSEARCH_URIS: "http://elasticsearch:9200"
+      SPRING_ELASTICSEARCH_URIS: ${SPRING_ELASTICSEARCH_URIS}
 
     ports:
       - "9000:9000"
@@ -184,13 +160,12 @@ services:
       retries: 3
       start_period: 60s
 
-
   # Kibana
   kibana:
     image: docker.elastic.co/kibana/kibana:8.6.0
     container_name: kibana
     environment:
-      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+      ELASTICSEARCH_HOSTS: ${ELASTICSEARCH_HOSTS}
     ports:
       - "5601:5601"
     depends_on:
@@ -219,7 +194,6 @@ networks:
     driver: bridge
 
 volumes:
-  redis-data:
   postgres-data:
   mongo-data:
   mongo-config:

@@ -51,4 +51,7 @@ src/main/resources/application-testdata.yml
 
 es-logs/
 /es-logs/
+
+.env
 /esdata/
+
