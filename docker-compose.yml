@@ -60,6 +60,7 @@ services:
 
   # Spring Boot Application
   shootpointer:
+    network_mode: "host"
     env_file:
       - .env
     build:
