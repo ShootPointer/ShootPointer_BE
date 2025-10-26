@@ -3,9 +3,8 @@ pipeline {
     
     parameters {
         choice(
-            name: 'PROFILE',
-            choices: ['dev', 'testdata', 'prod','batch'],
-            description: 'Select Spring Profile for deployment'
+           name: 'PROFILE',
+           defaultValue: 'testdata,prod,batch,es'
         )
     }
     tools {
