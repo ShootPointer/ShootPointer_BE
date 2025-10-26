@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,12 +37,10 @@ public class RankingController {
     ==========================**/
     @GetMapping("/last-week")
     public ResponseEntity<ApiResponse<RankingResponse>> fetchLastWeekRank(
-            @RequestParam(value = "date",required = true) @DateTimeFormat(pattern = "yyyy-MM-dd")Date date
+            @RequestParam(value = "date",required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
             ) throws IOException {
-        LocalDateTime revertedDate=date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-        return ResponseEntity.ok(ApiResponse.ok(rankingService.fetchLastData(RankingType.WEEKLY,revertedDate)));
+        LocalDateTime dateTime = date.atStartOfDay();
+        return ResponseEntity.ok(ApiResponse.ok(rankingService.fetchLastData(RankingType.WEEKLY,dateTime)));
     }
 
     /*==========================
@@ -59,12 +56,10 @@ public class RankingController {
     ==========================**/
     @GetMapping("/last-month")
     public ResponseEntity<ApiResponse<RankingResponse>> fetchLastMonth(
-            @RequestParam(value = "date",required = true)@DateTimeFormat(pattern = "yyyy-MM-dd")Date date
+            @RequestParam(value = "date",required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     ) throws IOException {
-        LocalDateTime revertedDate=date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-        return ResponseEntity.ok(ApiResponse.ok(rankingService.fetchLastData(RankingType.MONTHLY,revertedDate)));
+        LocalDateTime dateTime = date.atStartOfDay();
+        return ResponseEntity.ok(ApiResponse.ok(rankingService.fetchLastData(RankingType.MONTHLY,dateTime)));
     }
 
 }
