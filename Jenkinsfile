@@ -43,9 +43,7 @@ pipeline {
                               ]){
                                  sh '''
                                     cp $secretFile ./src/main/resources/application.yml
-                                    set -a
-                                    source $envFile
-                                    set +a
+                                    bash -c "set -a; source $envFile; set +a"
                                     '''
                               }
                           }
