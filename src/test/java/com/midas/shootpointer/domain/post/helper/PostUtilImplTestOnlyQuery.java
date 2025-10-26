@@ -78,8 +78,50 @@ public class PostUtilImplTestOnlyQuery {
         assertThat(result).hasSize(10);
         verify(postQueryRepository, times(1)).getPopularPostListBySliceAndNoOffset(anyInt(), anyLong());
     }
-
-
+    
+    @DisplayName("memberId로 게시물 ID 목록을 조회합니다. - postQueryRepository.findPostIdsByMemberId() 동작 유무를 확인합니다.")
+    @Test
+    void findPostIdsByMemberId() {
+        // given
+        UUID memberId = UUID.randomUUID();
+        List<Long> expectedPostIds = List.of(1L, 2L, 3L);
+        
+        when(postQueryRepository.findPostIdsByMemberId(memberId))
+            .thenReturn(expectedPostIds);
+        
+        // when
+        List<Long> result = postUtil.findPostIdsByMemberId(memberId);
+        
+        // then
+        assertThat(result).hasSize(3);
+        assertThat(result).containsExactly(1L, 2L, 3L);
+        verify(postQueryRepository, times(1)).findPostIdsByMemberId(memberId);
+    }
+    
+    @DisplayName("게시물 ID 목록으로 게시물 엔티티들을 조회합니다. - postQueryRepository.findPostsByPostIds() 동작 유무를 확인합니다.")
+    @Test
+    void findPostsByPostIds() {
+        // given
+        List<Long> postIds = List.of(1L, 2L, 3L);
+        Member mockMember = makeMember();
+        HighlightEntity mockHighlight = makeHighlight(mockMember);
+        
+        List<PostEntity> expectedPosts = List.of(
+            makeMockPost(mockMember, mockHighlight),
+            makeMockPost(mockMember, mockHighlight),
+            makeMockPost(mockMember, mockHighlight)
+        );
+        
+        when(postQueryRepository.findPostsByPostIds(postIds))
+            .thenReturn(expectedPosts);
+        
+        // when
+        List<PostEntity> result = postUtil.findPostsByPostIds(postIds);
+        
+        // then
+        assertThat(result).hasSize(3);
+        verify(postQueryRepository, times(1)).findPostsByPostIds(postIds);
+    }
 
     private PostEntity makeMockPost(Member member, HighlightEntity highlight) {
         return PostEntity.builder()

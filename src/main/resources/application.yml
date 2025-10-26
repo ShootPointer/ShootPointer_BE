@@ -30,6 +30,13 @@ spring:
       max-file-size: 5000MB
       max-request-size: 5000MB
 
+  # Batch 설정
+  batch:
+    jdbc:
+      initialize-schema: never
+    job:
+      enabled: false
+
   # 데이터소스 설정
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/shootpointer}
@@ -98,6 +105,7 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: ${LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER:TRACE}
     org.springframework.data.mongodb: DEBUG
     redis.clients.jedis: DEBUG
+    org.springframework.batch.item.database: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
@@ -122,7 +130,7 @@ opencv:
   url: http://tkv00.ddns.net:8000
   api:
     post:
-      send-image: /player/ocr
+      send-image: /api/send-img
     get:
       fetch-video: /api/fetch-video
     proxy:
@@ -130,3 +138,7 @@ opencv:
 
 video:
   path: /home/ubuntu/shoot-pointer/videos
+
+query:
+  path:
+    ranking: src/main/resources/query/ranking.sql

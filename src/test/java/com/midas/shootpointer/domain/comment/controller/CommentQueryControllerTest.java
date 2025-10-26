@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @DisplayName("CommentQueryController 테스트")
 @AutoConfigureMockMvc
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 class CommentQueryControllerTest {
 	
 	@Autowired
@@ -56,10 +56,9 @@ class CommentQueryControllerTest {
 	void setUp() {
 		objectMapper = new ObjectMapper();
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("게시물 ID로 댓글 목록 조회 성공")
-	@WithMockCustomMember
 	void getCommentsByPostId_Success() throws Exception {
 		// given
 		Long postId = 1L;
@@ -100,10 +99,9 @@ class CommentQueryControllerTest {
 		verify(commentQueryService, times(1)).getCommentsByPostId(postId);
 		verify(commentMapper, times(3)).entityToDto(any(Comment.class));
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("댓글 목록 조회 성공 - 빈 리스트")
-	@WithMockCustomMember
 	void getCommentsByPostId_Success_EmptyList() throws Exception {
 		// given
 		Long postId = 1L;
@@ -123,10 +121,9 @@ class CommentQueryControllerTest {
 		verify(commentQueryService, times(1)).getCommentsByPostId(postId);
 		verify(commentMapper, times(0)).entityToDto(any(Comment.class));
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("댓글 목록 조회 실패 - 존재하지 않는 게시물")
-	@WithMockCustomMember
 	void getCommentsByPostId_Failed_PostNotFound() throws Exception {
 		// given
 		Long postId = 999L;
@@ -157,10 +154,9 @@ class CommentQueryControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andDo(print());
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("단일 댓글 조회 성공")
-	@WithMockCustomMember
 	void getCommentsByPostId_Success_SingleComment() throws Exception {
 		// given
 		Long postId = 1L;

@@ -47,6 +47,14 @@ public class HighlightEntity extends BaseEntity {
     private BackNumberEntity backNumber;
 
 
+    @Column(name = "two_point_count",nullable = true)
+    @Builder.Default
+    private Integer twoPointCount=0;
+
+    @Column(name = "three_point_count",nullable = true)
+    @Builder.Default
+    private Integer threePointCount=0;
+
     /*
     =========== [ 도메인-행위 ] ==============
      */
@@ -60,5 +68,15 @@ public class HighlightEntity extends BaseEntity {
             throw new CustomException(ErrorCode.EXISTED_SELECTED);
         }
         this.isSelected=true;
+    }
+
+    //2점 슛 계산
+    public int totalTwoPoint(){
+        return 2 * this.twoPointCount;
+    }
+
+    //3점 슛 계산
+    public int totalThreePoint(){
+        return 3 * this.threePointCount;
     }
 }

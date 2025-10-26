@@ -4,8 +4,8 @@ pipeline {
     parameters {
         choice(
             name: 'PROFILE',
-            choices: ['es,prod,test-real-data','dev', 'testdata', 'prod'],
-            description: 'Select Spring Profile for deployment',
+            choices: ['dev', 'testdata', 'prod','batch'],
+            description: 'Select Spring Profile for deployment'
         )
     }
     tools {
@@ -14,8 +14,11 @@ pipeline {
 
     environment {
         COMPOSE_FILE = 'docker-compose.yml'
-        SPRING_PROFILES_ACTIVE = "${params.PROFILE ?: 'es,prod,test-real-data'}"
-        JAVA_TOOL_OPTIONS = "-Dmanagement.metrics.enable.system=false"
+        SPRING_PROFILES_ACTIVE = "${params.PROFILE}"
+
+        //Build kit
+        DOCKER_BUILDKIT = '1'
+        BUILDKIT_PROGRESS = 'plain'
     }
 
     stages {
@@ -34,63 +37,60 @@ pipeline {
         stage('Replace Properties'){
                       steps{
                           script{
-                              withCredentials([file(credentialsId: 'SECRET_FILE2', variable: 'secretFile')]){
-                                  sh 'cp $secretFile ./src/main/resources/application.yml'
+                              withCredentials([
+                              file(credentialsId: 'SECRET_FILE2', variable: 'secretFile'),
+                              file(credentialsId: 'SECRET_DOCKER_ENV',variable: 'envFile')
+                              ]){
+                                 sh '''
+                                    cp $secretFile ./src/main/resources/application.yml
+                                    set -a
+                                    source $envFile
+                                    set +a
+                                    '''
                               }
                           }
                       }
                 }
 
-        stage('Build Gradle Test') {
-            steps {
-                sh 'echo "🔧 Build Gradle Test Start"'
-                sh 'echo "JAVA_HOME is set to: $JAVA_HOME"'
-                sh 'java -version'
-                sh 'chmod +x gradlew'
-                sh './gradlew clean build -x test --info'
-            }
-            post {
-                success { sh 'echo "✅ Successfully Built Gradle Project"' }
-                failure { sh 'echo "❌ Failed to Build Gradle Project"' }
-            }
-        }
+        stage('Preparation'){
+            parallel{
+                stage('Check and Free Up Ports') {
+                            steps {
+                                sh """
+                                for port in 5431 27016; do
+                                    if lsof -i :\$port; then
+                                        echo "Port \$port is in use. Killing the process..."
+                                        sudo kill -9 \$(lsof -ti :\$port) || true
+                                    fi
+                                done
+                                echo "Port cleanup complete."
+                                """
+                            }
+                        }
 
-        stage('Check and Free Up Ports') {
-            steps {
-                sh 'echo "🔌 Checking and Freeing Up Ports (6378, 5431, 27016)"'
-                sh """
-                for port in 6378 5431 27016 443; do
-                    if lsof -i :\$port; then
-                        echo "Port \$port is in use. Killing the process..."
-                        sudo kill -9 \$(lsof -ti :\$port) || true
-                    fi
-                done
-                echo "✅ Port cleanup complete."
-                """
-            }
-        }
+                 stage('Remove Existing Docker Containers') {
+                             steps {
+                                 sh '''
+                                 JENKINS_CONTAINER=$(docker ps -aqf "name=jenkins")
+                                 ALL_CONTAINERS=$(docker ps -aq)
 
-        stage('Remove Existing Docker Containers') {
-            steps {
-                sh 'echo "🛑 Stopping and Removing Existing Docker Containers except Jenkins"'
-                sh '''
-                JENKINS_CONTAINER=$(docker ps -aqf "name=jenkins")
-                ALL_CONTAINERS=$(docker ps -aq)
+                                 for CONTAINER in $ALL_CONTAINERS; do
+                                     if [ "$CONTAINER" != "$JENKINS_CONTAINER" ]; then
+                                         docker stop $CONTAINER || true
+                                         docker rm -f $CONTAINER || true
+                                     fi
+                                 done
 
-                for CONTAINER in $ALL_CONTAINERS; do
-                    if [ "$CONTAINER" != "$JENKINS_CONTAINER" ]; then
-                        docker stop $CONTAINER || true
-                        docker rm -f $CONTAINER || true
-                    fi
-                done
+                                 docker-compose down --remove-orphans || true
+                                 '''
+                             }
+                             post {
+                                 success { sh 'echo "✅ Successfully Removed Docker Containers"' }
+                                 failure { sh 'echo "❌ Failed to Remove Docker Containers"' }
+                             }
+                         }
+            }
 
-                docker-compose down --rmi all --remove-orphans || true
-                '''
-            }
-            post {
-                success { sh 'echo "✅ Successfully Removed Docker Containers"' }
-                failure { sh 'echo "❌ Failed to Remove Docker Containers"' }
-            }
         }
 
                stage('Fix Elasticsearch Volume Permissions') {
@@ -118,8 +118,6 @@ pipeline {
 
         stage('Build and Deploy with Docker Compose') {
             steps {
-                sh 'echo "🚀 Building and Deploying Containers with Docker Compose"'
-                sh 'docker system prune -a -f'
                 sh 'SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE docker-compose up -d --build'
             }
             environment {

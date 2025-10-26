@@ -7,6 +7,7 @@ import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -84,5 +85,14 @@ public class PostUtilImpl implements PostUtil{
     public List<PostEntity> getPostEntitiesByPostTitleOrPostContent(String search,Long postId,int size) {
         return postQueryRepository.getPostEntitiesByPostTitleOrPostContentOrderByCreatedAtDesc(search,size,postId);
     }
-
+    
+    @Override
+    public List<Long> findPostIdsByMemberId(UUID memberId) {
+        return postQueryRepository.findPostIdsByMemberId(memberId);
+    }
+    
+    @Override
+    public List<PostEntity> findPostsByPostIds(List<Long> postIds) {
+        return postQueryRepository.findPostsByPostIds(postIds);
+    }
 }

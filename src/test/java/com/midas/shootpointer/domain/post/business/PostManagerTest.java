@@ -493,7 +493,97 @@ class PostManagerTest {
         verify(elasticSearchHelper).refinedHashTag(keyword);
         verify(elasticSearchHelper).suggestCompleteSearchWithHashTag(refinedKeyword);
     }
-
+    
+    @Test
+    @DisplayName("회원 ID로 해당 회원의 게시물 목록을 조회합니다._SUCCESS")
+    void getMyPosts_SUCCESS() {
+        //given
+        UUID memberId = UUID.randomUUID();
+        Member member = mockMember();
+        HighlightEntity highlight = mockHighlight(UUID.randomUUID());
+        
+        List<Long> postIds = List.of(1L, 2L, 3L);
+        List<PostEntity> postEntities = List.of(
+            createAndSavedPostEntity(highlight, member, 1L, "1"),
+            createAndSavedPostEntity(highlight, member, 2L, "2"),
+            createAndSavedPostEntity(highlight, member, 3L, "3")
+        );
+        
+        PostResponse response1 = makePostResponse(
+            LocalDateTime.now(), 1L, 10L, "title1", "content1"
+        );
+        PostResponse response2 = makePostResponse(
+            LocalDateTime.now(), 2L, 20L, "title2", "content2"
+        );
+        PostResponse response3 = makePostResponse(
+            LocalDateTime.now(), 3L, 30L, "title3", "content3"
+        );
+        
+        //when
+        when(postHelper.findPostIdsByMemberId(memberId)).thenReturn(postIds);
+        when(postHelper.findPostsByPostIds(postIds)).thenReturn(postEntities);
+        when(postMapper.entityToDto(postEntities.get(0))).thenReturn(response1);
+        when(postMapper.entityToDto(postEntities.get(1))).thenReturn(response2);
+        when(postMapper.entityToDto(postEntities.get(2))).thenReturn(response3);
+        
+        PostListResponse result = postManager.getMyPosts(memberId);
+        
+        //then
+        assertThat(result).isNotNull();
+        assertThat(result.getPostList()).hasSize(3);
+        assertThat(result.getLastPostId()).isEqualTo(3L);
+        assertThat(result.getPostList().get(0).getPostId()).isEqualTo(1L);
+        assertThat(result.getPostList().get(1).getPostId()).isEqualTo(2L);
+        assertThat(result.getPostList().get(2).getPostId()).isEqualTo(3L);
+        
+        verify(postHelper, times(1)).findPostIdsByMemberId(memberId);
+        verify(postHelper, times(1)).findPostsByPostIds(postIds);
+        verify(postMapper, times(3)).entityToDto(any(PostEntity.class));
+    }
+    
+    @Test
+    @DisplayName("회원의 게시물이 없으면 빈 리스트를 반환합니다._EMPTY")
+    void getMyPosts_EMPTY() {
+        //given
+        UUID memberId = UUID.randomUUID();
+        List<Long> emptyPostIds = List.of();
+        
+        //when
+        when(postHelper.findPostIdsByMemberId(memberId)).thenReturn(emptyPostIds);
+        
+        PostListResponse result = postManager.getMyPosts(memberId);
+        
+        //then
+        assertThat(result).isNotNull();
+        assertThat(result.getPostList()).isEmpty();
+        assertThat(result.getLastPostId()).isNull();
+        
+        verify(postHelper, times(1)).findPostIdsByMemberId(memberId);
+        verify(postHelper, never()).findPostsByPostIds(any());
+        verify(postMapper, never()).entityToDto(any(PostEntity.class));
+    }
+    
+    // PostResponse 생성 헬퍼 메서드 추가
+    private PostResponse makePostResponse(
+        LocalDateTime time,
+        Long postId,
+        Long likeCnt,
+        String title,
+        String content
+    ) {
+        return PostResponse.builder()
+            .content(content)
+            .likeCnt(likeCnt)
+            .createdAt(time)
+            .modifiedAt(time)
+            .highlightUrl("test")
+            .postId(postId)
+            .title(title)
+            .hashTag(HashTag.TWO_POINT.getName())
+            .memberName("testUser")
+            .build();
+    }
+    
     private PostResponse makePostResponse(PostDocument doc) {
         return PostResponse.builder()
                 .content(doc.getContent())
