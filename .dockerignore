@@ -9,10 +9,6 @@ out/
 .git/
 .gitignore
 
-#env
-.env
-./es-logs
-./esdata
 
 #test
 **/test/
