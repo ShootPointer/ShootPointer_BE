@@ -20,7 +20,4 @@ out/
 **/test/
 tmp/
 
-#docker
-Dockerfile*
-docker-compose*.yml
 
