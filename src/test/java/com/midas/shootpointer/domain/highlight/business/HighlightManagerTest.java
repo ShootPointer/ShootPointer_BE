@@ -5,10 +5,7 @@ import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
 import com.midas.shootpointer.domain.highlight.dto.UploadHighlight;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
-import com.midas.shootpointer.domain.highlight.mapper.HighlightFactory;
-import com.midas.shootpointer.domain.highlight.mapper.HighlightMapper;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
-import com.midas.shootpointer.domain.highlight.service.HighlightStorageService;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -40,15 +37,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class HighlightManagerTest {
     @Autowired
     private HighlightManager highlightManager;
-
-    @Autowired
-    private HighlightStorageService highlightStorageService;
-
-    @Autowired
-    private HighlightMapper mapper;
-
-    @Autowired
-    private HighlightFactory factory;
 
     @Autowired
     private HighlightCommandRepository repository;

@@ -9,7 +9,7 @@ pipeline {
         )
     }
     tools {
-        jdk 'openjdk-17-jdk'
+        jdk 'openjdk-21-jdk'
     }
 
     environment {
@@ -93,9 +93,35 @@ pipeline {
 
         }
 
+               stage('Fix Elasticsearch Volume Permissions') {
+                   steps {
+                       sh '''
+                           echo "🔧 Fixing Elasticsearch volume permissions..."
+                           # 폴더 없으면 생성
+                           mkdir -p esdata es-logs
+
+                           # Elasticsearch 기본 UID(1000:1000)에 맞춰 소유권 변경
+                           chown -R 1000:1000 esdata es-logs || true
+
+                           # 읽기/쓰기 권한 부여
+                           chmod -R 775 esdata es-logs
+
+                           echo "✅ Elasticsearch data/log volume permissions fixed."
+                       '''
+                   }
+                   post {
+                       success { sh 'echo "✅ Volume permissions fixed successfully."' }
+                       failure { sh 'echo "❌ Failed to fix volume permissions."' }
+                   }
+               }
+           
+
         stage('Build and Deploy with Docker Compose') {
             steps {
                 sh 'SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE docker-compose up -d --build'
+            }
+            environment {
+                JAVA_TOOL_OPTIONS = "-Dorg.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL=86400"
             }
             post {
                 success { sh 'echo "✅ Successfully Deployed with Docker Compose"' }

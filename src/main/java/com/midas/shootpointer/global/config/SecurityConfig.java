@@ -2,14 +2,11 @@ package com.midas.shootpointer.global.config;
 
 import com.midas.shootpointer.global.security.CustomUserDetailsService;
 import com.midas.shootpointer.global.util.jwt.JwtAuthenticationFilter;
-import com.midas.shootpointer.global.util.jwt.JwtUtil;
-import com.midas.shootpointer.global.util.jwt.handler.JwtHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -35,7 +32,18 @@ public class SecurityConfig {
                 SessionCreationPolicy.STATELESS
             ))
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/swagger-ui/**", "/oauth/**","/api/test-member","/ws/**").permitAll()
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/v3/api-docs/**",
+                    "/swagger-resources/**",
+                    "/webjars/**",
+                    "/oauth/**",
+                    "/api/test-member",
+                    "/api/kakao/callback",
+                    "/admin/token/**",
+                    "/ws/**"
+                    ).permitAll()
                 .anyRequest().authenticated()
             )
             .userDetailsService(customUserDetailsService)

@@ -26,7 +26,9 @@ spring:
       enabled: true
       max-file-size: 5000MB
       max-request-size: 5000MB
-
+  batch:
+    jdbc:
+      initialize-schema: never
   elasticsearch:
     mode: container
 

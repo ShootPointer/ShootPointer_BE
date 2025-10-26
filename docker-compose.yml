@@ -73,7 +73,7 @@ services:
       elasticsearch:
         condition: service_healthy
     environment:
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE}"
 
       # 서버 포트
       SERVER_PORT: "9000"
