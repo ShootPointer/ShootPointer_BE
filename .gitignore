@@ -1,6 +1,6 @@
 HELP.md
 .gradle
-.github
+
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -51,3 +51,4 @@ src/main/resources/application-testdata.yml
 
 es-logs/
 /es-logs/
+/esdata/

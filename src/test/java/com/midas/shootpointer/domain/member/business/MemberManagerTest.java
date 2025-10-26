@@ -1,17 +1,10 @@
 package com.midas.shootpointer.domain.member.business;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.helper.MemberHelper;
 import com.midas.shootpointer.domain.member.mapper.MemberMapper;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +12,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("MemberManager 테스트")
@@ -139,5 +138,20 @@ class MemberManagerTest {
 		assertNotNull(result);
 		assertEquals(testMember.getMemberId(), result.getMemberId());
 		verify(memberHelper, times(1)).findMemberById(memberId);
+	}
+
+	@Test
+	@DisplayName("회원의 하이라이트 정보 수집 여부 값을 true로 변환합니다.")
+	void agree(){
+		//given
+		assertEquals(false,testMember.getIsAggregationAgreed());
+
+		//when
+		UUID result=memberManager.agree(testMember);
+
+		//then
+		assertNotNull(result);
+		assertEquals(testMember.getMemberId(),result);
+		assertEquals(true,testMember.getIsAggregationAgreed());
 	}
 }

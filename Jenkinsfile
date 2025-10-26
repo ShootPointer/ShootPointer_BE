@@ -4,17 +4,18 @@ pipeline {
     parameters {
         choice(
             name: 'PROFILE',
-            choices: ['dev', 'testdata', 'prod'],
-            description: 'Select Spring Profile for deployment'
+            choices: ['es,prod,test-real-data','dev', 'testdata', 'prod'],
+            description: 'Select Spring Profile for deployment',
         )
     }
     tools {
-        jdk 'openjdk-17-jdk'
+        jdk 'openjdk-21-jdk'
     }
 
     environment {
         COMPOSE_FILE = 'docker-compose.yml'
-        SPRING_PROFILES_ACTIVE = "${params.PROFILE}"
+        SPRING_PROFILES_ACTIVE = "${params.PROFILE ?: 'es,prod,test-real-data,batch'}"
+        JAVA_TOOL_OPTIONS = "-Dmanagement.metrics.enable.system=false"
     }
 
     stages {
@@ -58,7 +59,7 @@ pipeline {
             steps {
                 sh 'echo "🔌 Checking and Freeing Up Ports (6378, 5431, 27016)"'
                 sh """
-                for port in 6378 5431 27016; do
+                for port in 6378 5431 27016 443; do
                     if lsof -i :\$port; then
                         echo "Port \$port is in use. Killing the process..."
                         sudo kill -9 \$(lsof -ti :\$port) || true
@@ -92,11 +93,37 @@ pipeline {
             }
         }
 
+               stage('Fix Elasticsearch Volume Permissions') {
+                   steps {
+                       sh '''
+                           echo "🔧 Fixing Elasticsearch volume permissions..."
+                           # 폴더 없으면 생성
+                           mkdir -p esdata es-logs
+
+                           # Elasticsearch 기본 UID(1000:1000)에 맞춰 소유권 변경
+                           chown -R 1000:1000 esdata es-logs || true
+
+                           # 읽기/쓰기 권한 부여
+                           chmod -R 775 esdata es-logs
+
+                           echo "✅ Elasticsearch data/log volume permissions fixed."
+                       '''
+                   }
+                   post {
+                       success { sh 'echo "✅ Volume permissions fixed successfully."' }
+                       failure { sh 'echo "❌ Failed to fix volume permissions."' }
+                   }
+               }
+           
+
         stage('Build and Deploy with Docker Compose') {
             steps {
                 sh 'echo "🚀 Building and Deploying Containers with Docker Compose"'
                 sh 'docker system prune -a -f'
                 sh 'SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE docker-compose up -d --build'
+            }
+            environment {
+                JAVA_TOOL_OPTIONS = "-Dorg.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL=86400"
             }
             post {
                 success { sh 'echo "✅ Successfully Deployed with Docker Compose"' }

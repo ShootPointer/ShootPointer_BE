@@ -5,9 +5,10 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.helper.MemberHelper;
 import com.midas.shootpointer.domain.member.mapper.MemberMapper;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -37,7 +38,12 @@ public class MemberManager {
     public Member findMemberById(UUID memberId) {
         return memberHelper.findMemberById(memberId);
     }
-    
+
+    public UUID agree(Member member){
+        member.agree();
+        return member.getMemberId();
+    }
+
     private Member findOrCreateMember(KakaoDTO kakaoDTO) {
         try {
             return memberHelper.findMemberByEmail(kakaoDTO.getEmail());
