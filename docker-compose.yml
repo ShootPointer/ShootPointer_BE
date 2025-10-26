@@ -60,6 +60,8 @@ services:
 
   # Spring Boot Application
   shootpointer:
+    env_file:
+      - .env
     build:
       context: .
       dockerfile: Dockerfile
