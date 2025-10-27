@@ -3,6 +3,8 @@ package com.midas.shootpointer.domain.ranking.repository;
 import com.midas.shootpointer.domain.ranking.dto.RankingResult;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
+import com.midas.shootpointer.global.common.ErrorCode;
+import com.midas.shootpointer.global.exception.CustomException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,11 +31,6 @@ public class RankingRedisRepository {
     private final int START = 0;
     private final int END = 9;
 
-    /**
-     * 가중치
-     */
-    private final int TWO_WEIGHT = 1_000;
-    private final int THREE_WEIGHT = 1_000_000;
 
     @PostConstruct
     private void init() {
@@ -112,5 +109,6 @@ public class RankingRedisRepository {
                 return weeklyKeyPrefix;
             }
         }
+        throw new CustomException(ErrorCode.IS_NOT_VALID_RANKING_TYPE);
     }
 }

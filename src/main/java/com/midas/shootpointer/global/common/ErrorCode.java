@@ -21,6 +21,7 @@ public enum ErrorCode {
      * post:                       60
      * like:                       70
      * comment:                    80
+     * ranking                     90
 
      * <p>
      * - Package
@@ -117,8 +118,10 @@ public enum ErrorCode {
     // 806(comment - helper) part
     IS_NOT_EXIST_COMMENT(80601, HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다."),
     FORBIDDEN_COMMENT_ACCESS(80602, HttpStatus.FORBIDDEN, "댓글 접근 권한이 없습니다."),
-    INVALID_INPUT_VALUE(80603, HttpStatus.BAD_REQUEST, "올바른 입력값이 아닙니다.");
+    INVALID_INPUT_VALUE(80603, HttpStatus.BAD_REQUEST, "올바른 입력값이 아닙니다."),
 
+    // 903(ranking - repository)
+    IS_NOT_VALID_RANKING_TYPE(90301, HttpStatus.BAD_REQUEST,"올바르지 않은 랭킹 유형입니다.");
     private final Integer code;
     private final HttpStatus httpStatus;
     private final String message;

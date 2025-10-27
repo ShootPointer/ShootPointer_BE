@@ -27,6 +27,8 @@ public class RankingUtilImpl implements RankingUtil {
     private final RankingRepository rankingRepository;
     private final JdbcTemplate jdbcTemplate;
 
+    private final int TWO_WEIGHT=1_000;
+    private final int THREE_WEIGHT=1_000_000;
 
     /**
      * Period Key로 랭킹 Document 조회
@@ -101,5 +103,16 @@ public class RankingUtilImpl implements RankingUtil {
 
         }
         return start;
+    }
+
+    /**
+     * Redis 가중치 계산
+     * @param twoScore 2점슛 합
+     * @param threeScore 3점슛 합
+     * @return 전체 가중치
+     */
+    @Override
+    public double calculateRankingWeight(int twoScore, int threeScore) {
+        return (double) twoScore*TWO_WEIGHT + (double) threeScore*THREE_WEIGHT;
     }
 }
