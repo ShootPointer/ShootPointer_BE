@@ -76,6 +76,12 @@ spring:
           max-active: 8
           max-idle: 8
           min-idle: 0
+      custom:
+        ranking:
+          key:
+            weekly: "ranking:WEEKLY"
+            monthly: "ranking:MONTHLY"
+
     # kakao
   security:
     oauth2:
