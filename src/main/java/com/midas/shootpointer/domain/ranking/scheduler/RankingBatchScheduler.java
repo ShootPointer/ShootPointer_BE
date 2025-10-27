@@ -1,4 +1,4 @@
-package com.midas.shootpointer.batch.scheduler;
+package com.midas.shootpointer.domain.ranking.scheduler;
 
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * 랭킹 스케쥴러
+ * 랭킹 - batch 스케쥴러
  */
 @Component
 @EnableScheduling

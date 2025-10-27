@@ -100,6 +100,13 @@ public class RankingRedisRepository {
         return results;
     }
 
+    /**
+     *  레디스 초기화
+     */
+    public void deleteAll(RankingType type){
+        String key=setKey(type);
+        redisTemplate.delete(key);
+    }
     private String setKey(RankingType type){
         switch (type){
             case MONTHLY -> {
