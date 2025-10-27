@@ -214,6 +214,61 @@ class RankingControllerTest {
                 .andDo(print());
     }
 
+
+
+    @Test
+    @DisplayName("이번 달 랭킹 GET 요청 성공시 RankingResponse를 반환합니다._SUCCESS")
+    void fetchThisMonthRank() throws Exception {
+        //given
+        List<RankingEntry> top10=List.of(
+                makeRankingEntry(1,100,50,50),
+                makeRankingEntry(2,80,40,40),
+                makeRankingEntry(3,60,40,20),
+                makeRankingEntry(4,40,20,20),
+                makeRankingEntry(5,20,10,10)
+        );
+        RankingResponse expectedResponse=RankingResponse.builder()
+                .rankingList(top10)
+                .rankingType(RankingType.MONTHLY)
+                .build();
+
+
+        //when
+        when(rankingService.fetchThisData(eq(RankingType.MONTHLY))).thenReturn(expectedResponse);
+
+        //then
+        mockMvc.perform(get(baseUrl+"/this-month"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.rankingType").value("MONTHLY"))
+
+                .andExpect(jsonPath("$.data.rankingList[0].rank").value(1))
+                .andExpect(jsonPath("$.data.rankingList[0].totalScore").value(100))
+                .andExpect(jsonPath("$.data.rankingList[0].twoScore").value(50))
+                .andExpect(jsonPath("$.data.rankingList[0].threeScore").value(50))
+
+                .andExpect(jsonPath("$.data.rankingList[1].rank").value(2))
+                .andExpect(jsonPath("$.data.rankingList[1].totalScore").value(80))
+                .andExpect(jsonPath("$.data.rankingList[1].twoScore").value(40))
+                .andExpect(jsonPath("$.data.rankingList[1].threeScore").value(40))
+
+                .andExpect(jsonPath("$.data.rankingList[2].rank").value(3))
+                .andExpect(jsonPath("$.data.rankingList[2].totalScore").value(60))
+                .andExpect(jsonPath("$.data.rankingList[2].twoScore").value(40))
+                .andExpect(jsonPath("$.data.rankingList[2].threeScore").value(20))
+
+                .andExpect(jsonPath("$.data.rankingList[3].rank").value(4))
+                .andExpect(jsonPath("$.data.rankingList[3].totalScore").value(40))
+                .andExpect(jsonPath("$.data.rankingList[3].twoScore").value(20))
+                .andExpect(jsonPath("$.data.rankingList[3].threeScore").value(20))
+
+                .andExpect(jsonPath("$.data.rankingList[4].rank").value(5))
+                .andExpect(jsonPath("$.data.rankingList[4].totalScore").value(20))
+                .andExpect(jsonPath("$.data.rankingList[4].twoScore").value(10))
+                .andExpect(jsonPath("$.data.rankingList[4].threeScore").value(10))
+                .andDo(print());
+    }
     private RankingEntry makeRankingEntry(int rank,int total,int two,int three){
         return RankingEntry.builder()
                 .totalScore(total)
