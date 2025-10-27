@@ -17,4 +17,9 @@ public class RankingServiceImpl implements RankingService{
     public RankingResponse fetchLastData(RankingType type, LocalDateTime time) throws IOException {
         return rankingManager.fetchLastData(time,type);
     }
+
+    @Override
+    public RankingResponse fetchThisData(RankingType type) {
+        return rankingManager.fetchThisData(type);
+    }
 }

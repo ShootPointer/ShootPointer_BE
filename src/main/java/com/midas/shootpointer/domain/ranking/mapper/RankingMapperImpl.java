@@ -56,4 +56,9 @@ public class RankingMapperImpl implements RankingMapper{
                 .rankingList(entries)
                 .build();
     }
+
+    @Override
+    public RankingResponse entryToResponse(List<RankingEntry> entries, RankingType type) {
+        return RankingResponse.of(type,entries);
+    }
 }
