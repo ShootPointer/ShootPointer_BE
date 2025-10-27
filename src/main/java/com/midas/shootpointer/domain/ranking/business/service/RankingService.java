@@ -8,4 +8,5 @@ import java.time.LocalDateTime;
 
 public interface RankingService {
     RankingResponse fetchLastData(RankingType type, LocalDateTime time) throws IOException;
+    RankingResponse fetchThisData(RankingType type);
 }

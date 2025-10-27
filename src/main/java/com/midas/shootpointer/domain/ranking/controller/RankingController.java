@@ -62,4 +62,34 @@ public class RankingController {
         return ResponseEntity.ok(ApiResponse.ok(rankingService.fetchLastData(RankingType.MONTHLY,dateTime)));
     }
 
+    /*==========================
+    *
+    *RankingController
+    *
+    * @return 이번 주 랭킹 정보
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 10. 27.
+    *
+    ==========================**/
+    @GetMapping("/this-week")
+    public ResponseEntity<ApiResponse<RankingResponse>> fetchThisWeek(){
+        return ResponseEntity.ok(ApiResponse.ok(rankingService.fetchThisData(RankingType.WEEKLY)));
+    }
+
+    /*==========================
+    *
+    *RankingController
+    *
+    * @return 이번 달 랭킹 정보
+    * @author kimdoyeon
+    * @version 1.0.0
+    * @date 25. 10. 27.
+    *
+    ==========================**/
+    @GetMapping("/this-month")
+    public ResponseEntity<ApiResponse<RankingResponse>> fetchThisMonth(){
+        return ResponseEntity.ok(ApiResponse.ok(rankingService.fetchThisData(RankingType.MONTHLY)));
+    }
+
 }
