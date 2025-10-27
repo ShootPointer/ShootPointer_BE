@@ -27,7 +27,7 @@ public class RankingRedisScheduler {
     /**
      * 매주 1일 랭킹 - Redis MONTHLY 초기화
      */
-    @Scheduled(cron = "0 0 1 * *",zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 0 1 * *",zone = "Asia/Seoul")
     public void deleteAllMonthlyRanking(){
         rankingRedisRepository.deleteAll(RankingType.MONTHLY);
     }

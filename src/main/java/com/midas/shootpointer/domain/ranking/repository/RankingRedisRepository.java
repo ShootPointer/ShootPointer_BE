@@ -105,7 +105,7 @@ public class RankingRedisRepository {
      */
     public void deleteAll(RankingType type){
         String key=setKey(type);
-        redisTemplate.delete(key);
+        zSetOperations.removeRange(key,0,-1);
     }
     private String setKey(RankingType type){
         switch (type){
