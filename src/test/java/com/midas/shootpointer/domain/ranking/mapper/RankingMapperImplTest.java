@@ -102,4 +102,46 @@ class RankingMapperImplTest {
             assertThat(results.get(i).memberName()).isEqualTo(entries.get(i).getMemberName());
         }
     }
+
+    @Test
+    @DisplayName("List<RankingEntry>를 RankingResponse 형태로 변환합니다.")
+    void entryToResponse(){
+        //given
+        List<RankingEntry> entries=List.of(
+                makeRankingEntry(1,20,10),
+                makeRankingEntry(2,10,10),
+                makeRankingEntry(3,10,4)
+        );
+        RankingType type=RankingType.MONTHLY;
+
+        //when
+        RankingResponse result=rankingMapper.entryToResponse(entries,type);
+
+        //then
+        assertThat(result).isNotNull();
+        assertThat(result.getRankingType()).isEqualTo(type);
+        assertThat(result.getRankingList()).hasSize(3);
+
+        assertThat(result.getRankingList().getFirst().getTotalScore()).isEqualTo(30);
+        assertThat(result.getRankingList().getFirst().getThreeScore()).isEqualTo(20);
+        assertThat(result.getRankingList().getFirst().getTwoScore()).isEqualTo(10);
+        assertThat(result.getRankingList().getFirst().getMemberName()).isEqualTo("test1");
+
+        assertThat(result.getRankingList().getLast().getTotalScore()).isEqualTo(14);
+        assertThat(result.getRankingList().getLast().getThreeScore()).isEqualTo(10);
+        assertThat(result.getRankingList().getLast().getTwoScore()).isEqualTo(4);
+        assertThat(result.getRankingList().getLast().getMemberName()).isEqualTo("test3");
+    }
+
+
+    private RankingEntry makeRankingEntry(int rank,int three,int two){
+        return RankingEntry.builder()
+                .memberId(UUID.randomUUID())
+                .memberName("test"+rank)
+                .rank(rank)
+                .threeScore(three)
+                .twoScore(two)
+                .totalScore(two+three)
+                .build();
+    }
 }
