@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Repository;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +26,12 @@ public class RankingRedisRepository {
 
     @Value("${spring.data.redis.custom.ranking.key.monthly}")
     private String monthlyKeyPrefix;
+
+    @Value("${spring.data.redis.custom.ranking.TTL.weekly}")
+    private Long weeklyTTL;
+
+    @Value("${spring.data.redis.custom.ranking.TTL.monthly}")
+    private Long monthlyTTL;
 
     private final RedisTemplate<String, Object> redisTemplate;
     private final RankingMapper mapper;
@@ -49,6 +56,7 @@ public class RankingRedisRepository {
         //2. 기존 데이터 검색
         Set<ZSetOperations.TypedTuple<Object>> existedData = zSetOperations.rangeWithScores(key, 0, -1);
 
+
         if (existedData != null) {
             for (ZSetOperations.TypedTuple<Object> tuple : existedData) {
                 Object value = tuple.getValue();
@@ -65,6 +73,12 @@ public class RankingRedisRepository {
 
         //5. 새로운 데이터 삽입
         zSetOperations.add(key, newResult, newScore);
+
+        //6. TTL 설정
+        if (!redisTemplate.hasKey(key)){
+            if (type.equals(RankingType.WEEKLY)) redisTemplate.expire(key, Duration.ofDays(7));
+            else if (type.equals(RankingType.MONTHLY)) redisTemplate.expire(key,Duration.ofDays(31));
+        }
     }
 
     /**
