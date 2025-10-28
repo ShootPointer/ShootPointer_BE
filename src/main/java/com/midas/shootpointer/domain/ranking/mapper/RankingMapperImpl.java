@@ -1,18 +1,23 @@
 package com.midas.shootpointer.domain.ranking.mapper;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.batch.dto.HighlightWithMemberDto;
 import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
 import com.midas.shootpointer.domain.ranking.dto.RankingResult;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
+import com.midas.shootpointer.global.common.ErrorCode;
+import com.midas.shootpointer.global.exception.CustomException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class RankingMapperImpl implements RankingMapper{
+    private final ObjectMapper objectMapper=new ObjectMapper().findAndRegisterModules();
 
     @Override
     public RankingEntry dtoToEntity(HighlightWithMemberDto dto) {
@@ -60,5 +65,15 @@ public class RankingMapperImpl implements RankingMapper{
     @Override
     public RankingResponse entryToResponse(List<RankingEntry> entries, RankingType type) {
         return RankingResponse.of(type,entries);
+    }
+
+    @Override
+    public RankingResult convertToRankingResult(Object o) {
+        if (o instanceof RankingResult result) return result;
+        else if (o instanceof Map<?, ?> map) {
+            return objectMapper.convertValue(map,RankingResult.class);
+        }
+
+        throw new CustomException(ErrorCode.NOT_CONVERT_TO_RANKING_RESULT);
     }
 }

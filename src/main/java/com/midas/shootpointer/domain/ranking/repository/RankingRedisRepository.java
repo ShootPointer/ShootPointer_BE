@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.ranking.repository;
 import com.midas.shootpointer.domain.ranking.dto.RankingResult;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
+import com.midas.shootpointer.domain.ranking.mapper.RankingMapper;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import jakarta.annotation.PostConstruct;
@@ -26,6 +27,7 @@ public class RankingRedisRepository {
     private String monthlyKeyPrefix;
 
     private final RedisTemplate<String, Object> redisTemplate;
+    private final RankingMapper mapper;
     private ZSetOperations<String, Object> zSetOperations;
 
     private final int START = 0;
@@ -45,31 +47,31 @@ public class RankingRedisRepository {
         String key = setKey(type);
 
         //2. 기존 데이터 검색
-        Set<ZSetOperations.TypedTuple<Object>> existedData=zSetOperations.rangeWithScores(key,0,-1);
+        Set<ZSetOperations.TypedTuple<Object>> existedData = zSetOperations.rangeWithScores(key, 0, -1);
 
-        if (existedData!=null){
-            for (ZSetOperations.TypedTuple<Object> tuple:existedData){
-                Object value=tuple.getValue();
-                if (value instanceof RankingResult existingResult){
-                    //3. 기존 데이터가 존재하는 경우
-                    if (existingResult.memberId().equals(newResult.memberId())){
-                        //4. 기존 데이터 삭제
-                        zSetOperations.remove(key,existedData);
-                        break;
-                    }
+        if (existedData != null) {
+            for (ZSetOperations.TypedTuple<Object> tuple : existedData) {
+                Object value = tuple.getValue();
+                RankingResult result = mapper.convertToRankingResult(value);
+
+                //3. 기존 데이터가 존재하는 경우
+                if (result != null && result.memberId().equals(newResult.memberId())) {
+                    //4. 기존 데이터 삭제
+                    zSetOperations.remove(key, value);
+                    break;
                 }
             }
         }
 
         //5. 새로운 데이터 삽입
-        zSetOperations.add(key,newResult,newScore);
+        zSetOperations.add(key, newResult, newScore);
     }
 
     /**
      * 이번 주 top10 랭킹 조회
      */
     public List<RankingEntry> getHighlightsWeeklyRanking(RankingType type) {
-        String key=setKey(type);
+        String key = setKey(type);
 
 
         List<RankingEntry> results = new ArrayList<>();
@@ -83,9 +85,9 @@ public class RankingRedisRepository {
         int rank = 1;
 
         for (ZSetOperations.TypedTuple<Object> tuple : rankingSet) {
-            Object value=tuple.getValue();
-            if (value instanceof RankingEntry result){
-                results.add( RankingEntry.builder()
+            Object value = tuple.getValue();
+            if (value instanceof RankingEntry result) {
+                results.add(RankingEntry.builder()
                         .memberId(result.getMemberId())
                         .totalScore(result.getTotalScore())
                         .twoScore(result.getTwoScore())
@@ -101,15 +103,15 @@ public class RankingRedisRepository {
     }
 
     /**
-     *  레디스 초기화
+     * 레디스 초기화
      */
-    public void deleteAll(RankingType type){
-        String key=setKey(type);
-        zSetOperations.removeRange(key,0,-1);
+    public void deleteAll(RankingType type) {
+        String key = setKey(type);
+        zSetOperations.removeRange(key, 0, -1);
     }
 
-    private String setKey(RankingType type){
-        switch (type){
+    private String setKey(RankingType type) {
+        switch (type) {
             case MONTHLY -> {
                 return monthlyKeyPrefix;
             }

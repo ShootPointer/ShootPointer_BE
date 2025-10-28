@@ -14,4 +14,5 @@ public interface RankingMapper {
     RankingResponse docToResponse(RankingDocument document);
     RankingResponse resultToResponse(List<RankingResult> result, RankingType type);
     RankingResponse entryToResponse(List<RankingEntry> entries,RankingType type);
+    RankingResult convertToRankingResult(Object o);
 }

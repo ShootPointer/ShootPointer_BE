@@ -20,6 +20,14 @@ spring:
     restclient:
       sniffer:
         interval: 5m
+  data:
+    # Redis 설정
+    redis:
+      custom:
+        ranking:
+          key:
+            weekly: ranking:WEEKLY
+            monthly: ranking:MONTHLY
 
   batch:
     jdbc:
