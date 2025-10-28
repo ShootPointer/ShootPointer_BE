@@ -6,15 +6,19 @@ import com.midas.shootpointer.domain.ranking.dto.RankingResult;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
+import com.midas.shootpointer.global.common.ErrorCode;
+import com.midas.shootpointer.global.exception.CustomException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class RankingMapperImplTest {
     private RankingMapperImpl rankingMapper = new RankingMapperImpl();
@@ -133,6 +137,113 @@ class RankingMapperImplTest {
         assertThat(result.getRankingList().getLast().getMemberName()).isEqualTo("test3");
     }
 
+
+    @Test
+    @DisplayName("입력 객체가 RankingResult 타입이면 그대로 반환합니다.")
+    void convertToRankingResult_SAME_TYPE(){
+        //given
+        UUID memberId=UUID.randomUUID();
+        RankingResult result=new RankingResult("test",memberId,100,30,70);
+
+        //when
+        RankingResult converted=rankingMapper.convertToRankingResult(result);
+
+        //then
+        assertThat(converted).isSameAs(result);
+        assertThat(converted.memberId()).isEqualTo(result.memberId());
+    }
+
+    @Test
+    @DisplayName("입력 객체가 Map 타입이면 ObjectMapper로 RankingResult로 변환합니다._SUCCESS")
+    void convertToRankingResult_SUCCESS(){
+        //given
+        UUID memberId=UUID.randomUUID();
+        Map<String,Object> map=Map.of(
+                "memberName","test",
+                "memberId",memberId,
+                "totalScore",100,
+                "twoScore",50,
+                "threeScore",50
+        );
+
+        //when
+        RankingResult result=rankingMapper.convertToRankingResult(map);
+
+        //then
+        assertThat(result.memberId()).isEqualTo(memberId);
+        assertThat(result.totalScore()).isEqualTo(100);
+    }
+
+    @Test
+    @DisplayName("지원하지 않는 타입이 들어오면 NOT_CONVERT_TO_RANKING_RESULT를 반환합니다._SUCCESS")
+    void convertToRankingResult_FAIL(){
+        //given
+        Object invalid="invalid Object";
+
+        //when & then
+        assertThatThrownBy(()->rankingMapper.convertToRankingResult(invalid))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.NOT_CONVERT_TO_RANKING_RESULT.getMessage());
+
+    }
+
+
+    @Test
+    @DisplayName("입력 객체가 RankingEntry 타입이면 그대로 반환합니다.")
+    void convertToRankingEntry_SAME_TYPE(){
+        //given
+        UUID memberId=UUID.randomUUID();
+        RankingEntry result=RankingEntry.builder()
+                .memberId(memberId)
+                .memberName("test")
+                .rank(1)
+                .threeScore(120)
+                .twoScore(40)
+                .totalScore(160)
+                .build();
+
+        //when
+        RankingEntry converted=rankingMapper.convertToRankingEntry(result);
+
+        //then
+        assertThat(converted).isSameAs(result);
+        assertThat(converted.getMemberId()).isEqualTo(result.getMemberId());
+    }
+
+    @Test
+    @DisplayName("입력 객체가 Map 타입이면 ObjectMapper로 RankingEntry 변환합니다._SUCCESS")
+    void convertToRankingEntry_SUCCESS(){
+        //given
+        UUID memberId=UUID.randomUUID();
+        Map<String,Object> map=Map.of(
+                "rank",12,
+                "memberName","test",
+                "memberId",memberId,
+                "totalScore",100,
+                "twoScore",50,
+                "threeScore",50
+        );
+
+        //when
+        RankingEntry result=rankingMapper.convertToRankingEntry(map);
+
+        //then
+        assertThat(result.getMemberId()).isEqualTo(memberId);
+        assertThat(result.getTotalScore()).isEqualTo(100);
+    }
+
+    @Test
+    @DisplayName("지원하지 않는 타입이 들어오면 NOT_CONVERT_TO_RANKING_ENTRY 반환합니다._SUCCESS")
+    void convertToRankingEntry_FAIL(){
+        //given
+        Object invalid="invalid Object";
+
+        //when & then
+        assertThatThrownBy(()->rankingMapper.convertToRankingEntry(invalid))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.NOT_CONVERT_TO_RANKING_ENTRY.getMessage());
+
+    }
 
     private RankingEntry makeRankingEntry(int rank,int three,int two){
         return RankingEntry.builder()
