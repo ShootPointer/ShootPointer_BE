@@ -107,6 +107,7 @@ public class RankingRedisRepository {
         String key=setKey(type);
         zSetOperations.removeRange(key,0,-1);
     }
+
     private String setKey(RankingType type){
         switch (type){
             case MONTHLY -> {

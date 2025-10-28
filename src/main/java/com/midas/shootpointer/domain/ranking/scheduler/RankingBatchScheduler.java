@@ -31,7 +31,7 @@ public class RankingBatchScheduler {
     /**
      * 매일 자정 하루 랭킹 배치
      */
-    @Scheduled(cron = "0 0 0 * * *",zone = "Asia/Seoul")
+    @Scheduled(cron = "${schedules.cron.ranking.batch.daily}",zone = "${schedules.zone}")
     public void batchDailyRankingJob()  {
         runRankingJob(RankingType.DAILY);
     }
@@ -39,7 +39,7 @@ public class RankingBatchScheduler {
     /**
      * 매주 일요일 자정 랭킹 배치 살행
      */
-    @Scheduled(cron = "0 0 0 * * MON",zone = "Asia/Seoul")
+    @Scheduled(cron = "${schedules.cron.ranking.batch.weekly}",zone = "${schedules.zone}")
     public void batchWeeklyRankingJob(){
         runRankingJob(RankingType.WEEKLY);
     }
@@ -47,7 +47,7 @@ public class RankingBatchScheduler {
     /**
      * 매월 1일 자정 랭킹 배치 실행
      */
-    @Scheduled(cron = "0 0 0 1 * *",zone = "Asia/Seoul")
+    @Scheduled(cron = "${schedules.cron.ranking.batch.monthly}",zone = "${schedules.zone}")
     public void batchMonthlyRankingJob(){
         runRankingJob(RankingType.MONTHLY);
     }
