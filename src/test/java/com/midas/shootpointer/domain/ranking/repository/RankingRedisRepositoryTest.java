@@ -212,7 +212,29 @@ class RankingRedisRepositoryTest {
                 assertThat(entry.getMemberName()).isEqualTo(expectedMemberName.get(index));
             }
         }
+    }
 
+    @Nested
+    @DisplayName("redis 데이터 삭제 테스트")
+    class deleteRanking{
+        @DisplayName("type key에 해당하는 데이터를 모두 삭제합니다.")
+        @Test
+        void deleteAll(){
+            //given
+            RankingType type=RankingType.MONTHLY;
+            String key=setKey(type);
+            List<RankingResult> insert= new ArrayList<>(makeRankingResults());
+            for (RankingResult data:insert){
+                zSetOperations.add(key,data,calculateRankingWeight(data.twoScore(),data.threeScore(),data.totalScore()));
+            }
+
+            //when
+            redisRepository.deleteAll(type);
+            Set<ZSetOperations.TypedTuple<Object>> results=zSetOperations.rangeWithScores(key,0,-1);
+
+            //then
+            assertThat(results).isEmpty();
+        }
     }
 
     private String setKey(RankingType type){
