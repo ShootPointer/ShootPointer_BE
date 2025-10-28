@@ -27,9 +27,9 @@ public class RankingUtilImpl implements RankingUtil {
     private final RankingRepository rankingRepository;
     private final JdbcTemplate jdbcTemplate;
 
-    private final int TWO_WEIGHT=1_000;
-    private final int THREE_WEIGHT=1_000_000;
-
+    private final int TWO_WEIGHT=1;
+    private final int THREE_WEIGHT=1_000;
+    private final int TOTAL_WEIGHT=1_000_000;
     /**
      * Period Key로 랭킹 Document 조회
      * @param periodKey 조회 키
@@ -112,7 +112,7 @@ public class RankingUtilImpl implements RankingUtil {
      * @return 전체 가중치
      */
     @Override
-    public double calculateRankingWeight(int twoScore, int threeScore) {
-        return (double) twoScore*TWO_WEIGHT + (double) threeScore*THREE_WEIGHT;
+    public double calculateRankingWeight(int twoScore, int threeScore,int totalScore) {
+        return (double) twoScore*TWO_WEIGHT + (double) threeScore*THREE_WEIGHT + (double)totalScore *TOTAL_WEIGHT;
     }
 }

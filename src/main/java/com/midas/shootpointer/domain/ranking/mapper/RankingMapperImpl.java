@@ -47,9 +47,9 @@ public class RankingMapperImpl implements RankingMapper{
                     RankingEntry.builder()
                             .memberName(result.memberName())
                             .memberId(result.memberId())
-                            .threeScore(result.threeTotal())
-                            .totalScore(result.total())
-                            .twoScore(result.twoTotal())
+                            .threeScore(result.threeScore())
+                            .totalScore(result.totalScore())
+                            .twoScore(result.twoScore())
                             .rank(rank)
                             .build()
             );
@@ -75,5 +75,14 @@ public class RankingMapperImpl implements RankingMapper{
         }
 
         throw new CustomException(ErrorCode.NOT_CONVERT_TO_RANKING_RESULT);
+    }
+
+    @Override
+    public RankingEntry convertToRankingEntry(Object o) {
+        if (o instanceof RankingEntry entry) return entry;
+        else if (o instanceof Map<?,?> map){
+            return objectMapper.convertValue(map,RankingEntry.class);
+        }
+        throw new CustomException(ErrorCode.NOT_CONVERT_TO_RANKING_ENTRY);
     }
 }

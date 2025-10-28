@@ -122,7 +122,8 @@ public enum ErrorCode {
 
     // 903(ranking - repository)
     IS_NOT_VALID_RANKING_TYPE(90301, HttpStatus.BAD_REQUEST,"올바르지 않은 랭킹 유형입니다."),
-    NOT_CONVERT_TO_RANKING_RESULT(90302,HttpStatus.INTERNAL_SERVER_ERROR,"RankingResult 역직렬화 시 null 값이 발생했습니다.");
+    NOT_CONVERT_TO_RANKING_RESULT(90302,HttpStatus.INTERNAL_SERVER_ERROR,"RankingResult 역직렬화 시 null 값이 발생했습니다."),
+    NOT_CONVERT_TO_RANKING_ENTRY(90302,HttpStatus.INTERNAL_SERVER_ERROR,"RankingEntry 역직렬화 시 null 값이 발생했습니다.");
     private final Integer code;
     private final HttpStatus httpStatus;
     private final String message;

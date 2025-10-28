@@ -13,5 +13,5 @@ public interface RankingUtil {
     String getRankingTypeKey(RankingType type,LocalDateTime now);
     List<RankingResult> fetchRankingResult(LocalDateTime start,LocalDateTime end) throws IOException;
     LocalDateTime getBeginTime(LocalDateTime end,RankingType type);
-    double calculateRankingWeight(int twoScore,int threeScore);
+    double calculateRankingWeight(int twoScore,int threeScore,int totalScore);
 }

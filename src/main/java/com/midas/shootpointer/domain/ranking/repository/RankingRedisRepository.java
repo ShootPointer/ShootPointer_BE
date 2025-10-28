@@ -68,7 +68,7 @@ public class RankingRedisRepository {
     }
 
     /**
-     * 이번 주 top10 랭킹 조회
+     * top10 랭킹 조회
      */
     public List<RankingEntry> getHighlightsWeeklyRanking(RankingType type) {
         String key = setKey(type);
@@ -76,7 +76,7 @@ public class RankingRedisRepository {
 
         List<RankingEntry> results = new ArrayList<>();
 
-        //이번 주 랭킹
+        //레디스 랭킹 조회
         Set<ZSetOperations.TypedTuple<Object>> rankingSet = zSetOperations.reverseRangeWithScores(key, START, END);
 
         //값이 비어 있는 경우
@@ -86,8 +86,8 @@ public class RankingRedisRepository {
 
         for (ZSetOperations.TypedTuple<Object> tuple : rankingSet) {
             Object value = tuple.getValue();
-            if (value instanceof RankingEntry result) {
-                results.add(RankingEntry.builder()
+            RankingEntry result=mapper.convertToRankingEntry(value);
+            results.add(RankingEntry.builder()
                         .memberId(result.getMemberId())
                         .totalScore(result.getTotalScore())
                         .twoScore(result.getTwoScore())
@@ -95,9 +95,8 @@ public class RankingRedisRepository {
                         .memberName(result.getMemberName())
                         .rank(rank)
                         .build()
-                );
-                rank++;
-            }
+            );
+            rank++;
         }
         return results;
     }
