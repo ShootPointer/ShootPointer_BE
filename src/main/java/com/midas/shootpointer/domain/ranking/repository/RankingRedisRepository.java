@@ -27,12 +27,6 @@ public class RankingRedisRepository {
     @Value("${spring.data.redis.custom.ranking.key.monthly}")
     private String monthlyKeyPrefix;
 
-    @Value("${spring.data.redis.custom.ranking.TTL.weekly}")
-    private Long weeklyTTL;
-
-    @Value("${spring.data.redis.custom.ranking.TTL.monthly}")
-    private Long monthlyTTL;
-
     private final RedisTemplate<String, Object> redisTemplate;
     private final RankingMapper mapper;
     private ZSetOperations<String, Object> zSetOperations;

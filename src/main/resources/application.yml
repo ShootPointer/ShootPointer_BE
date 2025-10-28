@@ -45,8 +45,8 @@ spring:
     driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
 
     hikari:
-      maximum-pool-size: 50
-      minimum-idle: 10
+      maximum-pool-size: 200
+      minimum-idle: 50
       connection-timeout: 30000
 
   # JPA 설정
