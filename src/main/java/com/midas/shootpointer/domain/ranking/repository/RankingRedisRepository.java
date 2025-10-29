@@ -101,7 +101,7 @@ public class RankingRedisRepository {
                         Double newScore=zSetOperations.incrementScore(key,value,-deleteScore);
                         //3. 점수가 0이하면 제거
                         if (newScore!=null && newScore<=0){
-                            zSetOperations.remove(key,value);
+                            zSetOperations.remove(weeklyKeyPrefix,value);
                         }
                     }
 
