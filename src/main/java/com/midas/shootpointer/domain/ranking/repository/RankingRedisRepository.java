@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.ranking.repository;
 
+import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.ranking.dto.RankingResult;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
@@ -74,6 +75,42 @@ public class RankingRedisRepository {
             else if (type.equals(RankingType.MONTHLY)) redisTemplate.expire(key,Duration.ofDays(31));
         }
     }
+
+    /**
+     * 레디스 객체 삭제
+     * deleteScore : 삭제할 하이라이트 점수들의 가중치
+     */
+    public void deleteRankingScore(RankingType type,Member member,double deleteScore){
+        String key=setKey(type);
+
+        Set<ZSetOperations.TypedTuple<Object>> existedData = zSetOperations.rangeWithScores(key, 0, -1);
+
+        if (existedData!=null){
+            for (ZSetOperations.TypedTuple<Object> tuple : existedData) {
+                Object value=tuple.getValue();
+
+                if (value==null) continue;
+
+                RankingResult result=mapper.convertToRankingResult(value);
+
+                //2. 기존 데이터가 존재하는 경우
+                if (result != null && result.memberId().equals(member.getMemberId())) {
+                    Double nowScore=tuple.getScore();
+
+                    if (nowScore!=null){
+                        Double newScore=zSetOperations.incrementScore(key,value,-deleteScore);
+                        //3. 점수가 0이하면 제거
+                        if (newScore!=null && newScore<=0){
+                            zSetOperations.remove(weeklyKeyPrefix,value);
+                        }
+                    }
+
+                    break;
+                }
+            }
+        }
+    }
+
 
     /**
      * top10 랭킹 조회
