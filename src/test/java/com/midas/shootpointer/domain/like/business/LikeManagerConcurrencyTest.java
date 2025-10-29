@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.like.business;
 
+import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
@@ -26,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
-class LikeManagerConcurrencyTest {
+class LikeManagerConcurrencyTest extends BaseSpringBootTest {
     @Autowired
     private LikeManager likeManager;
 

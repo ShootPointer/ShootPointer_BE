@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.highlight.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.highlight.business.command.HighlightCommandService;
 import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("test")
 @WithMockCustomMember
-class HighlightControllerTest {
+class HighlightControllerTest extends BaseSpringBootTest {
     @Autowired
     private MockMvc mockMvc;
 

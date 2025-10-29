@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.comment.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.comment.business.command.CommentCommandService;
 import com.midas.shootpointer.domain.comment.dto.request.CommentRequestDto;
@@ -40,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("CommentCommandController 테스트")
 @AutoConfigureMockMvc
 @ActiveProfiles("dev")
-class CommentCommandControllerTest {
+class CommentCommandControllerTest extends BaseSpringBootTest {
 	
 	@Autowired
 	private MockMvc mockMvc;

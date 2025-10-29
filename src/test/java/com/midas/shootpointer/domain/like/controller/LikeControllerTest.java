@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.like.controller;
 
+import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.like.business.command.LikeCommandService;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @WithMockCustomMember
-class LikeControllerTest {
+class LikeControllerTest extends BaseSpringBootTest {
     @Autowired
     private MockMvc mockMvc;
 

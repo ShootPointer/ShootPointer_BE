@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.post.mapper;
 
+import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -26,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class PostMapperImplTest {
+class PostMapperImplTest extends BaseSpringBootTest {
     @Autowired
     private PostMapperImpl postMapper;
 

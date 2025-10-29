@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.like.business;
 
+import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.domain.like.entity.LikeEntity;
 import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -27,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * 통합 테스트로 진행합니다.
  */
-class LikeManagerTest {
+class LikeManagerTest extends BaseSpringBootTest {
     @BeforeEach
     void setUp(){
         memberRepository.deleteAll();

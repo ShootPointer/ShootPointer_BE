@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.backnumber.business;
 
+import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.*;
  */
 @SpringBootTest
 @ActiveProfiles("dev")
-class BackNumberManagerTest {
+class BackNumberManagerTest extends BaseSpringBootTest {
     @Autowired
     private BackNumberManager backNumberManager;
 

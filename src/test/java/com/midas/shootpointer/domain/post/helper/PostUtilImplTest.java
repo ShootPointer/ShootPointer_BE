@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.post.helper;
 
+import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -30,7 +31,7 @@ import static org.assertj.core.api.Assertions.catchThrowableOfType;
  */
 @SpringBootTest
 @ActiveProfiles("dev")
-class PostUtilImplTest {
+class PostUtilImplTest extends BaseSpringBootTest {
     @Autowired
     private PostUtilImpl postUtil;
 

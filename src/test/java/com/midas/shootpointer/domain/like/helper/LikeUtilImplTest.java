@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.like.helper;
 
+import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.domain.like.entity.LikeEntity;
 import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.like.repository.LikeQueryRepository;
@@ -23,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("dev")
-class LikeUtilImplTest {
+class LikeUtilImplTest extends BaseSpringBootTest {
     @Autowired
     private LikeUtilImpl likeUtil;
 

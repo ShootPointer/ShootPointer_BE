@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.member.business.command.MemberCommandService;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @ActiveProfiles("test")
 @DisplayName("MemberCommandController 통합 테스트")
-class MemberCommandControllerIntegrationTest {
+class MemberCommandControllerIntegrationTest extends BaseSpringBootTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
