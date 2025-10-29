@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class PostMapperImplTest {
+class PostMapperImplTest  {
     @Autowired
     private PostMapperImpl postMapper;
 

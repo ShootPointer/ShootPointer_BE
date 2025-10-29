@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringBootTest
 @ActiveProfiles("test")
-class HighlightManagerTest {
+class HighlightManagerTest  {
     @Autowired
     private HighlightManager highlightManager;
 

@@ -45,8 +45,8 @@ spring:
     driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
 
     hikari:
-      maximum-pool-size: 50
-      minimum-idle: 10
+      maximum-pool-size: 2000
+      minimum-idle: 50
       connection-timeout: 30000
 
   # JPA 설정
@@ -76,6 +76,12 @@ spring:
           max-active: 8
           max-idle: 8
           min-idle: 0
+      custom:
+        ranking:
+          key:
+            weekly: ranking:WEEKLY
+            monthly: ranking:MONTHLY
+
     # kakao
   security:
     oauth2:
@@ -142,3 +148,15 @@ video:
 query:
   path:
     ranking: src/main/resources/query/ranking.sql
+
+schedules:
+  cron:
+    ranking:
+      batch:
+        daily: 0 0 0 * * *
+        weekly: 0 0 0 * * MON
+        monthly: 0 0 0 1 * *
+      redis:
+        weekly: 0 0 0 * * MON
+        monthly: 0 0 0 1 * *
+  zone: Asia/Seoul

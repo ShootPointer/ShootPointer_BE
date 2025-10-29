@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
  */
 @SpringBootTest
 @ActiveProfiles("dev")
-class BackNumberManagerTest {
+class BackNumberManagerTest  {
     @Autowired
     private BackNumberManager backNumberManager;
 

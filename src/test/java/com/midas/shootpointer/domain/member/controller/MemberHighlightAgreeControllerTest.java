@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @ActiveProfiles("test")
 @WithMockCustomMember
-class MemberHighlightAgreeControllerTest {
+class MemberHighlightAgreeControllerTest  {
 
     @Autowired
     private MockMvc mockMvc;

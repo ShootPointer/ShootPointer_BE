@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("CommentCommandController 테스트")
 @AutoConfigureMockMvc
 @ActiveProfiles("dev")
-class CommentCommandControllerTest {
+class CommentCommandControllerTest  {
 	
 	@Autowired
 	private MockMvc mockMvc;

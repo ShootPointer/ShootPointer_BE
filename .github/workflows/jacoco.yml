@@ -16,7 +16,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: testdb
-          POSTGRES_MAX_CONNECTIONS: 2000
+          POSTGRES_MAX_CONNECTIONS: 3000
         options: >-
           --health-cmd="pg_isready -U postgres"
           --health-interval=10s
@@ -79,7 +79,7 @@ jobs:
         run: |
           echo "Configuring PostgreSQL max_connections..."
           docker exec $(docker ps -q -f "ancestor=postgres:15") \
-            psql -U postgres -c "ALTER SYSTEM SET max_connections = 500;"
+            psql -U postgres -c "ALTER SYSTEM SET max_connections = 2000;"
           docker exec $(docker ps -q -f "ancestor=postgres:15") \
             psql -U postgres -c "ALTER SYSTEM SET shared_buffers = '256MB';"
           docker restart $(docker ps -q -f "ancestor=postgres:15")
@@ -122,6 +122,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Check PostgreSQL max_connections
+        run: |
+          docker exec $(docker ps -q -f "ancestor=postgres:15") \
+            psql -U postgres -t -c "SHOW max_connections;"
+
       - name: Test with Gradle
         run: |
           ./gradlew clean test jacocoTestReport --info --stacktrace \
@@ -135,6 +140,7 @@ jobs:
           TESTCONTAINERS_RYUK_DISABLED: true
           SPRING_ELASTICSEARCH_MODE: external
           SPRING_DATA_MONGODB_URI: mongodb://root:root@localhost:27017/shootpointer?authSource=admin
+
 
       - name: Upload JUnit Test Report
         if: always()

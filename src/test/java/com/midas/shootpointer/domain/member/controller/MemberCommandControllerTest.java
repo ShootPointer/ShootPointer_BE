@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @ActiveProfiles("test")
 @DisplayName("MemberCommandController 통합 테스트")
-class MemberCommandControllerIntegrationTest {
+class MemberCommandControllerIntegrationTest  {
 	
 	@Autowired
 	private MockMvc mockMvc;

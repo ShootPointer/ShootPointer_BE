@@ -5,8 +5,8 @@ import java.util.UUID;
 public record RankingResult(
         String memberName,
         UUID memberId,
-        int total,
-        int twoTotal,
-        int threeTotal
+        int totalScore,
+        int twoScore,
+        int threeScore
 ) {
 }
