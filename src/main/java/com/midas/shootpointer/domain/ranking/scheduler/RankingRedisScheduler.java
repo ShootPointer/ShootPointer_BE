@@ -17,7 +17,10 @@ public class RankingRedisScheduler {
     private final RankingRedisRepository rankingRedisRepository;
 
     /**
-     * 매주 월요일 자정 랭킹 - Redis WEEKLY 초기화
+     * Reset Redis WEEKLY rankings according to the configured schedule.
+     *
+     * <p>Runs on the cron schedule defined by {@code schedules.cron.ranking.redis.weekly} in the
+     * configured time zone and removes all entries belonging to the WEEKLY ranking.
      */
     @Scheduled(cron = "${schedules.cron.ranking.redis.weekly}",zone = "${schedules.zone}")
     public void deleteAllWeeklyRanking(){
@@ -25,7 +28,9 @@ public class RankingRedisScheduler {
     }
 
     /**
-     * 매월 1일 랭킹 - Redis MONTHLY 초기화
+     * Clears Redis entries for the MONTHLY ranking on the first day of each month.
+     *
+     * <p>Triggered by the configured monthly cron schedule; resets stored monthly ranking data in Redis.
      */
     @Scheduled(cron = "${schedules.cron.ranking.redis.monthly}",zone = "${schedules.zone}")
     public void deleteAllMonthlyRanking(){

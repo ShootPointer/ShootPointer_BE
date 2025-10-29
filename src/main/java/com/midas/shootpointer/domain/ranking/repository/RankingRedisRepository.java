@@ -36,13 +36,25 @@ public class RankingRedisRepository {
     private final int END = 9;
 
 
+    /**
+     * Initialize ZSetOperations using the configured RedisTemplate.
+     *
+     * This method obtains the Redis ZSetOperations instance so the repository can perform sorted-set operations.
+     */
     @PostConstruct
     private void init() {
         zSetOperations = redisTemplate.opsForZSet();
     }
 
     /**
-     * 레디스 객체 등록
+     * Insert or update a ranking entry in the Redis sorted set for the specified ranking type.
+     *
+     * If an existing entry with the same member ID is present it will be replaced with the provided
+     * entry and score. When the key is newly created, a TTL is applied based on the ranking type.
+     *
+     * @param type the ranking category (e.g., WEEKLY or MONTHLY) used to determine the Redis key and TTL
+     * @param newScore the score to assign to the provided ranking entry
+     * @param newResult the ranking entry to store; its memberId is used to detect and replace existing entries
      */
     public void addOrUpdate(RankingType type, int newScore, RankingResult newResult) {
         //1. key 결정
@@ -77,8 +89,11 @@ public class RankingRedisRepository {
     }
 
     /**
-     * 레디스 객체 삭제
-     * deleteScore : 삭제할 하이라이트 점수들의 가중치
+     * Decrements a member's ranking score for the given ranking type and removes the entry if the resulting score is less than or equal to zero.
+     *
+     * @param type the ranking category (WEEKLY or MONTHLY) whose sorted set will be modified
+     * @param member the member whose score will be decremented (matched by memberId)
+     * @param deleteScore the amount to subtract from the member's current score; if the resulting score is less than or equal to zero the entry is removed
      */
     public void deleteRankingScore(RankingType type,Member member,double deleteScore){
         String key=setKey(type);
@@ -113,7 +128,10 @@ public class RankingRedisRepository {
 
 
     /**
-     * top10 랭킹 조회
+     * Retrieve the top 10 ranking entries for the specified ranking type in descending score order.
+     *
+     * @param type the ranking type (e.g., WEEKLY or MONTHLY) used to select the Redis sorted set key
+     * @return a list of up to 10 RankingEntry objects with populated fields and a 1-based `rank`; empty if no entries exist
      */
     public List<RankingEntry> getHighlightsWeeklyRanking(RankingType type) {
         String key = setKey(type);
@@ -147,13 +165,22 @@ public class RankingRedisRepository {
     }
 
     /**
-     * 레디스 초기화
+     * Removes all entries from the Redis sorted set for the given ranking type.
+     *
+     * @param type the ranking type whose Redis sorted set will be cleared (WEEKLY or MONTHLY)
      */
     public void deleteAll(RankingType type) {
         String key = setKey(type);
         zSetOperations.removeRange(key, 0, -1);
     }
 
+    /**
+     * Resolve the Redis key prefix for the given ranking type.
+     *
+     * @param type the ranking type; expected values are `WEEKLY` or `MONTHLY`
+     * @return the Redis key prefix associated with the provided ranking type
+     * @throws CustomException if the provided `type` is null or not a recognized ranking type (ErrorCode.IS_NOT_VALID_RANKING_TYPE)
+     */
     private String setKey(RankingType type) {
         switch (type) {
             case MONTHLY -> {

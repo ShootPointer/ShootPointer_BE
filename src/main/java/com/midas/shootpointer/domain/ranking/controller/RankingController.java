@@ -43,17 +43,15 @@ public class RankingController {
         return ResponseEntity.ok(ApiResponse.ok(rankingService.fetchLastData(RankingType.WEEKLY,dateTime)));
     }
 
-    /*==========================
-    *
-    *RankingController
-    *
-    * @parm date : 요청 날짜
-    * @return 저번 달 랭킹 정보
-    * @author kimdoyeon
-    * @version 1.0.0
-    * @date 25. 10. 20.
-    *
-    ==========================**/
+    /**
+     * Retrieves the ranking data for the month preceding the provided date.
+     *
+     * The provided `date` is interpreted at the start of that day to determine the previous month for which rankings are fetched.
+     *
+     * @param date the reference date (ISO-8601 `yyyy-MM-dd`) used to identify the previous month
+     * @return an ApiResponse wrapping the RankingResponse for the previous month
+     * @throws IOException if an I/O error occurs while fetching ranking data
+     */
     @GetMapping("/last-month")
     public ResponseEntity<ApiResponse<RankingResponse>> fetchLastMonth(
             @RequestParam(value = "date",required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
@@ -62,31 +60,21 @@ public class RankingController {
         return ResponseEntity.ok(ApiResponse.ok(rankingService.fetchLastData(RankingType.MONTHLY,dateTime)));
     }
 
-    /*==========================
-    *
-    *RankingController
-    *
-    * @return 이번 주 랭킹 정보
-    * @author kimdoyeon
-    * @version 1.0.0
-    * @date 25. 10. 27.
-    *
-    ==========================**/
+    /**
+     * Fetches ranking data for the current week.
+     *
+     * @return an ApiResponse containing this week's ranking information wrapped in a ResponseEntity
+     */
     @GetMapping("/this-week")
     public ResponseEntity<ApiResponse<RankingResponse>> fetchThisWeek(){
         return ResponseEntity.ok(ApiResponse.ok(rankingService.fetchThisData(RankingType.WEEKLY)));
     }
 
-    /*==========================
-    *
-    *RankingController
-    *
-    * @return 이번 달 랭킹 정보
-    * @author kimdoyeon
-    * @version 1.0.0
-    * @date 25. 10. 27.
-    *
-    ==========================**/
+    /**
+     * Retrieves the current month's ranking data.
+     *
+     * @return an ApiResponse containing the current month's RankingResponse
+     */
     @GetMapping("/this-month")
     public ResponseEntity<ApiResponse<RankingResponse>> fetchThisMonth(){
         return ResponseEntity.ok(ApiResponse.ok(rankingService.fetchThisData(RankingType.MONTHLY)));

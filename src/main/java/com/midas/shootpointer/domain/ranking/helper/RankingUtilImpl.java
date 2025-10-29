@@ -92,6 +92,16 @@ public class RankingUtilImpl implements RankingUtil {
         );
     }
 
+    /**
+     * Compute the start timestamp for the ranking period that ends at the given time for the specified ranking type.
+     *
+     * @param end  the end time of the period; calculations normalize this to the start of that day (00:00) before adjusting
+     * @param type the ranking period type that determines how far back the start time is set:
+     *             MONTHLY -> first day of the previous month at 00:00,
+     *             WEEKLY  -> Monday of the previous week at 00:00,
+     *             DAILY   -> previous day at 00:00
+     * @return the calculated period start LocalDateTime at 00:00 for the given ranking type
+     */
     @Override
     public LocalDateTime getBeginTime(LocalDateTime end,RankingType type) {
         LocalDateTime start=end;
@@ -106,10 +116,12 @@ public class RankingUtilImpl implements RankingUtil {
     }
 
     /**
-     * Redis 가중치 계산
-     * @param twoScore 2점슛 합
-     * @param threeScore 3점슛 합
-     * @return 전체 가중치
+     * Compute the weighted ranking score from two-point, three-point, and total scores.
+     *
+     * @param twoScore   sum of two-point scores
+     * @param threeScore sum of three-point scores
+     * @param totalScore overall total score
+     * @return the weighted ranking score computed using the configured weights
      */
     @Override
     public double calculateRankingWeight(int twoScore, int threeScore,int totalScore) {

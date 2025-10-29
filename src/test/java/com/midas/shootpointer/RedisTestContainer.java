@@ -24,6 +24,13 @@ public class RedisTestContainer {
         REDIS_CONTAINER.start();
     }
 
+    /**
+     * Registers Redis connection properties so Spring tests use the running Testcontainers Redis instance.
+     *
+     * Registers "spring.data.redis.host" with the container host and "spring.data.redis.port" with the container's mapped 6379 port.
+     *
+     * @param registry the DynamicPropertyRegistry used to add runtime properties to the Spring environment for tests
+     */
     @DynamicPropertySource
     public static void overrideProps(DynamicPropertyRegistry registry){
         registry.add("spring.data.redis.host",REDIS_CONTAINER::getHost);

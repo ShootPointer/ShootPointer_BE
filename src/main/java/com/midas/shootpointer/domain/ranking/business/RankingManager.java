@@ -23,10 +23,12 @@ public class RankingManager {
     private final RankingRedisRepository redisRepository;
 
     /**
-     * 전 날 랭킹 집계 조회
-     * @param time 집계 날짜
-     * @param type 집계 유형 - Daily(1일 단위) / Weekly(일주일 단위) / Monthly(1달 단위)
-     * @return RankingResponse
+     * Retrieve ranking data for the period immediately preceding the provided time for the given ranking type.
+     *
+     * @param time reference time used to identify the previous ranking period
+     * @param type ranking granularity — Daily, Weekly, or Monthly
+     * @return the ranking data for the previous period as a RankingResponse
+     * @throws IOException if an I/O error occurs while fetching ranking data
      */
     public RankingResponse fetchLastData(LocalDateTime time, RankingType type) throws IOException {
         /**
@@ -51,6 +53,13 @@ public class RankingManager {
     }
 
 
+    /**
+     * Retrieve the highlights weekly ranking for the specified ranking type.
+     *
+     * @param type the ranking category to retrieve
+     * @return a RankingResponse containing the highlights weekly ranking for the specified type;
+     *         an empty RankingResponse when no entries are available
+     */
     public RankingResponse fetchThisData(RankingType type){
         List<RankingEntry> results=redisRepository.getHighlightsWeeklyRanking(type);
 

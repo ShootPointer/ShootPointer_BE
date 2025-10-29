@@ -30,12 +30,27 @@ public class RedisConfig {
 
     private static final String REDISSON_HOST_PREFIX = "redis://";
 
+    /**
+     * Create a Lettuce-based RedisConnectionFactory configured for the application's Redis standalone host and port.
+     *
+     * @return a RedisConnectionFactory backed by Lettuce configured with the application's Redis host and port
+     */
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(redisHost, redisPort);
         return new LettuceConnectionFactory(configuration);
     }
 
+    /**
+     * Creates and configures the primary RedisTemplate for String keys and JSON-serialized Object values.
+     *
+     * Configures StringRedisSerializer for keys and GenericJackson2JsonRedisSerializer for values using an
+     * ObjectMapper that discovers modules, disables writing dates as timestamps, ignores unknown properties during
+     * deserialization, and registers JavaTimeModule. Associates the template with the provided RedisConnectionFactory.
+     *
+     * @param redisConnectionFactory the Redis connection factory used by the template
+     * @return a configured RedisTemplate<String, Object> for storing and retrieving JSON-serialized values
+     */
     @Bean
     @Primary
     public RedisTemplate<String, Object> redisTemplate(

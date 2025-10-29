@@ -29,7 +29,9 @@ public class RankingBatchScheduler {
     private final DateTimeFormatter formatter=DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     /**
-     * 매일 자정 하루 랭킹 배치
+     * Triggers the batch job that computes daily rankings.
+     *
+     * The job is scheduled according to the configured cron expression and time zone to run once per day.
      */
     @Scheduled(cron = "${schedules.cron.ranking.batch.daily}",zone = "${schedules.zone}")
     public void batchDailyRankingJob()  {
@@ -37,7 +39,9 @@ public class RankingBatchScheduler {
     }
 
     /**
-     * 매주 일요일 자정 랭킹 배치 살행
+     * Triggers the weekly ranking batch job.
+     *
+     * Scheduled according to the configured cron expression `${schedules.cron.ranking.batch.weekly}` and time zone `${schedules.zone}`.
      */
     @Scheduled(cron = "${schedules.cron.ranking.batch.weekly}",zone = "${schedules.zone}")
     public void batchWeeklyRankingJob(){
@@ -45,7 +49,7 @@ public class RankingBatchScheduler {
     }
 
     /**
-     * 매월 1일 자정 랭킹 배치 실행
+     * Starts the monthly ranking batch job scheduled to run at midnight on the first day of each month.
      */
     @Scheduled(cron = "${schedules.cron.ranking.batch.monthly}",zone = "${schedules.zone}")
     public void batchMonthlyRankingJob(){
