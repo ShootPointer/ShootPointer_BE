@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.ranking.repository;
 
 import com.midas.shootpointer.RedisTestContainer;
+import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.ranking.dto.RankingResult;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
@@ -237,6 +238,223 @@ class RankingRedisRepositoryTest {
         }
     }
 
+    @Nested
+    @DisplayName("Redis 랭킹 점수 차감 테스트")
+    class deleteRankingScore {
+
+        @Test
+        @DisplayName("존재하는 멤버의 점수를 차감하고, 점수가 0보다 크면 업데이트된 점수로 유지됩니다.")
+        void deleteRankingScore_SCORE_GREATER_THAN_ZERO() {
+            // given
+            RankingType type = RankingType.MONTHLY;
+            String key = setKey(type);
+            UUID memberId = UUID.randomUUID();
+
+            RankingResult result = new RankingResult(
+                    "test1", memberId, 200, 40, 160
+            );
+
+            // 초기 점수 계산: twoScore(40)*1 + threeScore(160)*1000 + totalScore(200)*1000000
+            double initialScore = calculateRankingWeight(40, 160, 200);
+            zSetOperations.add(key, result, initialScore);
+
+            // 차감할 점수
+            double deleteScore = 10 * TWO_WEIGHT;
+
+            Member member = Member.builder()
+                    .memberId(memberId)
+                    .build();
+
+            // when
+            redisRepository.deleteRankingScore(type, member, deleteScore);
+
+            // then
+            Set<ZSetOperations.TypedTuple<Object>> results = zSetOperations.rangeWithScores(key, 0, -1);
+
+            assertThat(results).isNotNull();
+            assertThat(results).hasSize(1);
+
+            ZSetOperations.TypedTuple<Object> tuple = results.iterator().next();
+            double expectedScore = initialScore - deleteScore;
+
+            assertThat(tuple.getScore()).isEqualTo(expectedScore);
+
+            // 데이터는 여전히 존재해야 함
+            RankingResult stored = rankingMapper.convertToRankingResult(tuple.getValue());
+            assertThat(stored.memberId()).isEqualTo(memberId);
+        }
+
+        @Test
+        @DisplayName("점수 차감 후 0 이하가 되면 해당 멤버의 데이터를 완전히 삭제합니다.")
+        void deleteRankingScore_SCORE_ZERO_OR_LESS_REMOVE_DATA() {
+            // given
+            RankingType type = RankingType.WEEKLY;
+            String key = setKey(type);
+            UUID memberId = UUID.randomUUID();
+
+            RankingResult result = new RankingResult(
+                    "test1", memberId, 50, 20, 30
+            );
+
+            double initialScore = calculateRankingWeight(20, 30, 50);
+            zSetOperations.add(key, result, initialScore);
+
+            // 초기 점수보다 큰 값을 차감하여 0 이하로 만듦
+            double deleteScore = initialScore + 100;
+
+            Member member = Member.builder()
+                    .memberId(memberId)
+                    .build();
+
+            // when
+            redisRepository.deleteRankingScore(type, member, deleteScore);
+
+            // then
+            Set<ZSetOperations.TypedTuple<Object>> results = zSetOperations.rangeWithScores(key, 0, -1);
+
+            assertThat(results).isEmpty();
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 멤버의 점수 차감 시도 시 아무 변화가 없습니다.")
+        void deleteRankingScore_MEMBER_NOT_EXIST() {
+            // given
+            RankingType type = RankingType.MONTHLY;
+            String key = setKey(type);
+            UUID existMemberId = UUID.randomUUID();
+            UUID notExistMemberId = UUID.randomUUID();
+
+            RankingResult result = new RankingResult(
+                    "test1", existMemberId, 200, 40, 160
+            );
+
+            double initialScore = calculateRankingWeight(40, 160, 200);
+            zSetOperations.add(key, result, initialScore);
+
+            double deleteScore = 50;
+
+            Member notExistMember = Member.builder()
+                    .memberId(notExistMemberId)
+                    .build();
+
+            // when
+            redisRepository.deleteRankingScore(type, notExistMember, deleteScore);
+
+            // then
+            Set<ZSetOperations.TypedTuple<Object>> results = zSetOperations.rangeWithScores(key, 0, -1);
+
+            assertThat(results).hasSize(1);
+
+            ZSetOperations.TypedTuple<Object> tuple = results.iterator().next();
+
+            // 점수가 변경되지 않아야 함
+            assertThat(tuple.getScore()).isEqualTo(initialScore);
+
+            RankingResult stored = rankingMapper.convertToRankingResult(tuple.getValue());
+            assertThat(stored.memberId()).isEqualTo(existMemberId);
+        }
+
+        @Test
+        @DisplayName("여러 멤버가 있을 때 특정 멤버의 점수만 차감됩니다.")
+        void deleteRankingScore_MULTIPLE_MEMBERS() {
+            // given
+            RankingType type = RankingType.MONTHLY;
+            String key = setKey(type);
+
+            UUID memberId1 = UUID.randomUUID();
+            UUID memberId2 = UUID.randomUUID();
+            UUID memberId3 = UUID.randomUUID();
+
+            RankingResult result1 = new RankingResult("test1", memberId1, 200, 40, 160);
+            RankingResult result2 = new RankingResult("test2", memberId2, 300, 50, 250);
+            RankingResult result3 = new RankingResult("test3", memberId3, 150, 30, 120);
+
+            double score1 = calculateRankingWeight(40, 160, 200);
+            double score2 = calculateRankingWeight(50, 250, 300);
+            double score3 = calculateRankingWeight(30, 120, 150);
+
+            zSetOperations.add(key, result1, score1);
+            zSetOperations.add(key, result2, score2);
+            zSetOperations.add(key, result3, score3);
+
+            double deleteScore = 100;
+
+            Member member2 = Member.builder()
+                    .memberId(memberId2)
+                    .build();
+
+            // when
+            redisRepository.deleteRankingScore(type, member2, deleteScore);
+
+            // then
+            Set<ZSetOperations.TypedTuple<Object>> results = zSetOperations.rangeWithScores(key, 0, -1);
+
+            assertThat(results).hasSize(3);
+
+            // member2의 점수만 변경되었는지 확인
+            for (ZSetOperations.TypedTuple<Object> tuple : results) {
+                RankingResult stored = rankingMapper.convertToRankingResult(tuple.getValue());
+
+                if (stored.memberId().equals(memberId1)) {
+                    assertThat(tuple.getScore()).isEqualTo(score1);
+                } else if (stored.memberId().equals(memberId2)) {
+                    assertThat(tuple.getScore()).isEqualTo(score2 - deleteScore);
+                } else if (stored.memberId().equals(memberId3)) {
+                    assertThat(tuple.getScore()).isEqualTo(score3);
+                }
+            }
+        }
+
+        @Test
+        @DisplayName("빈 Redis 데이터에서 점수 차감 시도 시 예외가 발생하지 않습니다.")
+        void deleteRankingScore_EMPTY_REDIS() {
+            // given
+            RankingType type = RankingType.WEEKLY;
+            UUID memberId = UUID.randomUUID();
+            double deleteScore = 50;
+
+            Member member = Member.builder()
+                    .memberId(memberId)
+                    .build();
+
+            // when & then - 예외가 발생하지 않아야 함
+            redisRepository.deleteRankingScore(type, member, deleteScore);
+
+            String key = setKey(type);
+            Set<ZSetOperations.TypedTuple<Object>> results = zSetOperations.rangeWithScores(key, 0, -1);
+
+            assertThat(results).isEmpty();
+        }
+
+        @Test
+        @DisplayName("정확히 0이 되는 점수 차감 시 데이터가 삭제됩니다.")
+        void deleteRankingScore_EXACTLY_ZERO() {
+            // given
+            RankingType type = RankingType.MONTHLY;
+            String key = setKey(type);
+            UUID memberId = UUID.randomUUID();
+
+            RankingResult result = new RankingResult("test1", memberId, 100, 20, 80);
+
+            double initialScore = calculateRankingWeight(20, 80, 100);
+            zSetOperations.add(key, result, initialScore);
+
+            // 정확히 초기 점수만큼 차감
+            double deleteScore = initialScore;
+
+            Member member = Member.builder()
+                    .memberId(memberId)
+                    .build();
+
+            // when
+            redisRepository.deleteRankingScore(type, member, deleteScore);
+
+            // then
+            Set<ZSetOperations.TypedTuple<Object>> results = zSetOperations.rangeWithScores(key, 0, -1);
+
+            assertThat(results).isEmpty();
+        }
+    }
     private String setKey(RankingType type){
         switch (type){
             case MONTHLY -> {
