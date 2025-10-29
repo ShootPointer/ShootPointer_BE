@@ -39,4 +39,18 @@ class RankingServiceImplTest {
         verify(rankingManager).fetchLastData(any(),any());
     }
 
+    @Test
+    @DisplayName("rankingManger - fetchThisData(RankingType)이 실행되는지 검증합니다.")
+    void fetchThisData(){
+        //given
+        RankingType type=RankingType.MONTHLY;
+        RankingResponse response=RankingResponse.builder().build();
+
+        //when
+        when(rankingManager.fetchThisData(type)).thenReturn(response);
+        rankingService.fetchThisData(type);
+
+        //then
+        verify(rankingManager).fetchThisData(any());
+    }
 }
