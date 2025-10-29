@@ -27,9 +27,9 @@ public class RankingUtilImpl implements RankingUtil {
     private final RankingRepository rankingRepository;
     private final JdbcTemplate jdbcTemplate;
 
-    private final int TWO_WEIGHT=1;
-    private final int THREE_WEIGHT=1_000;
-    private final int TOTAL_WEIGHT=1_000_000;
+    private final static int TWO_WEIGHT=1;
+    private final static int THREE_WEIGHT=1_000;
+    private final static int TOTAL_WEIGHT=1_000_000;
     /**
      * Period Key로 랭킹 Document 조회
      * @param periodKey 조회 키

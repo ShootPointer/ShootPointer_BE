@@ -228,4 +228,19 @@ class RankingUtilImplTest {
         assertThat(resultTime).isEqualTo(expectedDate);
 
     }
+
+    @Test
+    @DisplayName("랭킹 점수 가중치를 포함하여 계산합니다.")
+    void calculateRankingWeight(){
+        //given
+        int twoScore=14;
+        int threeScore=21;
+        int totalScore=threeScore+twoScore;
+
+        //when
+        double weight=rankingUtil.calculateRankingWeight(twoScore,threeScore,totalScore);
+
+        //then
+        assertThat(weight).isEqualTo(twoScore+1_000*threeScore+1_000_000*totalScore);
+    }
 }
