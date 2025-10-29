@@ -79,7 +79,7 @@ jobs:
         run: |
           echo "Configuring PostgreSQL max_connections..."
           docker exec $(docker ps -q -f "ancestor=postgres:15") \
-            psql -U postgres -c "ALTER SYSTEM SET max_connections = 500;"
+            psql -U postgres -c "ALTER SYSTEM SET max_connections = 2000;"
           docker exec $(docker ps -q -f "ancestor=postgres:15") \
             psql -U postgres -c "ALTER SYSTEM SET shared_buffers = '256MB';"
           docker restart $(docker ps -q -f "ancestor=postgres:15")
