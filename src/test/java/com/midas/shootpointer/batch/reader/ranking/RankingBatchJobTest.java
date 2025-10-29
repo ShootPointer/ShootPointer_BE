@@ -1,6 +1,5 @@
 package com.midas.shootpointer.batch.reader.ranking;
 
-import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
@@ -32,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles({"batch","test"})
 @SpringBootTest
 @SpringBatchTest
-public class RankingBatchJobTest extends BaseSpringBootTest {
+public class RankingBatchJobTest  {
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 

@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.ranking.scheduler;
 
-import com.midas.shootpointer.BaseSpringBootTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.Job;
@@ -25,7 +24,7 @@ import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 @SpringBootTest
 @Import(RankingBatchScheduler.class)
 @ActiveProfiles({"batch", "test"})
-class RankingBatchSchedulerTest extends BaseSpringBootTest {
+class RankingBatchSchedulerTest  {
     @MockitoSpyBean
     private RankingBatchScheduler scheduler;
 

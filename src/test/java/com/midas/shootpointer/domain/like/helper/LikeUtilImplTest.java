@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.like.helper;
 
-import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.domain.like.entity.LikeEntity;
 import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.like.repository.LikeQueryRepository;
@@ -14,9 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -24,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("dev")
-class LikeUtilImplTest extends BaseSpringBootTest {
+class LikeUtilImplTest  {
     @Autowired
     private LikeUtilImpl likeUtil;
 

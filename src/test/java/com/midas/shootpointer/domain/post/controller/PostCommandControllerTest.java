@@ -1,7 +1,6 @@
 package com.midas.shootpointer.domain.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.business.command.PostCommandService;
@@ -32,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @WithMockCustomMember
-class PostCommandControllerTest extends BaseSpringBootTest {
+class PostCommandControllerTest  {
     @Autowired
     private MockMvc mockMvc;
 

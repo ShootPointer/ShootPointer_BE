@@ -1,6 +1,5 @@
 package com.midas.shootpointer.global.util.jwt;
 
-import com.midas.shootpointer.BaseSpringBootTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("dev")
-class JwtUtilTest extends BaseSpringBootTest {
+class JwtUtilTest  {
 
     @Autowired
     JwtUtil jwtUtil;

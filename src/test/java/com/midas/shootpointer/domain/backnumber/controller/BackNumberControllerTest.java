@@ -1,7 +1,6 @@
 package com.midas.shootpointer.domain.backnumber.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.backnumber.business.command.BackNumberCommandService;
 import com.midas.shootpointer.domain.backnumber.dto.BackNumberRequest;
@@ -33,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class BackNumberControllerTest extends BaseSpringBootTest {
+class BackNumberControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

@@ -1,7 +1,6 @@
 package com.midas.shootpointer.domain.ranking.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.ranking.business.service.RankingService;
 import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
@@ -33,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"test","batch"})
 @SpringBootTest
 @WithMockCustomMember
-class RankingControllerTest extends BaseSpringBootTest {
+class RankingControllerTest  {
     @Autowired
     private MockMvc mockMvc;
 

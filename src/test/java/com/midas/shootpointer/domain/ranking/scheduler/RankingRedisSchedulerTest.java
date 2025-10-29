@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.ranking.scheduler;
 
-import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.domain.ranking.repository.RankingRedisRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,7 @@ import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 @SpringBootTest
 @Import(RankingRedisScheduler.class)
 @ActiveProfiles("test")
-class RankingRedisSchedulerTest extends BaseSpringBootTest {
+class RankingRedisSchedulerTest {
     @MockitoSpyBean
     private RankingRedisScheduler scheduler;
 

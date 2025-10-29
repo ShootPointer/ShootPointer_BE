@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.backnumber.helper;
 
-import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
@@ -15,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("dev")
 @SpringBootTest
-class BackNumberUtilImplTest extends BaseSpringBootTest {
+class BackNumberUtilImplTest {
     @Autowired
     private BackNumberUtilImpl backNumberUtil;
 

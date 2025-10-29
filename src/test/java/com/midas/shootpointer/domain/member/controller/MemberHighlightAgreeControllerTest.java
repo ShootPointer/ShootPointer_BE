@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.member.controller;
 
-import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.member.business.command.MemberCommandService;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -29,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @ActiveProfiles("test")
 @WithMockCustomMember
-class MemberHighlightAgreeControllerTest extends BaseSpringBootTest {
+class MemberHighlightAgreeControllerTest  {
 
     @Autowired
     private MockMvc mockMvc;

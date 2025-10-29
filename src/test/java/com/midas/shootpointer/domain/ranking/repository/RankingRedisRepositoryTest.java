@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.ranking.repository;
 
-import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.RedisTestContainer;
 import com.midas.shootpointer.domain.ranking.dto.RankingResult;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
@@ -35,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         classes = {RankingRedisRepository.class, RedisTestContainer.class, RedisConfig.class, RankingMapperImpl.class}
 )
 @TestPropertySource("classpath:application-test.yml")
-class RankingRedisRepositoryTest extends BaseSpringBootTest {
+class RankingRedisRepositoryTest  {
     @Autowired
     private RankingRedisRepository redisRepository;
 

@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.like.business;
 
-import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
@@ -11,9 +10,6 @@ import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
@@ -27,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
-class LikeManagerConcurrencyTest extends BaseSpringBootTest {
+class LikeManagerConcurrencyTest {
     @Autowired
     private LikeManager likeManager;
 

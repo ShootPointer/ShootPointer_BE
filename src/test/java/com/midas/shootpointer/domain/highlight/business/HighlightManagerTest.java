@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.highlight.business;
 
-import com.midas.shootpointer.BaseSpringBootTest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
@@ -35,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringBootTest
 @ActiveProfiles("test")
-class HighlightManagerTest extends BaseSpringBootTest {
+class HighlightManagerTest  {
     @Autowired
     private HighlightManager highlightManager;
 
