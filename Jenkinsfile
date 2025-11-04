@@ -2,7 +2,19 @@ pipeline {
     agent any
     
     parameters {
-            string(name: 'PROFILE', defaultValue: 'test-real-data,prod,batch,es', description: 'Enter comma-separated Spring profiles to activate')
+            choice(
+            name: 'PROFILE',
+            choices: [
+                'test-real-data,prod,batch,es,test-highlight-data',
+                'dev',
+                'test-real-data',
+                'prod',
+                'batch',
+                'es',
+                'test-real-data,prod,batch,es',
+                'dev,batch,es'
+            ]
+        )
      }
 
     tools {
