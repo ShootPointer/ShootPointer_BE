@@ -32,7 +32,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtHandler jwtHandler;
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService customUserDetailsService;
-    @Value("{encrypt.key}")
+    
+    @Value("${encrypt.key}")
     private String encryptionKey;
     
     @Override
