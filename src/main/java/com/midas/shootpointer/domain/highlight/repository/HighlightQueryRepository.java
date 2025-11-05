@@ -29,12 +29,12 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
     boolean existsByHighlightId(UUID highlightId);
 
     @Query(value = """
-            SELECT HighlightEntity
+            SELECT h
             FROM HighlightEntity as h
             INNER JOIN
-            Member as m
-            WHERE m.isAggregationAgreed = :true
-              AND h.isSelected =:true
+            Member as m ON h.member.memberId = m.memberId
+            WHERE m.isAggregationAgreed = true
+              AND h.isSelected = true
               AND m.memberId =:memberId
             ORDER BY h.createdAt DESC
         """)
