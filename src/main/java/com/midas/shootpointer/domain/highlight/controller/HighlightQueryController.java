@@ -18,7 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/api/highlight")
 public class HighlightQueryController {
-    private HighlightManager manager;
+    private final HighlightManager manager;
 
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<Page<HighlightInfoResponse>>> highlightList(

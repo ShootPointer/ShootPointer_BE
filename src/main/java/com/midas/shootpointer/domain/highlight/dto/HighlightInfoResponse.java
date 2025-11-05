@@ -10,9 +10,10 @@ public record HighlightInfoResponse(
         UUID highlightId,
         LocalDateTime createdDate,
         Integer totalTwoPoint,
-        Integer totalThreePoint
+        Integer totalThreePoint,
+        String highlightUrl
 ) {
-    public static HighlightInfoResponse of(UUID highlightId, LocalDateTime createdDate, Integer totalTwoPoint, Integer totalThreePoint){
-        return new HighlightInfoResponse(highlightId,createdDate,totalTwoPoint,totalThreePoint);
+    public static HighlightInfoResponse of(UUID highlightId, LocalDateTime createdDate, Integer totalTwoPoint, Integer totalThreePoint,String highlightUrl){
+        return new HighlightInfoResponse(highlightId,createdDate,totalTwoPoint,totalThreePoint,highlightUrl);
     }
 }
