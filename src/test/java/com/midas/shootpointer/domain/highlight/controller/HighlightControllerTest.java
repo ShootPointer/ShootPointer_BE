@@ -2,7 +2,7 @@ package com.midas.shootpointer.domain.highlight.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.WithMockCustomMember;
-import com.midas.shootpointer.domain.highlight.business.command.HighlightCommandService;
+import com.midas.shootpointer.domain.highlight.business.HighlightManager;
 import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("test")
 @WithMockCustomMember
-class HighlightControllerTest  {
+class HighlightCommandControllerTest  {
     @Autowired
     private MockMvc mockMvc;
 
@@ -42,7 +42,7 @@ class HighlightControllerTest  {
     private ObjectMapper objectMapper;
 
     @MockitoBean
-    private HighlightCommandService highlightCommandService;
+    private HighlightManager manager;
 
 
     @Test
@@ -58,7 +58,7 @@ class HighlightControllerTest  {
         HighlightSelectResponse expectedResponse=mockHighlightSelectResponse(uuids);
         HighlightSelectRequest request=mockHighlightSelectRequest(uuids);
 
-        when(highlightCommandService.selectHighlight(any(HighlightSelectRequest.class),any(Member.class)))
+        when(manager.selectHighlight(any(HighlightSelectRequest.class),any(Member.class)))
                 .thenReturn(expectedResponse);
 
         //when & then
@@ -74,7 +74,7 @@ class HighlightControllerTest  {
                 )))
                 .andDo(print());
 
-        verify(highlightCommandService).selectHighlight(any(HighlightSelectRequest.class),any(Member.class));
+        verify(manager).selectHighlight(any(HighlightSelectRequest.class),any(Member.class));
     }
 
 
@@ -120,7 +120,7 @@ class HighlightControllerTest  {
                         .build()
         );
 
-        when(highlightCommandService.uploadHighlights(any(UploadHighlight.class),anyList(),any(UUID.class)))
+        when(manager.uploadHighlights(any(UploadHighlight.class),anyList(),any(UUID.class)))
                 .thenReturn(expectedResponse);
 
         //when & then
@@ -142,7 +142,7 @@ class HighlightControllerTest  {
                 .andExpect(jsonPath("$.data[1].highlightUrl").value("url"))
                 .andDo(print());
 
-        verify(highlightCommandService).uploadHighlights(any(UploadHighlight.class),anyList(),any(UUID.class));
+        verify(manager).uploadHighlights(any(UploadHighlight.class),anyList(),any(UUID.class));
     }
     /*
      * Mock HighlightSelectResponse
