@@ -233,6 +233,24 @@ public class PostManager {
 
         return factory.build(postByHashTagByElasticSearch);
     }
+    
+    @Transactional(readOnly = true)
+    public PostListResponse getMyPosts(UUID memberId) {
+        List<Long> postIds = postHelper.findPostIdsByMemberId(memberId);
+
+        if (postIds.isEmpty()) {
+            return PostListResponse.of(null, Collections.emptyList());
+        }
+
+        List<PostEntity> postEntities = postHelper.findPostsByPostIds(postIds);
+        List<PostResponse> postResponses = postEntities.stream()
+            .map(postMapper::entityToDto)
+            .toList();
+        
+        Long lastPostId = postEntities.isEmpty() ? null : postEntities.get(postEntities.size() - 1).getPostId();
+        
+        return PostListResponse.of(lastPostId, postResponses);
+    }
 
     /**
      * List<PostSearchHit> -> PostListResponse 변환 inner class

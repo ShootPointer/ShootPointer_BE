@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.4.5'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'jacoco'
+	id 'org.jetbrains.kotlin.jvm'
 }
 
 group = 'com.midas'
@@ -27,7 +28,7 @@ jacocoTestReport{
 		classDirectories.setFrom(
 				files(classDirectories.files.collect{
 					fileTree(dir: it, exclude: [
-					        "**/global/config/**",
+							"**/global/config/**",
 							"**/global/exception/**",
 							"**/global/dto/**",
 							"**/global/aop/**",
@@ -37,7 +38,10 @@ jacocoTestReport{
 							"ShootPointerApplication.class",
 							"**/domain/**/entity/**",
 							"**/global/annotation/**",
-							"**/test/**"
+							"**/test/**",
+							"**/batch/listener/**",
+							"**/batch/config/**",
+							"**/batch/validator/**"
 					])
 				})
 		)
@@ -45,7 +49,7 @@ jacocoTestReport{
 }
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -93,6 +97,7 @@ dependencies {
 	//test - log
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 
 	//redisson
 	implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
@@ -103,6 +108,15 @@ dependencies {
 	testImplementation "org.testcontainers:elasticsearch"
 	testImplementation "org.testcontainers:junit-jupiter:1.20.6"
 	testImplementation "org.springframework.boot:spring-boot-testcontainers"
+
+	//MongoDB
+	implementation ('org.springframework.boot:spring-boot-starter-data-mongodb')
+
+	//spring-batch
+	implementation 'org.springframework.batch:spring-batch-core'
+	testImplementation 'org.springframework.batch:spring-batch-test'
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+	testImplementation 'org.awaitility:awaitility'
 
 	//WebSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'

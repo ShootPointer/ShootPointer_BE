@@ -2,7 +2,9 @@ package com.midas.shootpointer.domain.highlight.entity;
 
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.entity.BaseEntity;
+import com.midas.shootpointer.global.exception.CustomException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +31,7 @@ public class HighlightEntity extends BaseEntity {
     @Column(name = "highlight_url",nullable = false)
     private String highlightURL;
 
-    @Column(name = "highlight_key",nullable = false,unique = true,columnDefinition = "uuid")
+    @Column(name = "highlight_key",nullable = false,columnDefinition = "uuid")
     private UUID highlightKey;
 
     @Column(name = "is_selected")
@@ -45,7 +47,36 @@ public class HighlightEntity extends BaseEntity {
     private BackNumberEntity backNumber;
 
 
-    public void select(){
+    @Column(name = "two_point_count",nullable = true)
+    @Builder.Default
+    private Integer twoPointCount=0;
+
+    @Column(name = "three_point_count",nullable = true)
+    @Builder.Default
+    private Integer threePointCount=0;
+
+    /*
+    =========== [ 도메인-행위 ] ==============
+     */
+    public void select(Member actor){
+        //유저의 하이라이트 영상이 아닌경우
+        if (!actor.getMemberId().equals(member.getMemberId())){
+            throw new CustomException(ErrorCode.IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID);
+        }
+        //이미 선택된 하이라이트 영상인 경우
+        if (Boolean.TRUE.equals(this.isSelected)){
+            throw new CustomException(ErrorCode.EXISTED_SELECTED);
+        }
         this.isSelected=true;
+    }
+
+    //2점 슛 계산
+    public int totalTwoPoint(){
+        return 2 * this.twoPointCount;
+    }
+
+    //3점 슛 계산
+    public int totalThreePoint(){
+        return 3 * this.threePointCount;
     }
 }

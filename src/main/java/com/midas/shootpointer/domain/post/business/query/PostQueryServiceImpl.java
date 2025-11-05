@@ -5,6 +5,7 @@ import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.dto.response.SearchAutoCompleteResponse;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,5 +40,10 @@ public class PostQueryServiceImpl implements PostQueryService{
     @Override
     public List<SearchAutoCompleteResponse> suggest(String keyword) {
         return postManager.suggest(keyword);
+    }
+    
+    @Override
+    public PostListResponse getMyPosts(UUID memberId) {
+        return postManager.getMyPosts(memberId);
     }
 }

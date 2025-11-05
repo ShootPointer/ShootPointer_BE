@@ -8,6 +8,7 @@ import com.midas.shootpointer.domain.post.repository.PostElasticSearchRepository
 import com.midas.shootpointer.domain.post.mapper.PostElasticSearchMapper;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
+import com.midas.shootpointer.global.util.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -29,6 +30,7 @@ public class DummyDataLoader implements CommandLineRunner {
     private final MakeRandomWord makeRandomWord;
     private final MemberCommandRepository memberRepository;
     private final HighlightCommandRepository highlightCommandRepository;
+    private final JwtUtil jwtUtil;
     private final PostElasticSearchRepository postElasticSearchRepository;
     private final PostElasticSearchMapper mapper;
     private final int batchSize=1_000;
@@ -92,7 +94,7 @@ public class DummyDataLoader implements CommandLineRunner {
         if (!batchArgs.isEmpty()){
             jdbcTemplate.batchUpdate(sql,batchArgs);
         }
-
+        
         /**
          * Elastic Search 배치 처리
          */
@@ -118,5 +120,8 @@ public class DummyDataLoader implements CommandLineRunner {
         long esEnd = System.currentTimeMillis();
         System.out.println("ES 배치 종료 시간: " + LocalDateTime.now());
         System.out.println("ES 전체 소요 시간(ms): " + (esEnd - esStart));*/
+		System.out.println(jwtUtil.createToken(member.getMemberId(), member.getEmail(),
+			member.getUsername())
+        );
     }
 }

@@ -20,3 +20,33 @@ spring:
     restclient:
       sniffer:
         interval: 5m
+  data:
+    # Redis 설정
+    redis:
+      custom:
+        ranking:
+          key:
+            weekly: ranking:WEEKLY
+            monthly: ranking:MONTHLY
+
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
+video:
+  path: ${java.io.tmpdir}/videos
+
+#Test용은 런타임 3초단위
+schedules:
+  cron:
+    ranking:
+      batch:
+        daily: 0/3 * * * * *
+        weekly: 0/3 * * * * *
+        monthly: 0/3 * * * * *
+      redis:
+        weekly: 0/3 * * * * *
+        monthly: 0/3 * * * * *
+  zone: Asia/Seoul

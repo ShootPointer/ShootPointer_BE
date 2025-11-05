@@ -21,9 +21,11 @@ public enum ErrorCode {
      * post:                       60
      * like:                       70
      * comment:                    80
+     * ranking                     90
      * infrastructure:             90
      * <p>
      * - Package
+     * entity                      0
      * controller:                 1
      * service:                    2
      * repository:                 3
@@ -48,7 +50,11 @@ public enum ErrorCode {
     INVALID_FILE_TYPE(20203,HttpStatus.BAD_REQUEST,"지원하지 않는 파일 형식입니다."),
     FILE_SIZE_EXCEEDED(20204,HttpStatus.BAD_REQUEST,"파일의 크기가 초과했습니다.(제한 : 200MB)"),
     FILE_UPLOAD_FAILED(20205,HttpStatus.BAD_REQUEST,"파일 업로드에 실패했습니다."),
-  
+    IMAGE_CONVERT_FAILED(20206,HttpStatus.INTERNAL_SERVER_ERROR,"이미지 파일을 변환하던 중 오류가 발생했습니다."),
+
+    //300(member - entity) part
+    IS_AGGREGATION_TRUE(30001,HttpStatus.BAD_REQUEST,"이미 하이라이트 영상 정보 수집에 동의했습니다."),
+
     // 302(member - service) part
     INVALID_KAKAO_AUTH_CODE(30201, HttpStatus.BAD_REQUEST, "카카오 토큰 요청 실패"),
     KAKAO_TOKEN_REQUEST_FAIL(30202, HttpStatus.BAD_REQUEST, "카카오 토큰 응답 파싱 실패"),
@@ -79,9 +85,9 @@ public enum ErrorCode {
     INTERNAL_ERROR_OF_PYTHON_SERVER(40501,HttpStatus.BAD_REQUEST,"파이썬 서버 내부 오류입니다."),
 
     //5XX
-    FAILED_SEND_IMAGE_TO_OPENCV(20501,HttpStatus.GATEWAY_TIMEOUT,"OpenCV 등 번호 이미지 전송 실패"),
+    FAILED_SEND_IMAGE_TO_OPENCV(20501,HttpStatus.GATEWAY_TIMEOUT,"OpenCV 등 번호 이미지 전송을 실패했습니다."),
     FAILED_POST_API_RETRY_TO_OPENCV(20502, HttpStatus.REQUEST_TIMEOUT, "OpenCV 파일 전송 횟수가 초과했습니다."),
-
+    NOT_MATCHED_BACK_NUMBER(20503,HttpStatus.NOT_FOUND,"등 번호를 인식할 수 없습니다. 새로운 사진을 전송해주세요."),
 
     // 502(backnumber - service) part
     //* TODO : 현재 멤버 관련 로직이 Kakao 밖에 없어서 Member 도메인에 예외처리가 처음 생긴게 BackNumber 도메인임. << 이 부분은 추후에 Member 도메인에 로직 생기면 바꿀게요~
@@ -93,9 +99,11 @@ public enum ErrorCode {
     INVALID_DELETE_LIKE(70602,HttpStatus.BAD_REQUEST,"잘못된 좋아요 요청입니다."),
     NOT_FOUND_LIKE(70603,HttpStatus.NOT_FOUND,"좋아요를 찾을 수 없습니다."),
 
+    //200(highlight - entity) part
+    IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID(20001,HttpStatus.FORBIDDEN,"유저의 하이라이트 영상이 아닙니다."),
+    EXISTED_SELECTED(20002,HttpStatus.BAD_REQUEST,"이미 선택된 하이라이트 영상입니다."),
 
-    //206(highlight - helper) part
-    IS_NOT_CORRECT_MEMBERS_HIGHLIGHT_ID(20601,HttpStatus.FORBIDDEN,"유저의 하이라이트 영상이 아닙니다."),
+    //206(highlight - helper) part,
     IS_NOT_CORRECT_HASH_TAG(20602,HttpStatus.BAD_REQUEST,"잘못된 카테고리 입력입니다."),
     NOT_EXIST_HIGHLIGHT(20603,HttpStatus.FORBIDDEN,"존재하지 않는 하이라이트 영상입니다."),
 
@@ -113,6 +121,10 @@ public enum ErrorCode {
     FORBIDDEN_COMMENT_ACCESS(80602, HttpStatus.FORBIDDEN, "댓글 접근 권한이 없습니다."),
     INVALID_INPUT_VALUE(80603, HttpStatus.BAD_REQUEST, "올바른 입력값이 아닙니다."),
 
+    // 903(ranking - repository)
+    IS_NOT_VALID_RANKING_TYPE(90301, HttpStatus.BAD_REQUEST,"올바르지 않은 랭킹 유형입니다."),
+    NOT_CONVERT_TO_RANKING_RESULT(90302,HttpStatus.INTERNAL_SERVER_ERROR,"RankingResult 역직렬화 시 null 값이 발생했습니다."),
+    NOT_CONVERT_TO_RANKING_ENTRY(90302,HttpStatus.INTERNAL_SERVER_ERROR,"RankingEntry 역직렬화 시 null 값이 발생했습니다."),
     //901(infra - websocket)
     FAILED_END_WEB_SOCKET_FAILED(90101,HttpStatus.INTERNAL_SERVER_ERROR,"기존 세션 종료를 실패했습니다."),
     FAILED_SEND_MESSAGE(90102,HttpStatus.INTERNAL_SERVER_ERROR,"websocket 메세지 전송을 싪패했습니다."),

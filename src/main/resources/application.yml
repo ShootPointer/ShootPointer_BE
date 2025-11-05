@@ -30,6 +30,13 @@ spring:
       max-file-size: 5000MB
       max-request-size: 5000MB
 
+  # Batch 설정
+  batch:
+    jdbc:
+      initialize-schema: never
+    job:
+      enabled: false
+
   # 데이터소스 설정
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/shootpointer}
@@ -38,8 +45,8 @@ spring:
     driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
 
     hikari:
-      maximum-pool-size: 50
-      minimum-idle: 10
+      maximum-pool-size: 2000
+      minimum-idle: 50
       connection-timeout: 30000
 
   # JPA 설정
@@ -61,8 +68,8 @@ spring:
 
     # Redis 설정
     redis:
-      host: ${REDIS_HOST:172.17.0.1}
-      port: ${REDIS_PORT:6379}
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
       timeout: 2000ms
       jedis:
         pool:
@@ -106,6 +113,7 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: ${LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER:TRACE}
     org.springframework.data.mongodb: DEBUG
     redis.clients.jedis: DEBUG
+    org.springframework.batch.item.database: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
@@ -127,7 +135,7 @@ kakao:
     uri: https://kapi.kakao.com
 
 opencv:
-  url: http://tk0011.ddns.net:8000
+  url: http://localhost:8888
   api:
     post:
       send-image: /api/send-img
@@ -146,3 +154,19 @@ opencv:
 video:
   path: /home/ubuntu/shoot-pointer/videos
   max-size: 200MB
+
+query:
+  path:
+    ranking: src/main/resources/query/ranking.sql
+
+schedules:
+  cron:
+    ranking:
+      batch:
+        daily: 0 0 0 * * *
+        weekly: 0 0 0 * * MON
+        monthly: 0 0 0 1 * *
+      redis:
+        weekly: 0 0 0 * * MON
+        monthly: 0 0 0 1 * *
+  zone: Asia/Seoul
