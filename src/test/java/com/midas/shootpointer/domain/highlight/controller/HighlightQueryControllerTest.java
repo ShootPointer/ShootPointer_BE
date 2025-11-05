@@ -1,20 +1,18 @@
 package com.midas.shootpointer.domain.highlight.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.highlight.business.HighlightManager;
 import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,27 +24,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@AutoConfigureMockMvc
+@SpringBootTest
+@ActiveProfiles("test")
+@WithMockCustomMember
 class HighlightQueryControllerTest {
+    @Autowired
     private MockMvc mockMvc;
-    private ObjectMapper objectMapper;
 
-    @InjectMocks
-    private HighlightQueryController highlightQueryController;
-
-    @Mock
+    @MockitoBean
     private HighlightManager highlightManager;
-
-    @BeforeEach
-    void setUp(){
-        mockMvc= MockMvcBuilders.standaloneSetup(highlightQueryController)
-                .build();
-        objectMapper=new ObjectMapper();
-    }
 
     @Test
     @DisplayName("특정 유저의 하이라이트 영상 리스트 조회 시 Page<HighlightInfoResponse>를 반환합니다.")
-    @WithMockCustomMember(name = "test",email = "test@naver.com")
     void highlightList() throws Exception {
         // given
         String url = "/api/highlight/list";
