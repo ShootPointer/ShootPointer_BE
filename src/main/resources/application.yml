@@ -61,14 +61,22 @@ spring:
 
     # Redis 설정
     redis:
-      host: ${SPRING_REDIS_HOST:localhost}
-      port: ${SPRING_REDIS_PORT:6379}
+      host: ${REDIS_HOST:172.17.0.1}
+      port: ${REDIS_PORT:6379}
       timeout: 2000ms
       jedis:
         pool:
           max-active: 8
           max-idle: 8
           min-idle: 0
+      custom:
+        ranking:
+          key:
+            weekly: ranking:WEEKLY
+            monthly: ranking:MONTHLY
+        upload:
+          key:
+            upload: upload:presigned
     # kakao
   security:
     oauth2:
@@ -119,7 +127,7 @@ kakao:
     uri: https://kapi.kakao.com
 
 opencv:
-  url: http://localhost:8888
+  url: http://tk0011.ddns.net:8000
   api:
     post:
       send-image: /api/send-img

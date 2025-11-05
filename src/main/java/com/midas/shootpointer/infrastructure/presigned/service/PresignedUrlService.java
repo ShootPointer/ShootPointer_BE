@@ -44,16 +44,18 @@ public class PresignedUrlService {
     @Value("${opencv.expire.expiration-time}")
     private long ttlMilliSeconds;
 
+    @Value("${spring.data.redis.custom.upload.key.upload}")
+    private String prefix;
+
     /**
      *  file 유효성 검증
      */
     private FileValidator fileValidator;
-
     /**
      *  Redis Template
      */
     private RedisTemplate<String,String> redisTemplate;
-    private final String prefix="upload:job:";
+
 
     private WebSocketProgressPublisher progressPublisher;
 
