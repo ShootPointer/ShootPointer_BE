@@ -31,7 +31,7 @@ public class HighlightMapperImpl implements HighlightMapper{
 
     @Override
     public HighlightInfoResponse infoResponseToEntity(HighlightEntity entity) {
-        return HighlightInfoResponse.of(entity.getHighlightId(),entity.getCreatedAt(),entity.totalTwoPoint(),entity.getThreePointCount());
+        return HighlightInfoResponse.of(entity.getHighlightId(),entity.getCreatedAt(),entity.totalTwoPoint(),entity.totalThreePoint());
     }
 
 
