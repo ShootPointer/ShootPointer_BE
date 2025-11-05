@@ -13,6 +13,9 @@ import org.junit.jupiter.api.io.TempDir;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -102,6 +105,23 @@ class HighlightUtilImplTest {
         assertThatThrownBy(()->highlightUtil.findHighlightByHighlightId(highlightId))
                 .isInstanceOf(CustomException.class)
                 .hasMessage(ErrorCode.NOT_EXIST_HIGHLIGHT.getMessage());
+    }
+
+    @Test
+    @DisplayName("특정 유저의 하이라이트 리스트를 조회할 때 highlightQueryRepository-fetchAllMembersHighlights의 호출을 검증합니다.")
+    void fetchAllMembersHighlights(){
+        //given
+        UUID memberId=UUID.randomUUID();
+        Pageable pageable= PageRequest.of(0,10);
+        Page<HighlightEntity> mockPage=Page.empty();
+
+        when(queryRepository.fetchAllMembersHighlights(any(UUID.class),any(Pageable.class))).thenReturn(mockPage);
+
+        //when
+        highlightUtil.fetchMembersHighlights(memberId,pageable);
+
+        //then
+        verify(queryRepository).fetchAllMembersHighlights(any(UUID.class),any(Pageable.class));
     }
 
     @Test
