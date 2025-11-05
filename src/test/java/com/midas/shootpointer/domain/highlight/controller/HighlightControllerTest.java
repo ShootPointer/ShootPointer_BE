@@ -74,7 +74,7 @@ class HighlightCommandControllerTest  {
                 )))
                 .andDo(print());
 
-        verify(highlightCommandService).selectHighlight(any(HighlightSelectRequest.class),any(Member.class));
+        verify(manager).selectHighlight(any(HighlightSelectRequest.class),any(Member.class));
     }
 
 
