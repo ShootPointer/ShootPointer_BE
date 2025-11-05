@@ -1,9 +1,6 @@
 package com.midas.shootpointer.domain.highlight.business;
 
-import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
-import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
-import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
-import com.midas.shootpointer.domain.highlight.dto.UploadHighlight;
+import com.midas.shootpointer.domain.highlight.dto.*;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.highlight.mapper.HighlightFactory;
@@ -14,6 +11,9 @@ import com.midas.shootpointer.domain.member.helper.MemberHelper;
 import com.midas.shootpointer.global.annotation.CustomLog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -104,5 +104,22 @@ public class HighlightManager {
         return savedEntities.stream()
                 .map(mapper::entityToResponse)
                 .toList();
+    }
+
+    public Page<HighlightInfoResponse> listByPaging(int page, int size,UUID memberId) {
+        /**
+         * 1. Paging 처리
+         */
+        Pageable paging= PageRequest.of(page,size);
+
+        /**
+         * 2. member의 모든 하이라이트 리스트 조회
+         */
+        Page<HighlightEntity> highlightEntityList=highlightHelper.fetchMembersHighlights(memberId,paging);
+
+        /**
+         * 3. mapping
+         */
+        return highlightEntityList.map(mapper::infoResponseToEntity);
     }
 }

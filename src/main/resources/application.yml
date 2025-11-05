@@ -81,7 +81,9 @@ spring:
           key:
             weekly: ranking:WEEKLY
             monthly: ranking:MONTHLY
-
+        upload:
+          key:
+            upload: upload:presigned
     # kakao
   security:
     oauth2:
@@ -133,7 +135,7 @@ kakao:
     uri: https://kapi.kakao.com
 
 opencv:
-  url: http://tkv00.ddns.net:8000
+  url: http://localhost:8888
   api:
     post:
       send-image: /api/send-img
@@ -141,9 +143,17 @@ opencv:
       fetch-video: /api/fetch-video
     proxy:
       upload-video: upload
-
+  expire:
+    expiration-time: 1800000 #30분
+  # -------------------------
+  # [Pre-signed Settings]
+  # -------------------------
+  pre-signed:
+    secret:
+      key: GWzLpvV0E+QgAGDxJstwbMsiw1Ibx2PqW+FSAREfT5F8M1vMiZzy8/ysNWXHeaSnLTy4ZmF7w5+GvWbU2ZQeLw==
 video:
   path: /home/ubuntu/shoot-pointer/videos
+  max-size: 200MB
 
 query:
   path:

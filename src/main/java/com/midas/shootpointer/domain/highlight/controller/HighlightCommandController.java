@@ -1,6 +1,6 @@
 package com.midas.shootpointer.domain.highlight.controller;
 
-import com.midas.shootpointer.domain.highlight.business.command.HighlightCommandService;
+import com.midas.shootpointer.domain.highlight.business.HighlightManager;
 import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
@@ -19,8 +19,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/highlight")
 @RequiredArgsConstructor
-public class HighlightController {
-    private final HighlightCommandService highlightCommandService;
+public class HighlightCommandController {
+    private final HighlightManager manager;
 
     @PostMapping("/select")
     public ResponseEntity<ApiResponse<HighlightSelectResponse>> selectHighlight(
@@ -28,7 +28,7 @@ public class HighlightController {
     ) {
         Member member = SecurityUtils.getCurrentMember();
 
-        return ResponseEntity.ok(ApiResponse.ok(highlightCommandService.selectHighlight(request, member)));
+        return ResponseEntity.ok(ApiResponse.ok(manager.selectHighlight(request, member)));
     }
 
     @PostMapping("/upload-result")
@@ -37,6 +37,6 @@ public class HighlightController {
             @RequestPart(value = "uploadHighlightDto") UploadHighlight request,
             @RequestPart(value = "highlights") List<MultipartFile> highlights
     ) {
-        return ResponseEntity.ok(ApiResponse.ok(highlightCommandService.uploadHighlights(request,highlights,memberId)));
+        return ResponseEntity.ok(ApiResponse.ok(manager.uploadHighlights(request,highlights,memberId)));
     }
 }

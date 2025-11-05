@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.highlight.mapper;
 
+import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
@@ -26,6 +27,11 @@ public class HighlightMapperImpl implements HighlightMapper{
                 .highlightIdentifier(highlight.getHighlightKey())
                 .highlightUrl(highlight.getHighlightURL())
                 .build();
+    }
+
+    @Override
+    public HighlightInfoResponse infoResponseToEntity(HighlightEntity entity) {
+        return HighlightInfoResponse.of(entity.getHighlightId(),entity.getCreatedAt(),entity.totalTwoPoint(),entity.totalThreePoint(),entity.getHighlightURL());
     }
 
 

@@ -7,6 +7,8 @@ import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -56,6 +58,11 @@ public class HighlightUtilImpl implements HighlightUtil{
     @Override
     public List<HighlightEntity> savedAll(List<HighlightEntity> entities) {
         return highlightCommandRepository.saveAll(entities);
+    }
+
+    @Override
+    public Page<HighlightEntity> fetchMembersHighlights(UUID memberId, Pageable pageable) {
+        return highlightQueryRepository.fetchAllMembersHighlights(memberId, pageable);
     }
 
 }

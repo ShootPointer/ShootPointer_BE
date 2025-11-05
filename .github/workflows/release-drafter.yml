@@ -3,11 +3,14 @@ name: draft-release
 on:
   pull_request:
     types: [closed]
+    branches:
+      - main
 
 permissions: write-all
 
 jobs:
   check_labels:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
     name: 'Check PR Labels'
     runs-on: ubuntu-latest
     steps:
@@ -21,6 +24,7 @@ jobs:
           labels: 'major,minor,patch'
 
   draft-release:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
     name: 'Draft Gradle Release'
     runs-on: ubuntu-latest
     needs: check_labels
@@ -39,7 +43,6 @@ jobs:
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-      # 버전 파일 추출 (Gradle 기준)
       - name: Get current version
         id: get_version
         run: |
@@ -47,23 +50,18 @@ jobs:
           echo "Current version: $current_version"
           echo "version=$current_version" >> $GITHUB_OUTPUT
 
-      # 버전 증가 로직 (Gradle용)
       - name: Bump version (major)
         if: contains(github.event.pull_request.labels.*.name, 'major')
-        run: |
-          ./gradlew versionBump -PreleaseType=major
+        run: ./gradlew versionBump -PreleaseType=major
 
       - name: Bump version (minor)
         if: contains(github.event.pull_request.labels.*.name, 'minor')
-        run: |
-          ./gradlew versionBump -PreleaseType=minor
+        run: ./gradlew versionBump -PreleaseType=minor
 
       - name: Bump version (patch)
         if: contains(github.event.pull_request.labels.*.name, 'patch')
-        run: |
-          ./gradlew versionBump -PreleaseType=patch
+        run: ./gradlew versionBump -PreleaseType=patch
 
-      # 변경된 버전 읽기
       - name: Get new version
         id: new_version
         run: |
@@ -71,7 +69,6 @@ jobs:
           echo "New version: $new_version"
           echo "version=$new_version" >> $GITHUB_OUTPUT
 
-      # 커밋 및 푸시
       - name: Commit and Push
         run: |
           git add build.gradle
@@ -80,7 +77,6 @@ jobs:
           git push origin HEAD:${{ github.ref }}
           git push origin "v${{ steps.new_version.outputs.version }}"
 
-      # Release Drafter (자동 릴리스 초안 생성)
       - name: Release drafter
         uses: release-drafter/release-drafter@v5
         with:
