@@ -22,7 +22,7 @@ public enum ErrorCode {
      * like:                       70
      * comment:                    80
      * ranking                     90
-
+     * infrastructure:             90
      * <p>
      * - Package
      * entity                      0
@@ -33,6 +33,7 @@ public enum ErrorCode {
      * infrastructure:             5
      * helper                      6
      * business                    7
+     *
      * <p>
      * - Error Num
      * 01 ~ 99 (Increasing Num From 01)
@@ -47,7 +48,7 @@ public enum ErrorCode {
     NOT_FOUND_HIGHLIGHT_ID(20201,HttpStatus.NOT_FOUND,"해당 하이라이트 영상을 찾을 수 없습니다."),
     NOT_MATCH_HIGHLIGHT_VIDEO(20202,HttpStatus.BAD_REQUEST,"잘못된 요청입니다."),
     INVALID_FILE_TYPE(20203,HttpStatus.BAD_REQUEST,"지원하지 않는 파일 형식입니다."),
-    FILE_SIZE_EXCEEDED(20204,HttpStatus.BAD_REQUEST,"파일의 크기가 초과했습니다.(제한 : 100MB)"),
+    FILE_SIZE_EXCEEDED(20204,HttpStatus.BAD_REQUEST,"파일의 크기가 초과했습니다.(제한 : 200MB)"),
     FILE_UPLOAD_FAILED(20205,HttpStatus.BAD_REQUEST,"파일 업로드에 실패했습니다."),
     IMAGE_CONVERT_FAILED(20206,HttpStatus.INTERNAL_SERVER_ERROR,"이미지 파일을 변환하던 중 오류가 발생했습니다."),
 
@@ -80,7 +81,7 @@ public enum ErrorCode {
     JWT_MEMBER_ID_INVALID(40407, HttpStatus.INTERNAL_SERVER_ERROR, "JWT에서 memberId(UUID) 추출 실패"),
     JWT_REQUEST_NOT_FOUND(40408, HttpStatus.NOT_FOUND, "요청 Context를 찾을 수 없음"),
     JWT_HEADER_NOT_FOUND(40409, HttpStatus.NOT_FOUND, "Authorization 헤더가 없음"),
-
+    HMAC_CREATE_FAIL(40410,HttpStatus.INTERNAL_SERVER_ERROR,"Hmac 암호화 실패"),
     INTERNAL_ERROR_OF_PYTHON_SERVER(40501,HttpStatus.BAD_REQUEST,"파이썬 서버 내부 오류입니다."),
 
     //5XX
@@ -123,7 +124,11 @@ public enum ErrorCode {
     // 903(ranking - repository)
     IS_NOT_VALID_RANKING_TYPE(90301, HttpStatus.BAD_REQUEST,"올바르지 않은 랭킹 유형입니다."),
     NOT_CONVERT_TO_RANKING_RESULT(90302,HttpStatus.INTERNAL_SERVER_ERROR,"RankingResult 역직렬화 시 null 값이 발생했습니다."),
-    NOT_CONVERT_TO_RANKING_ENTRY(90302,HttpStatus.INTERNAL_SERVER_ERROR,"RankingEntry 역직렬화 시 null 값이 발생했습니다.");
+    NOT_CONVERT_TO_RANKING_ENTRY(90302,HttpStatus.INTERNAL_SERVER_ERROR,"RankingEntry 역직렬화 시 null 값이 발생했습니다."),
+    //901(infra - websocket)
+    FAILED_END_WEB_SOCKET_FAILED(90101,HttpStatus.INTERNAL_SERVER_ERROR,"기존 세션 종료를 실패했습니다."),
+    FAILED_SEND_MESSAGE(90102,HttpStatus.INTERNAL_SERVER_ERROR,"websocket 메세지 전송을 싪패했습니다."),
+    FAILED_PARSING_JSON(90103,HttpStatus.NOT_IMPLEMENTED,"json 파싱 중 오류가 발생했습니다.");
     private final Integer code;
     private final HttpStatus httpStatus;
     private final String message;

@@ -135,6 +135,7 @@ opencv:
       fetch-video: /api/fetch-video
     proxy:
       upload-video: upload
-
+  expire:
+    expiration-time: 1800000 #30분
 video:
   path: /home/ubuntu/shoot-pointer/vid

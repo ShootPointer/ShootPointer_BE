@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class OpenCVProperties {
     private String url;
     private Api api;
+    private Expire expire;
 
     @Getter
     @Setter
@@ -30,5 +31,11 @@ public class OpenCVProperties {
         public static class Get{
             private String fetchVideo;
         }
+    }
+
+    @Getter
+    @Setter
+    public static class Expire{
+        private long expirationTime;
     }
 }
