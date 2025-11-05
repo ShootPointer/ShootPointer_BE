@@ -23,8 +23,11 @@ public class HmacSigner {
      */
     private static final String SIGNATURE_ALGORITHM="HmacSHA256";
 
-    @Value("${opencv.pre-signed.secret.key}")
-    private String secretKey;
+    private final String secretKey;
+
+    public HmacSigner(@Value("${opencv.pre-signed.secret.key}") String secretKey) {
+        this.secretKey = secretKey;
+    }
 
     /**
      * Hmac-SHA256 서명 생성 메서드

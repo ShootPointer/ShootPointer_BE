@@ -19,6 +19,7 @@ public class OpenCVProperties {
     public static class Api{
         private Post post;
         private Get get;
+        private Proxy proxy;
 
         @Getter
         @Setter
@@ -30,6 +31,12 @@ public class OpenCVProperties {
         @Setter
         public static class Get{
             private String fetchVideo;
+        }
+
+        @Getter
+        @Setter
+        public static class Proxy{
+            private String uploadVideo;
         }
     }
 

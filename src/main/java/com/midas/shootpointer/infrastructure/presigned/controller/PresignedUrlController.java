@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +50,7 @@ public class PresignedUrlController {
     *
     ==========================**/
     @PostMapping("/pre-signed")
-    public ResponseEntity<ApiResponse<PresignedUrlResponse>> getPreSignedUrl(@RequestBody FileMetadataRequest request){
+    public ResponseEntity<ApiResponse<PresignedUrlResponse>> getPreSignedUrl(@Valid @RequestBody FileMetadataRequest request){
         UUID memberId = SecurityUtils.getCurrentMember().getMemberId();
         return ResponseEntity.ok(ApiResponse.ok(presignedUrlService.createPresignedUrl(memberId,request)));
     }
