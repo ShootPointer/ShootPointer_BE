@@ -58,6 +58,7 @@ jobs:
           MONGO_INITDB_ROOT_PASSWORD: root
           MONGO_INITDB_DATABASE: shootpointer
         options: >-
+          --tmpfs /data/db:rw
           --health-cmd "mongosh --eval 'db.adminCommand({ ping: 1 })' --quiet || exit 1"
           --health-interval=10s
           --health-timeout=10s
