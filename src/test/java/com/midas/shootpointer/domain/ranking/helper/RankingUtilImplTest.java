@@ -137,29 +137,29 @@ class RankingUtilImplTest {
         assertThat(result).hasSize(5);
 
         assertThat(result.get(0).memberId()).isEqualTo(memberId1);
-        assertThat(result.get(0).total()).isEqualTo(50);
-        assertThat(result.get(0).threeTotal()).isEqualTo(10);
-        assertThat(result.get(0).twoTotal()).isEqualTo(40);
+        assertThat(result.get(0).totalScore()).isEqualTo(50);
+        assertThat(result.get(0).threeScore()).isEqualTo(10);
+        assertThat(result.get(0).twoScore()).isEqualTo(40);
 
         assertThat(result.get(1).memberId()).isEqualTo(memberId2);
-        assertThat(result.get(1).total()).isEqualTo(40);
-        assertThat(result.get(1).threeTotal()).isEqualTo(0);
-        assertThat(result.get(1).twoTotal()).isEqualTo(40);
+        assertThat(result.get(1).totalScore()).isEqualTo(40);
+        assertThat(result.get(1).threeScore()).isEqualTo(0);
+        assertThat(result.get(1).twoScore()).isEqualTo(40);
 
         assertThat(result.get(2).memberId()).isEqualTo(memberId3);
-        assertThat(result.get(2).total()).isEqualTo(30);
-        assertThat(result.get(2).threeTotal()).isEqualTo(20);
-        assertThat(result.get(2).twoTotal()).isEqualTo(10);
+        assertThat(result.get(2).totalScore()).isEqualTo(30);
+        assertThat(result.get(2).threeScore()).isEqualTo(20);
+        assertThat(result.get(2).twoScore()).isEqualTo(10);
 
         assertThat(result.get(3).memberId()).isEqualTo(memberId4);
-        assertThat(result.get(3).total()).isEqualTo(20);
-        assertThat(result.get(3).threeTotal()).isEqualTo(10);
-        assertThat(result.get(3).twoTotal()).isEqualTo(10);
+        assertThat(result.get(3).totalScore()).isEqualTo(20);
+        assertThat(result.get(3).threeScore()).isEqualTo(10);
+        assertThat(result.get(3).twoScore()).isEqualTo(10);
 
         assertThat(result.get(4).memberId()).isEqualTo(memberId5);
-        assertThat(result.get(4).total()).isEqualTo(10);
-        assertThat(result.get(4).threeTotal()).isEqualTo(5);
-        assertThat(result.get(4).twoTotal()).isEqualTo(5);
+        assertThat(result.get(4).totalScore()).isEqualTo(10);
+        assertThat(result.get(4).threeScore()).isEqualTo(5);
+        assertThat(result.get(4).twoScore()).isEqualTo(5);
 
         verify(jdbcTemplate).query(
                 anyString(),
@@ -227,5 +227,20 @@ class RankingUtilImplTest {
         //then
         assertThat(resultTime).isEqualTo(expectedDate);
 
+    }
+
+    @Test
+    @DisplayName("랭킹 점수 가중치를 포함하여 계산합니다.")
+    void calculateRankingWeight(){
+        //given
+        int twoScore=14;
+        int threeScore=21;
+        int totalScore=threeScore+twoScore;
+
+        //when
+        double weight=rankingUtil.calculateRankingWeight(twoScore,threeScore,totalScore);
+
+        //then
+        assertThat(weight).isEqualTo(twoScore+1_000*threeScore+1_000_000*totalScore);
     }
 }

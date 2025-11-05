@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * 통합 테스트로 진행합니다.
  */
-class LikeManagerTest {
+class LikeManagerTest  {
     @BeforeEach
     void setUp(){
         memberRepository.deleteAll();

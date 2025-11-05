@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @WithMockCustomMember
-class PostCommandControllerTest {
+class PostCommandControllerTest  {
     @Autowired
     private MockMvc mockMvc;
 

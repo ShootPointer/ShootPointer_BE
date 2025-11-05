@@ -3,19 +3,24 @@ package com.midas.shootpointer.domain.ranking.business;
 import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
+import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
 import com.midas.shootpointer.domain.ranking.helper.RankingUtil;
 import com.midas.shootpointer.domain.ranking.mapper.RankingMapper;
+import com.midas.shootpointer.domain.ranking.repository.RankingRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class RankingManager {
     private final RankingMapper mapper;
     private final RankingUtil rankingUtil;
+    private final RankingRedisRepository redisRepository;
 
     /**
      * 전 날 랭킹 집계 조회
@@ -45,9 +50,18 @@ public class RankingManager {
         return mapper.docToResponse(document);
     }
 
-    //TODO: Redis-sorted set 이용하여 이번 주/이번 달 랭킹 구현 예정.
-    public RankingResponse fetchThisData(LocalDateTime time,RankingType type){
-        return RankingResponse.builder().build();
+
+    public RankingResponse fetchThisData(RankingType type){
+        List<RankingEntry> results=redisRepository.getHighlightsWeeklyRanking(type);
+
+        /**
+         * 조회값이 null인 경우
+         */
+        if (results==null || results.isEmpty()) {
+            return mapper.entryToResponse(Collections.emptyList(),type);
+        }
+
+        return mapper.entryToResponse(results,type);
     }
 
 }

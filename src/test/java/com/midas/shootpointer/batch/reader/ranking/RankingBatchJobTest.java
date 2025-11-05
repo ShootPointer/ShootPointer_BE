@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles({"batch","test"})
 @SpringBootTest
 @SpringBatchTest
-public class RankingBatchJobTest {
+public class RankingBatchJobTest  {
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
