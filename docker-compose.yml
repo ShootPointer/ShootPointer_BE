@@ -184,7 +184,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - /home/opendocs/jenkins/workspace/shoot-pointer/nginx/conf.d:/etc/nginx/conf.d
+      - /home/opendocs/jenkins/workspace/shoot-pointer/nginx/conf.d:/etc/nginx/conf.d:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - shootpointer
