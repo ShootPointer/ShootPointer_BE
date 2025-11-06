@@ -47,9 +47,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (token != null && jwtHandler.validateToken(token)) {
             try {
                 String email = jwtHandler.getEmailFromToken(token); // 평문 이메일을
-                String encryptedEmail = encryptEmail(email); // 암호화 해서 DB 조회
+//                String encryptedEmail = encryptEmail(email); // 암호화 해서 DB 조회
 
-                UserDetails userDetails = customUserDetailsService.loadUserByUsername(encryptedEmail);
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities()
