@@ -41,7 +41,7 @@ public record ProgressData(
 
 
         /*==========================
-         *      하이라이트 영상 전송 중
+         *      하이라이트 영상 생성 중
          ==========================*/
         @Nullable String stage,
 
