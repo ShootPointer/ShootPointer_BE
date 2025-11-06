@@ -1,4 +1,4 @@
-package com.midas.shootpointer.global.config;
+package com.midas.shootpointer.infrastructure.redis.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
