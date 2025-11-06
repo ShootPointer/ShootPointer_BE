@@ -151,6 +151,11 @@ opencv:
   pre-signed:
     secret:
       key: GWzLpvV0E+QgAGDxJstwbMsiw1Ibx2PqW+FSAREfT5F8M1vMiZzy8/ysNWXHeaSnLTy4ZmF7w5+GvWbU2ZQeLw==
+
+  redis:
+    host: ${OPENCV_REDIS_HOST:}
+    port: ${OPENCV_REDIS_PORT:6379}
+
 video:
   path: /home/ubuntu/shoot-pointer/videos
   max-size: 200MB
