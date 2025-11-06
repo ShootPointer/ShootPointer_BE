@@ -155,6 +155,9 @@ opencv:
   redis:
     host: ${OPENCV_REDIS_HOST:}
     port: ${OPENCV_REDIS_PORT:6379}
+    channels:
+      upload: opencv-progress-upload
+      highlight: opencv-progress-highlight
 
 video:
   path: /home/ubuntu/shoot-pointer/videos

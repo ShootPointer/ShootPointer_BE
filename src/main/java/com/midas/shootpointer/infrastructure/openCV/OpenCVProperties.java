@@ -39,6 +39,14 @@ public class OpenCVProperties {
     public static class Redis{
         private String host;
         private int port;
+        private Channels channels;
+
+        @Getter
+        @Setter
+        public static class Channels{
+            private String upload;
+            private String highlight;
+        }
     }
 
     @Getter
