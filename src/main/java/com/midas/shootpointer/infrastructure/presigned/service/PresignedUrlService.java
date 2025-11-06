@@ -76,6 +76,7 @@ public class PresignedUrlService {
         /**
          * 3.redis에 memberId:jobId  형태 저장 - TTL : 30분
          */
+        //TODO: pre-signed URL 만료 검증 필요
         redisTemplate.opsForValue()
                 .set(prefix+memberId, String.valueOf(jobId), Duration.ofMillis(ttlMilliSeconds));
 

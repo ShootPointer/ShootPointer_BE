@@ -1,4 +1,4 @@
-package com.midas.shootpointer.infrastructure.redis.dto;
+package com.midas.shootpointer.infrastructure.redis.entity;
 
 import lombok.Getter;
 

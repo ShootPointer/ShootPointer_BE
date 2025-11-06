@@ -26,13 +26,13 @@ public class ProgressSubscriber implements MessageListener {
     public void onMessage(Message message, byte[] pattern) {
         try {
             String body=new String(message.getBody());
-            log.info("[Redis sub] Received message : {}",body);
+            log.info("[Redis SUB] Received message : {}",body);
 
             ProgressRedisResponse progress=objectMapper.readValue(body,ProgressRedisResponse.class);
 
             //null값인 경우
             if (progress==null || progress.data()==null){
-                log.error("[Redis sub] progress data is null : time = {}", LocalDateTime.now());
+                log.error("[Redis SUB] progress data is null : time = {}", LocalDateTime.now());
                 return;
             }
 
@@ -41,10 +41,10 @@ public class ProgressSubscriber implements MessageListener {
 
             //TODO: SSE로 client에 전달 로직.
 
-            log.info("[Redis sub] progress info : jobId = {}",progress.data().jobId());
+            log.info("[Redis SUB] progress info : jobId = {}",progress.data().jobId());
 
         }catch (Exception e){
-            log.error("[Redis sub] failed to process message : {}",e.getMessage());
+            log.error("[Redis SUB] failed to process message : {}",e.getMessage());
         }
     }
 }

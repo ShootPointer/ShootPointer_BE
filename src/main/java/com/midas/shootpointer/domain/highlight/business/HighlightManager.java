@@ -1,22 +1,21 @@
 package com.midas.shootpointer.domain.highlight.business;
 
-import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
+import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
+import com.midas.shootpointer.domain.highlight.dto.HighlightRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
-import com.midas.shootpointer.domain.highlight.dto.UploadHighlight;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.highlight.mapper.HighlightFactory;
 import com.midas.shootpointer.domain.highlight.mapper.HighlightMapper;
-import com.midas.shootpointer.domain.highlight.service.HighlightStorageService;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.helper.MemberHelper;
+import com.midas.shootpointer.domain.memberbacknumber.helper.MemberBackNumberHelper;
 import com.midas.shootpointer.global.annotation.CustomLog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,8 +25,8 @@ import java.util.UUID;
 @Slf4j
 public class HighlightManager {
     private final HighlightHelper highlightHelper;
-    private final HighlightStorageService highlightStorageService;
     private final HighlightMapper mapper;
+    private final MemberBackNumberHelper memberBackNumberHelper;
     private final HighlightFactory factory;
     private final MemberHelper memberHelper;
 
@@ -75,34 +74,26 @@ public class HighlightManager {
     ==========================**/
     @CustomLog
     @Transactional
-    public List<HighlightResponse> uploadHighlights(
-            UploadHighlight request,
-            List<MultipartFile> highlights,
-            UUID memberId
-    ) {
-        /**
-         * 1. 파일 크기 및 파일 형식 검사
-         */
-        highlightHelper.areValidFiles(highlights);
+    public void saveHighlights(HighlightRequest request, UUID memberId) {
 
         /**
-         * 2. 하이라이트 키 / 디렉토리 -> 하이라이트 엔티티 저장
+         * 1. Member 검증 및 조회
          */
-        List<String> storedFiles=highlightStorageService.storeHighlights(highlights,request.getHighlightKey());
+        Member member = memberHelper.findMemberById(memberId);
+
+        /**
+         * 2. BackNumber 검증 및 조회
+         */
+        BackNumberEntity backNumber=memberBackNumberHelper.findByMemberId(memberId);
 
         /*
-        *   3. 하이라이트 엔티티 생성
+        *   2. 하이라이트 엔티티 생성
          */
-        Member member=memberHelper.findMemberById(memberId);
-        List<HighlightEntity> entities=factory.createHighlightEntities(storedFiles,request.getHighlightKey(),member);
+        List<HighlightEntity> entities=factory.createHighlightEntities(request.getHighlightUrls(),request.getHighlightIdentifier(),member,backNumber);
 
         /*
-            4. DB 저장
+            3. DB 저장
          */
-        List<HighlightEntity> savedEntities = highlightHelper.savedAll(entities);
-
-        return savedEntities.stream()
-                .map(mapper::entityToResponse)
-                .toList();
+        highlightHelper.savedAll(entities);
     }
 }

@@ -1,7 +1,7 @@
 package com.midas.shootpointer.infrastructure.redis.helper;
 
 import com.midas.shootpointer.infrastructure.redis.dto.ProgressData;
-import com.midas.shootpointer.infrastructure.redis.dto.ProgressType;
+import com.midas.shootpointer.infrastructure.redis.entity.ProgressType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +35,7 @@ public class ProgressValidator {
 
     private void requireNotNull(Object obj, String field){
         if(obj==null){
-            log.error("[Redis sub] field is null : field = {} time = {}", field, LocalDateTime.now());
+            log.error("[Redis SUB] field is null : field = {} time = {}", field, LocalDateTime.now());
             throw new IllegalArgumentException();
         }
     }
