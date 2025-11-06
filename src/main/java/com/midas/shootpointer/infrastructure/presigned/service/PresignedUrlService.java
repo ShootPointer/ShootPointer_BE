@@ -5,7 +5,6 @@ import com.midas.shootpointer.global.util.file.FileValidator;
 import com.midas.shootpointer.infrastructure.openCV.OpenCVProperties;
 import com.midas.shootpointer.infrastructure.presigned.dto.FileMetadataRequest;
 import com.midas.shootpointer.infrastructure.presigned.dto.PresignedUrlResponse;
-import com.midas.shootpointer.infrastructure.websocket.WebSocketProgressPublisher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,15 +19,13 @@ public class PresignedUrlService {
             HmacSigner signer,
             OpenCVProperties openCVProperties,
             FileValidator fileValidator,
-            RedisTemplate<String,String> redisTemplate,
-            WebSocketProgressPublisher progressPublisher
+            RedisTemplate<String,String> redisTemplate
     ){
         this.opeCvBaseUrl= openCVProperties.getUrl();
         this.ttlMilliSeconds=openCVProperties.getExpire().getExpirationTime();
         this.signer=signer;
         this.fileValidator=fileValidator;
         this.redisTemplate=redisTemplate;
-        this.progressPublisher=progressPublisher;
     }
 
     private HmacSigner signer;
@@ -57,7 +54,6 @@ public class PresignedUrlService {
     private RedisTemplate<String,String> redisTemplate;
 
 
-    private WebSocketProgressPublisher progressPublisher;
 
     public PresignedUrlResponse createPresignedUrl(UUID memberId, FileMetadataRequest request){
         UUID jobId=UUID.randomUUID();

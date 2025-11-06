@@ -2,10 +2,11 @@ package com.midas.shootpointer.domain.member.business.query;
 
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.helper.MemberHelper;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,5 +24,16 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 			return Optional.empty();
 		}
 	}
+
+	@Override
+	public Optional<Member> findByEncryptEmail(String email) {
+		try {
+			Member member = memberHelper.f(email);
+			return Optional.of(member);
+		} catch (Exception e) {
+			return Optional.empty();
+		}
+	}
+
 
 }

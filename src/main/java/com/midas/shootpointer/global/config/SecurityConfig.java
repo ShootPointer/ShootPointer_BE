@@ -40,7 +40,7 @@ public class SecurityConfig {
                     "/webjars/**",
                     "/oauth/**",
                     "/api/test-member",
-                    "/api/kakao/callback",
+                    "/kakao/callback",
                     "/admin/token/**",
                     "/ws/**"
                     ).permitAll()

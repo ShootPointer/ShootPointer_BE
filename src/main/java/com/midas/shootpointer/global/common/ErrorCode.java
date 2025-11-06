@@ -124,11 +124,7 @@ public enum ErrorCode {
     // 903(ranking - repository)
     IS_NOT_VALID_RANKING_TYPE(90301, HttpStatus.BAD_REQUEST,"올바르지 않은 랭킹 유형입니다."),
     NOT_CONVERT_TO_RANKING_RESULT(90302,HttpStatus.INTERNAL_SERVER_ERROR,"RankingResult 역직렬화 시 null 값이 발생했습니다."),
-    NOT_CONVERT_TO_RANKING_ENTRY(90302,HttpStatus.INTERNAL_SERVER_ERROR,"RankingEntry 역직렬화 시 null 값이 발생했습니다."),
-    //901(infra - websocket)
-    FAILED_END_WEB_SOCKET_FAILED(90101,HttpStatus.INTERNAL_SERVER_ERROR,"기존 세션 종료를 실패했습니다."),
-    FAILED_SEND_MESSAGE(90102,HttpStatus.INTERNAL_SERVER_ERROR,"websocket 메세지 전송을 싪패했습니다."),
-    FAILED_PARSING_JSON(90103,HttpStatus.NOT_IMPLEMENTED,"json 파싱 중 오류가 발생했습니다.");
+    NOT_CONVERT_TO_RANKING_ENTRY(90302,HttpStatus.INTERNAL_SERVER_ERROR,"RankingEntry 역직렬화 시 null 값이 발생했습니다.");
     private final Integer code;
     private final HttpStatus httpStatus;
     private final String message;
