@@ -35,7 +35,7 @@ public class ProgressValidator {
 
     private void requireNotNull(Object obj, String field){
         if(obj==null){
-            log.error("redis sub : field is null{} time = {}", field, LocalDateTime.now());
+            log.error("[Redis sub] field is null : field = {} time = {}", field, LocalDateTime.now());
             throw new IllegalArgumentException();
         }
     }

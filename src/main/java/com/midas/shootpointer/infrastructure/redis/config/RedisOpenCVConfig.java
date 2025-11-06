@@ -12,6 +12,8 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -54,4 +56,11 @@ public class RedisOpenCVConfig {
 
         return template;
     }
+
+    //Redis 메시지 수진하고 리스너에 전달 컨테이너
+    @Bean
+    public RedisMessageListenerContainer redisMessage(
+            @Qualifier("opencvRedisConnectionFactory")
+            ProgressSu
+    )
 }
