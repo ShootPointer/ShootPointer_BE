@@ -1,7 +1,1 @@
-#Builder
-FROM docker.elastic.co/elasticsearch/elasticsearch:8.6.0 AS builder
-RUN bin/elasticsearch-plugin install analysis-nori --batch
-
-#Running
-FROM docker.elastic.co/elasticsearch/elasticsearch:8.6.0
-COPY --from=builder /usr/share/elasticsearch/plugins/analysis-nori /usr/share/elasticsearch/plugins/analysis-nori
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.6.0 

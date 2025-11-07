@@ -25,7 +25,7 @@ public class HealthCheckController {
     @GetMapping("/test-member")
     public ResponseEntity<String> getJWT(){
         Member member=Member.builder()
-                .email(UUID.randomUUID() + "test@naver.com")
+                .email("test@naver.com")
                 .username("test")
                 .build();
         Member savedMember=memberQueryRepository.save(member);

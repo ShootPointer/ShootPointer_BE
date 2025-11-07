@@ -1,7 +1,5 @@
 #build
-build/
 out/
-./gradle
 !gradle/wrapper/gradle-wrapper.jar
 
 #IDE
@@ -11,16 +9,8 @@ out/
 .git/
 .gitignore
 
-#env
-.env
-./es-logs
-./esdata
 
 #test
-**/test/
 tmp/
 
-#docker
-Dockerfile*
-docker-compose*.yml
 
