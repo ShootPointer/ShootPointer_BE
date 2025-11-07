@@ -160,7 +160,7 @@ opencv:
       highlight: opencv-progress-highlight
 
 video:
-  path: /home/ubuntu/shoot-pointer/videos
+  path: https://test
   max-size: 200MB
 
 query:

@@ -63,8 +63,7 @@ public class HighlightManager {
     /*==========================
     *
     *HighlightManager
-    * 1. openCv 에서 생성한 하이라이트 영상들을 비디오 디렉토리에 저장.
-    * 2. PostgreSQL 디렉토리 URL 및 하이라이트 정보 저장.
+    * 1. openCv 에서 생성한 하이라이트 영상 주소 -> DB에 하이라이트 URL 저장
     * @parm
     * @return
     * @author kimdoyeon

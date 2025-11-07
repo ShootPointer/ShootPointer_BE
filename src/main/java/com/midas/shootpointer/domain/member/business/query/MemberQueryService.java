@@ -6,5 +6,4 @@ import java.util.Optional;
 public interface MemberQueryService {
 	
 	Optional<Member> findByEmail(String email);
-	Optional<Member> findByEncryptEmail(String email);
 }

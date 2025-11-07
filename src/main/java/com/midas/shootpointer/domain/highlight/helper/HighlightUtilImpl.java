@@ -57,5 +57,4 @@ public class HighlightUtilImpl implements HighlightUtil{
     public List<HighlightEntity> savedAll(List<HighlightEntity> entities) {
         return highlightCommandRepository.saveAll(entities);
     }
-
 }

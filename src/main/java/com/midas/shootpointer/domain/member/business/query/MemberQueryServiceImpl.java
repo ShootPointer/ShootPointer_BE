@@ -24,16 +24,4 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 			return Optional.empty();
 		}
 	}
-
-	@Override
-	public Optional<Member> findByEncryptEmail(String email) {
-		try {
-			Member member = memberHelper.f(email);
-			return Optional.of(member);
-		} catch (Exception e) {
-			return Optional.empty();
-		}
-	}
-
-
 }
