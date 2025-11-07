@@ -84,8 +84,8 @@ public class OpenCVClientImpl implements OpenCVClient {
                         .with("backNumber", backNumber.toString()))
                 .retrieve()
                 .bodyToMono(OpenCVResponse.class)
-                //최대 5초 연결 시간
-                .timeout(Duration.ofSeconds(5))
+                //최대 15초 연결 시간
+                .timeout(Duration.ofSeconds(15))
                 //최대 3번 실행
                 //1초 간격
                 .retryWhen(Retry.backoff(3, Duration.ofSeconds(1))
