@@ -1,16 +1,14 @@
 package com.midas.shootpointer.domain.member.controller.query;
 
-import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
+import com.midas.shootpointer.domain.member.business.query.MemberQueryService;
 import com.midas.shootpointer.domain.member.dto.MemberResponseDto;
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import com.midas.shootpointer.global.annotation.CustomLog;
 import com.midas.shootpointer.global.security.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/member")
 @Tag(name = "회원 관리", description = "회원 관리 API")
 public class MemberQueryController {
-	
-	private final MemberBackNumberRepository memberBackNumberRepository;
-	private final HighlightQueryRepository highlightQueryRepository;
+
+	private final MemberQueryService memberQueryService;
 	
 	@CustomLog("회원 정보 조회")
 	@Operation(
@@ -40,28 +37,6 @@ public class MemberQueryController {
 	@GetMapping("/me")
 	public MemberResponseDto getCurrentMember() {
 		Member currentMember = SecurityUtils.getCurrentMember();
-		UUID memberId = currentMember.getMemberId();
-		
-		// 등번호 조회
-		Integer backNumber = memberBackNumberRepository.findByMemberId(memberId)
-			.map(memberBackNumber -> memberBackNumber.getBackNumber().getBackNumber().getNumber())
-			.orElse(0);
-		
-		// 2점, 3점슛 조회
-		Integer totalTwoPoint = highlightQueryRepository.sumTwoPointByMemberId(memberId);
-		Integer totalThreePoint = highlightQueryRepository.sumThreePointByMemberId(memberId);
-		
-		// 하이라이트 개수 조회
-		Integer highlightCount = highlightQueryRepository.countByMemberId(memberId);
-		
-		return MemberResponseDto.builder()
-			.memberId(currentMember.getMemberId())
-			.email(currentMember.getEmail())
-			.username(currentMember.getUsername())
-			.backNumber(backNumber)
-			.totalTwoPoint(totalTwoPoint)
-			.totalThreePoint(totalThreePoint)
-			.highlightCount(highlightCount)
-			.build();
+		return memberQueryService.getMemberInfo(currentMember.getMemberId());
 	}
 }

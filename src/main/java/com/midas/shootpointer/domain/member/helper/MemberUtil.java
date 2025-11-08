@@ -15,4 +15,11 @@ public interface MemberUtil {
 	
 	boolean existsByEmail(String email);
 	
+	Integer getBackNumber(UUID memberId);
+	
+	Integer getTotalTwoPoint(UUID memberId);
+	
+	Integer getTotalThreePoint(UUID memberId);
+	
+	Integer getHighlightCount(UUID memberId);
 }
