@@ -332,7 +332,7 @@ class PostUtilImplTest {
                 .member(member)
                 .highlight(highlight)
                 .content("content")
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .build();
     }
 

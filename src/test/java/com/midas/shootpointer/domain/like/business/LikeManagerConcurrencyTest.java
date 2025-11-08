@@ -306,7 +306,7 @@ class LikeManagerConcurrencyTest {
     private PostEntity makeMockPost(Member member) {
         return PostEntity.builder()
                 .member(member)
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .content("content")
                 .title("title")
                 .build();

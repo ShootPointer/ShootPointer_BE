@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum HashTag {
     TWO_POINT("2점슛"),
-    TREE_POINT("3점슛");
+    THREE_POINT("3점슛");
 
     private final String name;
 }

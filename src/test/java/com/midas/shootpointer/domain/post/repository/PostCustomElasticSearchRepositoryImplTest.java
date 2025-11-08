@@ -670,9 +670,9 @@ class PostCustomElasticSearchRepositoryImplTest {
                 String title="엘라스틱 테스트 테스트";
 
                 elasticSearchRepository.saveAll(List.of(
-                        makePostDocumentWithHashTag(now,now,HashTag.TREE_POINT,likeCnt,1L,title),
-                        makePostDocumentWithHashTag(now,now,HashTag.TREE_POINT,likeCnt,2L,title),
-                        makePostDocumentWithHashTag(now,now,HashTag.TREE_POINT,likeCnt,3L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.THREE_POINT,likeCnt,1L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.THREE_POINT,likeCnt,2L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.THREE_POINT,likeCnt,3L,title),
                         makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,4L,title),
                         makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,5L,title)
                 ));
@@ -833,7 +833,7 @@ class PostCustomElasticSearchRepositoryImplTest {
                         makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,1L,title),
                         makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,2L,title),
                         makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,3L,title),
-                        makePostDocumentWithHashTag(now,now,HashTag.TREE_POINT,likeCnt,4L,title)
+                        makePostDocumentWithHashTag(now,now,HashTag.THREE_POINT,likeCnt,4L,title)
                 ));
 
                 //when
@@ -936,8 +936,8 @@ class PostCustomElasticSearchRepositoryImplTest {
                 String keyword3="2점슛";
 
                 elasticSearchRepository.saveAll(List.of(
-                        makePostDocumentWithHashTag(now,now,HashTag.TREE_POINT,likeCnt,1L,title),
-                        makePostDocumentWithHashTag(now,now,HashTag.TREE_POINT,likeCnt,2L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.THREE_POINT,likeCnt,1L,title),
+                        makePostDocumentWithHashTag(now,now,HashTag.THREE_POINT,likeCnt,2L,title),
 
                         makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,3L,title),
                         makePostDocumentWithHashTag(now,now,HashTag.TWO_POINT,likeCnt,4L,title),
@@ -1013,7 +1013,7 @@ class PostCustomElasticSearchRepositoryImplTest {
                 .createdAt(time)
                 .likeCnt(likeCnt)
                 .memberName("test")
-                .hashTag(HashTag.TREE_POINT.getName())
+                .hashTag(HashTag.THREE_POINT.getName())
                 .highlightUrl("url")
                 .build();
     }

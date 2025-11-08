@@ -161,7 +161,7 @@ public class SetRealPostDataLoader implements CommandLineRunner {
             //UTC 기준으로 하여 LocalDateTime를 long 형태로 변환.
             LocalDateTime randomDateTime = LocalDateTime.ofEpochSecond(randomEpoch, 0, ZoneOffset.UTC);
 
-            batchArgs.add(new Object[]{postId, title, content, HashTag.TREE_POINT.name(), highlightId, memberId, likeCnt, randomDateTime, randomDateTime});
+            batchArgs.add(new Object[]{postId, title, content, HashTag.THREE_POINT.name(), highlightId, memberId, likeCnt, randomDateTime, randomDateTime});
 
             if (i > 0) {
                 jdbcTemplate.batchUpdate(sql, batchArgs);

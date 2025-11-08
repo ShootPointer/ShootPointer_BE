@@ -245,7 +245,7 @@ class PostManagerTest {
                     .modifiedAt(LocalDateTime.now())
                     .highlightUrl("test")
                     .likeCnt(100L)
-                    .hashTag(HashTag.TREE_POINT.getName())
+                    .hashTag(HashTag.THREE_POINT.getName())
                     .build());
         }
         PostListResponse postListResponse = PostListResponse.of(postId, postResponses);
@@ -622,7 +622,7 @@ class PostManagerTest {
                 .title("title" + str)
                 .content("content" + str)
                 .member(member)
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .build();
     }
 
@@ -642,7 +642,7 @@ class PostManagerTest {
                 .member(member)
                 .postId(postId)
                 .highlight(highlight)
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .content("content" + str)
                 .title("title" + str)
                 .build();
@@ -751,7 +751,7 @@ class PostManagerTest {
                     .postId(postId)
                     .likeCnt(likeCnt)
                     .memberName("name")
-                    .hashTag(HashTag.TREE_POINT.getName())
+                    .hashTag(HashTag.THREE_POINT.getName())
                     .title(title)
                     .content(content)
                     .highlightUrl("url")
