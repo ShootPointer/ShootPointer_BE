@@ -9,6 +9,9 @@ import com.midas.shootpointer.global.annotation.CustomLog;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import com.midas.shootpointer.global.security.CustomUserDetails;
 import com.midas.shootpointer.global.security.SecurityUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,26 +29,59 @@ import java.util.UUID;
 public class MemberCommandController {
     
     private final MemberCommandService memberCommandService;
-    
-    @CustomLog("카카오 소셜 로그인 및 JWT 발급")
+	
+	@CustomLog("카카오 소셜 로그인 및 JWT 발급")
+	@Operation(
+		summary = "카카오 소셜 로그인 및 JWT 발급 API - [담당자 : 박재성]",
+		responses = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "카카오 로그인 성공",
+				content = @Content(mediaType = "application/json",
+					schema = @Schema(implementation = MsgEntity.class))),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX", description = "카카오 로그인 실패",
+				content = @Content(mediaType = "application/json",
+					schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+		}
+	)
     @GetMapping("/callback")
     public ResponseEntity<MsgEntity> callback(HttpServletRequest request) {
         // 모든 비즈니스 로직은 Service Layer에서 처리
         KakaoDTO kakaoInfo = memberCommandService.processKakaoLogin(request);
         return ResponseEntity.ok().body(new MsgEntity("Success", kakaoInfo));
     }
-    
-    @CustomLog("회원 탈퇴")
-    @DeleteMapping
+	
+	@CustomLog("회원 탈퇴")
+	@Operation(
+		summary = "회원 탈퇴 API - [담당자 : 박재성]",
+		responses = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 탈퇴 성공",
+				content = @Content(mediaType = "application/json",
+					schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX", description = "회원 탈퇴 실패",
+				content = @Content(mediaType = "application/json",
+					schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+		}
+	)
+	@DeleteMapping
     public ResponseEntity<ApiResponse<UUID>> deleteMember(@AuthenticationPrincipal
         CustomUserDetails userDetails) {
         Member member = userDetails.getMember();
         UUID deletedMemberId = memberCommandService.deleteMember(member);
         return ResponseEntity.ok(ApiResponse.ok(deletedMemberId));
     }
-    
-    @CustomLog("회원 정보 조회")
-    @GetMapping("/me")
+	
+	@CustomLog("회원 정보 조회")
+	@Operation(
+		summary = "회원 정보 조회 API - [담당자 : 박재성]",
+		responses = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 정보 조회 성공",
+				content = @Content(mediaType = "application/json",
+					schema = @Schema(implementation = MemberResponseDto.class))),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX", description = "회원 정보 조회 실패",
+				content = @Content(mediaType = "application/json",
+					schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+		}
+	)
+	@GetMapping("/me")
     public MemberResponseDto getCurrentMember() {
         Member currentMember = SecurityUtils.getCurrentMember();
 		
