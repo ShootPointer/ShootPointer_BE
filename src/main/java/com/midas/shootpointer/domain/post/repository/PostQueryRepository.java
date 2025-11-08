@@ -2,7 +2,6 @@ package com.midas.shootpointer.domain.post.repository;
 
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import jakarta.persistence.LockModeType;
-import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 @Repository
 public interface PostQueryRepository extends JpaRepository<PostEntity,Long>{
     Optional<PostEntity> findByPostId(Long postId);
@@ -80,4 +80,18 @@ public interface PostQueryRepository extends JpaRepository<PostEntity,Long>{
         "WHERE p.postId IN :postIds " +
         "ORDER BY p.postId DESC")
     List<PostEntity> findPostsByPostIds(@Param(value = "postIds") List<Long> postIds);
+
+    @Query(value = """
+            SELECT * FROM post as p
+            INNER JOIN
+                member as m ON p.member_id = m.member_id
+            INNER JOIN
+                like_table as l ON l.member_id = m.member_id
+            WHERE
+                p.member_id = :memberId
+                AND p.post_id < :lastPostId
+            ORDER BY p.post_id DESC
+            LIMIT :size
+            """,nativeQuery = true)
+    List<PostEntity> findMyLikedPost(@Param("memberId") UUID memberId, @Param("size") int size, @Param("lastPostId")Long lastPostId);
 }
