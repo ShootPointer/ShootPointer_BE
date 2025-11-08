@@ -89,7 +89,7 @@ public interface PostQueryRepository extends JpaRepository<PostEntity,Long>{
                 p.post_id < :lastPostId
             AND
                 l.member_id = :memberId
-            ORDER BY p.post_id DESC
+            ORDER BY l.created_at DESC
             LIMIT :size
             """,nativeQuery = true)
     List<PostEntity> findMyLikedPost(@Param("memberId") UUID memberId, @Param("size") int size, @Param("lastPostId")Long lastPostId);

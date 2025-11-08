@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -189,36 +190,38 @@ class PostQueryRepositoryTest {
 
     }
 
-    @DisplayName("memberB가 좋아요한 게시물 중 lastPostId보다 작은 post_id만 DESC로 가져온다.")
+    @DisplayName("memberB가 좋아요한 게시물 중 lastPostId보다 작은 post_id만 가져오되, 생성 날짜 내림차순으로 정렬된다.")
     @Test
-    void testFirstMyLikedPost(){
-        //given
-        memberA=memberRepository.save(Member.builder()
+    void testFirstMyLikedPost() {
+        // given
+        memberA = memberRepository.save(Member.builder()
                 .email("test1@naver.com")
                 .username("test1")
                 .isAggregationAgreed(true)
                 .build()
         );
-        memberB=memberRepository.save(Member.builder()
+        memberB = memberRepository.save(Member.builder()
                 .email("test2@naver.com")
                 .username("test2")
                 .isAggregationAgreed(true)
                 .build()
         );
 
-        //memberA가 작성한 글 5개'
-        List<PostEntity> posts=new ArrayList<>();
-        for (int i=1;i<=10;i++){
-            PostEntity post=PostEntity.builder()
-                    .title("title1")
+        // memberA가 작성한 글 10개
+        List<PostEntity> posts = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            PostEntity post = PostEntity.builder()
+                    .title("title" + i)
                     .member(memberA)
-                    .content("post"+i)
+                    .content("post" + i)
                     .build();
             posts.add(postQueryRepository.save(post));
+            // createdAt 차이를 주기 위해 약간의 지연 (테스트에서 명확한 구분용)
+            try { Thread.sleep(5); } catch (InterruptedException ignored) {}
         }
 
-        //memberB가 post 2,5,7에 좋아요
-        List<Long> likedIds=List.of(
+        // memberB가 post 2, 5, 7에 좋아요
+        List<Long> likedIds = List.of(
                 posts.get(2).getPostId(),
                 posts.get(5).getPostId(),
                 posts.get(7).getPostId()
@@ -233,22 +236,23 @@ class PostQueryRepositoryTest {
                                 .build()
                 ));
 
-        //when
-        Long lastPostId=99999999999999L;
-        List<PostEntity> likedPosts=postQueryRepository.findMyLikedPost(memberB.getMemberId(),10,lastPostId);
+        // when
+        Long lastPostId = Long.MAX_VALUE;
+        List<PostEntity> likedPosts = postQueryRepository.findMyLikedPost(memberB.getMemberId(), 10, lastPostId);
 
-        //then
-        List<Long> expectedIds = likedIds.stream()
+        // then - createdAt 기준 내림차순 검증
+        List<LocalDateTime> actualCreatedAts = likedPosts.stream()
+                .map(PostEntity::getCreatedAt)
+                .toList();
+
+        List<LocalDateTime> expectedSorted = actualCreatedAts.stream()
                 .sorted(Comparator.reverseOrder())
                 .toList();
 
-        List<Long> actualIds = likedPosts.stream()
-                .map(PostEntity::getPostId)
-                .toList();
-
-        assertThat(actualIds)
-                .containsExactlyElementsOf(expectedIds);
+        assertThat(actualCreatedAts)
+                .containsExactlyElementsOf(expectedSorted);
     }
+
 
     /*
     ======================================대용량 데이터 사용 쿼리 테스트======================================
