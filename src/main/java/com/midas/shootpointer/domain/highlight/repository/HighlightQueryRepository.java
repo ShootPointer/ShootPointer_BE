@@ -39,4 +39,23 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
             ORDER BY h.createdAt DESC
         """)
     Page<HighlightEntity> fetchAllMembersHighlights(@Param("memberId")UUID memberId, Pageable pageable);
+    
+    
+    /** ===========================
+     *
+     *  마이페이지 부분
+     *
+     * ============================
+     */
+    // 2점슛 총합
+    @Query("SELECT COALESCE(SUM(h.twoPointCount), 0) FROM HighlightEntity h WHERE h.member.memberId = :memberId")
+    Integer sumTwoPointByMemberId(@Param("memberId") UUID memberId);
+    
+    // 3점슛 총합
+    @Query("SELECT COALESCE(SUM(h.threePointCount), 0) FROM HighlightEntity h WHERE h.member.memberId = :memberId")
+    Integer sumThreePointByMemberId(@Param("memberId") UUID memberId);
+    
+    // 하이라이트 개수
+    @Query("SELECT COUNT(h) FROM HighlightEntity h WHERE h.member.memberId = :memberId")
+    Integer countByMemberId(@Param("memberId") UUID memberId);
 }
