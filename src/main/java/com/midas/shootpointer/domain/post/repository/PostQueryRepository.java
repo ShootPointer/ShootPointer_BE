@@ -82,14 +82,13 @@ public interface PostQueryRepository extends JpaRepository<PostEntity,Long>{
     List<PostEntity> findPostsByPostIds(@Param(value = "postIds") List<Long> postIds);
 
     @Query(value = """
-            SELECT * FROM post as p
+            SELECT p.* FROM post as p
             INNER JOIN
-                member as m ON p.member_id = m.member_id
-            INNER JOIN
-                like_table as l ON l.member_id = m.member_id
+                like_table as l ON l.post_id = p.post_id
             WHERE
-                p.member_id = :memberId
-                AND p.post_id < :lastPostId
+                p.post_id < :lastPostId
+            AND
+                l.member_id = :memberId
             ORDER BY p.post_id DESC
             LIMIT :size
             """,nativeQuery = true)
