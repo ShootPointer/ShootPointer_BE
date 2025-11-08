@@ -1,10 +1,12 @@
 package com.midas.shootpointer.domain.member.controller;
 
+import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.domain.member.business.command.MemberCommandService;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
 import com.midas.shootpointer.domain.member.dto.MemberResponseDto;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.entity.MsgEntity;
+import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import com.midas.shootpointer.global.annotation.CustomLog;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import com.midas.shootpointer.global.security.CustomUserDetails;
@@ -26,6 +28,8 @@ import java.util.UUID;
 public class MemberCommandController {
     
     private final MemberCommandService memberCommandService;
+	private final MemberBackNumberRepository memberBackNumberRepository;
+	private final HighlightQueryRepository highlightQueryRepository;
     
     @CustomLog("카카오 소셜 로그인 및 JWT 발급")
     @GetMapping("/callback")
@@ -48,11 +52,28 @@ public class MemberCommandController {
     @GetMapping("/me")
     public MemberResponseDto getCurrentMember() {
         Member currentMember = SecurityUtils.getCurrentMember();
+		UUID memberId = currentMember.getMemberId();
+		
+		// 등번호 조회
+		Integer backNumber = memberBackNumberRepository.findByMemberId(memberId)
+			.map(memberBackNumber -> memberBackNumber.getBackNumber().getBackNumber().getNumber())
+			.orElse(0);
+		
+		// 2점, 3점슛 조회
+		Integer totalTwoPoint = highlightQueryRepository.sumTwoPointByMemberId(memberId);
+		Integer totalThreePoint = highlightQueryRepository.sumThreePointByMemberId(memberId);
+		
+		// 하이라이트 개수 조회
+		Integer highlightCount = highlightQueryRepository.countByMemberId(memberId);
 		
 		return MemberResponseDto.builder()
 			.memberId(currentMember.getMemberId())
 			.email(currentMember.getEmail())
 			.username(currentMember.getUsername())
+			.backNumber(backNumber)
+			.totalTwoPoint(totalTwoPoint)
+			.totalThreePoint(totalThreePoint)
+			.highlightCount(highlightCount)
 			.build();
     }
 }
