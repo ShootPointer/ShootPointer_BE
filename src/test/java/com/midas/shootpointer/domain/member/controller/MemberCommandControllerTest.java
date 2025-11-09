@@ -3,7 +3,9 @@ package com.midas.shootpointer.domain.member.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.member.business.command.MemberCommandService;
+import com.midas.shootpointer.domain.member.business.query.MemberQueryService;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
+import com.midas.shootpointer.domain.member.dto.MemberResponseDto;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.security.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
@@ -42,6 +44,10 @@ class MemberCommandControllerIntegrationTest  {
 	
 	@MockitoBean
 	private MemberCommandService memberCommandService;
+
+	@MockitoBean
+	private MemberQueryService memberQueryService;
+
 	@WithMockCustomMember
 	@Test
 	@DisplayName("카카오 로그인 콜백 - 성공")
@@ -99,7 +105,7 @@ class MemberCommandControllerIntegrationTest  {
 		
 		verify(memberCommandService, never()).deleteMember(any(Member.class));
 	}
-	@WithMockCustomMember
+	@WithMockCustomMember(email = "test@example.com",name = "testUser")
 	@Test
 	@DisplayName("회원 정보 조회 - 성공")
 	void getCurrentMember_Success() throws Exception {
@@ -107,18 +113,19 @@ class MemberCommandControllerIntegrationTest  {
 		UUID memberId = UUID.randomUUID();
 		String email = "test@example.com";
 		String username = "testUser";
-		
-		Member member = createMember(memberId, email, username);
-		CustomUserDetails userDetails = new CustomUserDetails(member);
+
+		MemberResponseDto expectedDto=MemberResponseDto.builder()
+						.email(email)
+						.username(username)
+				        .build();
+		when(memberQueryService.getMemberInfo(any(UUID.class))).thenReturn(expectedDto);
 		
 		// when & then
-		mockMvc.perform(get("/member/me")
-				.with(user(userDetails)))
+		mockMvc.perform(get("/member/me"))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.memberId").value(memberId.toString()))
-			.andExpect(jsonPath("$.email").value(email))
-			.andExpect(jsonPath("$.username").value(username));
+			.andExpect(jsonPath("$.data.email").value(email))
+			.andExpect(jsonPath("$.data.username").value(username));
 	}
 
 	@Test
