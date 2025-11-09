@@ -76,6 +76,14 @@ spring:
           max-active: 8
           max-idle: 8
           min-idle: 0
+      #production 환경에서만 활성화
+      opencv:
+        host: ${OPENCV_REDIS_HOST:localhost}
+        port: ${OPENCV_REDIS_PORT:6380}
+        channels:
+          upload: opencv-progress-upload
+          highlight: opencv-progress-highlight
+
       custom:
         ranking:
           key:
@@ -172,3 +180,11 @@ schedules:
         weekly: 0 0 0 * * MON
         monthly: 0 0 0 1 * *
   zone: Asia/Seoul
+
+
+# SSE 설정
+sse:
+  ttl: 30 * 60 * 1000L
+  event-name: progress
+  cache-max-size: 360
+  clean-up-interval: 60000

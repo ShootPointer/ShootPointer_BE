@@ -22,7 +22,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @RequiredArgsConstructor
-@Profile("opencv") //opencv 환경에서만 실행
+@Profile("prod") //opencv 환경에서만 실행
 public class RedisOpenCVConfig {
     @Value("${spring.data.redis.opencv.host}")
     private String host;
