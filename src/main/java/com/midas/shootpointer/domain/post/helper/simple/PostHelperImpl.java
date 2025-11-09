@@ -94,4 +94,9 @@ public class PostHelperImpl implements PostHelper{
         return postUtil.findPostsByPostIds(postIds);
     }
 
+    @Override
+    public List<PostEntity> getMyLikedPost(UUID memberId, Long lastPostId, int size) {
+        return postUtil.getMyLikedPost(memberId,lastPostId,size);
+    }
+
 }

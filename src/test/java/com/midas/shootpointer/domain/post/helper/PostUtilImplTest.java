@@ -2,6 +2,8 @@ package com.midas.shootpointer.domain.post.helper;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
+import com.midas.shootpointer.domain.like.entity.LikeEntity;
+import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import com.midas.shootpointer.domain.post.business.PostOrderType;
@@ -21,6 +23,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
@@ -42,6 +45,9 @@ class PostUtilImplTest {
 
     @Autowired
     private HighlightCommandRepository highlightCommandRepository;
+
+    @Autowired
+    private LikeCommandRepository likeCommandRepository;
 
     @Autowired
     private PostMapper postMapper;
@@ -324,6 +330,68 @@ class PostUtilImplTest {
         
         //then
         assertThat(posts).isEmpty();
+    }
+
+    @Test
+    @DisplayName("내가 누른 좋아요 게시물을 생성순 내림차순으로 조회합니다.")
+    void getMyLikedPost() {
+        // given
+        Member memberA = memberRepository.save(Member.builder()
+                .email("test1")
+                .username("test")
+                .build());
+
+        Member memberB = memberRepository.save(Member.builder()
+                .email("test2")
+                .username("test2")
+                .build());
+
+        Long lastPostId = Long.MAX_VALUE;
+        int size = 10;
+
+        HighlightEntity highlight = highlightCommandRepository.save(
+                HighlightEntity.builder()
+                        .twoPointCount(20)
+                        .threePointCount(30)
+                        .member(memberA)
+                        .highlightURL("test")
+                        .highlightKey(UUID.randomUUID())
+                        .build()
+        );
+
+        // memberA가 post 6 생성
+        PostEntity post1 = makeMockPost(memberA, highlight);
+        PostEntity post2 = makeMockPost(memberA, highlight);
+        PostEntity post3 = makeMockPost(memberA, highlight);
+        PostEntity post4 = makeMockPost(memberA, highlight);
+        PostEntity post5 = makeMockPost(memberA, highlight);
+        PostEntity post6 = makeMockPost(memberA, highlight);
+        postCommandRepository.saveAll(List.of(post1, post2, post3, post4, post5, post6));
+
+        // memberB가 post 2,3,6 좋아요
+        likeCommandRepository.saveAll(List.of(
+                LikeEntity.builder().member(memberB).post(post2).build(),
+                LikeEntity.builder().member(memberB).post(post3).build(),
+                LikeEntity.builder().member(memberB).post(post6).build()
+        ));
+
+        // when
+        List<PostEntity> results = postUtil.getMyLikedPost(memberB.getMemberId(), lastPostId, size);
+
+        // then
+        assertThat(results).hasSize(3);
+
+        // post6이 가장 최근이므로 첫 번째로 와야 함
+        assertThat(results.get(0).getCreatedAt()).isAfterOrEqualTo(results.get(1).getCreatedAt());
+        assertThat(results.get(1).getCreatedAt()).isAfterOrEqualTo(results.get(2).getCreatedAt());
+
+        // 좋아요한 게시물 id들도 최신순으로 포함되어야 함
+        List<Long> actualIds = results.stream().map(PostEntity::getPostId).toList();
+        List<Long> expectedIds = Stream.of(post6, post3, post2)
+                .map(PostEntity::getPostId)
+                .toList();
+
+        assertThat(actualIds).containsExactlyElementsOf(expectedIds);
     }
 
     private PostEntity makeMockPost(Member member,HighlightEntity highlight){
