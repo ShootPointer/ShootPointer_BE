@@ -112,7 +112,7 @@ class MemberCommandControllerIntegrationTest  {
 		CustomUserDetails userDetails = new CustomUserDetails(member);
 		
 		// when & then
-		mockMvc.perform(get("/kakao/me")
+		mockMvc.perform(get("/member/me")
 				.with(user(userDetails)))
 			.andDo(print())
 			.andExpect(status().isOk())
