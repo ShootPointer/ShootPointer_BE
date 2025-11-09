@@ -6,7 +6,6 @@ import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.dto.response.SearchAutoCompleteResponse;
 import com.midas.shootpointer.domain.post.entity.HashTag;
-import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
@@ -122,6 +122,22 @@ class PostQueryServiceImplTest {
         
         //then
         verify(postManager, times(1)).getMyPosts(memberId);
+    }
+
+    @Test
+    @DisplayName("내가 좋아요한 게시물 조회시 postManager - getMyPosts(memberId)의 호출을 확인합니다.")
+    void myLikedPost(){
+        //given
+        UUID memberId = UUID.randomUUID();
+        Long lastPostId=Long.MAX_VALUE;
+        int size=10;
+
+        //when
+        when(postManager.getMyLikedPosts(memberId,lastPostId,size)).thenReturn(postListResponse);
+        postQueryService.myLikedPost(memberId,lastPostId,size);
+
+        //then
+        verify(postManager, times(1)).getMyLikedPosts(memberId,lastPostId,size);
     }
     
     private PostResponse makePostResponse(LocalDateTime time,Long postId){

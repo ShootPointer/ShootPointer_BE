@@ -128,7 +128,7 @@ class PostCommandControllerTest  {
      * mock PostRequest
      */
     private PostRequest mockPostRequest() {
-        return PostRequest.of(UUID.randomUUID(), "title", "content", HashTag.TREE_POINT);
+        return PostRequest.of(UUID.randomUUID(), "title", "content", HashTag.THREE_POINT);
     }
 
     /**
@@ -149,7 +149,7 @@ class PostCommandControllerTest  {
         return PostEntity.builder()
                 .title("title")
                 .content("content")
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .build();
     }
 }

@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.highlight.business;
 
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
+import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
@@ -14,6 +15,9 @@ import com.midas.shootpointer.domain.memberbacknumber.helper.MemberBackNumberHel
 import com.midas.shootpointer.global.annotation.CustomLog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -94,5 +98,22 @@ public class HighlightManager {
             3. DB 저장
          */
         highlightHelper.savedAll(entities);
+    }
+
+    public Page<HighlightInfoResponse> listByPaging(int page, int size,UUID memberId) {
+        /**
+         * 1. Paging 처리
+         */
+        Pageable paging= PageRequest.of(page,size);
+
+        /**
+         * 2. member의 모든 하이라이트 리스트 조회
+         */
+        Page<HighlightEntity> highlightEntityList=highlightHelper.fetchMembersHighlights(memberId,paging);
+
+        /**
+         * 3. mapping
+         */
+        return highlightEntityList.map(mapper::infoResponseToEntity);
     }
 }

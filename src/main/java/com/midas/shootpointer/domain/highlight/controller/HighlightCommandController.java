@@ -21,7 +21,7 @@ import java.util.UUID;
 @RequestMapping("/api/highlight")
 @RequiredArgsConstructor
 @Tag(name = "하이라이트 URL 전송 / 하이라이트 선택")
-public class HighlightController {
+public class HighlightCommandController {
     private final HighlightCommandService highlightCommandService;
 
     @PostMapping("/select")

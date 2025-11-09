@@ -7,6 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -162,6 +165,21 @@ class HighlightHelperImplTest {
 
         //then
         verify(highlightValidator,times(1)).areValidFiles(list);
+    }
+
+    @Test
+    @DisplayName("highlightUtil.fetchMembersHighlights(memberId,pageable)이 실행되는지 검증합니다.")
+    void fetchMembersHighlights(){
+        //given
+        Page<HighlightEntity> page=Page.empty();
+        UUID memberId=UUID.randomUUID();
+        Pageable pageable= PageRequest.of(0,10);
+
+        //when
+        highlightHelper.fetchMembersHighlights(memberId,pageable);
+
+        //then
+        verify(highlightUtil).fetchMembersHighlights(memberId,pageable);
     }
 
     private MockMultipartFile makeMockFile(String fileName){

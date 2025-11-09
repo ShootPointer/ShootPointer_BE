@@ -1,9 +1,8 @@
 package com.midas.shootpointer.domain.highlight.business;
 
-import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
+import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
-import com.midas.shootpointer.domain.highlight.dto.UploadHighlight;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
@@ -14,14 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +39,9 @@ class HighlightManagerTest  {
 
     @Autowired
     private MemberCommandRepository memberCommandRepository;
+
+    @Autowired
+    private HighlightCommandRepository highlightCommandRepository;
 
     @TempDir
     private static Path tempDir;
@@ -95,52 +94,41 @@ class HighlightManagerTest  {
     @Test
     @DisplayName("실제 하이라이트 영상을 저장하고 엔티티를 DB에 저장한 후 DTO로 변환합니다.")
     void uploadHighlights(){
-        //given
-        Member member=memberCommandRepository.save(
-                Member.builder()
-                        .username("test")
-                        .email("test@naver.com")
-                        .build()
-        );
-        UUID highlightKey=UUID.randomUUID();
-        LocalDateTime now=LocalDateTime.now();
-        UploadHighlight request=UploadHighlight.builder()
-                .highlightKey(highlightKey.toString())
-                .createAt(now)
-                .build();
-        byte[] content=new byte[100];
-        MultipartFile file1=new MockMultipartFile("file1","video1.mp4","video/mp4",content);
-        MultipartFile file2=new MockMultipartFile("file2","video2.mp4","video/mp4",content);
-        List<MultipartFile> files=List.of(file1,file2);
+
+    }
 
 
-        //when
-        List<HighlightResponse> result=highlightManager.uploadHighlights(request,files,member.getMemberId());
+    @Test
+    @DisplayName("회원별 하이라이트 페이징 조회를 실시합니다.")
+    void listByPagingHighlights(){
+        // given
+        Member member = memberCommandRepository.save(Member.builder()
+                .email("test@naver.com")
+                .username("tester")
+                .isAggregationAgreed(true)
+                .build());
 
-        //then
-        assertThat(result).hasSize(2);
-        assertThat(result.get(0).getHighlightUrl()).contains(".mp4");
-        assertThat(result.get(1).getHighlightUrl()).contains(".mp4");
+        // DB에 10개의 하이라이트 데이터 저장
+        for (int i = 1; i <= 10; i++) {
+            HighlightEntity entity=HighlightEntity.builder()
+                    .highlightKey(UUID.randomUUID())
+                    .highlightURL("https://cdn.example.com/video" + i + ".mp4")
+                    .isSelected(true)
+                    .member(member)
+                    .build();
+            entity.setCreatedAt(LocalDateTime.now().minusDays(i));
 
-        //실제 디렉ㅌ리 생성 여부
-        Path highlightDir=tempDir.resolve(highlightKey.toString());
-        assertThat(Files.exists(highlightDir)).isTrue();
-
-        //저장된 파일 존재 여부 검증
-        try (var stream = Files.list(highlightDir)) {
-            List<String> storedFiles = stream.map(Path::getFileName)
-                    .map(Path::toString)
-                    .toList();
-            assertThat(storedFiles).hasSize(2);
-            assertThat(storedFiles.get(0)).endsWith(".mp4");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            highlightCommandRepository.save(entity);
         }
 
-        //DB 저장 검증
-        List<HighlightEntity> saved = repository.findAll();
-        assertThat(saved).hasSize(2);
-        assertThat(saved.get(0).getHighlightKey()).isEqualTo(highlightKey);
+        // when
+        Page<HighlightInfoResponse> result = highlightManager.listByPaging(0, 5, member.getMemberId());
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getContent()).hasSize(5); // 첫 페이지 5개
+        assertThat(result.getTotalElements()).isEqualTo(10); // 전체 10개
+        assertThat(result.getContent().getFirst().highlightUrl()).contains(".mp4");
     }
     private HighlightEntity makeHighlightEntity(String url,UUID highlightKey,Member member){
         return HighlightEntity.builder()

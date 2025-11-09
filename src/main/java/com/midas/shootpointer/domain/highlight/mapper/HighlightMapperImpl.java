@@ -1,6 +1,8 @@
 package com.midas.shootpointer.domain.highlight.mapper;
 
+import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
+import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,5 +17,11 @@ public class HighlightMapperImpl implements HighlightMapper{
                 .selectedHighlightIds(selectedHighlights)
                 .build();
     }
+
+    @Override
+    public HighlightInfoResponse infoResponseToEntity(HighlightEntity entity) {
+        return HighlightInfoResponse.of(entity.getHighlightId(),entity.getCreatedAt(),entity.totalTwoPoint(),entity.totalThreePoint(),entity.getHighlightURL());
+    }
+
 
 }

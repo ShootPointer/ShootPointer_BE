@@ -18,4 +18,5 @@ public interface PostUtil {
     List<PostEntity> getPostEntitiesByPostTitleOrPostContent(String search,Long postId,int size);
     List<Long> findPostIdsByMemberId(UUID memberId);
     List<PostEntity> findPostsByPostIds(List<Long> postIds);
+    List<PostEntity> getMyLikedPost(UUID memberId,Long lastPostId,int size);
 }

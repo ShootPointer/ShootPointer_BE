@@ -149,7 +149,7 @@ class LikeUtilImplTest  {
                 .member(member)
                 .title("title")
                 .content("content")
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .build();
     }
 

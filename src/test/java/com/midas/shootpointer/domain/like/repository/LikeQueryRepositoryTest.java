@@ -88,7 +88,7 @@ class LikeQueryRepositoryTest {
 
     private PostEntity makeMockPost(Member member){
         return PostEntity.builder()
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .content("content_content")
                 .title("title_title")
                 .member(member)

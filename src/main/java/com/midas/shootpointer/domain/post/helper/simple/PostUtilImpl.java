@@ -7,13 +7,12 @@ import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -94,5 +93,10 @@ public class PostUtilImpl implements PostUtil{
     @Override
     public List<PostEntity> findPostsByPostIds(List<Long> postIds) {
         return postQueryRepository.findPostsByPostIds(postIds);
+    }
+
+    @Override
+    public List<PostEntity> getMyLikedPost(UUID memberId, Long lastPostId, int size) {
+        return postQueryRepository.findMyLikedPost(memberId,size,lastPostId);
     }
 }

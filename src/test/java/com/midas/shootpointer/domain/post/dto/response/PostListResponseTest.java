@@ -67,7 +67,7 @@ class PostListResponseTest {
                 .memberName("name")
                 .createdAt(LocalDateTime.now())
                 .content("content")
-                .hashTag(HashTag.TREE_POINT.getName())
+                .hashTag(HashTag.THREE_POINT.getName())
                 .title("title")
                 .build();
     }

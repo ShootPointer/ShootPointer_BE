@@ -6,7 +6,6 @@ import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.simple.PostHelperImpl;
 import com.midas.shootpointer.domain.post.helper.simple.PostUtil;
 import com.midas.shootpointer.domain.post.helper.simple.PostValidation;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class PostHelperImplTest {
@@ -251,5 +250,22 @@ class PostHelperImplTest {
         //then
         assertThat(result).hasSize(3);
         verify(postUtil, times(1)).findPostsByPostIds(postIds);
+    }
+
+    @Test
+    @DisplayName("memberId를 이용해 유저 자신이 좋아요를 누른 게시물을 생성일자 순으로 조회합니다. - postUtil.getMyLikedPost(memberId,lastPostId,size)")
+    void getMyLikedPost(){
+        //given
+        UUID memberId=UUID.randomUUID();
+        Long lastPostId=Long.MAX_VALUE;
+        List<PostEntity> expectedPosts=List.of(postEntity,postEntity);
+        when(postUtil.getMyLikedPost(memberId,lastPostId,10)).thenReturn(expectedPosts);
+
+        //when
+        List<PostEntity> result=postHelper.getMyLikedPost(memberId,lastPostId,10);
+
+        //then
+        assertThat(result).hasSize(2);
+        verify(postUtil,times(1)).getMyLikedPost(memberId,lastPostId,10);
     }
 }

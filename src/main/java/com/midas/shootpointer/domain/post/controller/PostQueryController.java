@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -183,4 +184,14 @@ public class PostQueryController {
         Member member = SecurityUtils.getCurrentMember();
         return ResponseEntity.ok(ApiResponse.ok(postQueryService.getMyPosts(member.getMemberId())));
     }
+
+    @GetMapping("/my/like")
+    public ResponseEntity<ApiResponse<PostListResponse>> myLikedPost(
+            @RequestParam(required = false,defaultValue = "922337203685477580") Long lastPostId,
+            @RequestParam(required = false,defaultValue = "10")int size
+    ){
+        UUID memberId =SecurityUtils.getCurrentMemberId();
+        return ResponseEntity.ok(ApiResponse.ok(postQueryService.myLikedPost(memberId,lastPostId,size)));
+    }
+
 }

@@ -2,12 +2,21 @@ pipeline {
     agent any
     
     parameters {
-        choice(
+            choice(
             name: 'PROFILE',
-            choices: ['dev', 'testdata', 'prod','batch'],
-            description: 'Select Spring Profile for deployment'
+            choices: [
+                'test-real-data,prod,batch,es,test-highlight-data',
+                'dev',
+                'test-real-data',
+                'prod',
+                'batch',
+                'es',
+                'test-real-data,prod,batch,es',
+                'dev,batch,es'
+            ]
         )
-    }
+     }
+
     tools {
         jdk 'openjdk-21-jdk'
     }
@@ -43,9 +52,7 @@ pipeline {
                               ]){
                                  sh '''
                                     cp $secretFile ./src/main/resources/application.yml
-                                    set -a
-                                    source $envFile
-                                    set +a
+                                    cp $envFile .env
                                     '''
                               }
                           }
