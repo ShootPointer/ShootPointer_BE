@@ -10,9 +10,6 @@ import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRepositoriesAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
@@ -309,7 +306,7 @@ class LikeManagerConcurrencyTest {
     private PostEntity makeMockPost(Member member) {
         return PostEntity.builder()
                 .member(member)
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .content("content")
                 .title("title")
                 .build();

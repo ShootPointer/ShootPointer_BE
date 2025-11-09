@@ -245,7 +245,7 @@ class PostManagerTest {
                     .modifiedAt(LocalDateTime.now())
                     .highlightUrl("test")
                     .likeCnt(100L)
-                    .hashTag(HashTag.TREE_POINT.getName())
+                    .hashTag(HashTag.THREE_POINT.getName())
                     .build());
         }
         PostListResponse postListResponse = PostListResponse.of(postId, postResponses);
@@ -562,7 +562,82 @@ class PostManagerTest {
         verify(postHelper, never()).findPostsByPostIds(any());
         verify(postMapper, never()).entityToDto(any(PostEntity.class));
     }
-    
+
+    @Test
+    @DisplayName("유저가 좋아요를 누른 게시물 목록을 정상적으로 반환합니다.")
+    void getMyLikedPosts_SUCCESS() {
+        // given
+        UUID memberId = UUID.randomUUID();
+        Long lastPostId = Long.MAX_VALUE;
+        int size = 10;
+
+        PostEntity post1 = PostEntity.builder()
+                .content("content1")
+                .hashTag(HashTag.THREE_POINT)
+                .likeCnt(12L)
+                .title("title1")
+                .build();
+
+        PostEntity post2 = PostEntity.builder()
+                .content("content2")
+                .hashTag(HashTag.THREE_POINT)
+                .likeCnt(20L)
+                .title("title2")
+                .build();
+
+        List<PostEntity> postEntities = List.of(post1, post2);
+
+        PostResponse dto1 = PostResponse.builder()
+                .content("title1")
+                .content("content1")
+                .likeCnt(12L)
+                .build();
+        PostResponse dto2 =PostResponse.builder()
+                .content("title2")
+                .content("content2")
+                .likeCnt(20L)
+                .build();
+        List<PostResponse> postResponses = List.of(dto1, dto2);
+
+        PostListResponse expectedResponse = PostListResponse.of(2L, postResponses);
+
+        when(postHelper.getMyLikedPost(memberId, lastPostId, size)).thenReturn(postEntities);
+        when(postMapper.entityToDto(postEntities)).thenReturn(expectedResponse);
+
+        // when
+        PostListResponse actualResponse = postManager.getMyLikedPosts(memberId, lastPostId, size);
+
+        // then
+        assertThat(actualResponse).isEqualTo(expectedResponse);
+        verify(postHelper, times(1)).getMyLikedPost(memberId, lastPostId, size);
+        verify(postMapper, times(1)).entityToDto(postEntities);
+    }
+
+    @Test
+    @DisplayName("좋아요 누른 게시물이 없는 경우 빈 리스트를 반환합니다.")
+    void getMyLikedPosts_EmptyList() {
+        // given
+        UUID memberId = UUID.randomUUID();
+        Long lastPostId = Long.MAX_VALUE;
+        int size = 10;
+
+        List<PostEntity> emptyList = List.of();
+        PostListResponse emptyResponse = PostListResponse.of(null, List.of());
+
+        when(postHelper.getMyLikedPost(memberId, lastPostId, size)).thenReturn(emptyList);
+        when(postMapper.entityToDto(emptyList)).thenReturn(emptyResponse);
+
+        // when
+        PostListResponse actualResponse = postManager.getMyLikedPosts(memberId, lastPostId, size);
+
+        // then
+        assertThat(actualResponse.getPostList()).isEmpty();
+        verify(postHelper, times(1)).getMyLikedPost(memberId, lastPostId, size);
+        verify(postMapper, times(1)).entityToDto(emptyList);
+
+    }
+
+
     // PostResponse 생성 헬퍼 메서드 추가
     private PostResponse makePostResponse(
         LocalDateTime time,
@@ -622,7 +697,7 @@ class PostManagerTest {
                 .title("title" + str)
                 .content("content" + str)
                 .member(member)
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .build();
     }
 
@@ -642,7 +717,7 @@ class PostManagerTest {
                 .member(member)
                 .postId(postId)
                 .highlight(highlight)
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .content("content" + str)
                 .title("title" + str)
                 .build();
@@ -751,7 +826,7 @@ class PostManagerTest {
                     .postId(postId)
                     .likeCnt(likeCnt)
                     .memberName("name")
-                    .hashTag(HashTag.TREE_POINT.getName())
+                    .hashTag(HashTag.THREE_POINT.getName())
                     .title(title)
                     .content(content)
                     .highlightUrl("url")

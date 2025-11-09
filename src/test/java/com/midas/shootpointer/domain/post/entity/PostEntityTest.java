@@ -3,15 +3,12 @@ package com.midas.shootpointer.domain.post.entity;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PostEntityTest {
 
@@ -27,7 +24,7 @@ class PostEntityTest {
         PostEntity original=PostEntity.builder()
                 .content("content1")
                 .title("title1")
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .highlight(originalHighlight)
                 .build();
         String changedTitle="title2";
@@ -59,7 +56,7 @@ class PostEntityTest {
 
         PostEntity mockPost=PostEntity.builder()
                 .content(content)
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .title(title)
                 .likeCnt(1L)
                 .build();
@@ -84,7 +81,7 @@ class PostEntityTest {
 
         PostEntity mockPost=PostEntity.builder()
                 .content(content)
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .title(title)
                 .likeCnt(10L)
                 .build();

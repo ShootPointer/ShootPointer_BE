@@ -1,0 +1,16 @@
+#build
+out/
+!gradle/wrapper/gradle-wrapper.jar
+
+#IDE
+.idea/
+
+#git
+.git/
+.gitignore
+
+
+#test
+tmp/
+
+

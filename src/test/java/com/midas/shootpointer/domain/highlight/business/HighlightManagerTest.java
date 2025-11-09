@@ -1,14 +1,8 @@
 package com.midas.shootpointer.domain.highlight.business;
 
-import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
-import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
-import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
-import com.midas.shootpointer.domain.highlight.dto.UploadHighlight;
+import com.midas.shootpointer.domain.highlight.dto.*;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
-import com.midas.shootpointer.domain.highlight.mapper.HighlightFactory;
-import com.midas.shootpointer.domain.highlight.mapper.HighlightMapper;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
-import com.midas.shootpointer.domain.highlight.service.HighlightStorageService;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -17,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -37,24 +32,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringBootTest
 @ActiveProfiles("test")
-class HighlightManagerTest {
+class HighlightManagerTest  {
     @Autowired
     private HighlightManager highlightManager;
-
-    @Autowired
-    private HighlightStorageService highlightStorageService;
-
-    @Autowired
-    private HighlightMapper mapper;
-
-    @Autowired
-    private HighlightFactory factory;
 
     @Autowired
     private HighlightCommandRepository repository;
 
     @Autowired
     private MemberCommandRepository memberCommandRepository;
+
+    @Autowired
+    private HighlightCommandRepository highlightCommandRepository;
 
     @TempDir
     private static Path tempDir;
@@ -153,6 +142,40 @@ class HighlightManagerTest {
         List<HighlightEntity> saved = repository.findAll();
         assertThat(saved).hasSize(2);
         assertThat(saved.get(0).getHighlightKey()).isEqualTo(highlightKey);
+    }
+
+
+    @Test
+    @DisplayName("회원별 하이라이트 페이징 조회를 실시합니다.")
+    void listByPagingHighlights(){
+        // given
+        Member member = memberCommandRepository.save(Member.builder()
+                .email("test@naver.com")
+                .username("tester")
+                .isAggregationAgreed(true)
+                .build());
+
+        // DB에 10개의 하이라이트 데이터 저장
+        for (int i = 1; i <= 10; i++) {
+            HighlightEntity entity=HighlightEntity.builder()
+                    .highlightKey(UUID.randomUUID())
+                    .highlightURL("https://cdn.example.com/video" + i + ".mp4")
+                    .isSelected(true)
+                    .member(member)
+                    .build();
+            entity.setCreatedAt(LocalDateTime.now().minusDays(i));
+
+            highlightCommandRepository.save(entity);
+        }
+
+        // when
+        Page<HighlightInfoResponse> result = highlightManager.listByPaging(0, 5, member.getMemberId());
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getContent()).hasSize(5); // 첫 페이지 5개
+        assertThat(result.getTotalElements()).isEqualTo(10); // 전체 10개
+        assertThat(result.getContent().getFirst().highlightUrl()).contains(".mp4");
     }
     private HighlightEntity makeHighlightEntity(String url,UUID highlightKey,Member member){
         return HighlightEntity.builder()

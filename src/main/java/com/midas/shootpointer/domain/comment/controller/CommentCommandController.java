@@ -11,26 +11,35 @@ import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.simple.PostHelper;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import com.midas.shootpointer.global.security.SecurityUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/comment")
 @RequiredArgsConstructor
+@Tag(name = "댓글", description = "댓글 API")
 public class CommentCommandController {
 	
 	private final CommentCommandService commentCommandService;
 	private final CommentMapper commentMapper;
 	private final PostHelper postHelper;
 	
+	@Operation(summary = "댓글 등록 API - [담당자 : 박재성]",
+		responses = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "댓글 등록 성공",
+			content = @Content(mediaType = "application/json",
+			schema =  @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX", description = "댓글 등록 실패",
+			content = @Content(mediaType = "application/json",
+			schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+		}
+	)
 	@PostMapping
 	public ResponseEntity<ApiResponse<Long>> create(@RequestBody CommentRequestDto requestDto) {
 		
@@ -42,6 +51,15 @@ public class CommentCommandController {
 		return ResponseEntity.ok(ApiResponse.created(commentCommandService.create(comment)));
 	}
 	
+	@Operation(
+		summary = "댓글 삭제 API - [담당자 : 박재성]",
+		responses = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "댓글 삭제 성공"),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX", description = "댓글 삭제 실패",
+				content = @Content(mediaType = "application/json",
+					schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+		}
+	)
 	@DeleteMapping("/{commentId}")
 	public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long commentId) {
 		
@@ -51,6 +69,17 @@ public class CommentCommandController {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@Operation(
+		summary = "댓글 수정 API - [담당자 : 박재성]",
+		responses = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "댓글 수정 성공",
+				content = @Content(mediaType = "application/json",
+					schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX", description = "댓글 수정 실패",
+				content = @Content(mediaType = "application/json",
+					schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+		}
+	)
 	@PatchMapping("/{commentId}")
 	public ResponseEntity<ApiResponse<CommentResponseDto>> update(@PathVariable Long commentId,
 		@Valid @RequestBody CommentUpdateRequestDto updateRequestDto) {

@@ -2,6 +2,8 @@ package com.midas.shootpointer.domain.post.repository;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
+import com.midas.shootpointer.domain.like.entity.LikeEntity;
+import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -36,10 +39,17 @@ class PostQueryRepositoryTest {
     private HighlightCommandRepository highlightCommandRepository;
 
     @Autowired
+    private LikeCommandRepository likeCommandRepository;
+
+    @Autowired
     private EntityManager em;
+
+    private Member memberA;
+    private Member memberB;
 
     @BeforeEach
     void setUpClean() {
+        likeCommandRepository.deleteAll();
         postCommandRepository.deleteAll();
         highlightCommandRepository.deleteAll();
         memberRepository.deleteAll();
@@ -47,6 +57,7 @@ class PostQueryRepositoryTest {
 
     @AfterEach
     void tearDown() {
+        likeCommandRepository.deleteAll();
         postCommandRepository.deleteAll();
         highlightCommandRepository.deleteAll();
         memberRepository.deleteAll();
@@ -109,7 +120,7 @@ class PostQueryRepositoryTest {
                             .highlight(highlight)
                             .content("내용1 + 내용 2 + 내용 "+i)
                             .title("제목 1 + 제목2 + 제목 "+i)
-                            .hashTag(HashTag.TREE_POINT)
+                            .hashTag(HashTag.THREE_POINT)
                             .likeCnt(10L)
                             .build()
             );
@@ -156,7 +167,7 @@ class PostQueryRepositoryTest {
                             .highlight(highlight)
                             .content("내용1 + 내용 2 + 내용 "+i)
                             .title("제목 1 + 제목2 + 제목 "+i)
-                            .hashTag(HashTag.TREE_POINT)
+                            .hashTag(HashTag.THREE_POINT)
                             .likeCnt(10L)
                             .build()
             );
@@ -179,28 +190,108 @@ class PostQueryRepositoryTest {
 
     }
 
+    @DisplayName("memberB가 좋아요한 게시물 중 lastPostId보다 작은 post_id만 가져오되, 생성 날짜 내림차순으로 정렬된다.")
+    @Test
+    void testFirstMyLikedPost() {
+        // given
+        memberA = memberRepository.save(Member.builder()
+                .email("test1@naver.com")
+                .username("test1")
+                .isAggregationAgreed(true)
+                .build()
+        );
+        memberB = memberRepository.save(Member.builder()
+                .email("test2@naver.com")
+                .username("test2")
+                .isAggregationAgreed(true)
+                .build()
+        );
+
+        // memberA가 작성한 글 10개
+        List<PostEntity> posts = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            PostEntity post = PostEntity.builder()
+                    .title("title" + i)
+                    .member(memberA)
+                    .content("post" + i)
+                    .build();
+            posts.add(postQueryRepository.save(post));
+            // createdAt 차이를 주기 위해 약간의 지연 (테스트에서 명확한 구분용)
+            try { Thread.sleep(5); } catch (InterruptedException ignored) {}
+        }
+
+        // memberB가 post 2, 5, 7에 좋아요
+        List<Long> likedIds = List.of(
+                posts.get(2).getPostId(),
+                posts.get(5).getPostId(),
+                posts.get(7).getPostId()
+        );
+
+        posts.stream()
+                .filter(p -> likedIds.contains(p.getPostId()))
+                .forEach(post -> likeCommandRepository.save(
+                        LikeEntity.builder()
+                                .member(memberB)
+                                .post(post)
+                                .build()
+                ));
+
+        // when
+        Long lastPostId = Long.MAX_VALUE;
+        List<PostEntity> likedPosts = postQueryRepository.findMyLikedPost(memberB.getMemberId(), 10, lastPostId);
+
+        // then - createdAt 기준 내림차순 검증
+        List<LocalDateTime> actualCreatedAts = likedPosts.stream()
+                .map(PostEntity::getCreatedAt)
+                .toList();
+
+        List<LocalDateTime> expectedSorted = actualCreatedAts.stream()
+                .sorted(Comparator.reverseOrder())
+                .toList();
+
+        assertThat(actualCreatedAts)
+                .containsExactlyElementsOf(expectedSorted);
+    }
+
+    @DisplayName("member가 좋아요 누른 게시물이 존재하지 않으면 빈 리스트를 반환합니다.")
+    @Test
+    void myLikedPost_EMPTY(){
+        //given
+        memberA = memberRepository.save(Member.builder()
+                .email("test1@naver.com")
+                .username("test1")
+                .isAggregationAgreed(true)
+                .build()
+        );
+
+        //when
+        List<PostEntity> results=postQueryRepository.findMyLikedPost(memberA.getMemberId(),10,Long.MAX_VALUE);
+
+        //then
+        assertThat(results).isEqualTo(Collections.EMPTY_LIST);
+    }
     /*
     ======================================대용량 데이터 사용 쿼리 테스트======================================
      */
 
     @Nested
-    class PostQueryRepositoryTestForBulk{
-        private PriorityQueue<PostEntity> postEntitiesOrderByCreatedAtDesc=new PriorityQueue<>((a,b)->b.getCreatedAt().compareTo(a.getCreatedAt()));
+    class PostQueryRepositoryTestForBulk {
+        private PriorityQueue<PostEntity> postEntitiesOrderByCreatedAtDesc = new PriorityQueue<>((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()));
         /**
          * 정렬 순서
          * 1순위 : 좋아요 많은 순서
          * 2순위 : 최신순
          */
-        private PriorityQueue<PostEntity> postEntitiesOrderByLikeCntDesc=new PriorityQueue<>((a,b)->a.getLikeCnt().equals(b.getLikeCnt()) ?
-                b.getCreatedAt().compareTo(a.getCreatedAt()): b.getLikeCnt().compareTo(a.getLikeCnt()));
+        private PriorityQueue<PostEntity> postEntitiesOrderByLikeCntDesc = new PriorityQueue<>((a, b) -> a.getLikeCnt().equals(b.getLikeCnt()) ?
+                b.getCreatedAt().compareTo(a.getCreatedAt()) : b.getLikeCnt().compareTo(a.getLikeCnt()));
 
         @BeforeEach
         void setUp() throws InterruptedException {
-            set(postEntitiesOrderByCreatedAtDesc,postEntitiesOrderByLikeCntDesc);
+            set(postEntitiesOrderByCreatedAtDesc, postEntitiesOrderByLikeCntDesc);
         }
 
         @AfterEach
-        void delete(){
+        void delete() {
             clean();
             postEntitiesOrderByCreatedAtDesc.clear();
             postEntitiesOrderByLikeCntDesc.clear();
@@ -208,30 +299,30 @@ class PostQueryRepositoryTest {
 
         @DisplayName("1_000개의 게시물을 최신순으로 불러옵니다.")
         @Test
-        void getLatestPostListBySliceAndNoOffset(){
+        void getLatestPostListBySliceAndNoOffset() {
             /*
-            * given
-            * 1. 100개의 게시물이 @BeforeEach에 의해 1초 단위로 저장됩니다.
-            * 2. 100개의 게시물이 PriorityQueue 형태로 저장됩니다.
-            * 3. 우선순위 큐로 set() 메소드에서 미리 저장한 게시물 엔티티들을 최신순으로 정렬합니다.
-            */
+             * given
+             * 1. 100개의 게시물이 @BeforeEach에 의해 1초 단위로 저장됩니다.
+             * 2. 100개의 게시물이 PriorityQueue 형태로 저장됩니다.
+             * 3. 우선순위 큐로 set() 메소드에서 미리 저장한 게시물 엔티티들을 최신순으로 정렬합니다.
+             */
 
 
             /*
-            * when : getLatestPostListBySliceAndNoOffset()를 호출하여 100개의 게시물을 최신순으로 조회합니다.
-            */
-            Long lastPostId=922337203685477580L;
-            int idx=0;
-            List<PostEntity> findPostEntities=postQueryRepository.getLatestPostListBySliceAndNoOffset(lastPostId,LIMIT);
+             * when : getLatestPostListBySliceAndNoOffset()를 호출하여 100개의 게시물을 최신순으로 조회합니다.
+             */
+            Long lastPostId = 922337203685477580L;
+            int idx = 0;
+            List<PostEntity> findPostEntities = postQueryRepository.getLatestPostListBySliceAndNoOffset(lastPostId, LIMIT);
 
             /*
-            * then : 우선순위 큐와 실제로 조회된 게시물의 postId가 일치하는지 확인합니다.
-            */
+             * then : 우선순위 큐와 실제로 조회된 게시물의 postId가 일치하는지 확인합니다.
+             */
             //개수 일치 확인
             assertThat(postEntitiesOrderByCreatedAtDesc.size()).isEqualTo(LIMIT);
 
-            while (!postEntitiesOrderByCreatedAtDesc.isEmpty()){
-                PostEntity nowPost=postEntitiesOrderByCreatedAtDesc.poll();
+            while (!postEntitiesOrderByCreatedAtDesc.isEmpty()) {
+                PostEntity nowPost = postEntitiesOrderByCreatedAtDesc.poll();
                 assertThat(nowPost.getPostId()).isEqualTo(findPostEntities.get(idx).getPostId());
                 //밀리초까지만 비교
                 assertThat(nowPost.getCreatedAt().truncatedTo(ChronoUnit.SECONDS)).isEqualTo(findPostEntities.get(idx).getCreatedAt().truncatedTo(ChronoUnit.SECONDS));
@@ -241,7 +332,7 @@ class PostQueryRepositoryTest {
 
         @DisplayName("1_000개의 게시물을 좋아요순으로 불러옵니다.")
         @Test
-        void getPopularPostListBySliceAndNoOffset(){
+        void getPopularPostListBySliceAndNoOffset() {
             /*
              * given
              * 1. 100개의 게시물이 @BeforeEach에 의해 1초 단위로 저장됩니다.
@@ -253,10 +344,10 @@ class PostQueryRepositoryTest {
             /*
              * when : getLatestPostListBySliceAndNoOffset()를 호출하여 100개의 게시물을 좋아요순으로 조회합니다.
              */
-            Long lastPostId=922337203685477580L;
+            Long lastPostId = 922337203685477580L;
 
-            int idx=0;
-            List<PostEntity> findPostEntities=postQueryRepository.getPopularPostListBySliceAndNoOffset(LIMIT,lastPostId);
+            int idx = 0;
+            List<PostEntity> findPostEntities = postQueryRepository.getPopularPostListBySliceAndNoOffset(LIMIT, lastPostId);
 
             /*
              * then : 우선순위 큐와 실제로 조회된 게시물의 postId가 일치하는지 확인합니다.
@@ -265,8 +356,8 @@ class PostQueryRepositoryTest {
             //개수 일치 확인
             assertThat(postEntitiesOrderByLikeCntDesc.size()).isEqualTo(LIMIT);
 
-            while (!postEntitiesOrderByLikeCntDesc.isEmpty()){
-                PostEntity nowPost=postEntitiesOrderByLikeCntDesc.poll();
+            while (!postEntitiesOrderByLikeCntDesc.isEmpty()) {
+                PostEntity nowPost = postEntitiesOrderByLikeCntDesc.poll();
                 assertThat(nowPost.getPostId()).isEqualTo(findPostEntities.get(idx).getPostId());
                 assertThat(nowPost.getLikeCnt()).isEqualTo(findPostEntities.get(idx).getLikeCnt());
                 idx++;

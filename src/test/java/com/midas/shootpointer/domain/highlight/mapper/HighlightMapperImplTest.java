@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.highlight.mapper;
 
+import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
@@ -58,5 +59,35 @@ class HighlightMapperImplTest {
         assertThat(result.getHighlightId()).isEqualTo(entity.getHighlightId());
         assertThat(result.getHighlightIdentifier()).isEqualTo(entity.getHighlightKey());
         assertThat(result.getHighlightUrl()).isEqualTo(entity.getHighlightURL());
+    }
+
+    @Test
+    @DisplayName("HighlightEntity 형태를 HighlightInfoResponse 형태로 매핑합니다.")
+    void infoResponseToEntity(){
+        //given
+        UUID highlightId=UUID.randomUUID();
+        UUID highlightKey=UUID.randomUUID();
+        LocalDateTime now=LocalDateTime.now();
+
+        HighlightEntity entity=HighlightEntity.builder()
+                .highlightURL("url")
+                .highlightKey(highlightKey)
+                .highlightId(highlightId)
+                .isSelected(true)
+                .twoPointCount(20)
+                .threePointCount(30)
+                .build();
+
+        entity.setCreatedAt(now);
+
+        //when
+        HighlightInfoResponse result=mapper.infoResponseToEntity(entity);
+
+        //then
+        assertThat(result.createdDate()).isEqualTo(now);
+        assertThat(result.highlightId()).isEqualTo(highlightId);
+        assertThat(result.totalTwoPoint()).isEqualTo(entity.totalTwoPoint());
+        assertThat(result.totalThreePoint()).isEqualTo(entity.totalThreePoint());
+
     }
 }

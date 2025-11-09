@@ -26,7 +26,9 @@ spring:
       enabled: true
       max-file-size: 5000MB
       max-request-size: 5000MB
-
+  batch:
+    jdbc:
+      initialize-schema: never
   elasticsearch:
     mode: container
 
@@ -133,6 +135,7 @@ opencv:
       fetch-video: /api/fetch-video
     proxy:
       upload-video: upload
-
+  expire:
+    expiration-time: 1800000 #30분
 video:
   path: /home/ubuntu/shoot-pointer/vid

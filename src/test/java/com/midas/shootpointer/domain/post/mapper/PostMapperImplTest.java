@@ -25,8 +25,8 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@ActiveProfiles("dev")
-class PostMapperImplTest {
+@ActiveProfiles("test")
+class PostMapperImplTest  {
     @Autowired
     private PostMapperImpl postMapper;
 
@@ -45,7 +45,7 @@ class PostMapperImplTest {
         //given
         String content="test_test_test_test_test_test_test_test_test_test_test_test_";
         String title="title";
-        HashTag hashTag=HashTag.TREE_POINT;
+        HashTag hashTag=HashTag.THREE_POINT;
         UUID highlightId=UUID.randomUUID();
         PostRequest request=PostRequest.of(highlightId,title,content,hashTag);
         Member mock=makeMockMember();
@@ -79,7 +79,7 @@ class PostMapperImplTest {
                 .title(title)
                 .content(content)
                 .highlight(highlight)
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .member(mock)
                 .build();
 

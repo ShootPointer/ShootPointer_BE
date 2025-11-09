@@ -24,4 +24,23 @@ public class MemberMapperImpl implements MemberMapper {
 			.username(member.getUsername())
 			.build();
 	}
+	
+	@Override
+	public MemberResponseDto entityToDetailDto(
+		Member member,
+		Integer backNumber,
+		Integer totalTwoPointCount,
+		Integer totalThreePointCount,
+		Integer highlightCount
+	) {
+		return MemberResponseDto.builder()
+			.memberId(member.getMemberId())
+			.email(member.getEmail())
+			.username(member.getUsername())
+			.backNumber(backNumber)
+			.totalTwoPoint(totalTwoPointCount)
+			.totalThreePoint(totalThreePointCount)
+			.highlightCount(highlightCount)
+			.build();
+	}
 }

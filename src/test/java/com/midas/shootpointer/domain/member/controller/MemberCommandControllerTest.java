@@ -1,39 +1,40 @@
 package com.midas.shootpointer.domain.member.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.member.business.command.MemberCommandService;
+import com.midas.shootpointer.domain.member.business.query.MemberQueryService;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
+import com.midas.shootpointer.domain.member.dto.MemberResponseDto;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.security.CustomUserDetails;
-import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 @DisplayName("MemberCommandController 통합 테스트")
-class MemberCommandControllerIntegrationTest {
+class MemberCommandControllerIntegrationTest  {
 	
 	@Autowired
 	private MockMvc mockMvc;
@@ -43,7 +44,11 @@ class MemberCommandControllerIntegrationTest {
 	
 	@MockitoBean
 	private MemberCommandService memberCommandService;
-	
+
+	@MockitoBean
+	private MemberQueryService memberQueryService;
+
+	@WithMockCustomMember
 	@Test
 	@DisplayName("카카오 로그인 콜백 - 성공")
 	void callback_Success() throws Exception {
@@ -69,10 +74,9 @@ class MemberCommandControllerIntegrationTest {
 		
 		verify(memberCommandService, times(1)).processKakaoLogin(any());
 	}
-	
+	@WithMockCustomMember
 	@Test
 	@DisplayName("회원 탈퇴 - 성공")
-	@WithMockUser
 	void deleteMember_Success() throws Exception {
 		// given
 		UUID memberId = UUID.randomUUID();
@@ -89,49 +93,49 @@ class MemberCommandControllerIntegrationTest {
 		
 		verify(memberCommandService, times(1)).deleteMember(any(Member.class));
 	}
-	
+
+
 	@Test
 	@DisplayName("회원 탈퇴 - 인증되지 않은 사용자")
 	void deleteMember_Unauthorized() throws Exception {
 		// when & then
 		mockMvc.perform(delete("/kakao"))
 			.andDo(print())
-			.andExpect(status().is2xxSuccessful());
+			.andExpect(status().isUnauthorized());
 		
 		verify(memberCommandService, never()).deleteMember(any(Member.class));
 	}
-	
+	@WithMockCustomMember(email = "test@example.com",name = "testUser")
 	@Test
 	@DisplayName("회원 정보 조회 - 성공")
-	@WithMockUser
 	void getCurrentMember_Success() throws Exception {
 		// given
 		UUID memberId = UUID.randomUUID();
 		String email = "test@example.com";
 		String username = "testUser";
-		
-		Member member = createMember(memberId, email, username);
-		CustomUserDetails userDetails = new CustomUserDetails(member);
+
+		MemberResponseDto expectedDto=MemberResponseDto.builder()
+						.email(email)
+						.username(username)
+				        .build();
+		when(memberQueryService.getMemberInfo(any(UUID.class))).thenReturn(expectedDto);
 		
 		// when & then
-		mockMvc.perform(get("/kakao/me")
-				.with(user(userDetails)))
+		mockMvc.perform(get("/member/me"))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.memberId").value(memberId.toString()))
-			.andExpect(jsonPath("$.email").value(email))
-			.andExpect(jsonPath("$.username").value(username));
+			.andExpect(jsonPath("$.data.email").value(email))
+			.andExpect(jsonPath("$.data.username").value(username));
 	}
-	
+
 	@Test
 	@DisplayName("회원 정보 조회 - 인증되지 않은 사용자")
 	void getCurrentMember_Unauthorized() throws Exception {
 		// when & then
 		mockMvc.perform(get("/kakao/me"))
 			.andDo(print())
-			.andExpect(status().is2xxSuccessful());
+			.andExpect(status().isUnauthorized());
 	}
-	
 	private Member createMember(UUID memberId, String email, String username) {
 		return Member.builder()
 			.memberId(memberId)

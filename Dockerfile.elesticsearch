@@ -1,7 +1,1 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:8.6.0
-
-# 기존 nori 플러그인이 있으면 삭제 후 설치
-RUN if [ -d "/usr/share/elasticsearch/plugins/analysis-nori" ]; then \
-      bin/elasticsearch-plugin remove analysis-nori; \
-    fi && \
-    bin/elasticsearch-plugin install analysis-nori --batch
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.6.0 

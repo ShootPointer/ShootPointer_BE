@@ -13,12 +13,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @ActiveProfiles("dev")
 class HighlightQueryRepositoryTest {
@@ -123,6 +129,50 @@ class HighlightQueryRepositoryTest {
         //then
         assertThat(existsByHighlightUrlAndMember).isFalse();
     }
+
+    @Test
+    @DisplayName("특정 멤버의 하이라이트를 페이지네이션 형태로 조회합니다.")
+    void fetchAllMembersHighlightsPagination(){
+        //given
+        Member member=memberRepository.save(mockMember());
+        Random random=new Random();
+        List<HighlightEntity> expectedHighlights=new ArrayList<>();
+
+
+        for (int idx=0;idx<33;idx++){
+            HighlightEntity highlight=HighlightEntity.builder()
+                    .highlightKey(UUID.randomUUID())
+                    .member(member)
+                    .threePointCount(random.nextInt(1,100))
+                    .twoPointCount(random.nextInt(1,100))
+                    .isSelected(true)
+                    .highlightURL("test")
+                    .build();
+            highlight.setCreatedAt(LocalDateTime.now().minusDays(idx));
+            highlight=highlightCommandRepository.save(highlight);
+
+            expectedHighlights.add(highlight);
+        }
+
+        Pageable pageable= PageRequest.of(0,10);
+        expectedHighlights.sort((a,b)->b.getCreatedAt().compareTo(a.getCreatedAt())); //생성 날짜 내림차순
+
+        //when
+        Page<HighlightEntity> result=highlightQueryRepository.fetchAllMembersHighlights(member.getMemberId(),pageable);
+
+        //then
+        assertThat(result).isNotNull();
+        assertThat(result.getContent()).hasSize(10);
+        assertThat(result.getTotalElements()).isEqualTo(33);//전체 개수
+        assertThat(result.getTotalPages()).isEqualTo(4); //페이지 개수
+
+        //최신순 정렬 확인
+        for (int i=0;i<10;i++){
+            HighlightEntity expected=expectedHighlights.get(i);
+
+            assertThat(expected.getHighlightId()).isEqualTo(result.getContent().get(i).getHighlightId());
+        }
+    }
     /**
      * Mock Member
      */
@@ -130,6 +180,7 @@ class HighlightQueryRepositoryTest {
         Random random=new Random();
         return Member.builder()
                 .email(random.nextInt(10) +"test@naver.com")
+                .isAggregationAgreed(true)
                 .username("테스터")
                 .build();
     }

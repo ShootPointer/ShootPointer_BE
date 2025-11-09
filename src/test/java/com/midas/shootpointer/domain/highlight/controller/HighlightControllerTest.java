@@ -2,7 +2,7 @@ package com.midas.shootpointer.domain.highlight.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.WithMockCustomMember;
-import com.midas.shootpointer.domain.highlight.business.command.HighlightCommandService;
+import com.midas.shootpointer.domain.highlight.business.HighlightManager;
 import com.midas.shootpointer.domain.highlight.dto.HighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
 import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
@@ -33,7 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 @ActiveProfiles("test")
-class HighlightControllerTest {
+@WithMockCustomMember
+class HighlightCommandControllerTest  {
     @Autowired
     private MockMvc mockMvc;
 
@@ -41,12 +42,11 @@ class HighlightControllerTest {
     private ObjectMapper objectMapper;
 
     @MockitoBean
-    private HighlightCommandService highlightCommandService;
+    private HighlightManager manager;
 
 
     @Test
     @DisplayName("하이라이트 영상 선택 POST 요청 성공시 HighlightSelectResponse를 반환합니다._SUCCESS")
-    @WithMockCustomMember
     void selectHighlight() throws Exception {
         //given
         String url="/api/highlight/select";
@@ -58,7 +58,7 @@ class HighlightControllerTest {
         HighlightSelectResponse expectedResponse=mockHighlightSelectResponse(uuids);
         HighlightSelectRequest request=mockHighlightSelectRequest(uuids);
 
-        when(highlightCommandService.selectHighlight(any(HighlightSelectRequest.class),any(Member.class)))
+        when(manager.selectHighlight(any(HighlightSelectRequest.class),any(Member.class)))
                 .thenReturn(expectedResponse);
 
         //when & then
@@ -74,13 +74,12 @@ class HighlightControllerTest {
                 )))
                 .andDo(print());
 
-        verify(highlightCommandService).selectHighlight(any(HighlightSelectRequest.class),any(Member.class));
+        verify(manager).selectHighlight(any(HighlightSelectRequest.class),any(Member.class));
     }
 
 
     @Test
     @DisplayName("생성된 하이라이트 영상을 저장하고 성공시 List<HighlightResponse>를 반환합니다.._SUCCESS")
-    @WithMockCustomMember
     void uploadHighlights() throws Exception {
         //given
         String url="/api/highlight/upload-result";
@@ -121,7 +120,7 @@ class HighlightControllerTest {
                         .build()
         );
 
-        when(highlightCommandService.uploadHighlights(any(UploadHighlight.class),anyList(),any(UUID.class)))
+        when(manager.uploadHighlights(any(UploadHighlight.class),anyList(),any(UUID.class)))
                 .thenReturn(expectedResponse);
 
         //when & then
@@ -143,7 +142,7 @@ class HighlightControllerTest {
                 .andExpect(jsonPath("$.data[1].highlightUrl").value("url"))
                 .andDo(print());
 
-        verify(highlightCommandService).uploadHighlights(any(UploadHighlight.class),anyList(),any(UUID.class));
+        verify(manager).uploadHighlights(any(UploadHighlight.class),anyList(),any(UUID.class));
     }
     /*
      * Mock HighlightSelectResponse

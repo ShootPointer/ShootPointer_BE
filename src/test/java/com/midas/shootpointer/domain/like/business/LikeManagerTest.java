@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * 통합 테스트로 진행합니다.
  */
-class LikeManagerTest {
+class LikeManagerTest  {
     @BeforeEach
     void setUp(){
         memberRepository.deleteAll();
@@ -126,7 +126,7 @@ class LikeManagerTest {
 
     private PostEntity makePostEntity(Member member){
         return PostEntity.builder()
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .content("content")
                 .title("title")
                 .member(member)

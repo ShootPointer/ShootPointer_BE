@@ -1,6 +1,6 @@
 HELP.md
 .gradle
-.github
+
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -44,7 +44,7 @@ src/main/resources/postgres-data
 src/main/resources/redis-data
 src/main/resources/docker-compose.yml
 src/main/resources/application-dev.yml
-src/main/resources/application.yml
+
 src/main/resources/application-test.yml
 src/main/resources/application-testdata.yml
 src/main/resources/firebase/firebase_service_key.json
@@ -52,3 +52,7 @@ src/main/resources/firebase/firebase_service_key.json
 
 es-logs/
 /es-logs/
+
+.env
+/esdata/
+

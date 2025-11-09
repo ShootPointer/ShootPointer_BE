@@ -2,6 +2,8 @@ package com.midas.shootpointer.domain.highlight.helper;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +28,11 @@ public class HighlightHelperImpl implements HighlightHelper{
     @Override
     public List<HighlightEntity> savedAll(List<HighlightEntity> entities) {
         return highlightUtil.savedAll(entities);
+    }
+
+    @Override
+    public Page<HighlightEntity> fetchMembersHighlights(UUID memberId, Pageable pageable) {
+        return highlightUtil.fetchMembersHighlights(memberId,pageable);
     }
 
     @Override

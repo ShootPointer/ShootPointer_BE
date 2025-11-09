@@ -1,17 +1,18 @@
-FROM openjdk:17-slim
+# Builder
+FROM gradle:8.10.2-jdk21 AS builder
+WORKDIR /shootpointer
+COPY build.gradle settings.gradle ./
+COPY gradle gradle
+COPY src src
+RUN gradle clean bootJar --no-daemon -x test
 
-ARG JAR_FILE=build/libs/shootpointer-0.0.1-SNAPSHOT.jar
-
-COPY ${JAR_FILE} app.jar
-
-ENV SPRING_PROFILES_ACTIVE=es,test-real-data
-
-
-RUN apt-get update \
-    && apt-get install -y tzdata \
-    && ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime \
-    && echo "Asia/Seoul" > /etc/timezone \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar", "/app.jar"]
+# Running
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+RUN apk add --no-cache tzdata \
+        && ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime \
+        && echo "Asia/Seoul" > /etc/timezone
+ENV SPRING_PROFILES_ACTIVE=es,test-real-data,batch,test-highlight-data
+ENV TZ=Asia/Seoul
+COPY --from=builder /shootpointer/build/libs/*.jar app.jar
+ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar", "app.jar"]

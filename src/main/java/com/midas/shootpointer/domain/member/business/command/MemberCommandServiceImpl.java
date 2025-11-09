@@ -5,10 +5,11 @@ import com.midas.shootpointer.domain.member.dto.KakaoDTO;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.util.jwt.handler.RefreshTokenHandler;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -46,5 +47,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 		refreshTokenHandler.deleteRefreshToken(member.getEmail());
 		
 		return deletedMemberId;
+	}
+
+	@Override
+	public UUID agree(Member currentMember) {
+		return memberManager.agree(currentMember);
 	}
 }

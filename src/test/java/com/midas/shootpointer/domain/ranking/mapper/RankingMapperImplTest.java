@@ -1,0 +1,258 @@
+package com.midas.shootpointer.domain.ranking.mapper;
+
+import com.midas.shootpointer.batch.dto.HighlightWithMemberDto;
+import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
+import com.midas.shootpointer.domain.ranking.dto.RankingResult;
+import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
+import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
+import com.midas.shootpointer.global.common.ErrorCode;
+import com.midas.shootpointer.global.exception.CustomException;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+class RankingMapperImplTest {
+    private RankingMapperImpl rankingMapper = new RankingMapperImpl();
+
+    @Test
+    @DisplayName("HighlightWithMemberDto를 RankingEntry 형태로 변환합니다.")
+    void dtoToEntity() {
+        //given
+        UUID memberId = UUID.randomUUID();
+        HighlightWithMemberDto highlightWithMemberDto = HighlightWithMemberDto.builder()
+                .memberId(memberId)
+                .memberName("test")
+                .threePointTotal(30)
+                .twoPointTotal(20)
+                .totalScore(50)
+                .build();
+
+        //when
+        RankingEntry entry = rankingMapper.dtoToEntity(highlightWithMemberDto);
+
+        //then
+        assertThat(entry.getMemberId()).isEqualTo(memberId);
+        assertThat(entry.getTwoScore()).isEqualTo(20);
+        assertThat(entry.getThreeScore()).isEqualTo(30);
+        assertThat(entry.getTotalScore()).isEqualTo(50);
+        assertThat(entry.getMemberName()).isEqualTo("test");
+    }
+
+    @Test
+    @DisplayName("RankingDocument를 RankingResponse 형태로 변환합니다.")
+    void docToResponse() {
+        //given
+        LocalDateTime periodBegin = LocalDateTime.now();
+        RankingType type = RankingType.DAILY;
+        List<RankingEntry> top10 = new ArrayList<>();
+        for (int idx = 1; idx <= 10; idx++) {
+            top10.add(
+                    RankingEntry.builder()
+                            .memberName("test" + idx)
+                            .threeScore(idx * 3)
+                            .twoScore(idx * 2)
+                            .totalScore(idx * 3 + idx * 2)
+                            .memberId(UUID.randomUUID())
+                            .rank(10 - idx + 1)
+                            .build()
+            );
+        }
+        RankingDocument document = RankingDocument.of(top10, periodBegin, type);
+
+        //when
+        RankingResponse result = rankingMapper.docToResponse(document);
+
+        //then
+        assertThat(result.getRankingType()).isEqualTo(RankingType.DAILY);
+        assertThat(result.getRankingList()).isEqualTo(top10);
+    }
+
+    @Test
+    @DisplayName("List<RankingResult>와 RankingEntry를 RankingResponse 형태로 변환합니다.")
+    void resultToResponse() {
+        //given
+        List<RankingResult> results = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            results.add(new RankingResult(
+                    "test" + i,
+                    UUID.randomUUID(),
+                    i * 2 + i * 3,
+                    i * 2,
+                    i * 3)
+            );
+        }
+
+        //when
+        RankingResponse result=rankingMapper.resultToResponse(results,RankingType.DAILY);
+
+        //then
+        assertThat(result).isNotNull();
+        assertThat(result.getRankingType()).isEqualTo(RankingType.DAILY);
+
+        List<RankingEntry> entries=result.getRankingList();
+        assertThat(entries).isNotEmpty();
+
+        for (int i=0;i<10;i++){
+            assertThat(results.get(i).memberId()).isEqualTo(entries.get(i).getMemberId());
+            assertThat(results.get(i).memberName()).isEqualTo(entries.get(i).getMemberName());
+        }
+    }
+
+    @Test
+    @DisplayName("List<RankingEntry>를 RankingResponse 형태로 변환합니다.")
+    void entryToResponse(){
+        //given
+        List<RankingEntry> entries=List.of(
+                makeRankingEntry(1,20,10),
+                makeRankingEntry(2,10,10),
+                makeRankingEntry(3,10,4)
+        );
+        RankingType type=RankingType.MONTHLY;
+
+        //when
+        RankingResponse result=rankingMapper.entryToResponse(entries,type);
+
+        //then
+        assertThat(result).isNotNull();
+        assertThat(result.getRankingType()).isEqualTo(type);
+        assertThat(result.getRankingList()).hasSize(3);
+
+        assertThat(result.getRankingList().getFirst().getTotalScore()).isEqualTo(30);
+        assertThat(result.getRankingList().getFirst().getThreeScore()).isEqualTo(20);
+        assertThat(result.getRankingList().getFirst().getTwoScore()).isEqualTo(10);
+        assertThat(result.getRankingList().getFirst().getMemberName()).isEqualTo("test1");
+
+        assertThat(result.getRankingList().getLast().getTotalScore()).isEqualTo(14);
+        assertThat(result.getRankingList().getLast().getThreeScore()).isEqualTo(10);
+        assertThat(result.getRankingList().getLast().getTwoScore()).isEqualTo(4);
+        assertThat(result.getRankingList().getLast().getMemberName()).isEqualTo("test3");
+    }
+
+
+    @Test
+    @DisplayName("입력 객체가 RankingResult 타입이면 그대로 반환합니다.")
+    void convertToRankingResult_SAME_TYPE(){
+        //given
+        UUID memberId=UUID.randomUUID();
+        RankingResult result=new RankingResult("test",memberId,100,30,70);
+
+        //when
+        RankingResult converted=rankingMapper.convertToRankingResult(result);
+
+        //then
+        assertThat(converted).isSameAs(result);
+        assertThat(converted.memberId()).isEqualTo(result.memberId());
+    }
+
+    @Test
+    @DisplayName("입력 객체가 Map 타입이면 ObjectMapper로 RankingResult로 변환합니다._SUCCESS")
+    void convertToRankingResult_SUCCESS(){
+        //given
+        UUID memberId=UUID.randomUUID();
+        Map<String,Object> map=Map.of(
+                "memberName","test",
+                "memberId",memberId,
+                "totalScore",100,
+                "twoScore",50,
+                "threeScore",50
+        );
+
+        //when
+        RankingResult result=rankingMapper.convertToRankingResult(map);
+
+        //then
+        assertThat(result.memberId()).isEqualTo(memberId);
+        assertThat(result.totalScore()).isEqualTo(100);
+    }
+
+    @Test
+    @DisplayName("지원하지 않는 타입이 들어오면 NOT_CONVERT_TO_RANKING_RESULT를 반환합니다._SUCCESS")
+    void convertToRankingResult_FAIL(){
+        //given
+        Object invalid="invalid Object";
+
+        //when & then
+        assertThatThrownBy(()->rankingMapper.convertToRankingResult(invalid))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.NOT_CONVERT_TO_RANKING_RESULT.getMessage());
+
+    }
+
+
+    @Test
+    @DisplayName("입력 객체가 RankingEntry 타입이면 그대로 반환합니다.")
+    void convertToRankingEntry_SAME_TYPE(){
+        //given
+        UUID memberId=UUID.randomUUID();
+        RankingEntry result=RankingEntry.builder()
+                .memberId(memberId)
+                .memberName("test")
+                .rank(1)
+                .threeScore(120)
+                .twoScore(40)
+                .totalScore(160)
+                .build();
+
+        //when
+        RankingEntry converted=rankingMapper.convertToRankingEntry(result);
+
+        //then
+        assertThat(converted).isSameAs(result);
+        assertThat(converted.getMemberId()).isEqualTo(result.getMemberId());
+    }
+
+    @Test
+    @DisplayName("입력 객체가 Map 타입이면 ObjectMapper로 RankingEntry 변환합니다._SUCCESS")
+    void convertToRankingEntry_SUCCESS(){
+        //given
+        UUID memberId=UUID.randomUUID();
+        Map<String,Object> map=Map.of(
+                "rank",12,
+                "memberName","test",
+                "memberId",memberId,
+                "totalScore",100,
+                "twoScore",50,
+                "threeScore",50
+        );
+
+        //when
+        RankingEntry result=rankingMapper.convertToRankingEntry(map);
+
+        //then
+        assertThat(result.getMemberId()).isEqualTo(memberId);
+        assertThat(result.getTotalScore()).isEqualTo(100);
+    }
+
+    @Test
+    @DisplayName("지원하지 않는 타입이 들어오면 NOT_CONVERT_TO_RANKING_ENTRY 반환합니다._SUCCESS")
+    void convertToRankingEntry_FAIL(){
+        //given
+        Object invalid="invalid Object";
+
+        //when & then
+        assertThatThrownBy(()->rankingMapper.convertToRankingEntry(invalid))
+                .isInstanceOf(CustomException.class)
+                .hasMessage(ErrorCode.NOT_CONVERT_TO_RANKING_ENTRY.getMessage());
+
+    }
+
+    private RankingEntry makeRankingEntry(int rank,int three,int two){
+        return RankingEntry.builder()
+                .memberId(UUID.randomUUID())
+                .memberName("test"+rank)
+                .rank(rank)
+                .threeScore(three)
+                .twoScore(two)
+                .totalScore(two+three)
+                .build();
+    }
+}

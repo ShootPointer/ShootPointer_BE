@@ -20,4 +20,6 @@ public interface PostQueryService {
     List<SearchAutoCompleteResponse> suggest(String keyword);
     
     PostListResponse getMyPosts(UUID memberId);
+
+    PostListResponse myLikedPost(UUID memberId,Long lastPostId,int size);
 }
