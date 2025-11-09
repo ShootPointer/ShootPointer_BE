@@ -150,7 +150,7 @@ opencv:
   # -------------------------
   pre-signed:
     secret:
-      key: GWzLpvV0E+QgAGDxJstwbMsiw1Ibx2PqW+FSAREfT5F8M1vMiZzy8/ysNWXHeaSnLTy4ZmF7w5+GvWbU2ZQeLw==
+      key: 4aeba63c53ee127f58403188e131b8c9017e53a140e0b16748a12ad4221c8c73
 
   redis:
     host: ${OPENCV_REDIS_HOST:}
