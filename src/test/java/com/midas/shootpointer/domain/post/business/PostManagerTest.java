@@ -573,14 +573,14 @@ class PostManagerTest {
 
         PostEntity post1 = PostEntity.builder()
                 .content("content1")
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .likeCnt(12L)
                 .title("title1")
                 .build();
 
         PostEntity post2 = PostEntity.builder()
                 .content("content2")
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .likeCnt(20L)
                 .title("title2")
                 .build();
