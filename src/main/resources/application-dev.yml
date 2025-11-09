@@ -139,3 +139,8 @@ opencv:
     expiration-time: 1800000 #30분
 video:
   path: /home/ubuntu/shoot-pointer/vid
+
+# FCM Setting
+firebase:
+  service_key:
+    path: "/firebase/firebase_service_key.json"

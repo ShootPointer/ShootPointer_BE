@@ -40,6 +40,7 @@ public class SecurityConfig {
                     "/webjars/**",
                     "/oauth/**",
                     "/api/test-member",
+                    "/api/fcm/**",
                     "/kakao/callback",
                     "/admin/token/**",
                     "/ws/**"
