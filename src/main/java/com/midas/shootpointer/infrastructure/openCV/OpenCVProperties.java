@@ -13,7 +13,6 @@ public class OpenCVProperties {
     private String url;
     private Api api;
     private Expire expire;
-    private Redis redis;
 
     @Getter
     @Setter
@@ -31,21 +30,6 @@ public class OpenCVProperties {
         @Setter
         public static class Get{
             private String fetchVideo;
-        }
-    }
-
-    @Getter
-    @Setter
-    public static class Redis{
-        private String host;
-        private int port;
-        private Channels channels;
-
-        @Getter
-        @Setter
-        public static class Channels{
-            private String upload;
-            private String highlight;
         }
     }
 

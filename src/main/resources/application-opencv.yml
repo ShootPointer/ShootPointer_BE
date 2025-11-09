@@ -1,0 +1,9 @@
+spring:
+  data:
+    redis:
+      opencv:
+        host: ${OPENCV_REDIS_HOST:localhost}
+        port: ${OPENCV_REDIS_PORT:6380}
+        channels:
+          upload: opencv-progress-upload
+          highlight: opencv-progress-highlight

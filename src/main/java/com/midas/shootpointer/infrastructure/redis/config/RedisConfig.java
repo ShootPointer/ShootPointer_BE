@@ -31,6 +31,7 @@ public class RedisConfig {
     private static final String REDISSON_HOST_PREFIX = "redis://";
 
     @Bean
+    @Primary
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(redisHost, redisPort);
         return new LettuceConnectionFactory(configuration);

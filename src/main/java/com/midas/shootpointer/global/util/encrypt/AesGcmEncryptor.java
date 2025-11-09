@@ -31,7 +31,21 @@ public class AesGcmEncryptor {
 
     @PostConstruct
     private void initializeKeySpec(){
-        this.keySpec=new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8),"AES");
+        byte[] decodedKey=hexStringToByteArray(secretKey);
+        this.keySpec=new SecretKeySpec(decodedKey,"AES");
+    }
+
+    /**
+     * HEX 문자열 → 바이트 배열 변환 함수
+     */
+    private static byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                                  + Character.digit(s.charAt(i + 1), 16));
+        }
+        return data;
     }
 
     public String encrypt(String message){

@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.midas.shootpointer.infrastructure.openCV.OpenCVProperties;
 import com.midas.shootpointer.infrastructure.redis.subscriber.ProgressSubscriber;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -19,20 +21,20 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
+@RequiredArgsConstructor
+@Profile("opencv") //opencv 환경에서만 실행
 public class RedisOpenCVConfig {
-    private final String host;
-    private final int port;
-    private final String highlightChannel;
-    private final String uploadChannel;
+    @Value("${spring.data.redis.opencv.host}")
+    private String host;
 
-    public RedisOpenCVConfig(
-            OpenCVProperties openCVProperties
-    ){
-        this.host=openCVProperties.getRedis().getHost();
-        this.port=openCVProperties.getRedis().getPort();
-        this.highlightChannel=openCVProperties.getRedis().getChannels().getHighlight();
-        this.uploadChannel=openCVProperties.getRedis().getChannels().getUpload();
-    }
+    @Value("${spring.data.redis.opencv.port}")
+    private int port;
+
+    @Value("${spring.data.redis.opencv.channels.highlight}")
+    private String highlightChannel;
+
+    @Value("${spring.data.redis.opencv.channels.upload}")
+    private String uploadChannel;
 
     /**
      * 채널 빈 생성

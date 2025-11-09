@@ -150,14 +150,8 @@ opencv:
   # -------------------------
   pre-signed:
     secret:
-      key: 4aeba63c53ee127f58403188e131b8c9017e53a140e0b16748a12ad4221c8c73
+      key: 36b82ad3a534b95842e1bf29e538352481e4e265815042b12f4660852d89701a
 
-  redis:
-    host: ${OPENCV_REDIS_HOST:}
-    port: ${OPENCV_REDIS_PORT:6379}
-    channels:
-      upload: opencv-progress-upload
-      highlight: opencv-progress-highlight
 
 video:
   path: https://test

@@ -1,6 +1,6 @@
 package com.midas.shootpointer.infrastructure.presigned.service;
 
-import com.midas.shootpointer.global.util.encrypt.HmacSigner;
+import com.midas.shootpointer.global.util.encrypt.AesGcmEncryptor;
 import com.midas.shootpointer.global.util.file.FileValidator;
 import com.midas.shootpointer.infrastructure.openCV.OpenCVProperties;
 import com.midas.shootpointer.infrastructure.presigned.dto.FileMetadataRequest;
@@ -16,19 +16,19 @@ import java.util.UUID;
 @Service
 public class PresignedUrlService {
     public PresignedUrlService(
-            HmacSigner signer,
+            AesGcmEncryptor encryptor,
             OpenCVProperties openCVProperties,
             FileValidator fileValidator,
             RedisTemplate<String,String> redisTemplate
     ){
         this.opeCvBaseUrl= openCVProperties.getUrl();
         this.ttlMilliSeconds=openCVProperties.getExpire().getExpirationTime();
-        this.signer=signer;
+        this.encryptor=encryptor;
         this.fileValidator=fileValidator;
         this.redisTemplate=redisTemplate;
     }
 
-    private HmacSigner signer;
+    private AesGcmEncryptor encryptor;
     /**
      * openCv server Url
      */
@@ -66,7 +66,7 @@ public class PresignedUrlService {
         fileValidator.isValidFileType(request.fileName());
 
         String message=expires+":"+memberId+":"+jobId+":"+request.fileName();
-        String signature=signer.getHmacSignature(message);
+        String signature=encryptor.encrypt(message);
 
         /**
          * 2.Pre-signed Url 생성
