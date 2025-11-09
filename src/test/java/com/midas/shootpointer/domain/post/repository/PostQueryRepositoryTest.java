@@ -109,7 +109,7 @@ class PostQueryRepositoryTest {
                             .highlight(highlight)
                             .content("내용1 + 내용 2 + 내용 "+i)
                             .title("제목 1 + 제목2 + 제목 "+i)
-                            .hashTag(HashTag.TREE_POINT)
+                            .hashTag(HashTag.THREE_POINT)
                             .likeCnt(10L)
                             .build()
             );
@@ -156,7 +156,7 @@ class PostQueryRepositoryTest {
                             .highlight(highlight)
                             .content("내용1 + 내용 2 + 내용 "+i)
                             .title("제목 1 + 제목2 + 제목 "+i)
-                            .hashTag(HashTag.TREE_POINT)
+                            .hashTag(HashTag.THREE_POINT)
                             .likeCnt(10L)
                             .build()
             );

@@ -15,5 +15,9 @@ public class MemberResponseDto {
 	private UUID memberId;
 	private String email;
 	private String username;
+	private Integer backNumber;
+	private Integer totalTwoPoint;
+	private Integer totalThreePoint;
+	private Integer highlightCount;
 	
 }

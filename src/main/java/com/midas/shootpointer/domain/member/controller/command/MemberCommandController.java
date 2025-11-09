@@ -1,14 +1,12 @@
-package com.midas.shootpointer.domain.member.controller;
+package com.midas.shootpointer.domain.member.controller.command;
 
 import com.midas.shootpointer.domain.member.business.command.MemberCommandService;
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
-import com.midas.shootpointer.domain.member.dto.MemberResponseDto;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.entity.MsgEntity;
 import com.midas.shootpointer.global.annotation.CustomLog;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import com.midas.shootpointer.global.security.CustomUserDetails;
-import com.midas.shootpointer.global.security.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,8 +22,8 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/kakao") // RequestMapping API 엔드포인트 수정할 필요가 있어보임,,, -> 카카오 디벨로퍼스에서도 수정해야함
-@Tag(name = "회원 관리", description = "회원 관리 API")
+@RequestMapping("/kakao")
+@Tag(name = "카카오 로그인 및 탈퇴", description = "카카오 로그인/탈퇴 API")
 public class MemberCommandController {
     
     private final MemberCommandService memberCommandService;
@@ -49,14 +47,14 @@ public class MemberCommandController {
         return ResponseEntity.ok().body(new MsgEntity("Success", kakaoInfo));
     }
 	
-	@CustomLog("회원 탈퇴")
+	@CustomLog("카카오 회원 탈퇴")
 	@Operation(
-		summary = "회원 탈퇴 API - [담당자 : 박재성]",
+		summary = "카카오 회원 탈퇴 API - [담당자 : 박재성]",
 		responses = {
-			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 탈퇴 성공",
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "카카오 회원 탈퇴 성공",
 				content = @Content(mediaType = "application/json",
 					schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class))),
-			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX", description = "회원 탈퇴 실패",
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX", description = "카카오 회원 탈퇴 실패",
 				content = @Content(mediaType = "application/json",
 					schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
 		}
@@ -68,27 +66,5 @@ public class MemberCommandController {
         UUID deletedMemberId = memberCommandService.deleteMember(member);
         return ResponseEntity.ok(ApiResponse.ok(deletedMemberId));
     }
-	
-	@CustomLog("회원 정보 조회")
-	@Operation(
-		summary = "회원 정보 조회 API - [담당자 : 박재성]",
-		responses = {
-			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 정보 조회 성공",
-				content = @Content(mediaType = "application/json",
-					schema = @Schema(implementation = MemberResponseDto.class))),
-			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX", description = "회원 정보 조회 실패",
-				content = @Content(mediaType = "application/json",
-					schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
-		}
-	)
-	@GetMapping("/me")
-    public MemberResponseDto getCurrentMember() {
-        Member currentMember = SecurityUtils.getCurrentMember();
-		
-		return MemberResponseDto.builder()
-			.memberId(currentMember.getMemberId())
-			.email(currentMember.getEmail())
-			.username(currentMember.getUsername())
-			.build();
-    }
+
 }

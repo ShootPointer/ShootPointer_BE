@@ -37,7 +37,7 @@ class PostElasticSearchMapperImplTest {
         PostEntity post = PostEntity.builder()
                 .postId(10L)
                 .content("content")
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .highlight(highlight)
                 .likeCnt(10L)
                 .member(member)

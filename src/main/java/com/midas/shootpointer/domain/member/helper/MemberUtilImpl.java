@@ -1,8 +1,10 @@
 package com.midas.shootpointer.domain.member.helper;
 
+import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
+import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import java.util.UUID;
@@ -15,6 +17,8 @@ public class MemberUtilImpl implements MemberUtil {
 	
 	private final MemberQueryRepository memberQueryRepository;
 	private final MemberCommandRepository memberCommandRepository;
+	private final MemberBackNumberRepository memberBackNumberRepository;
+	private final HighlightQueryRepository highlightQueryRepository;
 	
 	@Override
 	public Member findMemberById(UUID memberId) {
@@ -41,5 +45,27 @@ public class MemberUtilImpl implements MemberUtil {
 	@Override
 	public boolean existsByEmail(String email) {
 		return memberQueryRepository.findByEmail(email).isPresent();
+	}
+	
+	@Override
+	public Integer getBackNumber(UUID memberId) {
+		return memberBackNumberRepository.findByMemberId(memberId)
+			.map(memberBackNumber -> memberBackNumber.getBackNumber().getBackNumber().getNumber())
+			.orElse(0);
+	}
+	
+	@Override
+	public Integer getTotalTwoPointCount(UUID memberId) {
+		return highlightQueryRepository.sumTwoPointCountByMemberId(memberId);
+	}
+	
+	@Override
+	public Integer getTotalThreePointCount(UUID memberId) {
+		return highlightQueryRepository.sumThreePointCountByMemberId(memberId);
+	}
+	
+	@Override
+	public Integer getHighlightCount(UUID memberId) {
+		return highlightQueryRepository.countByMemberId(memberId);
 	}
 }
