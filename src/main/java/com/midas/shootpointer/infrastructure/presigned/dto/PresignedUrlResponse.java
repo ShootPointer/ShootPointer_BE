@@ -4,9 +4,11 @@ public record PresignedUrlResponse(
         //pre-signedUrl
         String presignedUrl,
         //서명 값
-        String signature
+        String signature,
+        //JobId
+        String jobId
 ) {
-    public static PresignedUrlResponse of(String presignedUrl,String signature){
-        return new PresignedUrlResponse(presignedUrl,signature);
+    public static PresignedUrlResponse of(String presignedUrl,String signature,String jobId){
+        return new PresignedUrlResponse(presignedUrl,signature,jobId);
     }
 }

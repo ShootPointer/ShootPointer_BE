@@ -34,7 +34,7 @@ public class HighlightController {
     }
 
     @Operation(
-            summary = "하이라이트 URL 전송 API - [담당자 : 김도연]",
+            summary = "하이라이트 URL 전송 API (OpenCV 에서 사용) - [담당자 : 김도연]",
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "전송 성공",
                             content = @Content(mediaType="application/json",

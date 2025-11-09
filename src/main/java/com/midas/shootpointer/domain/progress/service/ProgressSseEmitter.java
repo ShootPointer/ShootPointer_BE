@@ -46,29 +46,30 @@ public class ProgressSseEmitter {
      * @param memberId : 멤버 Id
      * @Param lastEventId : 클라이언트가 보낸 Last-Event-ID
      */
-    public SseEmitter createEmitter(String memberId,String lastEventId){
+    public SseEmitter createEmitter(String memberId, String lastEventId, String jobId){
         SseEmitter emitter=new SseEmitter(ttlMillis);
-        emitters.put(memberId,emitter);
+        String sseKey=buildKey(memberId,jobId);
+        emitters.put(sseKey,emitter);
 
         emitter.onCompletion(()-> {
-            emitters.remove(memberId);
-            log.debug("SSE completed and removed {}",memberId);
+            emitters.remove(sseKey);
+            log.debug("SSE completed and removed {}",sseKey);
         });
 
         emitter.onTimeout(()-> {
-            emitters.remove(memberId);
-            log.debug("SSE timeout and removed {}",memberId);
+            emitters.remove(sseKey);
+            log.debug("SSE timeout and removed {}",sseKey);
         });
 
         emitter.onError(e-> {
-            emitters.remove(memberId);
+            emitters.remove(sseKey);
             log.warn("SSE error message {}",e.getMessage());
         });
 
         if (lastEventId!=null && !lastEventId.isBlank()){
             try {
                 long lastId=Long.parseLong(lastEventId);
-                Deque<SseEvent> deque=eventCache.get(memberId);
+                Deque<SseEvent> deque=eventCache.get(sseKey);
 
                 if (deque!=null && !deque.isEmpty()){
                     //재전송
@@ -86,16 +87,17 @@ public class ProgressSseEmitter {
     }
 
     //실제 호출 시 메서드 적용 -> 클라이언트로 전송
-    public void sendToClient(String memberId,Object data){
+    public void sendToClient(String jobId,String memberId,Object data){
         //Event Id는 TimeMillis() 사용
+        String sseKey=buildKey(memberId,jobId);
         long eventId= Instant.now().toEpochMilli();
         SseEvent event=new SseEvent(eventId,name,data);
 
         /**
          * 1. 캐시에 저장.
          */
-        eventCache.computeIfAbsent(memberId,k-> new ArrayDeque<>());
-        Deque<SseEvent> deque=eventCache.get(memberId);
+        eventCache.computeIfAbsent(sseKey,k-> new ArrayDeque<>());
+        Deque<SseEvent> deque=eventCache.get(sseKey);
 
         synchronized (deque){
             deque.addLast(event);
@@ -106,11 +108,11 @@ public class ProgressSseEmitter {
         /**
          * 2. 현재 연결되어 있는 emitter 전송
          */
-        SseEmitter emitter=emitters.get(memberId);
+        SseEmitter emitter=emitters.get(sseKey);
         if (emitter!=null){
             sendToEvent(emitter,event);
         }else {
-            log.debug("No active SSE emitter for {} event cached for replay",memberId);
+            log.debug("No active SSE emitter for {} event cached for replay",sseKey);
         }
     }
 
@@ -145,5 +147,8 @@ public class ProgressSseEmitter {
         }
     }
 
+    private String buildKey(String memberId,String jobId){
+        return String.format("%s:%s",memberId,jobId);
+    }
 
 }

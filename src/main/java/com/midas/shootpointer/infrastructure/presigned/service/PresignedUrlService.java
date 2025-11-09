@@ -56,7 +56,7 @@ public class PresignedUrlService {
 
 
     public PresignedUrlResponse createPresignedUrl(UUID memberId, FileMetadataRequest request){
-        UUID jobId=UUID.randomUUID();
+        String jobId=UUID.randomUUID().toString().replaceAll("-","").substring(0,16); //16자로 감소
         long expires= Instant.now().plusMillis(ttlMilliSeconds).getEpochSecond();
 
         /**
@@ -78,8 +78,8 @@ public class PresignedUrlService {
          */
         //pre-signed URL 만료 검증 -> OpenCv 에서 진행함.
         redisTemplate.opsForValue()
-                .set(prefix+memberId, String.valueOf(jobId), Duration.ofMillis(ttlMilliSeconds));
+                .set(prefix+memberId, jobId, Duration.ofMillis(ttlMilliSeconds));
 
-        return PresignedUrlResponse.of(preSignedUrl,signature);
+        return PresignedUrlResponse.of(preSignedUrl,signature,jobId);
     }
 }

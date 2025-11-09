@@ -30,13 +30,27 @@ public class ProgressSubscriber implements MessageListener {
     public void onMessage(Message message, byte[] pattern) {
         try {
             String body=new String(message.getBody());
+            String channel = new String(message.getChannel());
+
             log.info("[Redis SUB] Received message : {}",body);
+
+            String[] tokens = channel.split(":");
+            String jobIdFromChannel = tokens.length >= 3 ? tokens[2] : null; // 2: "opencv-progress-upload", 3: jobId
+
+            log.info("[Redis SUB] channel={} jobId={} body={}", channel, jobIdFromChannel, body);
 
             ProgressRedisResponse progress=objectMapper.readValue(body,ProgressRedisResponse.class);
 
             //null값인 경우
             if (progress==null || progress.data()==null){
                 log.error("[Redis SUB] progress data is null : time = {}", LocalDateTime.now());
+                return;
+            }
+
+            //채널의 jobId와 payload의 jobId 불일치 시 무시
+            String jobIdFromPayload = progress.data().jobId();
+            if (jobIdFromChannel != null && !jobIdFromChannel.equals(jobIdFromPayload)) {
+                log.warn("[Redis SUB] JobId mismatch detected: channel={}, payload={}", jobIdFromChannel, jobIdFromPayload);
                 return;
             }
 
@@ -55,6 +69,7 @@ public class ProgressSubscriber implements MessageListener {
             //SSE로 client에 전달
             emitter.sendToClient(
                     progress.data().memberId(),
+                    jobIdFromChannel, //redis에서 구독한 jobId로 SSE 발행
                     mapper.progressDataToResponse(progress.data())
             );
 
