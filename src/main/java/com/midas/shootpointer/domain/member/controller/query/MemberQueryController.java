@@ -4,12 +4,14 @@ import com.midas.shootpointer.domain.member.business.query.MemberQueryService;
 import com.midas.shootpointer.domain.member.dto.MemberResponseDto;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.annotation.CustomLog;
+import com.midas.shootpointer.global.dto.ApiResponse;
 import com.midas.shootpointer.global.security.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,8 +37,8 @@ public class MemberQueryController {
 		}
 	)
 	@GetMapping("/me")
-	public MemberResponseDto getCurrentMember() {
+	public ResponseEntity<ApiResponse<MemberResponseDto>> getCurrentMember() {
 		Member currentMember = SecurityUtils.getCurrentMember();
-		return memberQueryService.getMemberInfo(currentMember.getMemberId());
+		return  ResponseEntity.ok(ApiResponse.ok(memberQueryService.getMemberInfo(currentMember.getMemberId())));
 	}
 }
