@@ -5,12 +5,12 @@ import com.midas.shootpointer.domain.post.dto.response.PostListResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.dto.response.SearchAutoCompleteResponse;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -45,5 +45,10 @@ public class PostQueryServiceImpl implements PostQueryService{
     @Override
     public PostListResponse getMyPosts(UUID memberId) {
         return postManager.getMyPosts(memberId);
+    }
+
+    @Override
+    public PostListResponse myLikedPost(UUID memberId, Long lastPostId, int size) {
+        return postManager.getMyLikedPosts(memberId,lastPostId,size);
     }
 }

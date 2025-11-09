@@ -126,7 +126,7 @@ class LikeManagerTest  {
 
     private PostEntity makePostEntity(Member member){
         return PostEntity.builder()
-                .hashTag(HashTag.TREE_POINT)
+                .hashTag(HashTag.THREE_POINT)
                 .content("content")
                 .title("title")
                 .member(member)

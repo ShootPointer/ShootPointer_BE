@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.member.business;
 
 import com.midas.shootpointer.domain.member.dto.KakaoDTO;
+import com.midas.shootpointer.domain.member.dto.MemberResponseDto;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.helper.MemberHelper;
 import com.midas.shootpointer.domain.member.mapper.MemberMapper;
@@ -42,6 +43,25 @@ public class MemberManager {
     public UUID agree(Member member){
         member.agree();
         return member.getMemberId();
+    }
+    
+    public MemberResponseDto getMemberInfo(UUID memberId) {
+        // 회원 정보 조회
+        Member member = memberHelper.findMemberById(memberId);
+        
+        // 등번호 조회
+        Integer backNumber = memberHelper.getBackNumber(memberId);
+        
+        // 슛 통계 조회
+        Integer totalTwoPointCount = memberHelper.getTotalTwoPointCount(memberId);
+        Integer totalThreePointCount = memberHelper.getTotalThreePointCount(memberId);
+        
+        // 하이라이트 개수 조회
+        Integer highlightCount = memberHelper.getHighlightCount(memberId);
+        
+        return memberMapper.entityToDetailDto(
+            member, backNumber, totalTwoPointCount, totalThreePointCount, highlightCount
+        );
     }
 
     private Member findOrCreateMember(KakaoDTO kakaoDTO) {

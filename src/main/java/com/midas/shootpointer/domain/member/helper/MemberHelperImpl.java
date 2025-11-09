@@ -64,4 +64,24 @@ public class MemberHelperImpl implements MemberHelper {
 		return memberUtil.existsByEmail(email);
 	}
 	
+	@Override
+	public Integer getBackNumber(UUID memberId) {
+		return memberUtil.getBackNumber(memberId);
+	}
+	
+	@Override
+	public Integer getTotalTwoPointCount(UUID memberId) {
+		return memberUtil.getTotalTwoPointCount(memberId);
+	}
+	
+	@Override
+	public Integer getTotalThreePointCount(UUID memberId) {
+		return memberUtil.getTotalThreePointCount(memberId);
+	}
+	
+	@Override
+	public Integer getHighlightCount(UUID memberId) {
+		return memberUtil.getHighlightCount(memberId);
+	}
+	
 }

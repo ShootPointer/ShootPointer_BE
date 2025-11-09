@@ -252,6 +252,15 @@ public class PostManager {
         return PostListResponse.of(lastPostId, postResponses);
     }
 
+    @Transactional(readOnly = true)
+    public PostListResponse getMyLikedPosts(UUID memId,Long lastPostId,int size){
+        //1. 유저가 좋아요 누른 게시물 조회
+        List<PostEntity> postEntities=postHelper.getMyLikedPost(memId,lastPostId,size);
+
+        //2. entity -> dto 변환
+        return postMapper.entityToDto(postEntities);
+    }
+
     /**
      * List<PostSearchHit> -> PostListResponse 변환 inner class
      */
