@@ -253,7 +253,23 @@ class PostQueryRepositoryTest {
                 .containsExactlyElementsOf(expectedSorted);
     }
 
+    @DisplayName("member가 좋아요 누른 게시물이 존재하지 않으면 빈 리스트를 반환합니다.")
+    @Test
+    void myLikedPost_EMPTY(){
+        //given
+        memberA = memberRepository.save(Member.builder()
+                .email("test1@naver.com")
+                .username("test1")
+                .isAggregationAgreed(true)
+                .build()
+        );
 
+        //when
+        List<PostEntity> results=postQueryRepository.findMyLikedPost(memberA.getMemberId(),10,Long.MAX_VALUE);
+
+        //then
+        assertThat(results).isEqualTo(Collections.EMPTY_LIST);
+    }
     /*
     ======================================대용량 데이터 사용 쿼리 테스트======================================
      */

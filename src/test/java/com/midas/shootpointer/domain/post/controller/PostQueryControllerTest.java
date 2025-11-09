@@ -8,8 +8,6 @@ import com.midas.shootpointer.domain.post.dto.response.PostResponse;
 import com.midas.shootpointer.domain.post.dto.response.PostSort;
 import com.midas.shootpointer.domain.post.dto.response.SearchAutoCompleteResponse;
 import com.midas.shootpointer.global.security.CustomUserDetails;
-import java.util.Collections;
-import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -401,7 +399,53 @@ class PostQueryControllerTest {
         
         verify(postQueryService, times(1)).getMyPosts(testMemberId);
     }
-    
+
+    @Test
+    @DisplayName("유저가 좋아요를 누른 게시물을 반환합니다._SUCCESS")
+    void myLikedPost() throws Exception {
+        //given
+        UUID testMemberId = UUID.randomUUID();
+        Long lastPostId=Long.MAX_VALUE;
+        setAuthenticatedMember(testMemberId);
+
+        List<PostResponse> postResponses = new ArrayList<>();
+        postResponses.add(makePostResponse(LocalDateTime.now(), 1L, 50L, "title1", "content1"));
+        postResponses.add(makePostResponse(LocalDateTime.now(), 2L, 30L, "title2", "content2"));
+        postResponses.add(makePostResponse(LocalDateTime.now(), 3L, 20L, "title3", "content3"));
+
+        PostListResponse expectedResponse = PostListResponse.of(3L, postResponses);
+
+        when(postQueryService.myLikedPost(testMemberId,lastPostId,10)).thenReturn(expectedResponse);
+
+        //when - then
+        mockMvc.perform(get(baseUrl + "/my/like")
+                        .param("lastPostId", String.valueOf(Long.MAX_VALUE))
+                        .param("size", String.valueOf(10)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.success").value(true))
+
+                .andExpect(jsonPath("$.data.postList[0].postId").value(1L))
+                .andExpect(jsonPath("$.data.postList[0].likeCnt").value(50L))
+                .andExpect(jsonPath("$.data.postList[0].title").value("title1"))
+                .andExpect(jsonPath("$.data.postList[0].content").value("content1"))
+
+                .andExpect(jsonPath("$.data.postList[1].postId").value(2L))
+                .andExpect(jsonPath("$.data.postList[1].likeCnt").value(30L))
+                .andExpect(jsonPath("$.data.postList[1].title").value("title2"))
+                .andExpect(jsonPath("$.data.postList[1].content").value("content2"))
+
+                .andExpect(jsonPath("$.data.postList[2].postId").value(3L))
+                .andExpect(jsonPath("$.data.postList[2].likeCnt").value(20L))
+                .andExpect(jsonPath("$.data.postList[2].title").value("title3"))
+                .andExpect(jsonPath("$.data.postList[2].content").value("content3"))
+
+                .andExpect(jsonPath("$.data.lastPostId").value(3L))
+                .andDo(print());
+
+        verify(postQueryService, times(1)).myLikedPost(testMemberId,Long.MAX_VALUE,10);
+    }
+
     @NotNull
     private static String getCreatedDateFormat(PostResponse response) {
         return response.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
