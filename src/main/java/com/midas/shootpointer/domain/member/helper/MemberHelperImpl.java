@@ -70,13 +70,13 @@ public class MemberHelperImpl implements MemberHelper {
 	}
 	
 	@Override
-	public Integer getTotalTwoPoint(UUID memberId) {
-		return memberUtil.getTotalTwoPoint(memberId);
+	public Integer getTotalTwoPointCount(UUID memberId) {
+		return memberUtil.getTotalTwoPointCount(memberId);
 	}
 	
 	@Override
-	public Integer getTotalThreePoint(UUID memberId) {
-		return memberUtil.getTotalThreePoint(memberId);
+	public Integer getTotalThreePointCount(UUID memberId) {
+		return memberUtil.getTotalThreePointCount(memberId);
 	}
 	
 	@Override

@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 @Repository
@@ -47,15 +46,15 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
      *
      * ============================
      */
-    // 2점슛 총합
-    @Query("SELECT COALESCE(SUM(h.twoPointCount), 0) FROM HighlightEntity h WHERE h.member.memberId = :memberId")
-    Integer sumTwoPointByMemberId(@Param("memberId") UUID memberId);
+    // 2점슛 카운트 총합
+    @Query("SELECT COALESCE(SUM(h.twoPointCount), 0) FROM HighlightEntity h WHERE h.member.memberId = :memberId AND h.isSelected = true")
+    Integer sumTwoPointCountByMemberId(@Param("memberId") UUID memberId);
     
-    // 3점슛 총합
-    @Query("SELECT COALESCE(SUM(h.threePointCount), 0) FROM HighlightEntity h WHERE h.member.memberId = :memberId")
-    Integer sumThreePointByMemberId(@Param("memberId") UUID memberId);
+    // 3점슛 카운트 총합
+    @Query("SELECT COALESCE(SUM(h.threePointCount), 0) FROM HighlightEntity h WHERE h.member.memberId = :memberId AND h.isSelected = true")
+    Integer sumThreePointCountByMemberId(@Param("memberId") UUID memberId);
     
     // 하이라이트 개수
-    @Query("SELECT COUNT(h) FROM HighlightEntity h WHERE h.member.memberId = :memberId")
+    @Query("SELECT COUNT(h) FROM HighlightEntity h WHERE h.member.memberId = :memberId AND h.isSelected = true")
     Integer countByMemberId(@Param("memberId") UUID memberId);
 }

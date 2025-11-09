@@ -55,20 +55,17 @@ public class MemberUtilImpl implements MemberUtil {
 	}
 	
 	@Override
-	public Integer getTotalTwoPoint(UUID memberId) {
-		Integer result = highlightQueryRepository.sumTwoPointByMemberId(memberId);
-		return result != null ? result : 0;
+	public Integer getTotalTwoPointCount(UUID memberId) {
+		return highlightQueryRepository.sumTwoPointCountByMemberId(memberId);
 	}
 	
 	@Override
-	public Integer getTotalThreePoint(UUID memberId) {
-		Integer result = highlightQueryRepository.sumThreePointByMemberId(memberId);
-		return result != null ? result : 0;
+	public Integer getTotalThreePointCount(UUID memberId) {
+		return highlightQueryRepository.sumThreePointCountByMemberId(memberId);
 	}
 	
 	@Override
 	public Integer getHighlightCount(UUID memberId) {
-		Integer result = highlightQueryRepository.countByMemberId(memberId);
-		return result != null ? result : 0;
+		return highlightQueryRepository.countByMemberId(memberId);
 	}
 }

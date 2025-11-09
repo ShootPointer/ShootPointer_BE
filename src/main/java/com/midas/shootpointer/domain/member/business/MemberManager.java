@@ -53,8 +53,8 @@ public class MemberManager {
         Integer backNumber = memberHelper.getBackNumber(memberId);
         
         // 슛 통계 조회
-        Integer totalTwoPoint = memberHelper.getTotalTwoPoint(memberId);
-        Integer totalThreePoint = memberHelper.getTotalThreePoint(memberId);
+        Integer totalTwoPoint = memberHelper.getTotalTwoPointCount(memberId);
+        Integer totalThreePoint = memberHelper.getTotalThreePointCount(memberId);
         
         // 하이라이트 개수 조회
         Integer highlightCount = memberHelper.getHighlightCount(memberId);

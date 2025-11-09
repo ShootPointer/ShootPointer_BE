@@ -17,9 +17,9 @@ public interface MemberUtil {
 	
 	Integer getBackNumber(UUID memberId);
 	
-	Integer getTotalTwoPoint(UUID memberId);
+	Integer getTotalTwoPointCount(UUID memberId);
 	
-	Integer getTotalThreePoint(UUID memberId);
+	Integer getTotalThreePointCount(UUID memberId);
 	
 	Integer getHighlightCount(UUID memberId);
 }
