@@ -1,7 +1,7 @@
-package com.midas.shootpointer.infrastructure.redis.dto;
+package com.midas.shootpointer.domain.progress.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.midas.shootpointer.infrastructure.redis.entity.ProgressType;
+import com.midas.shootpointer.domain.progress.ProgressType;
 import com.mongodb.lang.Nullable;
 import jakarta.validation.constraints.NotNull;
 @JsonInclude(JsonInclude.Include.NON_NULL)

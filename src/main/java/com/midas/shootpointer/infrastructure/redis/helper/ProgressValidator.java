@@ -1,7 +1,7 @@
 package com.midas.shootpointer.infrastructure.redis.helper;
 
-import com.midas.shootpointer.infrastructure.redis.dto.ProgressData;
-import com.midas.shootpointer.infrastructure.redis.entity.ProgressType;
+import com.midas.shootpointer.domain.progress.dto.ProgressData;
+import com.midas.shootpointer.domain.progress.ProgressType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

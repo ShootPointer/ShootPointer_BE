@@ -1,4 +1,4 @@
-package com.midas.shootpointer.infrastructure.redis.dto;
+package com.midas.shootpointer.domain.progress.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.mongodb.lang.Nullable;

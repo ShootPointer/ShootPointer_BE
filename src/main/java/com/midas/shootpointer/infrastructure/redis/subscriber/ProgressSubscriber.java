@@ -1,7 +1,9 @@
 package com.midas.shootpointer.infrastructure.redis.subscriber;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.midas.shootpointer.infrastructure.redis.dto.ProgressRedisResponse;
+import com.midas.shootpointer.domain.progress.dto.ProgressRedisResponse;
+import com.midas.shootpointer.domain.progress.mapper.ProgressMapper;
+import com.midas.shootpointer.domain.progress.service.ProgressSseEmitter;
 import com.midas.shootpointer.infrastructure.redis.helper.ProgressValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,8 @@ import java.time.LocalDateTime;
 public class ProgressSubscriber implements MessageListener {
     private final ObjectMapper objectMapper;
     private final ProgressValidator validator;
+    private final ProgressSseEmitter emitter;
+    private final ProgressMapper mapper;
 
     @Override
     public void onMessage(Message message, byte[] pattern) {
@@ -36,10 +40,23 @@ public class ProgressSubscriber implements MessageListener {
                 return;
             }
 
+            /**
+             * success = false 또는 status가 200이 아닌 경우
+             * 1. 현재는 장애 대응 메뉴얼 존재 X => 페일오버 대응 필요.
+             * 2. log debug 으로 기록
+             */
+            if (!progress.success() || progress.status() != 200){
+                log.debug("[Redis SUB] progress data response error : time = {}",LocalDateTime.now());
+            }
+
             //SUB로 받은 값  null 검증
             validator.validate(progress.data());
 
-            //TODO: SSE로 client에 전달 로직.
+            //SSE로 client에 전달
+            emitter.sendToClient(
+                    progress.data().memberId(),
+                    mapper.progressDataToResponse(progress.data())
+            );
 
             log.info("[Redis SUB] progress info : jobId = {}",progress.data().jobId());
 
