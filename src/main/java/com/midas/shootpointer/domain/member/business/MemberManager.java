@@ -53,21 +53,15 @@ public class MemberManager {
         Integer backNumber = memberHelper.getBackNumber(memberId);
         
         // 슛 통계 조회
-        Integer totalTwoPoint = memberHelper.getTotalTwoPointCount(memberId);
-        Integer totalThreePoint = memberHelper.getTotalThreePointCount(memberId);
+        Integer totalTwoPointCount = memberHelper.getTotalTwoPointCount(memberId);
+        Integer totalThreePointCount = memberHelper.getTotalThreePointCount(memberId);
         
         // 하이라이트 개수 조회
         Integer highlightCount = memberHelper.getHighlightCount(memberId);
         
-        return MemberResponseDto.builder()
-            .memberId(member.getMemberId())
-            .email(member.getEmail())
-            .username(member.getUsername())
-            .backNumber(backNumber)
-            .totalTwoPoint(totalTwoPoint)
-            .totalThreePoint(totalThreePoint)
-            .highlightCount(highlightCount)
-            .build();
+        return memberMapper.entityToDetailDto(
+            member, backNumber, totalTwoPointCount, totalThreePointCount, highlightCount
+        );
     }
 
     private Member findOrCreateMember(KakaoDTO kakaoDTO) {
