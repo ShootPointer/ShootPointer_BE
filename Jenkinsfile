@@ -6,6 +6,7 @@ pipeline {
             name: 'PROFILE',
             choices: [
                 'test-real-data,prod,batch,es,test-highlight-data',
+                'prod,batch',
                 'dev',
                 'test-real-data',
                 'prod',
