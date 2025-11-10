@@ -44,7 +44,8 @@ public class SecurityConfig {
                     "/admin/token/**",
                     "/ws/**",
                         "/actuator/health",
-                        "/actuator/info"
+                        "/actuator/info",
+                        "/api/highlight/upload-result"
                     ).permitAll()
                 .anyRequest().authenticated()
             )
