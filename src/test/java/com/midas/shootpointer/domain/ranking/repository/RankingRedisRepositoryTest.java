@@ -8,7 +8,7 @@ import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
 import com.midas.shootpointer.domain.ranking.mapper.RankingMapper;
 import com.midas.shootpointer.domain.ranking.mapper.RankingMapperImpl;
 import com.midas.shootpointer.global.common.ErrorCode;
-import com.midas.shootpointer.global.config.RedisConfig;
+import com.midas.shootpointer.infrastructure.redis.config.RedisConfig;
 import com.midas.shootpointer.global.exception.CustomException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -42,7 +42,9 @@ public class SecurityConfig {
                     "/api/test-member",
                     "/kakao/callback",
                     "/admin/token/**",
-                    "/ws/**"
+                    "/ws/**",
+                        "/actuator/health",
+                        "/actuator/info"
                     ).permitAll()
                 .anyRequest().authenticated()
             )
