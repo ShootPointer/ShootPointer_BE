@@ -6,12 +6,13 @@ import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
 import com.midas.shootpointer.global.common.ErrorCode;
 import com.midas.shootpointer.global.exception.CustomException;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @RequiredArgsConstructor
@@ -69,7 +70,7 @@ public class MemberValidationImpl implements MemberValidation {
 			throw new CustomException(ErrorCode.UNAUTHORIZED_MEMBER_ACCESS);
 		}
 	}
-	
+
 	private void validateEmailFormat(String email) {
 		String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
 		if (!email.matches(emailRegex)) {

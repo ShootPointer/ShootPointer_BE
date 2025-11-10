@@ -8,6 +8,6 @@ import java.util.UUID;
 public interface MemberQueryService {
 	
 	Optional<Member> findByEmail(String email);
-	
+
 	MemberResponseDto getMemberInfo(UUID memberId);
 }

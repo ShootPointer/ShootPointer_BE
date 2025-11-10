@@ -17,7 +17,7 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 	
 	private final MemberHelper memberHelper;
 	private final MemberManager memberManager;
-	
+
 	@Override
 	public Optional<Member> findByEmail(String email) {
 		try {
@@ -27,10 +27,10 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 			return Optional.empty();
 		}
 	}
-	
+
 	@Override
 	public MemberResponseDto getMemberInfo(UUID memberId) {
 		return memberManager.getMemberInfo(memberId);
 	}
-	
+
 }
