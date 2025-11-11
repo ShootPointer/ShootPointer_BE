@@ -79,7 +79,7 @@ services:
       "/app.jar"
     ]
     volumes:
-      - ./pinpoint-agent:/pinpoint-agent
+      - /home/azureuser/pinpoint-agent:/pinpoint-agent
     depends_on:
       postgres:
         condition: service_healthy
