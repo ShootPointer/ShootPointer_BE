@@ -132,7 +132,7 @@ services:
       retries: 3
       start_period: 60s
 
-  # Elasticsearch
+   # Elasticsearch
   elasticsearch:
     build:
       context: .
@@ -148,9 +148,7 @@ services:
     entrypoint: >
       bash -c "
         mkdir -p /usr/share/elasticsearch/logs &&
-        chmod -R 775 /usr/share/elasticsearch/logs &&
-        chown -R 1000:1000 /usr/share/elasticsearch &&
-        echo 'Fixed log permissions, starting Elasticsearch as elasticsearch user...' &&
+        echo 'Starting Elasticsearch as elasticsearch user...' &&
         su -s /bin/bash elasticsearch -c '/usr/local/bin/docker-entrypoint.sh eswrapper'
       "
     ports:
@@ -168,6 +166,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+
 
   # Kibana
   kibana:
