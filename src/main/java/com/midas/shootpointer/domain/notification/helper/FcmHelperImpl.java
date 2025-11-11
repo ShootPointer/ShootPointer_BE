@@ -53,7 +53,7 @@ public class FcmHelperImpl implements FcmHelper {
 	}
 	
 	@Override
-	public void deleteToken(UUID memberId) {
-		fcmUtil.deleteToken(memberId);
+	public boolean deleteToken(UUID memberId) {
+		return fcmUtil.deleteToken(memberId);
 	}
 }

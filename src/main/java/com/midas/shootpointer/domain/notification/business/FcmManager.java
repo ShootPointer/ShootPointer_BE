@@ -41,4 +41,16 @@ public class FcmManager {
 		
 		log.info("| ==== 알림 전송 완료 ==== | memberId : {}, message : {}", memberId, message);
 	}
+	
+	@Transactional
+	public boolean deleteToken(UUID memberId) {
+		// validation 검증
+		fcmHelper.validateMemberId(memberId);
+		fcmHelper.existsToken(memberId);
+		// FCM 토큰 삭제
+		boolean isDeletedToken = fcmHelper.deleteToken(memberId);
+		log.info("| ==== FCM 토큰 삭제 결과 ==== | memberId : {}, isDeleted : {}", memberId, isDeletedToken);
+		
+		return isDeletedToken;
+	}
 }

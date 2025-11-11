@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.notification.business.command;
 import com.midas.shootpointer.domain.notification.business.FcmManager;
 import com.midas.shootpointer.domain.notification.dto.request.FcmTokenRequestDto;
 import com.midas.shootpointer.domain.notification.dto.request.SendNotificationRequestDto;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,5 +27,10 @@ public class FcmCommandServiceImpl implements FcmCommandService {
 			requestDto.getTitle(),
 			requestDto.getBody()
 		);
+	}
+	
+	@Override
+	public boolean deleteToken(UUID memberId) {
+		return fcmManager.deleteToken(memberId);
 	}
 }

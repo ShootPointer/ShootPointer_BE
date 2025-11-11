@@ -1,15 +1,19 @@
 package com.midas.shootpointer.domain.notification.controller;
 
+import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.notification.business.command.FcmCommandService;
 import com.midas.shootpointer.domain.notification.dto.request.FcmTokenRequestDto;
 import com.midas.shootpointer.domain.notification.dto.request.SendNotificationRequestDto;
 import com.midas.shootpointer.global.dto.ApiResponse;
+import com.midas.shootpointer.global.security.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,5 +52,20 @@ public class FcmCommandController {
 		@Valid @RequestBody SendNotificationRequestDto requestDto) {
 		fcmCommandService.sendNotification(requestDto);
 		return ResponseEntity.ok(ApiResponse.ok(requestDto));
+	}
+	
+	@Operation(
+		summary = "FCM 토큰 삭제 API - [담당자 : 박재성]",
+		responses = {
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "FCM 토큰 삭제 성공"),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4xx", description = "FCM 토큰 삭제 실패",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = com.midas.shootpointer.global.dto.ApiResponse.class)))
+		}
+	)
+	@DeleteMapping("/token")
+	public ResponseEntity<?> deleteToken() {
+		Member member = SecurityUtils.getCurrentMember();
+		
+		return ResponseEntity.ok(ApiResponse.ok(fcmCommandService.deleteToken(member.getMemberId())));
 	}
 }

@@ -72,8 +72,8 @@ public class FcmUtilImpl implements FcmUtil {
 	}
 	
 	@Override
-	public void deleteToken(UUID memberId) {
-		redisTemplate.delete(generateKey(memberId));
+	public boolean deleteToken(UUID memberId) {
+		return redisTemplate.delete(generateKey(memberId));
 	}
 	
 	private String generateKey(UUID memberId) {

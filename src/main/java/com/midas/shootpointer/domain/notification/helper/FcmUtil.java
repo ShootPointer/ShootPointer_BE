@@ -33,5 +33,5 @@ public interface FcmUtil {
 	/*
 	FCM 토큰 삭제
 	 */
-	void deleteToken(UUID memberId);
+	boolean deleteToken(UUID memberId);
 }

@@ -15,5 +15,5 @@ public interface FcmHelper extends FcmValidation, FcmUtil {
 	
 	boolean existsToken(UUID memberId);
 	
-	void deleteToken(UUID memberId);
+	boolean deleteToken(UUID memberId);
 }
