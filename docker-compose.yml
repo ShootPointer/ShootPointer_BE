@@ -148,15 +148,17 @@ services:
     entrypoint: >
       bash -c "
         mkdir -p /usr/share/elasticsearch/logs &&
-        echo 'Starting Elasticsearch as elasticsearch user...' &&
+        chmod -R 775 /usr/share/elasticsearch/logs &&
+        chown -R 1000:1000 /usr/share/elasticsearch &&
+        echo 'Starting Elasticsearch...' &&
         su -s /bin/bash elasticsearch -c '/usr/local/bin/docker-entrypoint.sh eswrapper'
       "
     ports:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - /home/azureuser/pinpoint-agent/esdata:/usr/share/elasticsearch/data
-      - /home/azureuser/pinpoint-agent/es-logs:/usr/share/elasticsearch/logs
+      - /var/lib/jenkins/esdata:/usr/share/elasticsearch/data
+      - /var/lib/jenkins/es-logs:/usr/share/elasticsearch/logs
     networks:
       - spring-network
     restart: always

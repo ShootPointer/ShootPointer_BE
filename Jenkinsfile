@@ -111,16 +111,17 @@ pipeline {
         }
 
         stage('Fix Elasticsearch Volume Permissions') {
-    steps {
-        sh '''
-            echo "🔧 Fixing Elasticsearch volume permissions..."
-            mkdir -p /home/azureuser/pinpoint-agent/esdata /home/azureuser/pinpoint-agent/es-logs
-            sudo chown -R 1000:1000 /home/azureuser/pinpoint-agent/esdata /home/azureuser/pinpoint-agent/es-logs || true
-            sudo chmod -R 775 /home/azureuser/pinpoint-agent/esdata /home/azureuser/pinpoint-agent/es-logs || true
-            echo "✅ Elasticsearch data/log volume permissions fixed."
-        '''
-    }
-}
+            steps {
+                sh '''
+                    echo "🔧 Fixing Elasticsearch volume permissions..."
+                    mkdir -p /var/lib/jenkins/esdata /var/lib/jenkins/es-logs
+                    chown -R 1000:1000 /var/lib/jenkins/esdata /var/lib/jenkins/es-logs || true
+                    chmod -R 775 /var/lib/jenkins/esdata /var/lib/jenkins/es-logs || true
+                    echo "✅ Elasticsearch data/log volume permissions fixed."
+                '''
+            }
+        }
+
 
         stage('Build and Deploy with Docker Compose') {
             environment {
