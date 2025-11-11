@@ -1,7 +1,6 @@
 version: "3.9"
 
 services:
-  # PostgreSQL
   postgres:
     image: postgres:17
     container_name: postgres
@@ -18,13 +17,12 @@ services:
       - spring-network
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U myuser -d shootpointer"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
 
-  # PgAdmin
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
@@ -37,7 +35,6 @@ services:
       - spring-network
     restart: always
 
-  # MongoDB
   mongo:
     image: mongo:8
     container_name: mongo
@@ -58,7 +55,6 @@ services:
       retries: 5
       start_period: 20s
 
-  # Spring Boot Application
   shootpointer:
     env_file:
       - .env
@@ -66,18 +62,12 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: shootpointer
-    command:
-      - java
-      - -Duser.timezone=Asia/Seoul
-      - -javaagent:/pinpoint-agent/pinpoint-bootstrap.jar
-      - -Dpinpoint.agentId=${PINPOINT_AGENT_ID}
-      - -Dpinpoint.applicationName=${PINPOINT_APPLICATION_NAME}
-      - -Dpinpoint.collector.ip=${PINPOINT_COLLECTOR_IP}
-      - -Dpinpoint.collector.tcp.port=9994
-      - -Dpinpoint.collector.stat.port=9995
-      - -Dpinpoint.collector.span.port=9996
-      - -jar
-      - /app/app.jar
+    command: >
+      java
+      -javaagent:/pinpoint-agent/pinpoint-bootstrap.jar
+      -Dpinpoint.agentId=${PINPOINT_AGENT_ID}
+      -Dpinpoint.applicationName=${PINPOINT_APPLICATION_NAME}
+      -jar /app.jar
     volumes:
       - /home/azureuser/pinpoint-agent:/pinpoint-agent
     depends_on:
@@ -89,41 +79,31 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE}"
-
-      # 서버 포트
       SERVER_PORT: "9000"
+      TZ: ${TZ}
 
-      # 데이터베이스 설정
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
 
-      # JPA 설정
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
       SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
       SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM}
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT}
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL}
 
-      # Hikari 연결 풀
       SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE}
       SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE}
       SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: ${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT}
       SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT: ${SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT}
       SPRING_DATASOURCE_HIKARI_MAX_LIFETIME: ${SPRING_DATASOURCE_HIKARI_MAX_LIFETIME}
 
-      # MongoDB
       SPRING_DATA_MONGODB_URI: ${SPRING_DATA_MONGODB_URI}
 
-      # 타임존
-      TZ: ${TZ}
-
-      # 로깅 레벨
       LOGGING_LEVEL_ORG_HIBERNATE_SQL: ${LOGGING_LEVEL_ORG_HIBERNATE_SQL}
       LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: ${LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER}
 
-      # Elasticsearch
       SPRING_ELASTICSEARCH_URIS: ${SPRING_ELASTICSEARCH_URIS}
 
     ports:
@@ -138,11 +118,7 @@ services:
       retries: 3
       start_period: 60s
 
-  # Elasticsearch
   elasticsearch:
-    build:
-      context: .
-      dockerfile: Dockerfile.elesticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:8.6.0
     container_name: elasticsearch
     user: "0"
@@ -151,14 +127,6 @@ services:
       xpack.security.enabled: "false"
       logger.level: "debug"
       ES_JAVA_OPTS: "-Xms2g -Xmx2g"
-    entrypoint: >
-      bash -c "
-        mkdir -p /usr/share/elasticsearch/logs &&
-        chmod -R 775 /usr/share/elasticsearch/logs &&
-        chown -R 1000:1000 /usr/share/elasticsearch &&
-        echo 'Fixed log permissions, starting Elasticsearch as elasticsearch user...' &&
-        su -s /bin/bash elasticsearch -c '/usr/local/bin/docker-entrypoint.sh eswrapper'
-      "
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -175,7 +143,6 @@ services:
       retries: 3
       start_period: 60s
 
-  # Kibana
   kibana:
     image: docker.elastic.co/kibana/kibana:8.6.0
     container_name: kibana
