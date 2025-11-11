@@ -1,6 +1,7 @@
 version: "3.9"
 
 services:
+  # PostgreSQL
   postgres:
     image: postgres:17
     container_name: postgres
@@ -23,6 +24,7 @@ services:
       retries: 5
       start_period: 30s
 
+  # PgAdmin
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
@@ -35,6 +37,7 @@ services:
       - spring-network
     restart: always
 
+  # MongoDB
   mongo:
     image: mongo:8
     container_name: mongo
@@ -55,6 +58,7 @@ services:
       retries: 5
       start_period: 20s
 
+  # Spring Boot + Pinpoint Agent
   shootpointer:
     env_file:
       - .env
@@ -79,31 +83,39 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE}"
-      SERVER_PORT: "9000"
-      TZ: ${TZ}
 
+      # 서버 포트
+      SERVER_PORT: "9000"
+
+      # DB 설정
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
 
+      # JPA 설정
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
       SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
       SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM}
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT}
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL}
 
+      # HikariCP
       SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE}
       SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE}
       SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: ${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT}
       SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT: ${SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT}
       SPRING_DATASOURCE_HIKARI_MAX_LIFETIME: ${SPRING_DATASOURCE_HIKARI_MAX_LIFETIME}
 
+      # MongoDB
       SPRING_DATA_MONGODB_URI: ${SPRING_DATA_MONGODB_URI}
 
+      # 타임존 / 로깅
+      TZ: ${TZ}
       LOGGING_LEVEL_ORG_HIBERNATE_SQL: ${LOGGING_LEVEL_ORG_HIBERNATE_SQL}
       LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: ${LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER}
 
+      # Elasticsearch
       SPRING_ELASTICSEARCH_URIS: ${SPRING_ELASTICSEARCH_URIS}
 
     ports:
@@ -118,7 +130,11 @@ services:
       retries: 3
       start_period: 60s
 
+  # Elasticsearch (원본 그대로 유지)
   elasticsearch:
+    build:
+      context: .
+      dockerfile: Dockerfile.elesticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:8.6.0
     container_name: elasticsearch
     user: "0"
@@ -127,6 +143,14 @@ services:
       xpack.security.enabled: "false"
       logger.level: "debug"
       ES_JAVA_OPTS: "-Xms2g -Xmx2g"
+    entrypoint: >
+      bash -c "
+        mkdir -p /usr/share/elasticsearch/logs &&
+        chmod -R 775 /usr/share/elasticsearch/logs &&
+        chown -R 1000:1000 /usr/share/elasticsearch &&
+        echo 'Fixed log permissions, starting Elasticsearch as elasticsearch user...' &&
+        su -s /bin/bash elasticsearch -c '/usr/local/bin/docker-entrypoint.sh eswrapper'
+      "
     ports:
       - "9200:9200"
       - "9300:9300"
