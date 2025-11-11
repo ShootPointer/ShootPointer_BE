@@ -157,8 +157,8 @@ services:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - ./esdata:/usr/share/elasticsearch/data
-      - ./es-logs:/usr/share/elasticsearch/logs
+      - /home/azureuser/elasticsearch/esdata:/usr/share/elasticsearch/data
+      - /home/azureuser/elasticsearch/es-logs:/usr/share/elasticsearch/logs
     networks:
       - spring-network
     restart: always
