@@ -27,3 +27,4 @@ ENV TZ=Asia/Seoul
 
 # ---- Spring Boot JAR 복사 ----
 COPY --from=builder /shootpointer/build/libs/*.jar app.jar
+ENTRYPOINT ["java","-Duser.timezone=Asia/Seoul","-jar","/app.jar"]
