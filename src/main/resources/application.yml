@@ -76,6 +76,14 @@ spring:
           max-active: 8
           max-idle: 8
           min-idle: 0
+      #production 환경에서만 활성화
+      opencv:
+        host: ${OPENCV_REDIS_HOST:localhost}
+        port: ${OPENCV_REDIS_PORT:6380}
+        channels:
+          upload: opencv-progress-upload:*
+          highlight: opencv-progress-highlight:*
+
       custom:
         ranking:
           key:
@@ -150,9 +158,11 @@ opencv:
   # -------------------------
   pre-signed:
     secret:
-      key: GWzLpvV0E+QgAGDxJstwbMsiw1Ibx2PqW+FSAREfT5F8M1vMiZzy8/ysNWXHeaSnLTy4ZmF7w5+GvWbU2ZQeLw==
+      key: 36b82ad3a534b95842e1bf29e538352481e4e265815042b12f4660852d89701a
+
+
 video:
-  path: /home/ubuntu/shoot-pointer/videos
+  path: https://test
   max-size: 200MB
 
 query:
@@ -175,3 +185,10 @@ schedules:
 firebase:
   service_key:
     path: "/firebase/firebase_service_key.json"
+
+# SSE 설정
+sse:
+  ttl: 1800000
+  event-name: progress
+  cache-max-size: 360
+  clean-up-interval: 60000
