@@ -66,18 +66,18 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: shootpointer
-    command: [
-      "java",
-      "-javaagent:/pinpoint-agent/pinpoint-bootstrap.jar",
-      "-Dpinpoint.agentId=${PINPOINT_AGENT_ID}",
-      "-Dpinpoint.applicationName=${PINPOINT_APPLICATION_NAME}",
-      "-Dpinpoint.collector.ip=${PINPOINT_COLLECTOR_IP}",
-      "-Dpinpoint.collector.tcp.port=9994",
-      "-Dpinpoint.collector.stat.port=9995",
-      "-Dpinpoint.collector.span.port=9996",
-      "-jar",
-      "/app.jar"
-    ]
+    command:
+      - java
+      - -Duser.timezone=Asia/Seoul
+      - -javaagent:/pinpoint-agent/pinpoint-bootstrap.jar
+      - -Dpinpoint.agentId=${PINPOINT_AGENT_ID}
+      - -Dpinpoint.applicationName=${PINPOINT_APPLICATION_NAME}
+      - -Dpinpoint.collector.ip=${PINPOINT_COLLECTOR_IP}
+      - -Dpinpoint.collector.tcp.port=9994
+      - -Dpinpoint.collector.stat.port=9995
+      - -Dpinpoint.collector.span.port=9996
+      - -jar
+      - /app/app.jar
     volumes:
       - /home/azureuser/pinpoint-agent:/pinpoint-agent
     depends_on:
