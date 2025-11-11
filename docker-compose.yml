@@ -193,4 +193,3 @@ volumes:
   mongo-config:
   esdata:
 
-이렇게가 맞는지 최종 점검
