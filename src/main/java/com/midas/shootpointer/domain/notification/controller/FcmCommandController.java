@@ -24,7 +24,7 @@ public class FcmCommandController {
 	private final FcmCommandService fcmCommandService;
 	
 	@Operation(
-		summary = "FCM 토큰 등록 API",
+		summary = "FCM 토큰 등록 API - [담당자 : 박재성]",
 		responses = {
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "FCM 토큰 등록 성공"),
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4XX", description = "FCM 토큰 등록 실패", content = @Content(mediaType = "application/json"))
@@ -37,7 +37,7 @@ public class FcmCommandController {
 	}
 	
 	@Operation(
-		summary = "알림 전송 API",
+		summary = "알림 전송 API - [담당자 : 박재성]",
 		responses = {
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "알림 전송 성공"),
 			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "4xx", description = "알림 전송 실패", content = @Content(mediaType = "application/json"))
