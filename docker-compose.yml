@@ -18,7 +18,7 @@ services:
       - spring-network
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U myuser -d shootpointer"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -58,7 +58,7 @@ services:
       retries: 5
       start_period: 20s
 
-  # Spring Boot + Pinpoint Agent
+  # Spring Boot Application
   shootpointer:
     env_file:
       - .env
@@ -87,7 +87,7 @@ services:
       # 서버 포트
       SERVER_PORT: "9000"
 
-      # DB 설정
+      # 데이터베이스 설정
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
@@ -100,7 +100,7 @@ services:
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT}
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL}
 
-      # HikariCP
+      # Hikari 연결 풀
       SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE}
       SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE}
       SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: ${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT}
@@ -110,8 +110,10 @@ services:
       # MongoDB
       SPRING_DATA_MONGODB_URI: ${SPRING_DATA_MONGODB_URI}
 
-      # 타임존 / 로깅
+      # 타임존
       TZ: ${TZ}
+
+      # 로깅 레벨
       LOGGING_LEVEL_ORG_HIBERNATE_SQL: ${LOGGING_LEVEL_ORG_HIBERNATE_SQL}
       LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: ${LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER}
 
@@ -130,7 +132,7 @@ services:
       retries: 3
       start_period: 60s
 
-  # Elasticsearch (원본 그대로 유지)
+  # Elasticsearch
   elasticsearch:
     build:
       context: .
@@ -167,6 +169,7 @@ services:
       retries: 3
       start_period: 60s
 
+  # Kibana
   kibana:
     image: docker.elastic.co/kibana/kibana:8.6.0
     container_name: kibana
@@ -189,3 +192,5 @@ volumes:
   mongo-data:
   mongo-config:
   esdata:
+
+이렇게가 맞는지 최종 점검
