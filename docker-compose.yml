@@ -157,8 +157,8 @@ services:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - /var/lib/jenkins/esdata:/usr/share/elasticsearch/data
-      - /var/lib/jenkins/es-logs:/usr/share/elasticsearch/logs
+      - ./esdata:/usr/share/elasticsearch/data
+      - ./es-logs:/usr/share/elasticsearch/logs
     networks:
       - spring-network
     restart: always

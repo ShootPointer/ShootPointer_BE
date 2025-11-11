@@ -114,13 +114,14 @@ pipeline {
             steps {
                 sh '''
                     echo "🔧 Fixing Elasticsearch volume permissions..."
-                    mkdir -p /var/lib/jenkins/esdata /var/lib/jenkins/es-logs
-                    chown -R 1000:1000 /var/lib/jenkins/esdata /var/lib/jenkins/es-logs || true
-                    chmod -R 775 /var/lib/jenkins/esdata /var/lib/jenkins/es-logs || true
+                    mkdir -p esdata es-logs
+                    chown -R 1000:1000 esdata es-logs || true
+                    chmod -R 775 esdata es-logs || true
                     echo "✅ Elasticsearch data/log volume permissions fixed."
                 '''
             }
         }
+
 
 
         stage('Build and Deploy with Docker Compose') {
