@@ -43,7 +43,10 @@ public class SecurityConfig {
                     "/api/fcm/**",
                     "/kakao/callback",
                     "/admin/token/**",
-                    "/ws/**"
+                    "/ws/**",
+                        "/actuator/health",
+                        "/actuator/info",
+                        "/api/highlight/upload-result"
                     ).permitAll()
                 .anyRequest().authenticated()
             )

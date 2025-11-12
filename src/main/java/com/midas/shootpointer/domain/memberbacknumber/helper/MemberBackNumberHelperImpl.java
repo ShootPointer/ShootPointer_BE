@@ -6,6 +6,8 @@ import com.midas.shootpointer.domain.memberbacknumber.entity.MemberBackNumberEnt
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 public class MemberBackNumberHelperImpl implements MemberBackNumberHelper{
@@ -13,5 +15,10 @@ public class MemberBackNumberHelperImpl implements MemberBackNumberHelper{
     @Override
     public MemberBackNumberEntity findOrElseGetMemberBackNumber(Member member, BackNumberEntity backNumberEntity) {
         return memberBackNumberUtil.findOrElseGetMemberBackNumber(member,backNumberEntity);
+    }
+
+    @Override
+    public BackNumberEntity findByMemberId(UUID memberId) {
+        return memberBackNumberUtil.findByMemberId(memberId);
     }
 }

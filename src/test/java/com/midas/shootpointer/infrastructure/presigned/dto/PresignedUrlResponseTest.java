@@ -13,17 +13,16 @@ class PresignedUrlResponseTest {
     void PresignedUrlResponse(){
         //given
         String presignedUrl="pre-signed";
-        long expiredAt=1231231L;
         String signature="signature";
         UUID jobId=UUID.randomUUID();
+        String convertedJobId=jobId.toString();
 
         //when
-        PresignedUrlResponse response=PresignedUrlResponse.of(presignedUrl,expiredAt,signature,jobId);
+        PresignedUrlResponse response=PresignedUrlResponse.of(presignedUrl,signature,convertedJobId);
 
         //then
         assertThat(response.presignedUrl()).isEqualTo(presignedUrl);
-        assertThat(response.expiredAt()).isEqualTo(expiredAt);
         assertThat(response.signature()).isEqualTo(signature);
-        assertThat(response.jobId()).isEqualTo(jobId);
+        assertThat(response.jobId()).isEqualTo(convertedJobId);
     }
 }

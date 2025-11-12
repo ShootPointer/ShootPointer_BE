@@ -66,7 +66,20 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: shootpointer
-    command: ["java", "-Xmx2g", "-jar", "/app.jar"]
+    command: [
+      "java",
+      "-javaagent:/pinpoint-agent/pinpoint-bootstrap.jar",
+      "-Dpinpoint.agentId=${PINPOINT_AGENT_ID}",
+      "-Dpinpoint.applicationName=${PINPOINT_APPLICATION_NAME}",
+      "-Dpinpoint.collector.ip=${PINPOINT_COLLECTOR_IP}",
+      "-Dpinpoint.collector.tcp.port=9994",
+      "-Dpinpoint.collector.stat.port=9995",
+      "-Dpinpoint.collector.span.port=9996",
+      "-jar",
+      "/app.jar"
+    ]
+    volumes:
+      - ./pinpoint-agent:/pinpoint-agent
     depends_on:
       postgres:
         condition: service_healthy

@@ -1,4 +1,4 @@
-package com.midas.shootpointer.global.config;
+package com.midas.shootpointer.infrastructure.redis.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +31,7 @@ public class RedisConfig {
     private static final String REDISSON_HOST_PREFIX = "redis://";
 
     @Bean
+    @Primary
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(redisHost, redisPort);
         return new LettuceConnectionFactory(configuration);

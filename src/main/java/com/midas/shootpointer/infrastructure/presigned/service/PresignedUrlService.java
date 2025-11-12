@@ -1,11 +1,10 @@
 package com.midas.shootpointer.infrastructure.presigned.service;
 
-import com.midas.shootpointer.global.util.encrypt.HmacSigner;
+import com.midas.shootpointer.global.util.encrypt.AesGcmEncryptor;
 import com.midas.shootpointer.global.util.file.FileValidator;
 import com.midas.shootpointer.infrastructure.openCV.OpenCVProperties;
 import com.midas.shootpointer.infrastructure.presigned.dto.FileMetadataRequest;
 import com.midas.shootpointer.infrastructure.presigned.dto.PresignedUrlResponse;
-import com.midas.shootpointer.infrastructure.websocket.WebSocketProgressPublisher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -17,21 +16,19 @@ import java.util.UUID;
 @Service
 public class PresignedUrlService {
     public PresignedUrlService(
-            HmacSigner signer,
+            AesGcmEncryptor encryptor,
             OpenCVProperties openCVProperties,
             FileValidator fileValidator,
-            RedisTemplate<String,String> redisTemplate,
-            WebSocketProgressPublisher progressPublisher
+            RedisTemplate<String,String> redisTemplate
     ){
         this.opeCvBaseUrl= openCVProperties.getUrl();
         this.ttlMilliSeconds=openCVProperties.getExpire().getExpirationTime();
-        this.signer=signer;
+        this.encryptor=encryptor;
         this.fileValidator=fileValidator;
         this.redisTemplate=redisTemplate;
-        this.progressPublisher=progressPublisher;
     }
 
-    private HmacSigner signer;
+    private AesGcmEncryptor encryptor;
     /**
      * openCv server Url
      */
@@ -57,10 +54,9 @@ public class PresignedUrlService {
     private RedisTemplate<String,String> redisTemplate;
 
 
-    private WebSocketProgressPublisher progressPublisher;
 
     public PresignedUrlResponse createPresignedUrl(UUID memberId, FileMetadataRequest request){
-        UUID jobId=UUID.randomUUID();
+        String jobId=UUID.randomUUID().toString().replaceAll("-","").substring(0,16); //16자로 감소
         long expires= Instant.now().plusMillis(ttlMilliSeconds).getEpochSecond();
 
         /**
@@ -70,7 +66,7 @@ public class PresignedUrlService {
         fileValidator.isValidFileType(request.fileName());
 
         String message=expires+":"+memberId+":"+jobId+":"+request.fileName();
-        String signature=signer.getHmacSignature(message);
+        String signature=encryptor.encrypt(message);
 
         /**
          * 2.Pre-signed Url 생성
@@ -80,9 +76,10 @@ public class PresignedUrlService {
         /**
          * 3.redis에 memberId:jobId  형태 저장 - TTL : 30분
          */
+        //pre-signed URL 만료 검증 -> OpenCv 에서 진행함.
         redisTemplate.opsForValue()
-                .set(prefix+memberId, String.valueOf(jobId), Duration.ofMillis(ttlMilliSeconds));
+                .set(prefix+memberId, jobId, Duration.ofMillis(ttlMilliSeconds));
 
-        return PresignedUrlResponse.of(preSignedUrl,expires,signature,jobId);
+        return PresignedUrlResponse.of(preSignedUrl,signature,jobId);
     }
 }
