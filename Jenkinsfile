@@ -5,6 +5,7 @@ pipeline {
         choice(
             name: 'PROFILE',
             choices: [
+                'prod,batch',
                 'test-real-data,prod,batch,es,test-highlight-data',
                 'dev',
                 'test-real-data',
@@ -81,7 +82,13 @@ pipeline {
                             fi
                         done
 
-                        # 포트 충돌 방지용 주요 포트 해제 (Postgres, Mongo, Elastic, Redis, Kibana 등)
+                        # 로컬 MongoDB 데몬이 켜져 있으면 중단
+                        if pgrep mongod > /dev/null; then
+                            echo "Stopping local MongoDB daemon..."
+                            sudo systemctl stop mongod || true
+                        fi
+
+                        # 포트 충돌 방지용 주요 포트 해제
                         for port in 5432 5431 27017 27016 9200 6379 5601; do
                             PID=$(lsof -ti :$port || true)
                             if [ ! -z "$PID" ]; then
