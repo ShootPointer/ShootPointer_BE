@@ -185,6 +185,8 @@ schedules:
 firebase:
   service_key:
     path: "/firebase/firebase_service_key.json"
+
+
 # SSE 설정
 sse:
   ttl: 1800000
