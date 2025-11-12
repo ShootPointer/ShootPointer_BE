@@ -144,3 +144,4 @@ video:
 firebase:
   service_key:
     path: "/firebase/firebase_service_key.json"
+  enabled: true
