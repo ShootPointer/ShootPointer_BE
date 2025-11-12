@@ -76,6 +76,7 @@ spring:
           max-active: 8
           max-idle: 8
           min-idle: 0
+
       #production 환경에서만 활성화
       opencv:
         host: ${OPENCV_REDIS_HOST:localhost}
@@ -160,7 +161,6 @@ opencv:
     secret:
       key: 36b82ad3a534b95842e1bf29e538352481e4e265815042b12f4660852d89701a
 
-
 video:
   path: https://test
   max-size: 200MB
@@ -180,6 +180,12 @@ schedules:
         weekly: 0 0 0 * * MON
         monthly: 0 0 0 1 * *
   zone: Asia/Seoul
+
+# FCM Setting
+firebase:
+  service_key:
+    path: "/firebase/firebase_service_key.json"
+  enabled: true
 
 
 # SSE 설정

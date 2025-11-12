@@ -13,7 +13,7 @@ public enum ErrorCode {
      * {Domain} {Package}   {ERROR_NUM}
      * <p>
      * - Domain
-     * community:                  10
+     * notification:               10
      * highlight:                  20
      * member:                     30
      * global:                     40
@@ -51,7 +51,13 @@ public enum ErrorCode {
     FILE_SIZE_EXCEEDED(20204,HttpStatus.BAD_REQUEST,"파일의 크기가 초과했습니다.(제한 : 200MB)"),
     FILE_UPLOAD_FAILED(20205,HttpStatus.BAD_REQUEST,"파일 업로드에 실패했습니다."),
     IMAGE_CONVERT_FAILED(20206,HttpStatus.INTERNAL_SERVER_ERROR,"이미지 파일을 변환하던 중 오류가 발생했습니다."),
-
+    
+    // 106(notification - helper) part
+    FCM_TOKEN_NOT_FOUND(10601, HttpStatus.NOT_FOUND, "FCM 토큰을 찾을 수 없습니다."),
+    FCM_SEND_FAILED(10602, HttpStatus.INTERNAL_SERVER_ERROR, "FCM 메세지 전송에 실패했습니다."),
+    FCM_TITLE_NOT_FOUND(10603, HttpStatus.NOT_FOUND, "FCM 알림의 제목을 찾을 수 없습니다."),
+    FCM_BODY_NOT_FOUND(10604, HttpStatus.NOT_FOUND, "FCM 알림의 내용을 찾을 수 없습니다."),
+    
     //300(member - entity) part
     IS_AGGREGATION_TRUE(30001,HttpStatus.BAD_REQUEST,"이미 하이라이트 영상 정보 수집에 동의했습니다."),
 
@@ -90,7 +96,6 @@ public enum ErrorCode {
     NOT_MATCHED_BACK_NUMBER(20503,HttpStatus.NOT_FOUND,"등 번호를 인식할 수 없습니다. 새로운 사진을 전송해주세요."),
 
     // 502(backnumber - service) part
-    //* TODO : 현재 멤버 관련 로직이 Kakao 밖에 없어서 Member 도메인에 예외처리가 처음 생긴게 BackNumber 도메인임. << 이 부분은 추후에 Member 도메인에 로직 생기면 바꿀게요~
     MEMBER_NOT_FOUND(50201, HttpStatus.NOT_FOUND, "Member를 찾을 수 없음."),
     BACK_NUMBER_NOT_FOUND(50301,HttpStatus.NOT_FOUND,"알맞은 등 번호를 찾을 수 없습니다."),
 

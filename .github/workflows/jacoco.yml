@@ -128,6 +128,11 @@ jobs:
           docker exec $(docker ps -q -f "ancestor=postgres:15") \
             psql -U postgres -t -c "SHOW max_connections;"
 
+      - name: Restore Firebase Service Account Key
+        run: |
+          mkdir -p src/main/resources/firebase
+          printf "%s" '${{ secrets.FIREBASE_SERVICE_KEY }}' > src/main/resources/firebase/firebase_service_key.json
+
       - name: Test with Gradle
         run: |
           ./gradlew clean test jacocoTestReport --info --stacktrace \
@@ -135,6 +140,7 @@ jobs:
           -Dspring.elasticsearch.uris=http://localhost:9200
         env:
           SPRING_PROFILES_ACTIVE: test,es,batch
+          FIREBASE_ENABLED: false
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/testdb
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: postgres
