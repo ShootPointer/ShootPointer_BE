@@ -128,6 +128,13 @@ jobs:
           docker exec $(docker ps -q -f "ancestor=postgres:15") \
             psql -U postgres -t -c "SHOW max_connections;"
 
+      - name: Restore Firebase Service Account Key
+        run: |
+          echo "Restoring firebase_service_key.json..."
+          mkdir -p src/main/resources/firebase
+          echo "${{ secrets.FIREBASE_SERVICE_KEY }}" > src/main/resources/firebase/firebase_service_key.json
+          echo "Firebase key restored successfully!"
+
       - name: Test with Gradle
         run: |
           ./gradlew clean test jacocoTestReport --info --stacktrace \
