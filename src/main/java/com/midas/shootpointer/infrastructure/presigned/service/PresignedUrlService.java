@@ -65,7 +65,7 @@ public class PresignedUrlService {
         fileValidator.isValidFileSize(request.fileSize());
         fileValidator.isValidFileType(request.fileName());
 
-        String message=expires+":"+memberId+":"+jobId+":"+request.fileName();
+        String message=expires+":"+memberId+":"+jobId;
         String signature=encryptor.encrypt(message);
 
         /**
