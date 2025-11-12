@@ -130,10 +130,8 @@ jobs:
 
       - name: Restore Firebase Service Account Key
         run: |
-          echo "Restoring firebase_service_key.json..."
           mkdir -p src/main/resources/firebase
-          echo "${{ secrets.FIREBASE_SERVICE_KEY }}" > src/main/resources/firebase/firebase_service_key.json
-          echo "Firebase key restored successfully!"
+          echo "${{ secrets.FIREBASE_SERVICE_KEY }}" > src/main/resources/firebase/firebase_service_key.json"
 
       - name: Test with Gradle
         run: |
