@@ -1,7 +1,6 @@
 package com.midas.shootpointer.infrastructure.openCV.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,10 +8,8 @@ import lombok.Getter;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OpenCVResponse {
-    @NotBlank
     private Integer status;
 
-    @NotBlank
     private Boolean success;
 
     //등 번호

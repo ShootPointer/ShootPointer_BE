@@ -24,7 +24,7 @@ public class OpenCVValidatorImpl implements OpenCVValidator{
      */
     @Override
     public void failedOpenCVRequest(OpenCVResponse response) {
-        if (!response.getStatus().equals(200)){
+        if (!response.getSuccess() || !response.getStatus().equals(200)){
             throw new CustomException(ErrorCode.FAILED_SEND_IMAGE_TO_OPENCV);
         }
     }
