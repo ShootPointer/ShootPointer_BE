@@ -1,1 +1,1 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:8.6.0 
+FROM tkv00/elasticsearch-nori:7.17.9
