@@ -5,8 +5,8 @@ pipeline {
         choice(
             name: 'PROFILE',
             choices: [
+                'test-real-data,prod,batch,es',
                 'prod,batch',
-                'test-real-data,prod,batch,es,test-highlight-data',
                 'dev',
                 'test-real-data',
                 'prod',
