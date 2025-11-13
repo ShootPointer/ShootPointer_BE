@@ -15,6 +15,7 @@ import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.mapper.PostElasticSearchMapper;
 import com.midas.shootpointer.domain.post.repository.PostElasticSearchRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
+import com.midas.shootpointer.test.BasketballPostDataGenerator.PostData;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -115,10 +116,8 @@ public class SetRealPostDataLoader implements CommandLineRunner {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime threeYearsAgo = now.minusYears(3);
 
-
-
-        //Json parsing한 데이터
-        List<Object[]> dataList = readJson();
+        // 농구 하이라이트 게시물 데이터 생성
+        List<PostData> postDataList = BasketballPostDataGenerator.generateRandomPosts(SIZE);
 
         String sql = "INSERT INTO post (post_id,title, content, hash_tag, highlight_id, member_id,like_cnt,created_at,modified_at) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)";
         List<Object[]> batchArgs = new ArrayList<>();
@@ -144,16 +143,17 @@ public class SetRealPostDataLoader implements CommandLineRunner {
 
             UUID highlightId = highlight.getHighlightId();
             UUID memberId = member.getMemberId();
-
+            
+            PostData postData = postDataList.get(i);
             //제목
-            String title = dataList.get(i)[0].toString();
+            String title = postData.getTitle();
             //내용
-            String content = dataList.get(i)[1].toString();
+            String content = postData.getContent();
             //좋아요 개수
-            Long likeCnt = (Long) dataList.get(i)[2];
+            Long likeCnt = postData.getLikeCnt();
             //게시물 id
-            Long postId = (Long) dataList.get(i)[3];
-
+            Long postId = postData.getPostId();
+            
             // 랜덤 날짜
             long start = threeYearsAgo.toEpochSecond(ZoneOffset.UTC);
             long end = now.toEpochSecond(ZoneOffset.UTC);
