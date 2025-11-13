@@ -44,7 +44,7 @@ services:
     environment:
       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     ports:
-      - "27017:27017"
+      - "27017"
     volumes:
       - mongo-data:/data/db
       - mongo-config:/data/configdb
@@ -66,20 +66,14 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: shootpointer
-    command: [
-      "java",
-      "-javaagent:/pinpoint-agent/pinpoint-bootstrap.jar",
-      "-Dpinpoint.agentId=${PINPOINT_AGENT_ID}",
-      "-Dpinpoint.applicationName=${PINPOINT_APPLICATION_NAME}",
-      "-Dpinpoint.collector.ip=${PINPOINT_COLLECTOR_IP}",
-      "-Dpinpoint.collector.tcp.port=9994",
-      "-Dpinpoint.collector.stat.port=9995",
-      "-Dpinpoint.collector.span.port=9996",
-      "-jar",
-      "/app.jar"
-    ]
+    command: >
+      java
+      -javaagent:/pinpoint-agent/pinpoint-bootstrap.jar
+      -Dpinpoint.agentId=${PINPOINT_AGENT_ID}
+      -Dpinpoint.applicationName=${PINPOINT_APPLICATION_NAME}
+      -jar /app.jar
     volumes:
-      - ./pinpoint-agent:/pinpoint-agent
+      - /home/azureuser/pinpoint-agent:/pinpoint-agent
     depends_on:
       postgres:
         condition: service_healthy
@@ -138,7 +132,7 @@ services:
       retries: 3
       start_period: 60s
 
-  # Elasticsearch
+   # Elasticsearch
   elasticsearch:
     build:
       context: .
@@ -156,15 +150,15 @@ services:
         mkdir -p /usr/share/elasticsearch/logs &&
         chmod -R 775 /usr/share/elasticsearch/logs &&
         chown -R 1000:1000 /usr/share/elasticsearch &&
-        echo 'Fixed log permissions, starting Elasticsearch as elasticsearch user...' &&
+        echo 'Starting Elasticsearch...' &&
         su -s /bin/bash elasticsearch -c '/usr/local/bin/docker-entrypoint.sh eswrapper'
       "
     ports:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - ./esdata:/usr/share/elasticsearch/data
-      - ./es-logs:/usr/share/elasticsearch/logs
+      - /home/azureuser/elasticsearch/esdata:/usr/share/elasticsearch/data
+      - /home/azureuser/elasticsearch/es-logs:/usr/share/elasticsearch/logs
     networks:
       - spring-network
     restart: always
@@ -174,6 +168,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+
 
   # Kibana
   kibana:
@@ -198,3 +193,4 @@ volumes:
   mongo-data:
   mongo-config:
   esdata:
+
