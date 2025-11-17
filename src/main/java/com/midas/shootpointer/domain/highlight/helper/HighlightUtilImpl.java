@@ -79,52 +79,11 @@ public class HighlightUtilImpl implements HighlightUtil{
     @Override
     public List<PeriodHighlightResponse> fetchAllMembersHighlights(PeriodType period) {
         LocalDateTime now=LocalDateTime.now();
-        LocalDateTime startDate=calculateStartDate(period,now);
-        LocalDateTime endDate=calculateEndDate(period,now);
+        LocalDateTime startDate=calculateDateTimeRange(period,now).start();
+        LocalDateTime endDate=calculateDateTimeRange(period,now).end();
         Pageable page= PageRequest.of(0,HIGHLIGHT_SIZE);
 
         return highlightQueryRepository.fetchPeriodHighlight(startDate,endDate,FETCH_SIZE,page);
-    }
-
-    @Override
-    public LocalDateTime calculateStartDate(PeriodType type,LocalDateTime now) {
-        switch (type){
-            case MONTHLY -> {
-                return now.withDayOfMonth(1).toLocalDate().atStartOfDay();
-            }
-            case WEEKLY -> {
-                return now
-                        .with(DayOfWeek.MONDAY)
-                        .toLocalDate()
-                        .atStartOfDay();
-            }
-            case DAILY -> {
-                return now.toLocalDate()
-                        .atStartOfDay();
-            }
-            default -> throw new IllegalArgumentException("LocalDateTime 지원하지 않는 타입");
-        }
-    }
-
-    @Override
-    public LocalDateTime calculateEndDate(PeriodType type,LocalDateTime now) {
-        switch (type){
-            case MONTHLY -> {
-                return now.withDayOfMonth(now.toLocalDate().lengthOfMonth())
-                        .toLocalDate()
-                        .atTime(23,59,59);
-            }
-            case WEEKLY -> {
-                return now.with(DayOfWeek.SUNDAY)
-                        .toLocalDate()
-                        .atTime(23,59,59);
-            }
-            case DAILY -> {
-                return now.toLocalDate()
-                        .atTime(23,59,59);
-            }
-            default -> throw new IllegalArgumentException("LocalDateTime 지원하지 않는 타입");
-        }
     }
 
     /**
@@ -160,6 +119,38 @@ public class HighlightUtilImpl implements HighlightUtil{
     public List<HighlightInfoResponse> fetchFlatHighlightList(int year, int month,UUID memberId) {
         DateTimeRange range=getMonthDateTimeRange(year,month);
         return highlightQueryRepository.fetchFlatHighlights(range.start(),range.end(),memberId);
+    }
+
+    @Override
+    public DateTimeRange calculateDateTimeRange(PeriodType type, LocalDateTime now) {
+        LocalDateTime start;
+        LocalDateTime end;
+
+        switch (type){
+            case MONTHLY -> {
+                start= now.withDayOfMonth(1).toLocalDate().atStartOfDay();
+                end=now.withDayOfMonth(now.toLocalDate().lengthOfMonth())
+                        .toLocalDate()
+                        .atTime(23,59,59);
+            }
+            case WEEKLY -> {
+                start=now
+                        .with(DayOfWeek.MONDAY)
+                        .toLocalDate()
+                        .atStartOfDay();
+                end=now.with(DayOfWeek.SUNDAY)
+                        .toLocalDate()
+                        .atTime(23,59,59);
+            }
+            case DAILY -> {
+                start= now.toLocalDate()
+                        .atStartOfDay();
+                end= now.toLocalDate()
+                        .atTime(23,59,59);
+            }
+            default -> throw new IllegalArgumentException("LocalDateTime 지원하지 않는 타입");
+        }
+        return new DateTimeRange(start,end);
     }
 
     @Override

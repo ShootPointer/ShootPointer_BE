@@ -48,13 +48,8 @@ public class HighlightHelperImpl implements HighlightHelper{
     }
 
     @Override
-    public LocalDateTime calculateStartDate(PeriodType type, LocalDateTime now) {
-        return highlightUtil.calculateStartDate(type,now);
-    }
-
-    @Override
-    public LocalDateTime calculateEndDate(PeriodType type, LocalDateTime now) {
-        return highlightUtil.calculateEndDate(type,now);
+    public DateTimeRange calculateDateTimeRange(PeriodType type, LocalDateTime now) {
+        return null;
     }
 
     @Override

@@ -20,8 +20,7 @@ public interface HighlightUtil {
     List<HighlightEntity> savedAll(List<HighlightEntity> entities);
     Page<HighlightEntity> fetchMembersHighlights(UUID memberId, Pageable pageable);
     List<PeriodHighlightResponse> fetchAllMembersHighlights(PeriodType period);
-    LocalDateTime calculateStartDate(PeriodType type,LocalDateTime now);
-    LocalDateTime calculateEndDate(PeriodType type,LocalDateTime now);
+    DateTimeRange calculateDateTimeRange(PeriodType type,LocalDateTime now);
     Map<LocalDate,List<HighlightInfoResponse>> groupingHighlights(List<HighlightInfoResponse> flatHighlightList);
     List<HighlightInfoResponse> fetchFlatHighlightList(int year,int month,UUID memberId);
     DateTimeRange getMonthDateTimeRange(int year, int month);
