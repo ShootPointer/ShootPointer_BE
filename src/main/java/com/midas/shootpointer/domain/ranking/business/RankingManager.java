@@ -7,12 +7,14 @@ import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
 import com.midas.shootpointer.domain.ranking.helper.RankingUtil;
 import com.midas.shootpointer.domain.ranking.mapper.RankingMapper;
 import com.midas.shootpointer.domain.ranking.repository.RankingRedisRepository;
+import com.midas.shootpointer.domain.ranking.repository.RankingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -21,6 +23,7 @@ public class RankingManager {
     private final RankingMapper mapper;
     private final RankingUtil rankingUtil;
     private final RankingRedisRepository redisRepository;
+    private final RankingRepository rankingRepository;
 
     /**
      * 전 날 랭킹 집계 조회
@@ -58,7 +61,15 @@ public class RankingManager {
          * 조회값이 null인 경우
          */
         if (results==null || results.isEmpty()) {
-            return mapper.entryToResponse(Collections.emptyList(),type);
+            /**
+             * DB에서 직접 조회
+             */
+            Pageable page= PageRequest.of(0,10);
+            LocalDateTime startDate=rankingUtil.calculateStartDate(LocalDateTime.now(),type);
+            LocalDateTime endDate=rankingUtil.calculateEndDate(LocalDateTime.now(),type);
+
+            List<RankingEntry> fetchByDataBase=rankingRepository.fetchThisWeekRanking_Top10(page,startDate,endDate,type);
+            return mapper.entryToResponse(fetchByDataBase,type);
         }
 
         return mapper.entryToResponse(results,type);
