@@ -24,7 +24,7 @@ public class HighlightFactory {
         return highlightInfos.stream()
                 .map(info -> HighlightEntity.builder()
                         .member(member)
-                        .highlightURL(pathPrefix+info.highlightUrl())
+                        .highlightURL(pathPrefix+"/"+info.highlightUrl())
                         .highlightKey(key)
                         .twoPointCount(info.twoPointCount())
                         .threePointCount(info.threePointCount())
