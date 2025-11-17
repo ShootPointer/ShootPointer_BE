@@ -101,14 +101,6 @@ public class OpenCVClientImpl implements OpenCVClient {
                 //동기식 처리
                 .block();
 
-        if (response == null) {
-            throw new CustomException(ErrorCode.INTERNAL_ERROR_OF_PYTHON_SERVER);
-        }
-
-        //기타 정확도 예외
-        if (Boolean.FALSE.equals(response.getSuccess())){
-            throw new CustomException(response.getMessage());
-        }
 
         //openCV 응답값 예외 처리
         openCVValidator.failedOpenCVRequest(response);
