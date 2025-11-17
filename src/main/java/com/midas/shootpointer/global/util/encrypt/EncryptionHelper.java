@@ -10,7 +10,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 @Component
 @Convert
-@Component
 public class EncryptionHelper implements AttributeConverter<String, String> {
 	@Value("${encrypt.key}")
 	private String keyHex;
