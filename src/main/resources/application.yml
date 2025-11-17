@@ -16,6 +16,9 @@ jwt:
   refresh_expiration_time: 259200000
 
 spring:
+  output:
+    ansi:
+      enabled: always
   jackson:
     serialization:
       write-dates-as-timestamps: false
@@ -134,7 +137,9 @@ management:
   endpoint:
     health:
       show-details: always
-
+  health:
+    elasticsearch:
+      enabled: false
 #Kakao
 kakao:
   auth:
@@ -188,3 +193,14 @@ sse:
   event-name: progress
   cache-max-size: 360
   clean-up-interval: 60000
+
+#logging
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+
+p6spy:
+  formatting:
+    stdout: true

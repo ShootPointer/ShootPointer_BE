@@ -82,8 +82,8 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
         new com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse(
             h.highlightId,
             h.createdAt,
-            (SUM (h.twoPointCount) * 2),
-            (SUM (h.threePointCount) * 3),
+            h.twoPointCount * 2  ,
+            h.threePointCount * 3 ,
             h.highlightURL
         )
     FROM

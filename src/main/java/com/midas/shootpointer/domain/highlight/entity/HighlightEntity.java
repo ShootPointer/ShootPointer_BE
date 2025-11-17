@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -54,6 +55,9 @@ public class HighlightEntity extends BaseEntity {
     @Column(name = "three_point_count",nullable = true)
     @Builder.Default
     private Integer threePointCount=0;
+
+    @Column(name = "video_created_at")
+    private LocalDateTime videoCreatedAt;
 
     /*
     =========== [ 도메인-행위 ] ==============

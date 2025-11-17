@@ -12,10 +12,7 @@ import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import com.midas.shootpointer.domain.memberbacknumber.entity.MemberBackNumberEntity;
 import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
-import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
-import com.midas.shootpointer.domain.post.mapper.PostElasticSearchMapper;
-import com.midas.shootpointer.domain.post.repository.PostElasticSearchRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import com.midas.shootpointer.test.BasketballPostDataGenerator.PostData;
 import lombok.RequiredArgsConstructor;
@@ -49,8 +46,8 @@ public class SetRealPostDataLoader implements CommandLineRunner {
     private final MemberCommandRepository memberRepository;
     private final HighlightCommandRepository highlightCommandRepository;
     private final PostQueryRepository postQueryRepository;
-    private final PostElasticSearchMapper mapper;
-    private final PostElasticSearchRepository postElasticSearchRepository;
+    //private final PostElasticSearchMapper mapper;
+    //private final PostElasticSearchRepository postElasticSearchRepository;
     private final BackNumberRepository backNumberRepository;
     private final MemberBackNumberRepository memberBackNumberRepository;
     private final LikeCommandRepository likeCommandRepository;
@@ -223,12 +220,12 @@ public class SetRealPostDataLoader implements CommandLineRunner {
         List<PostEntity> repositoryAll = postQueryRepository.findAllWithMemberAndHighlight();
 
         // PostEntity → PostDocument 변환
-        List<PostDocument> docs = repositoryAll.stream()
+        /*List<PostDocument> docs = repositoryAll.stream()
                 .map(mapper::entityToDoc)
                 .toList();
 
         postElasticSearchRepository.saveAll(docs);
-        System.out.println("ES - 삽입 완료");
+        System.out.println("ES - 삽입 완료");*/
     }
 
 

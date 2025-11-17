@@ -91,7 +91,7 @@ public class HighlightManager {
         /*
         *   2. 하이라이트 엔티티 생성
          */
-        List<HighlightEntity> entities=factory.createHighlightEntities(request.getHighlightUrls(),request.getHighlightIdentifier(),member,backNumber);
+        List<HighlightEntity> entities=factory.createHighlightEntities(request.getHighlightUrls(),request.getHighlightIdentifier(),member,backNumber,request.getCreatedAt());
 
         /*
             3. DB 저장

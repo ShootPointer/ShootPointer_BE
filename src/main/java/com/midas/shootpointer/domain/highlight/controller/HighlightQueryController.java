@@ -38,7 +38,11 @@ public class HighlightQueryController {
     }
 
     @GetMapping("/calendar")
-    public ResponseEntity<ApiResponse<HighlightCalendarResponse>> fetchCalendar(@RequestParam(value = "year") int year,@RequestParam(value = "month")int month){
-        return ResponseEntity.ok(ApiResponse.ok(manager.fetchCalendar(year,month)));
+    public ResponseEntity<ApiResponse<HighlightCalendarResponse>> fetchCalendar(
+            @RequestParam(value = "year") int year,
+            @RequestParam(value = "month")int month
+    ){
+        UUID memberId=SecurityUtils.getCurrentMemberId();
+        return ResponseEntity.ok(ApiResponse.ok(manager.fetchCalendar(year,month,memberId)));
     }
 }

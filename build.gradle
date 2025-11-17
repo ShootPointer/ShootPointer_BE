@@ -98,6 +98,9 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+	implementation 'com.github.p493cc:logback-color:1.0.3'
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+
 
 	//redisson
 	implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
