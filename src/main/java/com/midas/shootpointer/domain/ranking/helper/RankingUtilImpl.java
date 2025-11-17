@@ -1,9 +1,10 @@
 package com.midas.shootpointer.domain.ranking.helper;
 
 import com.midas.shootpointer.domain.ranking.dto.RankingResult;
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
-import com.midas.shootpointer.domain.ranking.repository.RankingRepository;
+import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
+import com.midas.shootpointer.domain.ranking.repository.RankingMongoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,7 +25,7 @@ public class RankingUtilImpl implements RankingUtil {
     @Value("${query.path.ranking}")
     private String queryPath;
 
-    private final RankingRepository rankingRepository;
+    private final RankingMongoRepository rankingMongoRepository;
     private final JdbcTemplate jdbcTemplate;
 
     private final static int TWO_WEIGHT=1;
@@ -37,7 +38,7 @@ public class RankingUtilImpl implements RankingUtil {
      */
     @Override
     public RankingDocument fetchRankingDocumentByPeriodKey(String periodKey) {
-        return rankingRepository.findByTypePeriodKey(periodKey);
+        return rankingMongoRepository.findByTypePeriodKey(periodKey);
     }
 
     /**
@@ -114,5 +115,65 @@ public class RankingUtilImpl implements RankingUtil {
     @Override
     public double calculateRankingWeight(int twoScore, int threeScore,int totalScore) {
         return (double) twoScore*TWO_WEIGHT + (double) threeScore*THREE_WEIGHT + (double)totalScore *TOTAL_WEIGHT;
+    }
+
+    /**
+     * Query 에서 조회한 RankingEntry의 rank값 삽입 메서드
+     * @param origin DB 에서 조회한 RankingEntry 값
+     * @return rank 값이 삽입된 리스트
+     */
+    @Override
+    public List<RankingEntry> calculateRanking(List<RankingEntry> origin) {
+        int rank=1;
+
+        for (RankingEntry entry:origin){
+            entry.setRank(rank++);
+        }
+        return origin;
+    }
+
+    /**
+     * type 값에 따라 이번주/이번달 시작일 반환
+     * @param now : 현재 날짜
+     * @param type : 주 / 월 / 일
+     * @return 이번주 / 이번달 시작 날짜
+     */
+    @Override
+    public LocalDateTime calculateStartDate(LocalDateTime now, RankingType type) {
+        switch (type){
+            case MONTHLY -> {
+                return now.withDayOfMonth(1).toLocalDate().atStartOfDay();
+            }
+            case WEEKLY -> {
+                return now
+                        .with(DayOfWeek.MONDAY)
+                        .toLocalDate()
+                        .atStartOfDay();
+            }
+            default -> throw new IllegalArgumentException("LocalDateTime 지원하지 않는 타입");
+        }
+    }
+
+     /**
+     * type 값에 따라 이번주/이번달 마지막일 반환
+     * @param now : 현재 날짜
+     * @param type : 주 / 월 / 일
+     * @return 이번주 / 이번달 마지막 날짜
+     */
+    @Override
+    public LocalDateTime calculateEndDate(LocalDateTime now, RankingType type) {
+        switch (type){
+            case MONTHLY -> {
+                return now.withDayOfMonth(now.toLocalDate().lengthOfMonth())
+                        .toLocalDate()
+                        .atTime(23,59,59);
+            }
+            case WEEKLY -> {
+                return now.with(DayOfWeek.SUNDAY)
+                        .toLocalDate()
+                        .atTime(23,59,59);
+            }
+            default -> throw new IllegalArgumentException("LocalDateTime 지원하지 않는 타입");
+        }
     }
 }

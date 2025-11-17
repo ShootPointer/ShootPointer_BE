@@ -1,18 +1,18 @@
 package com.midas.shootpointer.domain.ranking.business;
 
 import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
 import com.midas.shootpointer.domain.ranking.helper.RankingUtil;
 import com.midas.shootpointer.domain.ranking.mapper.RankingMapper;
+import com.midas.shootpointer.domain.ranking.repository.RankingJpaRepository;
 import com.midas.shootpointer.domain.ranking.repository.RankingRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -21,6 +21,7 @@ public class RankingManager {
     private final RankingMapper mapper;
     private final RankingUtil rankingUtil;
     private final RankingRedisRepository redisRepository;
+    private final RankingJpaRepository rankingJpaRepository;
 
     /**
      * 전 날 랭킹 집계 조회
@@ -58,7 +59,16 @@ public class RankingManager {
          * 조회값이 null인 경우
          */
         if (results==null || results.isEmpty()) {
-            return mapper.entryToResponse(Collections.emptyList(),type);
+            /**
+             * DB에서 직접 조회
+             */
+            LocalDateTime startDate=rankingUtil.calculateStartDate(LocalDateTime.now(),type);
+            LocalDateTime endDate=rankingUtil.calculateEndDate(LocalDateTime.now(),type);
+
+            List<RankingEntry> fetchByDataBase=rankingJpaRepository.fetchThisWeekRankingTop10(startDate,endDate,type);
+            List<RankingEntry> rankedData=rankingUtil.calculateRanking(fetchByDataBase);
+
+            return mapper.entryToResponse(rankedData,type);
         }
 
         return mapper.entryToResponse(results,type);

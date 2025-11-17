@@ -2,7 +2,7 @@ package com.midas.shootpointer.domain.ranking.business.service;
 
 import com.midas.shootpointer.domain.ranking.business.RankingManager;
 import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.midas.shootpointer.domain.ranking.business.service;
 
 import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

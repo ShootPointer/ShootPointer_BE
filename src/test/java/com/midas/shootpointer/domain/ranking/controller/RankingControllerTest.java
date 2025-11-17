@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.WithMockCustomMember;
 import com.midas.shootpointer.domain.ranking.business.service.RankingService;
 import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
