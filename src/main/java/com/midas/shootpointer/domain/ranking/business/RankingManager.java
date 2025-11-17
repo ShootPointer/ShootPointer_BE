@@ -66,7 +66,9 @@ public class RankingManager {
             LocalDateTime endDate=rankingUtil.calculateEndDate(LocalDateTime.now(),type);
 
             List<RankingEntry> fetchByDataBase=rankingJpaRepository.fetchThisWeekRankingTop10(startDate,endDate,type);
-            return mapper.entryToResponse(fetchByDataBase,type);
+            List<RankingEntry> rankedData=rankingUtil.calculateRanking(fetchByDataBase);
+
+            return mapper.entryToResponse(rankedData,type);
         }
 
         return mapper.entryToResponse(results,type);

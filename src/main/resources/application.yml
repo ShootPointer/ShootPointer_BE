@@ -79,7 +79,7 @@ spring:
       #production 환경에서만 활성화
       opencv:
         host: ${OPENCV_REDIS_HOST:localhost}
-        port: ${OPENCV_REDIS_PORT:6380}
+        port: ${OPENCV_REDIS_PORT:6379}
         channels:
           upload: opencv-progress-upload:*
           highlight: opencv-progress-highlight:*

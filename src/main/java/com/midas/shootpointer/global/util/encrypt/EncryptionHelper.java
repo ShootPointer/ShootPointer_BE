@@ -3,11 +3,12 @@ package com.midas.shootpointer.global.util.encrypt;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Convert;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
-
+@Component
 @Convert
 public class EncryptionHelper implements AttributeConverter<String, String> {
 	@Value("${encrypt.key}")
