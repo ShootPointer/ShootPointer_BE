@@ -27,6 +27,11 @@ public class HighlightValidatorImpl implements HighlightValidator{
     private static final long MAX_FILE_SIZE = 500L * 1024L * 1024L;
     private final HighlightQueryRepository highlightQueryRepository;
 
+    private static final int MAX_YEAR=2100;
+    private static final int MIN_YEAR=2000;
+
+    private static final int JANUARY=1;
+    private static final int DECEMBER=12;
     @Override
     public boolean filesExist(String directory) {
         Path directoryPath= Paths.get(directory);
@@ -86,5 +91,11 @@ public class HighlightValidatorImpl implements HighlightValidator{
             isValidFileSize(file);
             isValidMp4File(file);
         });
+    }
+
+    @Override
+    public void isValidDateRange(int year, int month) {
+        if(year>MAX_YEAR || year<MIN_YEAR) throw new CustomException(ErrorCode.INVALID_YEAR);
+        if (month<JANUARY || month>DECEMBER) throw new CustomException(ErrorCode.INVALID_MONTH);
     }
 }

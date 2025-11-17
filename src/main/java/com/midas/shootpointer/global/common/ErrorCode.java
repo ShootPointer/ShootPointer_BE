@@ -51,6 +51,8 @@ public enum ErrorCode {
     FILE_SIZE_EXCEEDED(20204,HttpStatus.BAD_REQUEST,"파일의 크기가 초과했습니다.(제한 : 200MB)"),
     FILE_UPLOAD_FAILED(20205,HttpStatus.BAD_REQUEST,"파일 업로드에 실패했습니다."),
     IMAGE_CONVERT_FAILED(20206,HttpStatus.INTERNAL_SERVER_ERROR,"이미지 파일을 변환하던 중 오류가 발생했습니다."),
+    INVALID_YEAR(20207,HttpStatus.BAD_REQUEST,"유효한 연도를 입력해주세요.(2000년 ~ 2100년)"),
+    INVALID_MONTH(20208,HttpStatus.BAD_REQUEST,"유효한 달을 입력해주세요.(1월 ~ 12월)"),
 
     //300(member - entity) part
     IS_AGGREGATION_TRUE(30001,HttpStatus.BAD_REQUEST,"이미 하이라이트 영상 정보 수집에 동의했습니다."),

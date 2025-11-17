@@ -18,7 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.UUID;
 
 @Component
@@ -119,7 +121,27 @@ public class HighlightManager {
         return highlightHelper.fetchAllMembersHighlights(convertedType);
     }
 
-    public HighlightCalendarResponse fetchCalendar(int year, int month) {
+    public HighlightCalendarResponse fetchCalendar(int year, int month,UUID memberId) {
+        /**
+         * 1. year,month 입력 값 검증
+         */
+        highlightHelper.isValidDateRange(year,month);
 
+        /**
+         * 2.년 월 기간 내 생성된 하이라이트 영상 조회 - flat data 조회
+         */
+        List<HighlightInfoResponse> flatHighlightList=highlightHelper.fetchFlatHighlightList(year,month,memberId);
+
+        /**
+         * 3. flat data 그룹핑한 데이터 조회
+         */
+        TreeMap<LocalDate,List<HighlightInfoResponse>> groupingHighlights=highlightHelper.groupingHighlights(flatHighlightList);
+
+        /**
+         * 4.date와 매핑된 데이터 반환
+         */
+        List<HighlightCalendarDaysResponse> daysResponses=mapper.groupingHighlightToDaysResponse(groupingHighlights);
+
+        return new HighlightCalendarResponse(year,month,daysResponses);
     }
 }

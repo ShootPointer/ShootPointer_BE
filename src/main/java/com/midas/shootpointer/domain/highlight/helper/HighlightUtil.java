@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 public interface HighlightUtil {
@@ -21,7 +21,7 @@ public interface HighlightUtil {
     Page<HighlightEntity> fetchMembersHighlights(UUID memberId, Pageable pageable);
     List<PeriodHighlightResponse> fetchAllMembersHighlights(PeriodType period);
     DateTimeRange calculateDateTimeRange(PeriodType type,LocalDateTime now);
-    Map<LocalDate,List<HighlightInfoResponse>> groupingHighlights(List<HighlightInfoResponse> flatHighlightList);
+    TreeMap<LocalDate,List<HighlightInfoResponse>> groupingHighlights(List<HighlightInfoResponse> flatHighlightList);
     List<HighlightInfoResponse> fetchFlatHighlightList(int year,int month,UUID memberId);
     DateTimeRange getMonthDateTimeRange(int year, int month);
 }

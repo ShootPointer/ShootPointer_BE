@@ -7,7 +7,9 @@ import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.UUID;
 
 @Component
@@ -26,8 +28,15 @@ public class HighlightMapperImpl implements HighlightMapper{
     }
 
     @Override
-    public HighlightCalendarDaysResponse flatResponseToDaysResponse(List<HighlightInfoResponse> flatHighlightsResponse, LocalDate date) {
-        return new HighlightCalendarDaysResponse(date,flatHighlightsResponse.size(),flatHighlightsResponse);
+    public List<HighlightCalendarDaysResponse> groupingHighlightToDaysResponse(TreeMap<LocalDate, List<HighlightInfoResponse>> groupingHighlights) {
+        List<HighlightCalendarDaysResponse> calendarDaysResponses=new ArrayList<>();
+
+        for (LocalDate date:groupingHighlights.keySet()){
+            List<HighlightInfoResponse> daysResponse=groupingHighlights.get(date);
+
+            calendarDaysResponses.add(new HighlightCalendarDaysResponse(date,daysResponse.size(),daysResponse));
+        }
+        return calendarDaysResponses;
     }
 
 

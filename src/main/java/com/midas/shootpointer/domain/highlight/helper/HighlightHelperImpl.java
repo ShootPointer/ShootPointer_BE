@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 @Component
@@ -49,22 +49,22 @@ public class HighlightHelperImpl implements HighlightHelper{
 
     @Override
     public DateTimeRange calculateDateTimeRange(PeriodType type, LocalDateTime now) {
-        return null;
+        return highlightUtil.calculateDateTimeRange(type,now);
     }
 
     @Override
-    public Map<LocalDate, List<HighlightInfoResponse>> groupingHighlights(List<HighlightInfoResponse> flatHighlightList) {
-        return Map.of();
+    public TreeMap<LocalDate, List<HighlightInfoResponse>> groupingHighlights(List<HighlightInfoResponse> flatHighlightList) {
+        return highlightUtil.groupingHighlights(flatHighlightList);
     }
 
     @Override
     public List<HighlightInfoResponse> fetchFlatHighlightList(int year, int month, UUID memberId) {
-        return List.of();
+        return highlightUtil.fetchFlatHighlightList(year,month,memberId);
     }
 
     @Override
     public DateTimeRange getMonthDateTimeRange(int year, int month) {
-        return null;
+        return highlightUtil.getMonthDateTimeRange(year,month);
     }
 
     @Override
@@ -100,5 +100,10 @@ public class HighlightHelperImpl implements HighlightHelper{
     @Override
     public void areValidFiles(List<MultipartFile> files) {
         highlightValidator.areValidFiles(files);
+    }
+
+    @Override
+    public void isValidDateRange(int year, int month) {
+        highlightValidator.isValidDateRange(year,month);
     }
 }

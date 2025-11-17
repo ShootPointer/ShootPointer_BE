@@ -13,4 +13,5 @@ public interface HighlightValidator {
     void isValidFileSize(MultipartFile file);
     boolean isExistDirectory(String directory);
     void areValidFiles(List<MultipartFile> files);
+    void isValidDateRange(int year,int month);
 }

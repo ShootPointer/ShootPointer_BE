@@ -91,8 +91,8 @@ public class HighlightUtilImpl implements HighlightUtil{
      * @return LocalDate(ex. 2022-10-22T) 형태로 그룹핑
      */
     @Override
-    public Map<LocalDate, List<HighlightInfoResponse>> groupingHighlights(List<HighlightInfoResponse> flatHighlightList) {
-        Map<LocalDate,List<HighlightInfoResponse>> results=new HashMap<>();
+    public TreeMap<LocalDate, List<HighlightInfoResponse>> groupingHighlights(List<HighlightInfoResponse> flatHighlightList) {
+        TreeMap<LocalDate,List<HighlightInfoResponse>> results=new TreeMap<>();
 
         for (HighlightInfoResponse response:flatHighlightList){
             //LocalDateTime -> LocalDate

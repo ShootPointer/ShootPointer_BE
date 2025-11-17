@@ -7,10 +7,11 @@ import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.UUID;
 
 public interface HighlightMapper {
     HighlightSelectResponse entityToResponse(List<UUID> selectedHighlights);
     HighlightInfoResponse infoResponseToEntity(HighlightEntity entity);
-    HighlightCalendarDaysResponse flatResponseToDaysResponse(List<HighlightInfoResponse> flatHighlightsResponse, LocalDate date);
+    List<HighlightCalendarDaysResponse> groupingHighlightToDaysResponse(TreeMap<LocalDate,List<HighlightInfoResponse>> groupingHighlights);
 }
