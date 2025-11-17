@@ -67,6 +67,13 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
                     
                     WHERE
                             l.createdAt BETWEEN :startDate AND :endDate
+                    GROUP BY
+                            h.highlightURL,
+                            h.highlightId,
+                            p.postId,
+                            m.username,
+                            p.likeCnt,
+                            p.title
                     ORDER BY
                              COUNT(l) DESC
                     """

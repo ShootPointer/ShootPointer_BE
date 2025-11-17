@@ -195,12 +195,16 @@ sse:
   clean-up-interval: 60000
 
 #logging
+p6spy:
+  config:
+    logMessageFormat: com.p6spy.engine.spy.appender.CustomLineFormat
+    customLogMessageFormat: |
+      %(currentTime) | took %(executionTime)ms | category=%(category)
+      %(sqlPretty)
+      -------------------------------------------------------------
 
 decorator:
   datasource:
     p6spy:
       enable-logging: true
-
-p6spy:
-  formatting:
-    stdout: true
+      log-format: multiline
