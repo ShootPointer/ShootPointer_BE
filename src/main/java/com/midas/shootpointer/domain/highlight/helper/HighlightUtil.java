@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.highlight.helper;
 
+import com.midas.shootpointer.domain.highlight.dto.DateTimeRange;
 import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodType;
@@ -23,4 +24,5 @@ public interface HighlightUtil {
     LocalDateTime calculateEndDate(PeriodType type,LocalDateTime now);
     Map<LocalDate,List<HighlightInfoResponse>> groupingHighlights(List<HighlightInfoResponse> flatHighlightList);
     List<HighlightInfoResponse> fetchFlatHighlightList(int year,int month,UUID memberId);
+    DateTimeRange getMonthDateTimeRange(int year, int month);
 }

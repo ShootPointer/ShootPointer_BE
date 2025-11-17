@@ -1,5 +1,7 @@
 package com.midas.shootpointer.domain.highlight.helper;
 
+import com.midas.shootpointer.domain.highlight.dto.DateTimeRange;
+import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodType;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
@@ -9,8 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -51,6 +55,21 @@ public class HighlightHelperImpl implements HighlightHelper{
     @Override
     public LocalDateTime calculateEndDate(PeriodType type, LocalDateTime now) {
         return highlightUtil.calculateEndDate(type,now);
+    }
+
+    @Override
+    public Map<LocalDate, List<HighlightInfoResponse>> groupingHighlights(List<HighlightInfoResponse> flatHighlightList) {
+        return Map.of();
+    }
+
+    @Override
+    public List<HighlightInfoResponse> fetchFlatHighlightList(int year, int month, UUID memberId) {
+        return List.of();
+    }
+
+    @Override
+    public DateTimeRange getMonthDateTimeRange(int year, int month) {
+        return null;
     }
 
     @Override

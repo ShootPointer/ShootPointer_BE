@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.highlight.helper;
 
+import com.midas.shootpointer.domain.highlight.dto.DateTimeRange;
 import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodType;
@@ -157,13 +158,18 @@ public class HighlightUtilImpl implements HighlightUtil{
      */
     @Override
     public List<HighlightInfoResponse> fetchFlatHighlightList(int year, int month,UUID memberId) {
+        DateTimeRange range=getMonthDateTimeRange(year,month);
+        return highlightQueryRepository.fetchFlatHighlights(range.start(),range.end(),memberId);
+    }
+
+    @Override
+    public DateTimeRange getMonthDateTimeRange(int year, int month) {
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
 
         LocalDateTime start = startDate.atStartOfDay();
         LocalDateTime end = endDate.atTime(23, 59, 59);
-
-        return highlightQueryRepository.fetchFlatHighlights(start,end,memberId);
+        return new DateTimeRange(start,end);
     }
 
 
