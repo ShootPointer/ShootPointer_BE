@@ -1,6 +1,6 @@
 package com.midas.shootpointer.domain.ranking.scheduler;
 
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;

@@ -1,7 +1,7 @@
 package com.midas.shootpointer.batch.reader.ranking;
 
 import com.midas.shootpointer.batch.dto.HighlightWithMemberDto;
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.database.JdbcPagingItemReader;

@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.ranking.entity;
 
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

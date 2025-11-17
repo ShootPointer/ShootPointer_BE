@@ -1,7 +1,7 @@
 package com.midas.shootpointer.domain.ranking.business;
 
 import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
 import com.midas.shootpointer.domain.ranking.helper.RankingUtil;

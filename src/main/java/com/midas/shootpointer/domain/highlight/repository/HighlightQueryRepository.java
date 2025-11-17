@@ -2,7 +2,6 @@ package com.midas.shootpointer.domain.highlight.repository;
 
 import com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

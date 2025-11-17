@@ -1,4 +1,4 @@
-package com.midas.shootpointer.domain.ranking.dto;
+package com.midas.shootpointer.domain.ranking.entity;
 
 import lombok.Getter;
 

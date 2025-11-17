@@ -1,6 +1,6 @@
 package com.midas.shootpointer.batch.reader.ranking;
 
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
 import com.midas.shootpointer.domain.ranking.repository.RankingRepository;
