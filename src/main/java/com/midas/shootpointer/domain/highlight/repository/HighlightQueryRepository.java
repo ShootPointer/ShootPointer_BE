@@ -1,6 +1,8 @@
 package com.midas.shootpointer.domain.highlight.repository;
 
+import com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,52 +10,81 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 @Repository
 public interface HighlightQueryRepository extends JpaRepository<HighlightEntity, UUID> {
     Optional<HighlightEntity> findByHighlightId(UUID highlightId);
 
     @Query("SELECT COUNT (H.highlightId)>0 " +
-            "FROM HighlightEntity AS H " +
-            "WHERE H.highlightId = :highlightId AND H.member.memberId = :memberId")
+           "FROM HighlightEntity AS H " +
+           "WHERE H.highlightId = :highlightId AND H.member.memberId = :memberId")
     boolean isMembersHighlight(@Param("memberId") UUID memberId, @Param("highlightId") UUID highlightId);
 
 
     @Query(value = "SELECT EXISTS(SELECT * FROM member AS M left join highlight AS H " +
                    "WHERE M.member_id=:memberId " +
-                   "AND H.highlight_id=:highlightId ) ",nativeQuery = true)
+                   "AND H.highlight_id=:highlightId ) ", nativeQuery = true)
     boolean existsByHighlightIdAndMember(@Param("highlightId") UUID highlightId, @Param("memberId") UUID memberId);
 
     boolean existsByHighlightId(UUID highlightId);
 
     @Query(value = """
-            SELECT h
-            FROM HighlightEntity as h
-            INNER JOIN
-            Member as m ON h.member.memberId = m.memberId
-            WHERE m.isAggregationAgreed = true
-              AND h.isSelected = true
-              AND m.memberId =:memberId
-            ORDER BY h.createdAt DESC
-        """)
-    Page<HighlightEntity> fetchAllMembersHighlights(@Param("memberId")UUID memberId, Pageable pageable);
-    
-    
-    /** ===========================
-     *
-     *  마이페이지 부분
-     *
+                SELECT h
+                FROM HighlightEntity as h
+                INNER JOIN
+                Member as m ON h.member.memberId = m.memberId
+                WHERE m.isAggregationAgreed = true
+                  AND h.isSelected = true
+                  AND m.memberId =:memberId
+                ORDER BY h.createdAt DESC
+            """)
+    Page<HighlightEntity> fetchAllMembersHighlights(@Param("memberId") UUID memberId, Pageable pageable);
+
+    @Query(value =
+            """
+                    SELECT new com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse
+                    (
+                        h.highlightURL,
+                        h.highlightId,
+                        p.postId,
+                        m.username,
+                        p.likeCnt,
+                        p.title
+                    )
+                    
+                    FROM HighlightEntity AS h
+                         JOIN PostEntity AS p ON h.highlightId = p.highlight.highlightId
+                         JOIN Member AS m ON m.memberId = p.member.memberId
+                         JOIN LikeEntity AS l ON l.post.postId = p.postId
+                    
+                    WHERE
+                            l.createdAt BETWEEN :startDate AND :endDate
+                    ORDER BY
+                             p.likeCnt DESC
+                    LIMIT :limit
+                    """
+    )
+    List<PeriodHighlightResponse> fetchPeriodHighlight(LocalDateTime startDate, LocalDateTime endDate, int limit);
+
+    /**
+     * ===========================
+     * <p>
+     * 마이페이지 부분
+     * <p>
      * ============================
      */
     // 2점슛 카운트 총합
     @Query("SELECT COALESCE(SUM(h.twoPointCount), 0) FROM HighlightEntity h WHERE h.member.memberId = :memberId AND h.isSelected = true")
     Integer sumTwoPointCountByMemberId(@Param("memberId") UUID memberId);
-    
+
     // 3점슛 카운트 총합
     @Query("SELECT COALESCE(SUM(h.threePointCount), 0) FROM HighlightEntity h WHERE h.member.memberId = :memberId AND h.isSelected = true")
     Integer sumThreePointCountByMemberId(@Param("memberId") UUID memberId);
-    
+
     // 하이라이트 개수
     @Query("SELECT COUNT(h) FROM HighlightEntity h WHERE h.member.memberId = :memberId AND h.isSelected = true")
     Integer countByMemberId(@Param("memberId") UUID memberId);

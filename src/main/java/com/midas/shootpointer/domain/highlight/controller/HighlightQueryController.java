@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.highlight.controller;
 
 import com.midas.shootpointer.domain.highlight.business.HighlightManager;
 import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
+import com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import com.midas.shootpointer.global.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -27,5 +29,11 @@ public class HighlightQueryController {
     ){
         UUID memberId= SecurityUtils.getCurrentMemberId();
         return ResponseEntity.ok(ApiResponse.ok( manager.listByPaging(page,size,memberId)));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<PeriodHighlightResponse>>> periodHighlight(@RequestParam(value = "period")String period){
+        UUID memberId=SecurityUtils.getCurrentMemberId();
+        return ResponseEntity.ok(ApiResponse.ok(manager));
     }
 }
