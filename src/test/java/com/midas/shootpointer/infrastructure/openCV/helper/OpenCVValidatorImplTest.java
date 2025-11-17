@@ -48,6 +48,7 @@ class OpenCVValidatorImplTest {
     @DisplayName("OpenCV의 response의 success가 false 이면 FAILED_SEND_IMAGE_TO_OPENCV 예외를 발생시킵니다.")
     void failedOpenCVRequest_ERROR_1(){
         //when
+        when(response.getStatus()).thenReturn(200);
         when(response.getSuccess()).thenReturn(false);
 
 
@@ -61,8 +62,8 @@ class OpenCVValidatorImplTest {
     @DisplayName("OpenCV의 response의 status가 200이 아니면 FAILED_SEND_IMAGE_TO_OPENCV 예외를 발생시킵니다.")
     void failedOpenCVRequest_ERROR_2(){
         //when
-        when(response.getSuccess()).thenReturn(true);
         when(response.getStatus()).thenReturn(400);
+
 
         //then
         assertThatThrownBy(()->validator.failedOpenCVRequest(response))
