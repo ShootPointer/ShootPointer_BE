@@ -40,8 +40,8 @@ spring:
   # 데이터소스 설정
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/shootpointer}
-    username: ${SPRING_DATASOURCE_USERNAME:myuser}
-    password: ${SPRING_DATASOURCE_PASSWORD:rlaehdus00}
+    username: ${SPRING_DATASOURCE_USERNAME:}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
     driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
 
     hikari:
@@ -52,7 +52,7 @@ spring:
   # JPA 설정
   jpa:
     hibernate:
-      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create-drop}
     database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
     properties:
       hibernate:
@@ -79,7 +79,7 @@ spring:
       #production 환경에서만 활성화
       opencv:
         host: ${OPENCV_REDIS_HOST:localhost}
-        port: ${OPENCV_REDIS_PORT:6380}
+        port: ${OPENCV_REDIS_PORT:6379}
         channels:
           upload: opencv-progress-upload:*
           highlight: opencv-progress-highlight:*

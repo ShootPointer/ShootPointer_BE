@@ -2,6 +2,7 @@ package com.midas.shootpointer;
 
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberQueryRepository;
+import com.midas.shootpointer.global.util.encrypt.EncryptionHelper;
 import com.midas.shootpointer.global.util.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,14 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class HealthCheckController {
     private final JwtUtil jwtUtil;
     private final MemberQueryRepository memberQueryRepository;
+    private final EncryptionHelper encryptionHelper;
+
     @GetMapping("/health-check")
     public ResponseEntity<String> healthCheck(){
         return ResponseEntity.ok("health-check");
@@ -24,11 +25,13 @@ public class HealthCheckController {
 
     @GetMapping("/test-member")
     public ResponseEntity<String> getJWT(){
+        String email="test@naver.com";
+        String encryptEmail=encryptionHelper.convertToDatabaseColumn(email);
         Member member=Member.builder()
-                .email("test@naver.com")
                 .username("test")
+                .email(encryptEmail)
                 .build();
         Member savedMember=memberQueryRepository.save(member);
-        return ResponseEntity.ok(jwtUtil.createToken(savedMember.getMemberId(),member.getEmail(),member.getUsername()));
+        return ResponseEntity.ok(jwtUtil.createToken(savedMember.getMemberId(), encryptEmail,member.getUsername()));
     }
 }

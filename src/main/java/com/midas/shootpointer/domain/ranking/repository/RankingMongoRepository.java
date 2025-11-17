@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RankingRepository extends MongoRepository<RankingDocument,String> {
+public interface RankingMongoRepository extends MongoRepository<RankingDocument, String> {
     //typePeriodKey로 조회
     RankingDocument findByTypePeriodKey(String typePeriodKey);
 }

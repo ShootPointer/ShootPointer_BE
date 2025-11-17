@@ -3,7 +3,7 @@ package com.midas.shootpointer.domain.ranking.helper;
 import com.midas.shootpointer.domain.ranking.dto.RankingResult;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
-import com.midas.shootpointer.domain.ranking.repository.RankingRepository;
+import com.midas.shootpointer.domain.ranking.repository.RankingMongoRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ class RankingUtilImplTest {
     private RankingUtilImpl rankingUtil;
 
     @Mock
-    private RankingRepository rankingRepository;
+    private RankingMongoRepository rankingRepository;
 
     @Mock
     private JdbcTemplate jdbcTemplate;
