@@ -159,7 +159,6 @@ public class SetRealPostDataLoader implements CommandLineRunner {
                             .highlightURL("test")
                             .highlightKey(UUID.randomUUID())
                             .highlightURL(videoUrl)
-                            .isSelected(true)
                             .backNumber(backNumber)
                             .threePointCount(random.nextInt(1, 100))
                             .twoPointCount(random.nextInt(1, 100))

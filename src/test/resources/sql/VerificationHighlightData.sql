@@ -13,7 +13,6 @@ WITH filtered AS (
         member AS m ON h.member_id = m.member_id
     WHERE
         m.is_aggregation_agreed = TRUE
-      AND h.is_selected = TRUE
       AND h.created_at >= ?
       AND h.created_at <  ?
 )

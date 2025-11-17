@@ -39,7 +39,6 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
                 INNER JOIN
                 Member as m ON h.member.memberId = m.memberId
                 WHERE m.isAggregationAgreed = true
-                  AND h.isSelected = true
                   AND m.memberId =:memberId
                 ORDER BY h.createdAt DESC
             """)
@@ -104,14 +103,14 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
      * ============================
      */
     // 2점슛 카운트 총합
-    @Query("SELECT COALESCE(SUM(h.twoPointCount), 0) FROM HighlightEntity h WHERE h.member.memberId = :memberId AND h.isSelected = true")
+    @Query("SELECT COALESCE(SUM(h.twoPointCount), 0) FROM HighlightEntity h WHERE h.member.memberId = :memberId")
     Integer sumTwoPointCountByMemberId(@Param("memberId") UUID memberId);
 
     // 3점슛 카운트 총합
-    @Query("SELECT COALESCE(SUM(h.threePointCount), 0) FROM HighlightEntity h WHERE h.member.memberId = :memberId AND h.isSelected = true")
+    @Query("SELECT COALESCE(SUM(h.threePointCount), 0) FROM HighlightEntity h WHERE h.member.memberId = :memberId")
     Integer sumThreePointCountByMemberId(@Param("memberId") UUID memberId);
 
     // 하이라이트 개수
-    @Query("SELECT COUNT(h) FROM HighlightEntity h WHERE h.member.memberId = :memberId AND h.isSelected = true")
+    @Query("SELECT COUNT(h) FROM HighlightEntity h WHERE h.member.memberId = :memberId")
     Integer countByMemberId(@Param("memberId") UUID memberId);
 }

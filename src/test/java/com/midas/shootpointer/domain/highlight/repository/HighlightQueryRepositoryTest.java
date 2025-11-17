@@ -145,7 +145,6 @@ class HighlightQueryRepositoryTest {
                     .member(member)
                     .threePointCount(random.nextInt(1,100))
                     .twoPointCount(random.nextInt(1,100))
-                    .isSelected(true)
                     .highlightURL("test")
                     .build();
             highlight.setCreatedAt(LocalDateTime.now().minusDays(idx));

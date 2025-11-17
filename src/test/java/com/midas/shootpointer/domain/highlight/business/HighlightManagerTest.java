@@ -75,7 +75,6 @@ class HighlightManagerTest  {
             HighlightEntity entity=HighlightEntity.builder()
                     .highlightKey(UUID.randomUUID())
                     .highlightURL("https://cdn.example.com/video" + i + ".mp4")
-                    .isSelected(true)
                     .member(member)
                     .build();
             entity.setCreatedAt(LocalDateTime.now().minusDays(i));
