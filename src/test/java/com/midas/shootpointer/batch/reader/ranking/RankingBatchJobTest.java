@@ -3,7 +3,6 @@ package com.midas.shootpointer.batch.reader.ranking;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
-import com.midas.shootpointer.domain.ranking.repository.RankingRepository;
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.*;
 import org.springframework.batch.core.*;
@@ -42,7 +41,7 @@ public class RankingBatchJobTest  {
     private Job rankingJob;
 
     @Autowired
-    private RankingRepository rankingRepository;
+    private Ranking rankingRepository;
 
     @PostConstruct
     public void configureJobLauncherTestUtils() throws Exception {

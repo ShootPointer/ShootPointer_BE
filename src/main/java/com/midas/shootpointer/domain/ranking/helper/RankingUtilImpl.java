@@ -4,7 +4,7 @@ import com.midas.shootpointer.domain.ranking.dto.RankingResult;
 import com.midas.shootpointer.domain.ranking.dto.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingDocument;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
-import com.midas.shootpointer.domain.ranking.repository.RankingRepository;
+import com.midas.shootpointer.domain.ranking.repository.RankingMongoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,7 +25,7 @@ public class RankingUtilImpl implements RankingUtil {
     @Value("${query.path.ranking}")
     private String queryPath;
 
-    private final RankingRepository rankingRepository;
+    private final RankingMongoRepository rankingMongoRepository;
     private final JdbcTemplate jdbcTemplate;
 
     private final static int TWO_WEIGHT=1;
@@ -38,7 +38,7 @@ public class RankingUtilImpl implements RankingUtil {
      */
     @Override
     public RankingDocument fetchRankingDocumentByPeriodKey(String periodKey) {
-        return rankingRepository.findByTypePeriodKey(periodKey);
+        return rankingMongoRepository.findByTypePeriodKey(periodKey);
     }
 
     /**
