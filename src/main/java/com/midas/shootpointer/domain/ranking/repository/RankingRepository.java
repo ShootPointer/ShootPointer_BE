@@ -16,7 +16,7 @@ public interface RankingRepository extends MongoRepository<RankingDocument, Stri
     //typePeriodKey로 조회
     RankingDocument findByTypePeriodKey(String typePeriodKey);
 
-    //이번 주 랭킹 Top10
+    //이번 주 / 이번 달 랭킹 Top10
     @Query("""
             SELECT new com.midas.shootpointer.domain.ranking.entity.RankingEntry(
                 null,
@@ -50,6 +50,4 @@ public interface RankingRepository extends MongoRepository<RankingDocument, Stri
                          SUM(h.twoPointCount)*2 DESC
             """)
     List<RankingEntry> fetchThisWeekRanking_Top10(Pageable page, LocalDateTime startDate, LocalDateTime endDate, RankingType type);
-
-    //이번 달 랭킹 Top10
 }
