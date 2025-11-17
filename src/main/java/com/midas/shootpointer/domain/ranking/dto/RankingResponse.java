@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.ranking.dto;
 
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

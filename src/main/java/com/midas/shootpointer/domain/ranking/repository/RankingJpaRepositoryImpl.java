@@ -1,7 +1,8 @@
 package com.midas.shootpointer.domain.ranking.repository;
 
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
+
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;

@@ -5,12 +5,17 @@ import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
 import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
+import com.midas.shootpointer.domain.like.entity.LikeEntity;
+import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import com.midas.shootpointer.domain.memberbacknumber.entity.MemberBackNumberEntity;
 import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
+import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.mapper.PostElasticSearchMapper;
+import com.midas.shootpointer.domain.post.repository.PostElasticSearchRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import com.midas.shootpointer.test.BasketballPostDataGenerator.PostData;
 import lombok.RequiredArgsConstructor;
@@ -44,12 +49,13 @@ public class SetRealPostDataLoader implements CommandLineRunner {
     private final MemberCommandRepository memberRepository;
     private final HighlightCommandRepository highlightCommandRepository;
     private final PostQueryRepository postQueryRepository;
-    //private final PostElasticSearchMapper mapper;
-    //private final PostElasticSearchRepository postElasticSearchRepository;
+    private final PostElasticSearchMapper mapper;
+    private final PostElasticSearchRepository postElasticSearchRepository;
     private final BackNumberRepository backNumberRepository;
     private final MemberBackNumberRepository memberBackNumberRepository;
+    private final LikeCommandRepository likeCommandRepository;
     //30개
-    private static final String[] videoLink={
+    private static final String[] videoLink = {
             "https://video-previews.elements.envatousercontent.com/09664892-2b57-461c-8055-eec6dc4b03f1/watermarked_preview/watermarked_preview.mp4",
             "https://video-previews.elements.envatousercontent.com/8c037672-3c88-4e30-a270-32401c0b3426/watermarked_preview/watermarked_preview.mp4",
             "https://video-previews.elements.envatousercontent.com/68c3dbdb-dfed-4263-be19-6e7b6f993ffd/watermarked_preview/watermarked_preview.mp4",
@@ -81,6 +87,7 @@ public class SetRealPostDataLoader implements CommandLineRunner {
             "https://video-previews.elements.envatousercontent.com/3d604467-076d-4a68-a0af-92a965734161/watermarked_preview/watermarked_preview.mp4",
             "https://video-previews.elements.envatousercontent.com/ff4edec5-fc82-4e3e-848a-7ae6119c869f/watermarked_preview/watermarked_preview.mp4"
     };
+
     /**
      * Callback used to run the bean.
      *
@@ -93,20 +100,20 @@ public class SetRealPostDataLoader implements CommandLineRunner {
         /**
          * 멤버 생성
          */
-        List<Member> memberList=new ArrayList<>();
-        for (int i=0;i<100;i++){
-            Member member=memberRepository.save(
+        List<Member> memberList = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            Member member = memberRepository.save(
                     Member.builder()
                             .isAggregationAgreed(true)
-                            .username("test"+i)
-                            .email("test"+i+"@naver.com")
+                            .username("test" + i)
+                            .email("test" + i + "@naver.com")
                             .build()
             );
             memberList.add(member);
         }
 
 
-         Map<Member, BackNumberEntity> memberBackNumberMap = new HashMap<>();
+        Map<Member, BackNumberEntity> memberBackNumberMap = new HashMap<>();
 
         for (Member m : memberList) {
             BackNumberEntity bn = backNumberRepository.save(
@@ -127,15 +134,14 @@ public class SetRealPostDataLoader implements CommandLineRunner {
         List<PostData> postDataList = BasketballPostDataGenerator.generateRandomPosts(SIZE);
 
         String sql = "INSERT INTO post (post_id,title, content, hash_tag, highlight_id, member_id,like_cnt,created_at,modified_at) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)";
-        List<Object[]> batchArgs = new ArrayList<>();
 
         for (int i = 0; i < SIZE; i++) {
-            Member member=memberList.get(random.nextInt(memberList.size()));
-            BackNumberEntity backNumber=memberBackNumberMap.get(member);
+            Member member = memberList.get(random.nextInt(memberList.size()));
+            BackNumberEntity backNumber = memberBackNumberMap.get(member);
             /*
               Highlight 생성
              */
-            String videoUrl=videoLink[random.nextInt(videoLink.length)];
+            String videoUrl = videoLink[random.nextInt(videoLink.length)];
             HighlightEntity highlight = highlightCommandRepository.save(
                     HighlightEntity.builder()
                             .highlightURL("test")
@@ -143,8 +149,8 @@ public class SetRealPostDataLoader implements CommandLineRunner {
                             .highlightURL(videoUrl)
                             .isSelected(true)
                             .backNumber(backNumber)
-                            .threePointCount(random.nextInt(1,100))
-                            .twoPointCount(random.nextInt(1,100))
+                            .threePointCount(random.nextInt(1, 100))
+                            .twoPointCount(random.nextInt(1, 100))
                             .member(member)
                             .build()
             );
@@ -152,7 +158,7 @@ public class SetRealPostDataLoader implements CommandLineRunner {
 
             UUID highlightId = highlight.getHighlightId();
             UUID memberId = member.getMemberId();
-            
+
             PostData postData = postDataList.get(i);
             //제목
             String title = postData.getTitle();
@@ -165,41 +171,49 @@ public class SetRealPostDataLoader implements CommandLineRunner {
             LocalDateTime randomDateTime;
 
             if (i < 20) {
-            //이번주 데이터 (7일 이내)
-            randomDateTime = LocalDateTime.now().minusDays(new Random().nextInt(7));
-            }
-            else if (i < 40) {
-            //이번달 데이터 (30일 이내)
-            randomDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));
-            }
-
-            else {
-            // 기존 3년 랜덤 데이터
-            long start = threeYearsAgo.toEpochSecond(ZoneOffset.UTC);
-            long end = now.toEpochSecond(ZoneOffset.UTC);
-            long randomEpoch = start + (long) (random.nextDouble() * (end - start));
-            randomDateTime = LocalDateTime.ofEpochSecond(randomEpoch, 0, ZoneOffset.UTC);
+                //이번주 데이터 (7일 이내)
+                randomDateTime = LocalDateTime.now().minusDays(new Random().nextInt(7));
+            } else if (i < 40) {
+                //이번달 데이터 (30일 이내)
+                randomDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));
+            } else {
+                // 기존 3년 랜덤 데이터
+                long start = threeYearsAgo.toEpochSecond(ZoneOffset.UTC);
+                long end = now.toEpochSecond(ZoneOffset.UTC);
+                long randomEpoch = start + (long) (random.nextDouble() * (end - start));
+                randomDateTime = LocalDateTime.ofEpochSecond(randomEpoch, 0, ZoneOffset.UTC);
             }
 
-            // 랜덤 날짜
-            long start = threeYearsAgo.toEpochSecond(ZoneOffset.UTC);
-            long end = now.toEpochSecond(ZoneOffset.UTC);
-            long randomEpoch = start + (long) (random.nextDouble() * (end - start));
             //UTC 기준으로 하여 LocalDateTime를 long 형태로 변환.
+            jdbcTemplate.update(sql,
+                    postId, title, content, HashTag.THREE_POINT.name(),
+                    highlightId, memberId, likeCnt, randomDateTime, randomDateTime
+            );
+
+            PostEntity postEntity = postQueryRepository.findByPostId(postId)
+                    .orElseThrow(IllegalStateException::new);
 
 
-            batchArgs.add(new Object[]{postId, title, content, HashTag.THREE_POINT.name(), highlightId, memberId, likeCnt, randomDateTime, randomDateTime});
+            for (int j = 0; j < likeCnt; j++) {
 
-            if (i > 0) {
-                jdbcTemplate.batchUpdate(sql, batchArgs);
-                batchArgs.clear();
-                System.out.println("DB - 삽입 완료");
+                Member randomMember = memberList.get(random.nextInt(memberList.size()));
+
+                long startEpoch = randomDateTime.toEpochSecond(ZoneOffset.UTC);
+                long endEpoch = now.toEpochSecond(ZoneOffset.UTC);
+                long randomLikeEpoch = startEpoch + (long) (random.nextDouble() * (endEpoch - startEpoch));
+                LocalDateTime randomLikeTime = LocalDateTime.ofEpochSecond(randomLikeEpoch, 0, ZoneOffset.UTC);
+
+                LikeEntity likeEntity = LikeEntity.builder()
+                        .member(randomMember)
+                        .post(postEntity)
+                        .build();
+                likeEntity.setCreatedAt(randomLikeTime);
+
+                likeCommandRepository.save(likeEntity);
             }
+            System.out.println("DB - 삽입 완료");
         }
 
-        if (!batchArgs.isEmpty()) {
-            jdbcTemplate.batchUpdate(sql, batchArgs);
-        }
 
         /**
          * Elastic 배치 쿼리
@@ -209,14 +223,12 @@ public class SetRealPostDataLoader implements CommandLineRunner {
         List<PostEntity> repositoryAll = postQueryRepository.findAllWithMemberAndHighlight();
 
         // PostEntity → PostDocument 변환
-        /*List<PostDocument> docs = repositoryAll.stream()
+        List<PostDocument> docs = repositoryAll.stream()
                 .map(mapper::entityToDoc)
-                .toList();*/
+                .toList();
 
-        //postElasticSearchRepository.saveAll(docs);
-        //System.out.println("ES - 삽입 완료");
-
-
+        postElasticSearchRepository.saveAll(docs);
+        System.out.println("ES - 삽입 완료");
     }
 
 
@@ -251,4 +263,3 @@ public class SetRealPostDataLoader implements CommandLineRunner {
 
 
 }
-

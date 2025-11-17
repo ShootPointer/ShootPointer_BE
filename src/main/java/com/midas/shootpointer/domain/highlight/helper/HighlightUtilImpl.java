@@ -1,5 +1,7 @@
 package com.midas.shootpointer.domain.highlight.helper;
 
+import com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse;
+import com.midas.shootpointer.domain.highlight.dto.PeriodType;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
 import com.midas.shootpointer.domain.highlight.repository.HighlightQueryRepository;
@@ -8,6 +10,7 @@ import com.midas.shootpointer.global.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +18,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +32,10 @@ public class HighlightUtilImpl implements HighlightUtil{
     private final HighlightQueryRepository highlightQueryRepository;
 
     private final HighlightCommandRepository highlightCommandRepository;
+
+    private static final int FETCH_SIZE=10;
+
+    private static final int HIGHLIGHT_SIZE=3;
 
     public HighlightUtilImpl(@Value("${video.path}") String videoPath, HighlightQueryRepository highlightQueryRepository, HighlightCommandRepository highlightCommandRepository){
         this.videoPath=videoPath;
@@ -64,5 +73,57 @@ public class HighlightUtilImpl implements HighlightUtil{
     public Page<HighlightEntity> fetchMembersHighlights(UUID memberId, Pageable pageable) {
         return highlightQueryRepository.fetchAllMembersHighlights(memberId, pageable);
     }
+
+    @Override
+    public List<PeriodHighlightResponse> fetchAllMembersHighlights(PeriodType period) {
+        LocalDateTime now=LocalDateTime.now();
+        LocalDateTime startDate=calculateStartDate(period,now);
+        LocalDateTime endDate=calculateEndDate(period,now);
+        Pageable page= PageRequest.of(0,HIGHLIGHT_SIZE);
+
+        return highlightQueryRepository.fetchPeriodHighlight(startDate,endDate,FETCH_SIZE,page);
+    }
+
+    @Override
+    public LocalDateTime calculateStartDate(PeriodType type,LocalDateTime now) {
+        switch (type){
+            case MONTHLY -> {
+                return now.withDayOfMonth(1).toLocalDate().atStartOfDay();
+            }
+            case WEEKLY -> {
+                return now
+                        .with(DayOfWeek.MONDAY)
+                        .toLocalDate()
+                        .atStartOfDay();
+            }
+            case DAILY -> {
+                return now.toLocalDate()
+                        .atStartOfDay();
+            }
+            default -> throw new IllegalArgumentException("LocalDateTime 지원하지 않는 타입");
+        }
+    }
+
+    @Override
+    public LocalDateTime calculateEndDate(PeriodType type,LocalDateTime now) {
+        switch (type){
+            case MONTHLY -> {
+                return now.withDayOfMonth(now.toLocalDate().lengthOfMonth())
+                        .toLocalDate()
+                        .atTime(23,59,59);
+            }
+            case WEEKLY -> {
+                return now.with(DayOfWeek.SUNDAY)
+                        .toLocalDate()
+                        .atTime(23,59,59);
+            }
+            case DAILY -> {
+                return now.toLocalDate()
+                        .atTime(23,59,59);
+            }
+            default -> throw new IllegalArgumentException("LocalDateTime 지원하지 않는 타입");
+        }
+    }
+
 
 }

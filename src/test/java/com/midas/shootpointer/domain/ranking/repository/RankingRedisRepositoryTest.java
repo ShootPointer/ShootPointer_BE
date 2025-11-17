@@ -3,7 +3,7 @@ package com.midas.shootpointer.domain.ranking.repository;
 import com.midas.shootpointer.RedisTestContainer;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.ranking.dto.RankingResult;
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 import com.midas.shootpointer.domain.ranking.entity.RankingEntry;
 import com.midas.shootpointer.domain.ranking.mapper.RankingMapper;
 import com.midas.shootpointer.domain.ranking.mapper.RankingMapperImpl;

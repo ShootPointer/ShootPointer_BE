@@ -1,10 +1,7 @@
 package com.midas.shootpointer.domain.highlight.business;
 
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
-import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
-import com.midas.shootpointer.domain.highlight.dto.HighlightRequest;
-import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
-import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
+import com.midas.shootpointer.domain.highlight.dto.*;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.highlight.mapper.HighlightFactory;
@@ -115,5 +112,10 @@ public class HighlightManager {
          * 3. mapping
          */
         return highlightEntityList.map(mapper::infoResponseToEntity);
+    }
+
+    public List<PeriodHighlightResponse> fetchAllMembersHighlights(String period){
+        PeriodType convertedType=PeriodType.valueOf(period);
+        return highlightHelper.fetchAllMembersHighlights(convertedType);
     }
 }

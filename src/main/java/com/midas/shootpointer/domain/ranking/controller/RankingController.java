@@ -2,7 +2,7 @@ package com.midas.shootpointer.domain.ranking.controller;
 
 import com.midas.shootpointer.domain.ranking.business.service.RankingService;
 import com.midas.shootpointer.domain.ranking.dto.RankingResponse;
-import com.midas.shootpointer.domain.ranking.dto.RankingType;
+import com.midas.shootpointer.domain.ranking.entity.RankingType;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
