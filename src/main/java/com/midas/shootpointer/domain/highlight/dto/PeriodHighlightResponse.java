@@ -10,6 +10,7 @@ public record PeriodHighlightResponse(
         @NotBlank Long postId,
         @NotBlank String username,
         @NotBlank Long likeCnt,
+        @NotBlank Long periodLikeCnt,
         @NotBlank String title
         ) {
 }

@@ -52,6 +52,7 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
                         p.postId,
                         m.username,
                         p.likeCnt,
+                        COUNT(l),
                         p.title
                     )
                     
@@ -63,7 +64,7 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
                     WHERE
                             l.createdAt BETWEEN :startDate AND :endDate
                     ORDER BY
-                             p.likeCnt DESC
+                             COUNT(l) DESC
                     """
     )
     List<PeriodHighlightResponse> fetchPeriodHighlight(LocalDateTime startDate, LocalDateTime endDate, int limit,Pageable page);
