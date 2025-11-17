@@ -118,4 +118,8 @@ public class HighlightManager {
         PeriodType convertedType=PeriodType.valueOf(period);
         return highlightHelper.fetchAllMembersHighlights(convertedType);
     }
+
+    public HighlightCalendarResponse fetchCalendar(int year, int month) {
+
+    }
 }

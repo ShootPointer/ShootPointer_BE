@@ -1,5 +1,6 @@
 package com.midas.shootpointer.domain.highlight.helper;
 
+import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodType;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
@@ -19,9 +20,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -123,6 +124,46 @@ public class HighlightUtilImpl implements HighlightUtil{
             }
             default -> throw new IllegalArgumentException("LocalDateTime 지원하지 않는 타입");
         }
+    }
+
+    /**
+     * @param flatHighlightList 년 월 기간 내 생성된 하이라이트 영상 목록
+     * @return LocalDate(ex. 2022-10-22T) 형태로 그룹핑
+     */
+    @Override
+    public Map<LocalDate, List<HighlightInfoResponse>> groupingHighlights(List<HighlightInfoResponse> flatHighlightList) {
+        Map<LocalDate,List<HighlightInfoResponse>> results=new HashMap<>();
+
+        for (HighlightInfoResponse response:flatHighlightList){
+            //LocalDateTime -> LocalDate
+            LocalDate date=response.createdDate().toLocalDate();
+
+            //key 매핑
+            results.putIfAbsent(date,new ArrayList<>());
+
+            //value 삽입
+            results.get(date).add(response);
+        }
+
+        //flatHighlightList는 오름차순으로 정렬되어 반환되므로 따로 정렬할 필요 없음.
+        return results;
+    }
+
+    /**
+     * @param year 연도
+     * @param month 달
+     * @param memberId 멤버 ID
+     * @return 유저의 입력된 년 월 기간 내 생성된 하이라이트 영상 조회
+     */
+    @Override
+    public List<HighlightInfoResponse> fetchFlatHighlightList(int year, int month,UUID memberId) {
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+
+        LocalDateTime start = startDate.atStartOfDay();
+        LocalDateTime end = endDate.atTime(23, 59, 59);
+
+        return highlightQueryRepository.fetchFlatHighlights(start,end,memberId);
     }
 
 

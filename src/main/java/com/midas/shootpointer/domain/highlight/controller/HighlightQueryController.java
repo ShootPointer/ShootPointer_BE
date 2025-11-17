@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.highlight.controller;
 
 import com.midas.shootpointer.domain.highlight.business.HighlightManager;
+import com.midas.shootpointer.domain.highlight.dto.HighlightCalendarResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse;
 import com.midas.shootpointer.global.dto.ApiResponse;
@@ -34,5 +35,10 @@ public class HighlightQueryController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<PeriodHighlightResponse>>> periodHighlight(@RequestParam(value = "period")String period){
         return ResponseEntity.ok(ApiResponse.ok(manager.fetchAllMembersHighlights(period)));
+    }
+
+    @GetMapping("/calendar")
+    public ResponseEntity<ApiResponse<HighlightCalendarResponse>> fetchCalendar(@RequestParam(value = "year") int year,@RequestParam(value = "month")int month){
+        return ResponseEntity.ok(ApiResponse.ok(manager.fetchCalendar(year,month)));
     }
 }
