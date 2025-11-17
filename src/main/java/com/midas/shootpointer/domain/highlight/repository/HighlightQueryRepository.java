@@ -45,7 +45,7 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
 
     @Query(value =
             """
-                    SELECT new com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse
+                    SELECT DISTINCT new com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse
                     (
                         h.highlightURL,
                         h.highlightId,
@@ -64,10 +64,9 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
                             l.createdAt BETWEEN :startDate AND :endDate
                     ORDER BY
                              p.likeCnt DESC
-                    LIMIT :limit
                     """
     )
-    List<PeriodHighlightResponse> fetchPeriodHighlight(LocalDateTime startDate, LocalDateTime endDate, int limit);
+    List<PeriodHighlightResponse> fetchPeriodHighlight(LocalDateTime startDate, LocalDateTime endDate, int limit,Pageable page);
 
     /**
      * ===========================

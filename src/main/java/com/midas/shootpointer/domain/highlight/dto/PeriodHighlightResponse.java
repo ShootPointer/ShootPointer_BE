@@ -8,7 +8,7 @@ public record PeriodHighlightResponse(
         @NotBlank String highlightUrl,
         @NotBlank UUID highlightId,
         @NotBlank Long postId,
-        @NotBlank String memberName,
+        @NotBlank String username,
         @NotBlank Long likeCnt,
         @NotBlank String title
         ) {

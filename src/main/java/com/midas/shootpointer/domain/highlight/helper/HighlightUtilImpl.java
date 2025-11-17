@@ -10,6 +10,7 @@ import com.midas.shootpointer.global.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,10 @@ public class HighlightUtilImpl implements HighlightUtil{
     private final HighlightQueryRepository highlightQueryRepository;
 
     private final HighlightCommandRepository highlightCommandRepository;
+
+    private static final int FETCH_SIZE=10;
+
+    private static final int HIGHLIGHT_SIZE=3;
 
     public HighlightUtilImpl(@Value("${video.path}") String videoPath, HighlightQueryRepository highlightQueryRepository, HighlightCommandRepository highlightCommandRepository){
         this.videoPath=videoPath;
@@ -71,7 +76,12 @@ public class HighlightUtilImpl implements HighlightUtil{
 
     @Override
     public List<PeriodHighlightResponse> fetchAllMembersHighlights(PeriodType period) {
-        return List.of();
+        LocalDateTime now=LocalDateTime.now();
+        LocalDateTime startDate=calculateStartDate(period,now);
+        LocalDateTime endDate=calculateEndDate(period,now);
+        Pageable page= PageRequest.of(0,HIGHLIGHT_SIZE);
+
+        return highlightQueryRepository.fetchPeriodHighlight(startDate,endDate,FETCH_SIZE,page);
     }
 
     @Override

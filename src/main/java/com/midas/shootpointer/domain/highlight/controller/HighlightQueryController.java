@@ -33,7 +33,6 @@ public class HighlightQueryController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<PeriodHighlightResponse>>> periodHighlight(@RequestParam(value = "period")String period){
-        UUID memberId=SecurityUtils.getCurrentMemberId();
-        return ResponseEntity.ok(ApiResponse.ok(manager));
+        return ResponseEntity.ok(ApiResponse.ok(manager.fetchAllMembersHighlights(period)));
     }
 }
