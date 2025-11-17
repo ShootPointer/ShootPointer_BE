@@ -93,7 +93,7 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
         AND
         h.createdAt BETWEEN :startDate AND :endDate
     ORDER BY
-        h.createdAt ASC
+        h.videoCreatedAt ASC
     """ )
     List<HighlightInfoResponse> fetchFlatHighlights(LocalDateTime startDate,LocalDateTime endDate,UUID memberId);
     /**

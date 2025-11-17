@@ -36,36 +36,6 @@ public class HighlightManager {
     /*==========================
     *
     *HighlightManager
-    * 여러개의 하이라이트 영상 중 유저가 선택하는 메서드
-    * @parm request : 요청 dto memberId : 멤버 Id
-    * @return 선택된 하이라이트 영상 Id 리스트
-    * @author kimdoyeon
-    * @version 1.0.0
-    * @date 25. 10. 7.
-    *
-    ==========================**/
-    @Transactional
-    @CustomLog
-    public HighlightSelectResponse selectHighlight(HighlightSelectRequest request, Member member){
-        List<UUID> selectedIds=request.getSelectedHighlightIds();
-        /**
-         * 1. 유저가 선택 요청한 하이라이트 Id 리스트 -> 엔티티로 가져오기
-         */
-        List<HighlightEntity> highlights = selectedIds.stream()
-                .map(highlightHelper::findHighlightByHighlightId)
-                .toList();
-
-        /*
-         * 2. 선택 수행
-         */
-        highlights.forEach(entity -> entity.select(member));
-
-        return mapper.entityToResponse(selectedIds);
-    }
-
-    /*==========================
-    *
-    *HighlightManager
     * 1. openCv 에서 생성한 하이라이트 영상 주소 -> DB에 하이라이트 URL 저장
     * @parm
     * @return

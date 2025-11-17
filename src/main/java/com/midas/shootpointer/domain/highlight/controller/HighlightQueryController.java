@@ -32,11 +32,20 @@ public class HighlightQueryController {
         return ResponseEntity.ok(ApiResponse.ok( manager.listByPaging(page,size,memberId)));
     }
 
+    /**
+     * @param period WEEKLY : 이번 주 / MONTHLY : 이번 달
+     * @return 이번 주 / 이번 달 인기 하이라이트 조회
+     */
     @GetMapping
     public ResponseEntity<ApiResponse<List<PeriodHighlightResponse>>> periodHighlight(@RequestParam(value = "period")String period){
         return ResponseEntity.ok(ApiResponse.ok(manager.fetchAllMembersHighlights(period)));
     }
 
+    /**
+     * @param year 조회 연도
+     * @param month 조회 달
+     * @return 캘린더형 유저의 날짜별 하이라이트 영상 리스트 조회
+     */
     @GetMapping("/calendar")
     public ResponseEntity<ApiResponse<HighlightCalendarResponse>> fetchCalendar(
             @RequestParam(value = "year") int year,

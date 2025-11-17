@@ -135,6 +135,21 @@ public class SetRealPostDataLoader implements CommandLineRunner {
         for (int i = 0; i < SIZE; i++) {
             Member member = memberList.get(random.nextInt(memberList.size()));
             BackNumberEntity backNumber = memberBackNumberMap.get(member);
+            LocalDateTime randomDateTime;
+
+            if (i < 20) {
+                //이번주 데이터 (7일 이내)
+                randomDateTime = LocalDateTime.now().minusDays(new Random().nextInt(7));
+            } else if (i < 40) {
+                //이번달 데이터 (30일 이내)
+                randomDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));
+            } else {
+                // 기존 3년 랜덤 데이터
+                long start = threeYearsAgo.toEpochSecond(ZoneOffset.UTC);
+                long end = now.toEpochSecond(ZoneOffset.UTC);
+                long randomEpoch = start + (long) (random.nextDouble() * (end - start));
+                randomDateTime = LocalDateTime.ofEpochSecond(randomEpoch, 0, ZoneOffset.UTC);
+            }
             /*
               Highlight 생성
              */
@@ -149,6 +164,7 @@ public class SetRealPostDataLoader implements CommandLineRunner {
                             .threePointCount(random.nextInt(1, 100))
                             .twoPointCount(random.nextInt(1, 100))
                             .member(member)
+                            .videoCreatedAt(randomDateTime)
                             .build()
             );
 
@@ -165,21 +181,7 @@ public class SetRealPostDataLoader implements CommandLineRunner {
             Long likeCnt = postData.getLikeCnt();
             //게시물 id
             Long postId = postData.getPostId();
-            LocalDateTime randomDateTime;
 
-            if (i < 20) {
-                //이번주 데이터 (7일 이내)
-                randomDateTime = LocalDateTime.now().minusDays(new Random().nextInt(7));
-            } else if (i < 40) {
-                //이번달 데이터 (30일 이내)
-                randomDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));
-            } else {
-                // 기존 3년 랜덤 데이터
-                long start = threeYearsAgo.toEpochSecond(ZoneOffset.UTC);
-                long end = now.toEpochSecond(ZoneOffset.UTC);
-                long randomEpoch = start + (long) (random.nextDouble() * (end - start));
-                randomDateTime = LocalDateTime.ofEpochSecond(randomEpoch, 0, ZoneOffset.UTC);
-            }
 
             //UTC 기준으로 하여 LocalDateTime를 long 형태로 변환.
             jdbcTemplate.update(sql,

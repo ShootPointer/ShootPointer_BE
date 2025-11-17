@@ -16,21 +16,6 @@ import java.util.UUID;
 @Slf4j
 public class HighlightCommandServiceImpl implements HighlightCommandService {
     private final HighlightManager manager;
-    /*==========================
-    *
-    *HighlightCommandServiceImpl
-    *
-    * @parm HighlightSelectRequest : 하이라이트 선택 요청 Dto , token : JWT
-    * @return 하이라이트 선택 성공 시 선택한 하이라이트 id 반환 dto
-    * @author kimdoyeon
-    * @version 1.0.0
-    * @date 6/23/25
-    *
-    ==========================**/
-    @Override
-    public HighlightSelectResponse selectHighlight(HighlightSelectRequest request, Member member) {
-        return manager.selectHighlight(request,member);
-    }
 
     /*==========================
     *
