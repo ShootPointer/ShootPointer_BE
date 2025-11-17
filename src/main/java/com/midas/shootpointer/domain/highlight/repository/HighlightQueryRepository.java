@@ -1,5 +1,7 @@
 package com.midas.shootpointer.domain.highlight.repository;
 
+import com.midas.shootpointer.domain.highlight.dto.HighlightCalendarDaysResponse;
+import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import org.springframework.data.domain.Page;
@@ -43,6 +45,9 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
             """)
     Page<HighlightEntity> fetchAllMembersHighlights(@Param("memberId") UUID memberId, Pageable pageable);
 
+    /**
+     * 기간 내에 눌린 좋아요 개수 기준으로 내림차순으로 인기 하이라이트 조회.
+     */
     @Query(value =
             """
                     SELECT DISTINCT new com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse
@@ -69,6 +74,28 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
     )
     List<PeriodHighlightResponse> fetchPeriodHighlight(LocalDateTime startDate, LocalDateTime endDate, int limit,Pageable page);
 
+    /**
+     * 캘린더형 유저의 하이라이트 영상 목록 조회
+     */
+    @Query(value = """
+    SELECT
+        new com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse(
+            h.highlightId,
+            h.createdAt,
+            (SUM (h.twoPointCount) * 2),
+            (SUM (h.threePointCount) * 3),
+            h.highlightURL
+        )
+    FROM
+        HighlightEntity AS h
+    WHERE
+        h.member.memberId = :memberId
+        AND
+        h.createdAt BETWEEN :startDate AND :endDate
+    ORDER BY
+        h.createdAt DESC
+    """ )
+    List<HighlightInfoResponse> fetchFlatHighlights(LocalDateTime startDate,LocalDateTime endDate,UUID memberId);
     /**
      * ===========================
      * <p>
