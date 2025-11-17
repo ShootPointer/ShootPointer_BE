@@ -47,6 +47,7 @@ class RankingServiceImplTest {
         RankingResponse response=RankingResponse.builder().build();
 
         //when
+
         when(rankingManager.fetchThisData(type)).thenReturn(response);
         rankingService.fetchThisData(type);
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
-
+@Component
 @Convert
 @Component
 public class EncryptionHelper implements AttributeConverter<String, String> {
