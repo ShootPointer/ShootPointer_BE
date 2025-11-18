@@ -85,7 +85,7 @@ class PostCommandControllerTest  {
         PostEntity post=mockPost();
         //when
         when(postMapper.dtoToEntity(any(PostRequest.class),any(Member.class))).thenReturn(post);
-        when(postCommandService.update(any(PostEntity.class),any(Member.class),anyLong()))
+        when(postCommandService.update(any(PostRequest.class),any(Member.class),anyLong()))
                 .thenReturn(Long.decode(postId));
 
         //then
@@ -98,7 +98,7 @@ class PostCommandControllerTest  {
                 .andExpect(jsonPath("$.data").value(111L))
                 .andDo(print());
 
-        verify(postCommandService,times(1)).update(any(PostEntity.class),any(Member.class),anyLong());
+        verify(postCommandService,times(1)).update(any(PostRequest.class),any(Member.class),anyLong());
     }
 
 

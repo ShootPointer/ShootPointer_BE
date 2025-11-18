@@ -52,14 +52,15 @@ class PostCommandServiceImplTest {
         Long postId=111L;
         Member member=mockMember();
         HighlightEntity highlightEntity=mockHighlightEntity(member);
-        PostEntity newPost=mockPostEntity("new",highlightEntity);
+        UUID highlightId=UUID.randomUUID();
 
+        PostRequest request=PostRequest.of(highlightId,"title","content",HashTag.TWO_POINT);
         //when
-        when(postManager.update(newPost,member,postId)).thenReturn(111L);
+        when(postManager.update(request,member,postId)).thenReturn(111L);
 
         //then
-        Long createdPostId=postCommandService.update(newPost,member,postId);
-        verify(postManager,times(1)).update(newPost,member,postId);
+        Long createdPostId=postCommandService.update(request,member,postId);
+        verify(postManager,times(1)).update(request,member,postId);
         assertThat(createdPostId).isEqualTo(111L);
     }
 

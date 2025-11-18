@@ -118,13 +118,15 @@ class PostHelperImplTest {
     @DisplayName("게시물을 수정합니다. - postUtil.update(postRequest,post,highlight) 메서드가 실행되는지 확인합니다.")
     void update(){
         //given
-        when(postUtil.update(newPostEntity,postEntity,highlightEntity)).thenReturn(postEntity);
+        UUID highlightId=UUID.randomUUID();
+        PostRequest newPost=PostRequest.of(highlightId,"title","content",HashTag.TWO_POINT);
+        when(postUtil.update(newPost,postEntity,highlightEntity)).thenReturn(postEntity);
 
         //when
-        postHelper.update(newPostEntity,postEntity,highlightEntity);
+        postHelper.update(newPost,postEntity,highlightEntity);
 
         //then
-        verify(postUtil,times(1)).update(newPostEntity,postEntity,highlightEntity);
+        verify(postUtil,times(1)).update(newPost,postEntity,highlightEntity);
     }
 
     @Test

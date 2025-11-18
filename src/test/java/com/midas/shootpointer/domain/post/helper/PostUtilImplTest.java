@@ -136,21 +136,14 @@ class PostUtilImplTest {
         HighlightEntity highlight=highlightCommandRepository.save(makeHighlight(member));
         PostEntity post=postCommandRepository.save(makeMockPost(member,highlight));
 
-
-        PostEntity newPost = PostEntity.builder()
-                .title("title2")
-                .member(member)
-                .content("content2")
-                .highlight(highlight)
-                .hashTag(HashTag.TWO_POINT)
-                .build();
+        PostRequest request=PostRequest.of(highlight.getHighlightId(),"newTitle","newContent",HashTag.TWO_POINT);
 
         //when
-        PostEntity updatedPost = postUtil.update(newPost, post, highlight);
+        PostEntity updatedPost = postUtil.update(request, post, highlight);
 
         //then
-        assertThat(updatedPost.getHashTag()).isEqualTo(newPost.getHashTag());
-        assertThat(updatedPost.getContent()).isEqualTo(newPost.getContent());
+        assertThat(updatedPost.getHashTag()).isEqualTo(request.getHashTag());
+        assertThat(updatedPost.getContent()).isEqualTo(request.getContent());
         assertThat(updatedPost.getPostId()).isEqualTo(post.getPostId());
         assertThat(updatedPost.getMember().getMemberId()).isEqualTo(post.getMember().getMemberId());
         assertThat(updatedPost.getTitle()).isEqualTo(post.getTitle());
