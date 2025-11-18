@@ -1,7 +1,9 @@
 package com.midas.shootpointer.domain.post.helper.simple;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.business.PostOrderType;
+import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.repository.PostCommandRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
@@ -27,12 +29,19 @@ public class PostUtilImpl implements PostUtil{
     }
 
     @Override
-    public PostEntity save(PostEntity postEntity) {
-        return postCommandRepository.save(postEntity);
+    public PostEntity save(PostRequest request, Member member, HighlightEntity highlight) {
+        PostEntity post=PostEntity.builder()
+                .content(request.getContent())
+                .member(member)
+                .title(request.getTitle())
+                .highlight(highlight)
+                .hashTag(request.getHashTag())
+                .build();
+        return postCommandRepository.save(post);
     }
 
     @Override
-    public PostEntity update(PostEntity newPost, PostEntity oldPost, HighlightEntity highlight) {
+    public PostEntity update(PostRequest newPost, PostEntity oldPost, HighlightEntity highlight) {
         oldPost.update(
                 newPost.getTitle(),
                 newPost.getContent(),

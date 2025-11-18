@@ -2,6 +2,7 @@ package com.midas.shootpointer.domain.post.business.command;
 
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.business.PostManager;
+import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,15 @@ public class PostCommandServiceImpl implements PostCommandService{
 
     @Transactional
     @Override
-    public Long create(PostEntity post, Member member) {
-        return postManager.save(member,post,post.getHighlight().getHighlightId());
+    public Long create(PostRequest request, Member member) {
+        return postManager.save(member,request);
     }
+
 
     @Transactional
     @Override
-    public Long update(PostEntity post, Member member,Long postId) {
-        return postManager.update(post,member,postId);
+    public Long update(PostRequest request, Member member, Long postId) {
+        return postManager.update(request,member,postId);
     }
 
     @Transactional
