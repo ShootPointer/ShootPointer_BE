@@ -193,18 +193,3 @@ sse:
   event-name: progress
   cache-max-size: 360
   clean-up-interval: 60000
-
-#logging
-p6spy:
-  config:
-    logMessageFormat: com.p6spy.engine.spy.appender.CustomLineFormat
-    customLogMessageFormat: |
-      %(currentTime) | took %(executionTime)ms | category=%(category)
-      %(sqlPretty)
-      -------------------------------------------------------------
-
-decorator:
-  datasource:
-    p6spy:
-      enable-logging: true
-      log-format: multiline
