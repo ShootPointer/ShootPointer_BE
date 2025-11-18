@@ -7,6 +7,7 @@ import com.midas.shootpointer.domain.member.entity.Member;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +20,8 @@ public class HighlightFactory {
     public List<HighlightEntity> createHighlightEntities(List<HighlightInfo> highlightInfos,
                                                          UUID key,
                                                          Member member,
-                                                         BackNumberEntity backNumber
+                                                         BackNumberEntity backNumber,
+                                                         LocalDateTime createAt
     ){
         return highlightInfos.stream()
                 .map(info -> HighlightEntity.builder()
@@ -29,6 +31,7 @@ public class HighlightFactory {
                         .twoPointCount(info.twoPointCount())
                         .threePointCount(info.threePointCount())
                         .backNumber(backNumber)
+                        .videoCreatedAt(createAt)
                         .build())
                 .toList();
     }

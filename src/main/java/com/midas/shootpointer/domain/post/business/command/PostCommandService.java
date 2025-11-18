@@ -1,12 +1,12 @@
 package com.midas.shootpointer.domain.post.business.command;
 
 import com.midas.shootpointer.domain.member.entity.Member;
-import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 
 public interface PostCommandService {
-    Long create(PostEntity post, Member member);
+    Long create(PostRequest request, Member member);
 
-    Long update(PostEntity post, Member member,Long postId);
+    Long update(PostRequest request, Member member,Long postId);
 
     Long delete(Member member,Long postId);
 }

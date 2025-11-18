@@ -117,7 +117,6 @@ $$
                                               member_id,
                                               two_point_count,
                                               three_point_count,
-                                              is_selected,
                                               created_at,
                                               modified_at)
                         VALUES (gen_random_uuid(),
@@ -126,7 +125,6 @@ $$
                                 m.member_id,
                                 FLOOR(random() * 20)::INT, -- 0 ~ 19개
                                 FLOOR(random() * 15)::INT, --0~14개
-                                CASE WHEN random() > 0.15 THEN TRUE ELSE FALSE END,
                                 created_at,
                                 created_at);
                     END LOOP;

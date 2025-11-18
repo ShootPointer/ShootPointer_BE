@@ -1,5 +1,7 @@
 package com.midas.shootpointer.domain.highlight.helper;
 
+import com.midas.shootpointer.domain.highlight.dto.DateTimeRange;
+import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodType;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
@@ -19,9 +21,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -77,52 +79,88 @@ public class HighlightUtilImpl implements HighlightUtil{
     @Override
     public List<PeriodHighlightResponse> fetchAllMembersHighlights(PeriodType period) {
         LocalDateTime now=LocalDateTime.now();
-        LocalDateTime startDate=calculateStartDate(period,now);
-        LocalDateTime endDate=calculateEndDate(period,now);
+        LocalDateTime startDate=calculateDateTimeRange(period,now).start();
+        LocalDateTime endDate=calculateDateTimeRange(period,now).end();
         Pageable page= PageRequest.of(0,HIGHLIGHT_SIZE);
 
         return highlightQueryRepository.fetchPeriodHighlight(startDate,endDate,FETCH_SIZE,page);
     }
 
+    /**
+     * @param flatHighlightList 년 월 기간 내 생성된 하이라이트 영상 목록
+     * @return LocalDate(ex. 2022-10-22T) 형태로 그룹핑
+     */
     @Override
-    public LocalDateTime calculateStartDate(PeriodType type,LocalDateTime now) {
-        switch (type){
-            case MONTHLY -> {
-                return now.withDayOfMonth(1).toLocalDate().atStartOfDay();
-            }
-            case WEEKLY -> {
-                return now
-                        .with(DayOfWeek.MONDAY)
-                        .toLocalDate()
-                        .atStartOfDay();
-            }
-            case DAILY -> {
-                return now.toLocalDate()
-                        .atStartOfDay();
-            }
-            default -> throw new IllegalArgumentException("LocalDateTime 지원하지 않는 타입");
+    public TreeMap<LocalDate, List<HighlightInfoResponse>> groupingHighlights(List<HighlightInfoResponse> flatHighlightList) {
+        TreeMap<LocalDate,List<HighlightInfoResponse>> results=new TreeMap<>();
+
+        for (HighlightInfoResponse response:flatHighlightList){
+            //LocalDateTime -> LocalDate
+            LocalDate date=response.createdDate().toLocalDate();
+
+            //key 매핑
+            results.putIfAbsent(date,new ArrayList<>());
+
+            //value 삽입
+            results.get(date).add(response);
         }
+
+        //flatHighlightList는 오름차순으로 정렬되어 반환되므로 따로 정렬할 필요 없음.
+        return results;
+    }
+
+    /**
+     * @param year 연도
+     * @param month 달
+     * @param memberId 멤버 ID
+     * @return 유저의 입력된 년 월 기간 내 생성된 하이라이트 영상 조회
+     */
+    @Override
+    public List<HighlightInfoResponse> fetchFlatHighlightList(int year, int month,UUID memberId) {
+        DateTimeRange range=getMonthDateTimeRange(year,month);
+        return highlightQueryRepository.fetchFlatHighlights(range.start(),range.end(),memberId);
     }
 
     @Override
-    public LocalDateTime calculateEndDate(PeriodType type,LocalDateTime now) {
+    public DateTimeRange calculateDateTimeRange(PeriodType type, LocalDateTime now) {
+        LocalDateTime start;
+        LocalDateTime end;
+
         switch (type){
             case MONTHLY -> {
-                return now.withDayOfMonth(now.toLocalDate().lengthOfMonth())
+                start= now.withDayOfMonth(1).toLocalDate().atStartOfDay();
+                end=now.withDayOfMonth(now.toLocalDate().lengthOfMonth())
                         .toLocalDate()
                         .atTime(23,59,59);
             }
             case WEEKLY -> {
-                return now.with(DayOfWeek.SUNDAY)
+                start=now
+                        .with(DayOfWeek.MONDAY)
+                        .toLocalDate()
+                        .atStartOfDay();
+                end=now.with(DayOfWeek.SUNDAY)
                         .toLocalDate()
                         .atTime(23,59,59);
             }
             case DAILY -> {
-                return now.toLocalDate()
+                start= now.toLocalDate()
+                        .atStartOfDay();
+                end= now.toLocalDate()
                         .atTime(23,59,59);
             }
             default -> throw new IllegalArgumentException("LocalDateTime 지원하지 않는 타입");
         }
+        return new DateTimeRange(start,end);
+    }
+
+    @Override
+    public DateTimeRange getMonthDateTimeRange(int year, int month) {
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+
+        LocalDateTime start = startDate.atStartOfDay();
+        LocalDateTime end = endDate.atTime(23, 59, 59);
+        return new DateTimeRange(start,end);
     }
 
 

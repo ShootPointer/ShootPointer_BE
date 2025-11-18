@@ -16,6 +16,9 @@ jwt:
   refresh_expiration_time: 259200000
 
 spring:
+  output:
+    ansi:
+      enabled: always
   jackson:
     serialization:
       write-dates-as-timestamps: false
@@ -134,7 +137,9 @@ management:
   endpoint:
     health:
       show-details: always
-
+  health:
+    elasticsearch:
+      enabled: false
 #Kakao
 kakao:
   auth:

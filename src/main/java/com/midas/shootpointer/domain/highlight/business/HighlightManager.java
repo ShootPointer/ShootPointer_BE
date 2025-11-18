@@ -18,7 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.UUID;
 
 @Component
@@ -30,36 +32,6 @@ public class HighlightManager {
     private final MemberBackNumberHelper memberBackNumberHelper;
     private final HighlightFactory factory;
     private final MemberHelper memberHelper;
-
-    /*==========================
-    *
-    *HighlightManager
-    * 여러개의 하이라이트 영상 중 유저가 선택하는 메서드
-    * @parm request : 요청 dto memberId : 멤버 Id
-    * @return 선택된 하이라이트 영상 Id 리스트
-    * @author kimdoyeon
-    * @version 1.0.0
-    * @date 25. 10. 7.
-    *
-    ==========================**/
-    @Transactional
-    @CustomLog
-    public HighlightSelectResponse selectHighlight(HighlightSelectRequest request, Member member){
-        List<UUID> selectedIds=request.getSelectedHighlightIds();
-        /**
-         * 1. 유저가 선택 요청한 하이라이트 Id 리스트 -> 엔티티로 가져오기
-         */
-        List<HighlightEntity> highlights = selectedIds.stream()
-                .map(highlightHelper::findHighlightByHighlightId)
-                .toList();
-
-        /*
-         * 2. 선택 수행
-         */
-        highlights.forEach(entity -> entity.select(member));
-
-        return mapper.entityToResponse(selectedIds);
-    }
 
     /*==========================
     *
@@ -89,7 +61,7 @@ public class HighlightManager {
         /*
         *   2. 하이라이트 엔티티 생성
          */
-        List<HighlightEntity> entities=factory.createHighlightEntities(request.getHighlightUrls(),request.getHighlightIdentifier(),member,backNumber);
+        List<HighlightEntity> entities=factory.createHighlightEntities(request.getHighlightUrls(),request.getHighlightIdentifier(),member,backNumber,request.getCreatedAt());
 
         /*
             3. DB 저장
@@ -117,5 +89,29 @@ public class HighlightManager {
     public List<PeriodHighlightResponse> fetchAllMembersHighlights(String period){
         PeriodType convertedType=PeriodType.valueOf(period);
         return highlightHelper.fetchAllMembersHighlights(convertedType);
+    }
+
+    public HighlightCalendarResponse fetchCalendar(int year, int month,UUID memberId) {
+        /**
+         * 1. year,month 입력 값 검증
+         */
+        highlightHelper.isValidDateRange(year,month);
+
+        /**
+         * 2.년 월 기간 내 생성된 하이라이트 영상 조회 - flat data 조회
+         */
+        List<HighlightInfoResponse> flatHighlightList=highlightHelper.fetchFlatHighlightList(year,month,memberId);
+
+        /**
+         * 3. flat data 그룹핑한 데이터 조회
+         */
+        TreeMap<LocalDate,List<HighlightInfoResponse>> groupingHighlights=highlightHelper.groupingHighlights(flatHighlightList);
+
+        /**
+         * 4.date와 매핑된 데이터 반환
+         */
+        List<HighlightCalendarDaysResponse> daysResponses=mapper.groupingHighlightToDaysResponse(groupingHighlights);
+
+        return new HighlightCalendarResponse(year,month,daysResponses);
     }
 }

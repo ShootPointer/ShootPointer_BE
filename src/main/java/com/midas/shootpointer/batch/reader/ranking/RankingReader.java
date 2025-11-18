@@ -80,7 +80,6 @@ public class RankingReader{
 
         /**
          *  1. 시간 조건
-         *     + is_selected = true
          *     + is_aggregation_agreed = true
          */
         queryProvider.setSelectClause("""
@@ -103,7 +102,6 @@ public class RankingReader{
         queryProvider.setWhereClause("""
                 WHERE
                   m.is_aggregation_agreed = true
-                  AND h.is_selected = true
                   AND h.created_at BETWEEN :begin AND :end
                 """);
 
