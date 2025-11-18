@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.post.helper.simple;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.business.PostOrderType;
+import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
@@ -60,8 +61,8 @@ public class PostHelperImpl implements PostHelper{
     }
 
     @Override
-    public PostEntity save(PostEntity postEntity) {
-        return postUtil.save(postEntity);
+    public PostEntity save(PostRequest request, Member member, HighlightEntity highlight) {
+        return postUtil.save(request,member,highlight);
     }
 
     @Override

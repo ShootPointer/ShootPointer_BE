@@ -1,7 +1,9 @@
 package com.midas.shootpointer.domain.post.helper.simple;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
+import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.business.PostOrderType;
+import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.UUID;
 
 public interface PostUtil {
     PostEntity findPostByPostId(Long postId);
-    PostEntity save(PostEntity postEntity);
+    PostEntity save(PostRequest request, Member member,HighlightEntity highlight);
     PostEntity update(PostEntity newPost, PostEntity oldPost, HighlightEntity highlight);
     PostEntity findByPostByPostIdWithPessimisticLock(Long postId);
     List<PostEntity> getLatestPostListBySliceAndNoOffset(Long postId,int size);

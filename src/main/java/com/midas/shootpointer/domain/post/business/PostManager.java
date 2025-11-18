@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.post.business;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.dto.response.*;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.helper.elastic.PostElasticSearchHelper;
@@ -29,36 +30,36 @@ public class PostManager {
     private PostElasticSearchHelper postElasticSearchHelper;
 
     @Transactional
-    public Long save(Member member, PostEntity postEntity, UUID highlightId){
+    public Long save(Member member, PostRequest request){
         /**
          * 1.하이라이트 영상 불러오기.
          */
-        HighlightEntity highlightEntity=highlightHelper.findHighlightByHighlightId(highlightId);
+        HighlightEntity highlightEntity=highlightHelper.findHighlightByHighlightId(request.getHighlightId());
 
         /*
          * 2. Highlight URL이 유저의 영상으로 일치 여부.
          */
-        postHelper.isValidateHighlightId(member,highlightId);
+        postHelper.isValidateHighlightId(member,request.getHighlightId());
 
         /*
          * 3. 해시태그가 올바른 지 여부.
          */
-        postHelper.isValidPostHashTag(postEntity.getHashTag());
+        postHelper.isValidPostHashTag(request.getHashTag());
 
         /**
          * 4. 하이라이트 저장.
          */
-        postEntity.setHighlight(highlightEntity);
+        PostEntity savedPostEntity=postHelper.save(request,member,highlightEntity);
 
         /*
          * 5. 게시물 ElasticSearch Document 저장 (조건부).
          */
         if (postElasticSearchHelper != null) {
-            postElasticSearchHelper.createPostDocument(postEntity);
+            postElasticSearchHelper.createPostDocument(savedPostEntity);
         }
 
 
-        return postHelper.save(postEntity).getPostId();
+        return savedPostEntity.getPostId();
     }
 
     @Transactional
