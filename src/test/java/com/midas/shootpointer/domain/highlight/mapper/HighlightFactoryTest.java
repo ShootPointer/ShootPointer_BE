@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,9 +48,9 @@ class HighlightFactoryTest {
         BackNumberEntity backNumber=BackNumberEntity.builder()
                 .backNumber(BackNumber.of(10))
                 .build();
-
+        LocalDateTime now=LocalDateTime.now();
         //when
-        List<HighlightEntity> result=factory.createHighlightEntities(highlightInfos,highlightKey,member,backNumber);
+        List<HighlightEntity> result=factory.createHighlightEntities(highlightInfos,highlightKey,member,backNumber,now);
 
         //then
 

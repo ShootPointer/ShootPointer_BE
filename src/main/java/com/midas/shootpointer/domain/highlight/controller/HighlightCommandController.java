@@ -2,11 +2,7 @@ package com.midas.shootpointer.domain.highlight.controller;
 
 import com.midas.shootpointer.domain.highlight.business.command.HighlightCommandService;
 import com.midas.shootpointer.domain.highlight.dto.HighlightRequest;
-import com.midas.shootpointer.domain.highlight.dto.HighlightSelectRequest;
-import com.midas.shootpointer.domain.highlight.dto.HighlightSelectResponse;
-import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.global.dto.ApiResponse;
-import com.midas.shootpointer.global.security.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,15 +19,6 @@ import java.util.UUID;
 @Tag(name = "하이라이트 URL 전송 / 하이라이트 선택")
 public class HighlightCommandController {
     private final HighlightCommandService highlightCommandService;
-
-    @PostMapping("/select")
-    public ResponseEntity<ApiResponse<HighlightSelectResponse>> selectHighlight(
-            @RequestBody HighlightSelectRequest request
-    ) {
-        Member member = SecurityUtils.getCurrentMember();
-
-        return ResponseEntity.ok(ApiResponse.ok(highlightCommandService.selectHighlight(request, member)));
-    }
 
     @Operation(
             summary = "하이라이트 URL 전송 API (OpenCV 에서 사용) - [담당자 : 김도연]",

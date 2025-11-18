@@ -46,7 +46,6 @@ class HighlightMapperImplTest {
                 .highlightURL("url")
                 .highlightKey(highlightKey)
                 .highlightId(highlightId)
-                .isSelected(true)
                 .twoPointCount(20)
                 .threePointCount(30)
                 .build();
