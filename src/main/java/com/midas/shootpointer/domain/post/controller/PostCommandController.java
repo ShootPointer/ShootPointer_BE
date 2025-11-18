@@ -3,7 +3,6 @@ package com.midas.shootpointer.domain.post.controller;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.post.business.command.PostCommandService;
 import com.midas.shootpointer.domain.post.dto.request.PostRequest;
-import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.mapper.PostMapper;
 import com.midas.shootpointer.global.dto.ApiResponse;
 import com.midas.shootpointer.global.security.SecurityUtils;
@@ -83,8 +82,7 @@ public class PostCommandController {
           @PathVariable(value = "postId") Long postId
     ){
         Member member=SecurityUtils.getCurrentMember();
-        PostEntity entity=postMapper.dtoToEntity(request,member);
-        return ResponseEntity.ok(ApiResponse.ok(postCommandService.update(entity,member,postId)));
+        return ResponseEntity.ok(ApiResponse.ok(postCommandService.update(request,member,postId)));
     }
 
 

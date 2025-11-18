@@ -19,10 +19,11 @@ public class PostCommandServiceImpl implements PostCommandService{
         return postManager.save(member,request);
     }
 
+
     @Transactional
     @Override
-    public Long update(PostEntity post, Member member,Long postId) {
-        return postManager.update(post,member,postId);
+    public Long update(PostRequest request, Member member, Long postId) {
+        return postManager.update(request,member,postId);
     }
 
     @Transactional
