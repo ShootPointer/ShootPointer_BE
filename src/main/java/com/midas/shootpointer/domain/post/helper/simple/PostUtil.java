@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface PostUtil {
     PostEntity findPostByPostId(Long postId);
     PostEntity save(PostRequest request, Member member,HighlightEntity highlight);
-    PostEntity update(PostEntity newPost, PostEntity oldPost, HighlightEntity highlight);
+    PostEntity update(PostRequest newPost, PostEntity oldPost, HighlightEntity highlight);
     PostEntity findByPostByPostIdWithPessimisticLock(Long postId);
     List<PostEntity> getLatestPostListBySliceAndNoOffset(Long postId,int size);
     List<PostEntity> getPopularPostListBySliceAndNoOffset(Long postId,int size);

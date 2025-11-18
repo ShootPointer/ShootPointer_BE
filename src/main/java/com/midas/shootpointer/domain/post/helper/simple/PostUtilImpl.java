@@ -41,7 +41,7 @@ public class PostUtilImpl implements PostUtil{
     }
 
     @Override
-    public PostEntity update(PostEntity newPost, PostEntity oldPost, HighlightEntity highlight) {
+    public PostEntity update(PostRequest newPost, PostEntity oldPost, HighlightEntity highlight) {
         oldPost.update(
                 newPost.getTitle(),
                 newPost.getContent(),
