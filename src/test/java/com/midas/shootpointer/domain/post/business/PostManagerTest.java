@@ -3,6 +3,7 @@ package com.midas.shootpointer.domain.post.business;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.helper.HighlightHelper;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.dto.response.*;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostDocument;
@@ -65,26 +66,26 @@ class PostManagerTest {
         UUID randomUUID = UUID.randomUUID();
         HighlightEntity mockHighlight = mockHighlight(randomUUID);
         PostEntity mockPostEntity = mockPostEntity("", mockMember);
-
+        PostRequest request=PostRequest.of(randomUUID,"title","content",HashTag.TWO_POINT);
         //저장된 게시물
         PostEntity savedPostEntity = createAndSavedPostEntity(mockHighlight, mockMember, 111L, "");
 
         when(highlightHelper.findHighlightByHighlightId(randomUUID)).thenReturn(mockHighlight);
         doNothing().when(postHelper).isValidateHighlightId(mockMember, randomUUID);
-        doNothing().when(postHelper).isValidPostHashTag(mockPostEntity.getHashTag());
-        when(postHelper.save(any(PostEntity.class))).thenReturn(savedPostEntity);
+        doNothing().when(postHelper).isValidPostHashTag(HashTag.TWO_POINT);
+        when(postHelper.save(any(PostRequest.class),any(Member.class),any(HighlightEntity.class))).thenReturn(savedPostEntity);
 
 
         //when
-        Long savedPostId = postManager.save(mockMember, mockPostEntity, randomUUID);
+        Long savedPostId = postManager.save(mockMember, request);
 
         //then
         assertThat(savedPostId).isEqualTo(111L);
-        assertThat(mockPostEntity.getHighlight()).isEqualTo(mockHighlight);
+        assertThat(savedPostEntity.getHighlight()).isEqualTo(mockHighlight);
 
         verify(highlightHelper, times(1)).findHighlightByHighlightId(randomUUID);
         verify(postHelper, times(1)).isValidateHighlightId(mockMember, randomUUID);
-        verify(postHelper, times(1)).isValidPostHashTag(mockPostEntity.getHashTag());
+        verify(postHelper, times(1)).isValidPostHashTag(HashTag.TWO_POINT);
     }
 
 

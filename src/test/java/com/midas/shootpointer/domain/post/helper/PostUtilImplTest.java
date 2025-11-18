@@ -7,6 +7,7 @@ import com.midas.shootpointer.domain.like.repository.LikeCommandRepository;
 import com.midas.shootpointer.domain.member.entity.Member;
 import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import com.midas.shootpointer.domain.post.business.PostOrderType;
+import com.midas.shootpointer.domain.post.dto.request.PostRequest;
 import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.simple.PostUtilImpl;
@@ -77,14 +78,16 @@ class PostUtilImplTest {
         //given
         Member member = memberRepository.save(makeMember());
         HighlightEntity highlight=highlightCommandRepository.save(makeHighlight(member));
-        PostEntity post=postCommandRepository.save(makeMockPost(member,highlight));
+        PostRequest request=PostRequest.of(highlight.getHighlightId(),"title","content",HashTag.TWO_POINT);
 
         //when
-        PostEntity savedPost=postUtil.save(post);
+        PostEntity savedPost=postUtil.save(request,member,highlight);
 
         //then
-        assertThat(post.getPostId()).isEqualTo(savedPost.getPostId());
-        assertThat(post.getMember().getMemberId()).isEqualTo(savedPost.getMember().getMemberId());
+        assertThat(savedPost.getTitle()).isEqualTo("title");
+        assertThat(savedPost.getContent()).isEqualTo("content");
+        assertThat(savedPost.getMember().getMemberId()).isEqualTo(member.getMemberId());
+        assertThat(savedPost.getHighlight().getHighlightId()).isEqualTo(highlight.getHighlightId());
     }
 
     @Test

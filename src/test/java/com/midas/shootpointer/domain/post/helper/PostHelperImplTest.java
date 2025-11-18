@@ -2,6 +2,8 @@ package com.midas.shootpointer.domain.post.helper;
 
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.member.entity.Member;
+import com.midas.shootpointer.domain.post.dto.request.PostRequest;
+import com.midas.shootpointer.domain.post.entity.HashTag;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
 import com.midas.shootpointer.domain.post.helper.simple.PostHelperImpl;
 import com.midas.shootpointer.domain.post.helper.simple.PostUtil;
@@ -85,13 +87,17 @@ class PostHelperImplTest {
     @DisplayName("게시물을 저장합니다. - postUtil.save(postEntity) 메서드가 실행되는지 확인합니다.")
     void save(){
         //given
-       when(postUtil.save(postEntity)).thenReturn(postEntity);
+        UUID highlightId=UUID.randomUUID();
+        PostRequest request=PostRequest.of(highlightId,"title","content", HashTag.TWO_POINT);
+        HighlightEntity highlight=HighlightEntity.builder().build();
+
+       when(postUtil.save(request,member,highlight)).thenReturn(postEntity);
 
         //when
-        postHelper.save(postEntity);
+        postHelper.save(request,member,highlight);
 
         //then
-        verify(postUtil,times(1)).save(postEntity);
+        verify(postUtil,times(1)).save(request,member,highlight);
     }
 
     @Test

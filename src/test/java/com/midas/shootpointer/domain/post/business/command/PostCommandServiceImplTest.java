@@ -34,13 +34,14 @@ class PostCommandServiceImplTest {
         HighlightEntity highlight=mockHighlightEntity(member);
         PostEntity postEntity=mockPostEntity("123",highlight);
         UUID highlightId=postEntity.getHighlight().getHighlightId();
+        PostRequest request=PostRequest.of(highlightId,"title","content",HashTag.TWO_POINT);
 
         //when
-        when(postManager.save(member,postEntity,highlightId)).thenReturn(111L);
+        when(postManager.save(member,request)).thenReturn(111L);
 
         //then
-        Long createdPostId=postCommandService.create(postEntity,member);
-        verify(postManager,times(1)).save(member,postEntity,highlightId);
+        Long createdPostId=postCommandService.create(request,member);
+        verify(postManager,times(1)).save(member,request);
         assertThat(createdPostId).isEqualTo(111L);
     }
 

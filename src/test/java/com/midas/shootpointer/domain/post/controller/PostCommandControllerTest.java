@@ -60,7 +60,7 @@ class PostCommandControllerTest  {
 
         //when
         when(postMapper.dtoToEntity(any(PostRequest.class),any(Member.class))).thenReturn(post);
-        when(postCommandService.create(any(PostEntity.class),any(Member.class)))
+        when(postCommandService.create(any(PostRequest.class),any(Member.class)))
                         .thenReturn(savedPostId);
 
         //then
@@ -73,7 +73,7 @@ class PostCommandControllerTest  {
                 .andExpect(jsonPath("$.data").value(111L))
                 .andDo(print());
 
-        verify(postCommandService,times(1)).create(any(PostEntity.class),any(Member.class));
+        verify(postCommandService,times(1)).create(any(PostRequest.class),any(Member.class));
     }
 
     @Test
