@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.progress.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.midas.shootpointer.domain.progress.ProgressType;
 import com.mongodb.lang.Nullable;
 import jakarta.validation.constraints.NotNull;
 
@@ -13,10 +14,18 @@ public record ProgressRedisResponse(
 
         @NotNull boolean success,
 
-        @Nullable ProgressData data,
+        @NotNull long timeStamp,
 
-        @NotNull String message,
+        @NotNull ProgressType type,
 
-        @NotNull long timeStamp
+        @NotNull String jobId,
+
+        @NotNull String memberId,
+        /*=====================================
+         *      원본 전송 / 하이라이트 생성 중 활성화
+         =======================================*/
+
+        //진행률
+        @Nullable double progress
 ) {
 }

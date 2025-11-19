@@ -21,7 +21,8 @@ public class HighlightFactory {
                                                          UUID key,
                                                          Member member,
                                                          BackNumberEntity backNumber,
-                                                         LocalDateTime createAt
+                                                         LocalDateTime createAt,
+                                                         UUID jobId
     ){
         return highlightInfos.stream()
                 .map(info -> HighlightEntity.builder()
@@ -32,6 +33,7 @@ public class HighlightFactory {
                         .threePointCount(info.threePointCount())
                         .backNumber(backNumber)
                         .videoCreatedAt(createAt)
+                        .jobId(jobId)
                         .build())
                 .toList();
     }
