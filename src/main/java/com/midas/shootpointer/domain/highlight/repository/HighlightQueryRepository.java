@@ -1,6 +1,5 @@
 package com.midas.shootpointer.domain.highlight.repository;
 
-import com.midas.shootpointer.domain.highlight.dto.HighlightCalendarDaysResponse;
 import com.midas.shootpointer.domain.highlight.dto.HighlightInfoResponse;
 import com.midas.shootpointer.domain.highlight.dto.PeriodHighlightResponse;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
@@ -26,9 +25,12 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
     boolean isMembersHighlight(@Param("memberId") UUID memberId, @Param("highlightId") UUID highlightId);
 
 
-    @Query(value = "SELECT EXISTS(SELECT * FROM member AS M left join highlight AS H " +
-                   "WHERE M.member_id=:memberId " +
-                   "AND H.highlight_id=:highlightId ) ", nativeQuery = true)
+    @Query(value = """
+                SELECT EXISTS(
+                SELECT 1 FROM highlight
+                WHERE highlight_id = :highlightId 
+                    AND member_id = :memberId 
+            )""", nativeQuery = true)
     boolean existsByHighlightIdAndMember(@Param("highlightId") UUID highlightId, @Param("memberId") UUID memberId);
 
     boolean existsByHighlightId(UUID highlightId);

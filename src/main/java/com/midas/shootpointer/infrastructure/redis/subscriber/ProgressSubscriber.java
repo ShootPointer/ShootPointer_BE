@@ -2,7 +2,6 @@ package com.midas.shootpointer.infrastructure.redis.subscriber;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.domain.progress.dto.ProgressRedisResponse;
-import com.midas.shootpointer.domain.progress.mapper.ProgressMapper;
 import com.midas.shootpointer.domain.progress.service.ProgressSseEmitter;
 import com.midas.shootpointer.infrastructure.redis.helper.ProgressValidator;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ public class ProgressSubscriber implements MessageListener {
     private final ObjectMapper objectMapper;
     private final ProgressValidator validator;
     private final ProgressSseEmitter emitter;
-    private final ProgressMapper mapper;
 
     @Override
     public void onMessage(Message message, byte[] pattern) {
@@ -42,13 +40,13 @@ public class ProgressSubscriber implements MessageListener {
             ProgressRedisResponse progress=objectMapper.readValue(body,ProgressRedisResponse.class);
 
             //null값인 경우
-            if (progress==null || progress.data()==null){
+            if (progress==null ){
                 log.error("[Redis SUB] progress data is null : time = {}", LocalDateTime.now());
                 return;
             }
 
             //채널의 jobId와 payload의 jobId 불일치 시 무시
-            String jobIdFromPayload = progress.data().jobId();
+            String jobIdFromPayload = progress.jobId();
             if (jobIdFromChannel != null && !jobIdFromChannel.equals(jobIdFromPayload)) {
                 log.warn("[Redis SUB] JobId mismatch detected: channel={}, payload={}", jobIdFromChannel, jobIdFromPayload);
                 return;
@@ -64,16 +62,16 @@ public class ProgressSubscriber implements MessageListener {
             }
 
             //SUB로 받은 값  null 검증
-            validator.validate(progress.data());
+            validator.validate(progress);
 
             //SSE로 client에 전달
             emitter.sendToClient(
-                    progress.data().memberId(),
+                    progress.memberId(),
                     jobIdFromChannel, //redis에서 구독한 jobId로 SSE 발행
-                    mapper.progressDataToResponse(progress.data())
+                    progress
             );
 
-            log.info("[Redis SUB] progress info : jobId = {}",progress.data().jobId());
+            log.info("[Redis SUB] progress info : jobId = {}",progress.jobId());
 
         }catch (Exception e){
             log.error("[Redis SUB] failed to process message : {}",e.getMessage());

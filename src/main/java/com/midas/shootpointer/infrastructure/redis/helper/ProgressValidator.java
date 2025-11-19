@@ -1,7 +1,7 @@
 package com.midas.shootpointer.infrastructure.redis.helper;
 
-import com.midas.shootpointer.domain.progress.dto.ProgressData;
 import com.midas.shootpointer.domain.progress.ProgressType;
+import com.midas.shootpointer.domain.progress.dto.ProgressRedisResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -10,26 +10,14 @@ import java.time.LocalDateTime;
 @Component
 @Slf4j
 public class ProgressValidator {
-    public  void validate(ProgressData data){
-        ProgressType type=data.type();
+    public  void validate(ProgressRedisResponse response){
+        ProgressType type=response.type();
 
         switch (type){
-            case UPLOADING -> {
-                requireNotNull(data.progress(), "progress");
-                requireNotNull(data.totalBytes(),"totalBytes");
-                requireNotNull(data.receivedBytes(),"receivedBytes");
-            }
-            case UPLOAD_COMPLETE -> {
-                requireNotNull(data.sizeBytes(),"sizeBytes");
-                requireNotNull(data.checksum(),"checkSum");
-                requireNotNull(data.durationSec(),"durationSec");
-            }
-            case PROCESSING -> {
-                requireNotNull(data.stage(),"stage");
-                requireNotNull(data.currentClip(),"currentClip");
-                requireNotNull(data.totalClips(),"totalClips");
-            }
-
+            case UPLOADING :
+            case PROCESSING:
+                requireNotNull(response.progress(), "progress");
+                break;
         }
     }
 
