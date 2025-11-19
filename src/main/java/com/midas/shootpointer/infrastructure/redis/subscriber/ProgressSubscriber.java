@@ -2,6 +2,7 @@ package com.midas.shootpointer.infrastructure.redis.subscriber;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.midas.shootpointer.domain.progress.dto.ProgressRedisResponse;
+import com.midas.shootpointer.domain.progress.dto.ProgressResponse;
 import com.midas.shootpointer.domain.progress.service.ProgressSseEmitter;
 import com.midas.shootpointer.infrastructure.redis.helper.ProgressValidator;
 import lombok.RequiredArgsConstructor;
@@ -64,11 +65,18 @@ public class ProgressSubscriber implements MessageListener {
             //SUB로 받은 값  null 검증
             validator.validate(progress);
 
+            ProgressResponse response=new ProgressResponse(
+                    progress.status(),
+                    progress.success(),
+                    progress.progress(),
+                    progress.type()
+            );
+
             //SSE로 client에 전달
             emitter.sendToClient(
                     progress.memberId(),
                     jobIdFromChannel, //redis에서 구독한 jobId로 SSE 발행
-                    progress
+                    response
             );
 
             log.info("[Redis SUB] progress info : jobId = {}",progress.jobId());
