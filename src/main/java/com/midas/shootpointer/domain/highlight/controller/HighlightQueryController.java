@@ -59,6 +59,7 @@ public class HighlightQueryController {
     public ResponseEntity<ApiResponse<HighlightInfoResponse>> latestCreatedHighlights(
             @RequestParam(value = "jobId") UUID jobId
     ){
-        return ResponseEntity.ok(ApiResponse.ok(manager.fetchLatestCreated(jobId)));
+        UUID memberId=SecurityUtils.getCurrentMemberId();
+        return ResponseEntity.ok(ApiResponse.ok(manager.fetchLatestCreatedHighlights(jobId,memberId)));
     }
 }

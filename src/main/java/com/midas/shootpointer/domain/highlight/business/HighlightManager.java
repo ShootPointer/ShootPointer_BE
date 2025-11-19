@@ -114,4 +114,12 @@ public class HighlightManager {
 
         return new HighlightCalendarResponse(year,month,daysResponses);
     }
+
+    public List<HighlightInfoResponse> fetchLatestCreatedHighlights(UUID jobId,UUID memberId){
+        List<HighlightEntity> highlightList=highlightHelper.fetchLastestCreatedHighlights(jobId,memberId);
+
+        return highlightList.stream()
+                .map(mapper::infoResponseToEntity)
+                .toList();
+    }
 }
