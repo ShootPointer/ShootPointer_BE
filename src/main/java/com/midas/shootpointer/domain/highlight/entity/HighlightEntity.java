@@ -53,6 +53,9 @@ public class HighlightEntity extends BaseEntity {
     @Column(name = "video_created_at")
     private LocalDateTime videoCreatedAt;
 
+    @Column(name = "job_id",columnDefinition = "uuid")
+    private UUID jobId;
+
     /*
     =========== [ 도메인-행위 ] ==============
      */
