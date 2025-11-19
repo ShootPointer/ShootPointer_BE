@@ -54,4 +54,11 @@ public class HighlightQueryController {
         UUID memberId=SecurityUtils.getCurrentMemberId();
         return ResponseEntity.ok(ApiResponse.ok(manager.fetchCalendar(year,month,memberId)));
     }
+
+    @GetMapping("/latest")
+    public ResponseEntity<ApiResponse<HighlightInfoResponse>> latestCreatedHighlights(
+            @RequestParam(value = "jobId") UUID jobId
+    ){
+        return ResponseEntity.ok(ApiResponse.ok(manager.fetchLatestCreated(jobId)));
+    }
 }
