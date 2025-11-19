@@ -49,8 +49,10 @@ class HighlightFactoryTest {
                 .backNumber(BackNumber.of(10))
                 .build();
         LocalDateTime now=LocalDateTime.now();
+        UUID jobId=UUID.randomUUID();
+
         //when
-        List<HighlightEntity> result=factory.createHighlightEntities(highlightInfos,highlightKey,member,backNumber,now);
+        List<HighlightEntity> result=factory.createHighlightEntities(highlightInfos,highlightKey,member,backNumber,now,jobId);
 
         //then
 
