@@ -164,7 +164,7 @@ public class HighlightUtilImpl implements HighlightUtil{
     }
 
     @Override
-    public List<HighlightEntity> fetchLastestCreatedHighlights(UUID jobId, UUID memberId) {
+    public List<HighlightEntity> fetchLastestCreatedHighlights(String jobId, UUID memberId) {
         return highlightQueryRepository.fetchHighlightsByJobId(jobId,memberId);
     }
 
