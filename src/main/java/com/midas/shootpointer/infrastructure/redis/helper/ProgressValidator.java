@@ -1,7 +1,7 @@
 package com.midas.shootpointer.infrastructure.redis.helper;
 
 import com.midas.shootpointer.domain.progress.ProgressType;
-import com.midas.shootpointer.domain.progress.dto.ProgressResponse;
+import com.midas.shootpointer.domain.progress.dto.ProgressRedisResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Component
 @Slf4j
 public class ProgressValidator {
-    public  void validate(ProgressResponse response){
+    public  void validate(ProgressRedisResponse response){
         ProgressType type=response.type();
 
         switch (type){
