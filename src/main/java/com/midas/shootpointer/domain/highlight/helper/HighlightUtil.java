@@ -24,5 +24,5 @@ public interface HighlightUtil {
     TreeMap<LocalDate,List<HighlightInfoResponse>> groupingHighlights(List<HighlightInfoResponse> flatHighlightList);
     List<HighlightInfoResponse> fetchFlatHighlightList(int year,int month,UUID memberId);
     DateTimeRange getMonthDateTimeRange(int year, int month);
-    List<HighlightEntity> fetchLastestCreatedHighlights(UUID jobId,UUID memberId);
+    List<HighlightEntity> fetchLastestCreatedHighlights(String jobId,UUID memberId);
 }

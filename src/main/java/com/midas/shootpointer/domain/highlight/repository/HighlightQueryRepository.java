@@ -115,7 +115,7 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
                 WHERE
                     h.job_id = :jobId
                 """,nativeQuery = true)
-    List<HighlightEntity> fetchHighlightsByJobId(UUID jobId,UUID memberId);
+    List<HighlightEntity> fetchHighlightsByJobId(String jobId,UUID memberId);
     /**
      * ===========================
      * <p>

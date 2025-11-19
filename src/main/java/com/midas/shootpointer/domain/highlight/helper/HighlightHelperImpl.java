@@ -68,7 +68,7 @@ public class HighlightHelperImpl implements HighlightHelper{
     }
 
     @Override
-    public List<HighlightEntity> fetchLastestCreatedHighlights(UUID jobId, UUID memberId) {
+    public List<HighlightEntity> fetchLastestCreatedHighlights(String jobId, UUID memberId) {
         return highlightUtil.fetchLastestCreatedHighlights(jobId,memberId);
     }
 

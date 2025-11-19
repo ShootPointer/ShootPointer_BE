@@ -22,7 +22,7 @@ public class HighlightFactory {
                                                          Member member,
                                                          BackNumberEntity backNumber,
                                                          LocalDateTime createAt,
-                                                         UUID jobId
+                                                         String jobId
     ){
         return highlightInfos.stream()
                 .map(info -> HighlightEntity.builder()
