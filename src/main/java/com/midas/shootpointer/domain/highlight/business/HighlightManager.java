@@ -61,7 +61,14 @@ public class HighlightManager {
         /*
         *   2. 하이라이트 엔티티 생성
          */
-        List<HighlightEntity> entities=factory.createHighlightEntities(request.getHighlightUrls(),request.getHighlightIdentifier(),member,backNumber,request.getCreatedAt());
+        List<HighlightEntity> entities=factory.createHighlightEntities(
+                request.getHighlightUrls(),
+                request.getHighlightIdentifier(),
+                member,
+                backNumber,
+                request.getCreatedAt(),
+                request.getJobId()
+        );
 
         /*
             3. DB 저장
@@ -113,5 +120,13 @@ public class HighlightManager {
         List<HighlightCalendarDaysResponse> daysResponses=mapper.groupingHighlightToDaysResponse(groupingHighlights);
 
         return new HighlightCalendarResponse(year,month,daysResponses);
+    }
+
+    public List<HighlightInfoResponse> fetchLatestCreatedHighlights(UUID jobId,UUID memberId){
+        List<HighlightEntity> highlightList=highlightHelper.fetchLastestCreatedHighlights(jobId,memberId);
+
+        return highlightList.stream()
+                .map(mapper::infoResponseToEntity)
+                .toList();
     }
 }

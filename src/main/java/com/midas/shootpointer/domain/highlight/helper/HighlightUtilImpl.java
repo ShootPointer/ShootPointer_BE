@@ -163,5 +163,10 @@ public class HighlightUtilImpl implements HighlightUtil{
         return new DateTimeRange(start,end);
     }
 
+    @Override
+    public List<HighlightEntity> fetchLastestCreatedHighlights(UUID jobId, UUID memberId) {
+        return highlightQueryRepository.fetchHighlightsByJobId(jobId,memberId);
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.midas.shootpointer.domain.highlight.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,4 +28,6 @@ public class HighlightRequest {
     @NotBlank(message = "하이라이트 생성 날짜는 필수입니다.")
     private LocalDateTime createdAt;
 
+    @NotNull(message = "하이라이트 JobId는 필수입니다.")
+    private UUID jobId;
 }

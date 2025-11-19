@@ -104,6 +104,18 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
         h.videoCreatedAt ASC
     """ )
     List<HighlightInfoResponse> fetchFlatHighlights(LocalDateTime startDate,LocalDateTime endDate,UUID memberId);
+
+
+    @Query(value = """
+                SELECT *
+                FROM
+                    highlight AS h
+                INNER JOIN
+                    member AS m ON h.member_id = :memberId
+                WHERE
+                    h.job_id = :jobId
+                """,nativeQuery = true)
+    List<HighlightEntity> fetchHighlightsByJobId(UUID jobId,UUID memberId);
     /**
      * ===========================
      * <p>
