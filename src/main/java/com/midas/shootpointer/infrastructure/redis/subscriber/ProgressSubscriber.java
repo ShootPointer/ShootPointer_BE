@@ -34,7 +34,7 @@ public class ProgressSubscriber implements MessageListener {
             log.info("[Redis SUB] Received message : {}",body);
 
             String[] tokens = channel.split(":");
-            String jobIdFromChannel = tokens.length >= 3 ? tokens[1] : null; // 2: "opencv-progress-upload", 3: jobId
+            String jobIdFromChannel = tokens[1];
 
             log.info("[Redis SUB] channel={} jobId={} body={}", channel, jobIdFromChannel, body);
 
