@@ -169,14 +169,8 @@ public class RedisOpenCVConfig {
             String highlightPattern = highlightChannel + ":*";
             PatternTopic highlightTopic = new PatternTopic(highlightPattern);
             container.addMessageListener(listenerAdapter, highlightTopic);
+
             log.info("[Redis OpenCV] ✓ Registered listener for pattern: {}", highlightPattern);
-
-            // 컨테이너 초기화
-            container.afterPropertiesSet();
-
-            // 컨테이너 시작 (명시적)
-            container.start();
-
             log.info("[Redis OpenCV] ✓ Message listener container started successfully");
             log.info("[Redis OpenCV] ✓ Now listening for messages from OpenCV server...");
             log.info("[Redis OpenCV] ✓ Subscriptions active:");
