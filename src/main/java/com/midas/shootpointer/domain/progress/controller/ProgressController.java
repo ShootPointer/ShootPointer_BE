@@ -25,7 +25,7 @@ public class ProgressController {
         return progressSseEmitter.createEmitter(memberId.toString(),lastEventId,jobId);
     }
 
-    @GetMapping(value = "/progress")
+    @GetMapping
     public Object progress(@RequestParam String jobId) {
         Object data=progressSseEmitter.getLatestProgress(jobId);
 
