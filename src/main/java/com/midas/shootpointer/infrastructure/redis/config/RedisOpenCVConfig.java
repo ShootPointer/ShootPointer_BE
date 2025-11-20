@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.midas.shootpointer.infrastructure.redis.subscriber.ProgressSubscriber;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -17,12 +18,14 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @RequiredArgsConstructor
 @Profile("prod") //opencv 환경에서만 실행
+@Slf4j
 public class RedisOpenCVConfig {
     @Value("${spring.data.redis.opencv.host}")
     private String host;
@@ -41,16 +44,17 @@ public class RedisOpenCVConfig {
      */
     @Bean
     public ChannelTopic uploadChannelTopic(){
-        return new ChannelTopic(uploadChannel);
+        return new ChannelTopic(uploadChannel+":*");
     }
 
     @Bean
     public ChannelTopic highlightChannelTopic(){
-        return new ChannelTopic(highlightChannel);
+        return new ChannelTopic(highlightChannel+":*");
     }
 
     @Bean(name = "opencvRedisConnectionFactory")
     public RedisConnectionFactory opencvRedisConnectionFactory(){
+        log.info("[Redis OpenCV] connected redis information host : {} port : {}",host,port);
         RedisStandaloneConfiguration configuration=new RedisStandaloneConfiguration();
         configuration.setHostName(host);
         configuration.setPort(port);
@@ -88,6 +92,7 @@ public class RedisOpenCVConfig {
          */
         RedisMessageListenerContainer container=new RedisMessageListenerContainer();
 
+        MessageListenerAdapter listenerAdapter=new MessageListenerAdapter(progressSubscriber);
         /**
          * 2. 연결 설정 주입
          */
@@ -97,10 +102,11 @@ public class RedisOpenCVConfig {
          * 3. 채널로 구독자 등록
          */
         //원본 영상 업로드 채널 구독
-        container.addMessageListener(progressSubscriber,uploadChannelTopic());
+        container.addMessageListener(listenerAdapter,uploadChannelTopic());
+        log.info("[Redis OpenCV] Subscribed upload pattern : {}",uploadChannel+":*");
         //하이라이트 영상 채널 구독
-        container.addMessageListener(progressSubscriber,highlightChannelTopic());
-
+        container.addMessageListener(listenerAdapter,highlightChannelTopic());
+        log.info("[Redis OpenCV] Subscribed highlight pattern : {}",highlightChannel+":*");
         return container;
     }
 }
