@@ -70,7 +70,7 @@ public class RedisOpenCVConfig {
             RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
             configuration.setHostName(host);
             configuration.setPort(port);
-            configuration.setPassword(password);
+            configuration.setPassword(RedisPassword.of(password));
 
             // Lettuce 클라이언트 설정 (타임아웃, 재연결 등)
             SocketOptions socketOptions = SocketOptions.builder()
