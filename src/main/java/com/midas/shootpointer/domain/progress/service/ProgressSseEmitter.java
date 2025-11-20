@@ -12,9 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.time.Instant;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -49,6 +47,7 @@ public class ProgressSseEmitter {
     public SseEmitter createEmitter(String memberId, String lastEventId, String jobId){
         SseEmitter emitter=new SseEmitter(ttlMillis);
         String sseKey=buildKey(memberId,jobId);
+        log.info("[SSE-createEmitter] key : {} / memberId = {} / jobId = {} ",sseKey,memberId,jobId);
         emitters.put(sseKey,emitter);
 
         // 연결 확인용 초기 이벤트 전송
@@ -104,6 +103,7 @@ public class ProgressSseEmitter {
     public void sendToClient(String jobId,String memberId,Object data){
         //Event Id는 TimeMillis() 사용
         String sseKey=buildKey(memberId,jobId);
+        log.info("[SSE-sendToClient] key : {} / memberId = {} / jobId = {} ",sseKey,memberId,jobId);
         long eventId= Instant.now().toEpochMilli();
         SseEvent event=new SseEvent(eventId,name,data);
 
@@ -135,19 +135,29 @@ public class ProgressSseEmitter {
      * cache 정리
      */
     @Scheduled(fixedRateString = "${sse.clean-up-interval}")
-    public void cleanUp(){
-        long expireBefore=Instant.now().toEpochMilli()-ttlMillis;
-        eventCache.forEach((memberId,deque)->{
-            synchronized (deque){
-                while (!deque.isEmpty() && deque.peekFirst().eventId() < expireBefore){
-                    deque.removeFirst();
-                }
-                if (deque.isEmpty() && !emitters.containsKey(memberId)){
-                    eventCache.remove(memberId);
-                }
+    public void cleanUp() {
+    long expireBefore = Instant.now().toEpochMilli() - ttlMillis;
+
+    // 삭제할 키 임시 보관
+    List<String> keysToRemove = new ArrayList<>();
+
+    eventCache.forEach((key, deque) -> {
+        synchronized (deque) {
+            // 오래된 이벤트 정리
+            while (!deque.isEmpty() && deque.peekFirst().eventId() < expireBefore) {
+                deque.removeFirst();
             }
-        });
-    }
+
+            // emitter도 없고 deque도 비었으면 지우기 대상
+            if (deque.isEmpty() && !emitters.containsKey(key)) {
+                keysToRemove.add(key);
+            }
+        }
+    });
+
+    // forEach 종료 후 삭제
+    keysToRemove.forEach(eventCache::remove);
+}
 
     private void sendToEvent(SseEmitter emitter,SseEvent event){
         try {
