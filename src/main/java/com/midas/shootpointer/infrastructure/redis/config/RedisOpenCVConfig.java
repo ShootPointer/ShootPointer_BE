@@ -41,6 +41,9 @@ public class RedisOpenCVConfig {
     @Value("${spring.data.redis.opencv.port:6379}")
     private int port;
 
+    @Value("${spring.data.redis.opencv.password}")
+    private String password;
+
     @Value("${spring.data.redis.opencv.channels.highlight:opencv-progress-highlight}")
     private String highlightChannel;
 
@@ -67,6 +70,7 @@ public class RedisOpenCVConfig {
             RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
             configuration.setHostName(host);
             configuration.setPort(port);
+            configuration.setPassword(password);
 
             // Lettuce 클라이언트 설정 (타임아웃, 재연결 등)
             SocketOptions socketOptions = SocketOptions.builder()
