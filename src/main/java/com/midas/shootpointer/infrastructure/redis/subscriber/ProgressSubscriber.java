@@ -74,8 +74,8 @@ public class ProgressSubscriber implements MessageListener {
 
             //SSE로 client에 전달
             emitter.sendToClient(
-                    progress.memberId(),
                     jobIdFromChannel, //redis에서 구독한 jobId로 SSE 발행
+                    progress.memberId(),
                     response
             );
 

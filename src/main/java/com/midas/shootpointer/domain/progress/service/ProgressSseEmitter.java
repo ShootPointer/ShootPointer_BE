@@ -51,6 +51,20 @@ public class ProgressSseEmitter {
         String sseKey=buildKey(memberId,jobId);
         emitters.put(sseKey,emitter);
 
+        // 연결 확인용 초기 이벤트 전송
+        try {
+            emitter.send(SseEmitter.event()
+                .name("connected")
+                .data(Map.of(
+                    "message", "SSE connection established",
+                    "jobId", jobId,
+                    "timestamp", Instant.now().toEpochMilli()
+                )));
+            log.info("SSE initial event sent: {}", sseKey);
+        } catch (Exception e) {
+            log.warn("Failed to send initial event: {}", e.getMessage());
+        }
+
         emitter.onCompletion(()-> {
             emitters.remove(sseKey);
             log.debug("SSE completed and removed {}",sseKey);
