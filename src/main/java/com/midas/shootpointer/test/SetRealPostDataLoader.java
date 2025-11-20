@@ -2,6 +2,7 @@ package com.midas.shootpointer.test;
 
 import com.midas.shootpointer.domain.backnumber.entity.BackNumber;
 import com.midas.shootpointer.domain.backnumber.entity.BackNumberEntity;
+import com.midas.shootpointer.domain.backnumber.helper.BackNumberHelper;
 import com.midas.shootpointer.domain.backnumber.repository.BackNumberRepository;
 import com.midas.shootpointer.domain.highlight.entity.HighlightEntity;
 import com.midas.shootpointer.domain.highlight.repository.HighlightCommandRepository;
@@ -12,7 +13,10 @@ import com.midas.shootpointer.domain.member.repository.MemberCommandRepository;
 import com.midas.shootpointer.domain.memberbacknumber.entity.MemberBackNumberEntity;
 import com.midas.shootpointer.domain.memberbacknumber.repository.MemberBackNumberRepository;
 import com.midas.shootpointer.domain.post.entity.HashTag;
+import com.midas.shootpointer.domain.post.entity.PostDocument;
 import com.midas.shootpointer.domain.post.entity.PostEntity;
+import com.midas.shootpointer.domain.post.mapper.PostElasticSearchMapper;
+import com.midas.shootpointer.domain.post.repository.PostElasticSearchRepository;
 import com.midas.shootpointer.domain.post.repository.PostQueryRepository;
 import com.midas.shootpointer.test.BasketballPostDataGenerator.PostData;
 import lombok.RequiredArgsConstructor;
@@ -46,9 +50,10 @@ public class SetRealPostDataLoader implements CommandLineRunner {
     private final MemberCommandRepository memberRepository;
     private final HighlightCommandRepository highlightCommandRepository;
     private final PostQueryRepository postQueryRepository;
-    //private final PostElasticSearchMapper mapper;
-    //private final PostElasticSearchRepository postElasticSearchRepository;
+    private final PostElasticSearchMapper mapper;
+    private final PostElasticSearchRepository postElasticSearchRepository;
     private final BackNumberRepository backNumberRepository;
+    private final BackNumberHelper backNumberHelper;
     private final MemberBackNumberRepository memberBackNumberRepository;
     private final LikeCommandRepository likeCommandRepository;
     //30개
@@ -113,11 +118,12 @@ public class SetRealPostDataLoader implements CommandLineRunner {
         Map<Member, BackNumberEntity> memberBackNumberMap = new HashMap<>();
 
         for (Member m : memberList) {
-            BackNumberEntity bn = backNumberRepository.save(
-                    BackNumberEntity.builder()
-                            .backNumber(BackNumber.of(random.nextInt(1, 99)))
-                            .build()
-            );
+            Integer backNumberValue=random.nextInt(1,99);
+            BackNumber backNumber=BackNumber.of(backNumberValue);
+
+            //중복 방지
+            BackNumberEntity bn = backNumberHelper.findOrElseGetBackNumber(backNumber);
+
 
             memberBackNumberRepository.save(MemberBackNumberEntity.of(m, bn));
 
@@ -221,12 +227,12 @@ public class SetRealPostDataLoader implements CommandLineRunner {
         List<PostEntity> repositoryAll = postQueryRepository.findAllWithMemberAndHighlight();
 
         // PostEntity → PostDocument 변환
-        /*List<PostDocument> docs = repositoryAll.stream()
+        List<PostDocument> docs = repositoryAll.stream()
                 .map(mapper::entityToDoc)
                 .toList();
 
         postElasticSearchRepository.saveAll(docs);
-        System.out.println("ES - 삽입 완료");*/
+        System.out.println("ES - 삽입 완료");
     }
 
 
