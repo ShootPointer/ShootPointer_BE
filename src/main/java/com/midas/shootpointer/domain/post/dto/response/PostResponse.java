@@ -2,10 +2,7 @@ package com.midas.shootpointer.domain.post.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +29,10 @@ public class PostResponse {
 
     //좋아요 개수
     private Long likeCnt;
+
+    //좋아요 여부
+    @Setter
+    private boolean isLiked=false;
 
     //게시 시간
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")

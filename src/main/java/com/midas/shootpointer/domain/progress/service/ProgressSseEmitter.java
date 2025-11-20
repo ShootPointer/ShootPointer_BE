@@ -22,16 +22,13 @@ public class ProgressSseEmitter {
     @Value("${sse.ttl}")
     private long ttlMillis;
 
-    @Value("${sse.event-name}")
-    private String name;
-
     //유저당 보관 가능 최대 이벤트 수 : 360(5초당 이벤트 발행 -> 30분 : 360개)
     @Value("${sse.cache-max-size}")
     private int cacheMaxSize;
 
     @PostConstruct
     private void init(){
-        log.info("ProgressSseEmitter start : {} {} {}",ttlMillis,name,cacheMaxSize);
+        log.info("ProgressSseEmitter start : {} {}",ttlMillis,cacheMaxSize);
     }
     //memberId -> emitter
     private static Map<String, SseEmitter> emitters=new ConcurrentHashMap<>();
@@ -53,9 +50,8 @@ public class ProgressSseEmitter {
         // 연결 확인용 초기 이벤트 전송
         try {
             emitter.send(SseEmitter.event()
-                .name("connected")
                 .data(Map.of(
-                    "message", "SSE connection established",
+                    "type", "CONNECTED",
                     "jobId", jobId,
                     "timestamp", Instant.now().toEpochMilli()
                 )));
@@ -105,7 +101,7 @@ public class ProgressSseEmitter {
         String sseKey=buildKey(memberId,jobId);
         log.info("[SSE-sendToClient] key : {} / memberId = {} / jobId = {} ",sseKey,memberId,jobId);
         long eventId= Instant.now().toEpochMilli();
-        SseEvent event=new SseEvent(eventId,name,data);
+        SseEvent event=new SseEvent(eventId,data);
 
         /**
          * 1. 캐시에 저장.
@@ -163,10 +159,9 @@ public class ProgressSseEmitter {
         try {
             emitter.send(SseEmitter.event()
                     .id(String.valueOf(event.eventId()))
-                    .name(event.name())
                     .data(event.data()));
         } catch (Exception e){
-            log.warn("Failed to send SSE event id = {} name = {} message = {}",event.eventId(),event.name(),e.getMessage());
+            log.warn("Failed to send SSE event id = {} message = {}",event.eventId(),e.getMessage());
             emitter.complete();
         }
     }
