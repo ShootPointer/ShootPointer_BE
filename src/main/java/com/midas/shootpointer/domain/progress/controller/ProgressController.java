@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -22,5 +23,15 @@ public class ProgressController {
     ) {
         UUID memberId = SecurityUtils.getCurrentMemberId();
         return progressSseEmitter.createEmitter(memberId.toString(),lastEventId,jobId);
+    }
+
+    @GetMapping(value = "/progress")
+    public Object progress(@RequestParam String jobId) {
+        Object data=progressSseEmitter.getLatestProgress(jobId);
+
+        if (data==null){
+            return Map.of("type","NONE","progress",0);
+        }
+        return data;
     }
 }

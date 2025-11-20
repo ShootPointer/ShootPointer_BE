@@ -36,6 +36,7 @@ public class ProgressSseEmitter {
     //memberId -> 최근 이벤트 (오름차순 : 맨 뒤가 최신)
     private static Map<String, Deque<SseEvent>> eventCache=new ConcurrentHashMap<>();
 
+    private static final Map<String,Object> latestProgressMap=new ConcurrentHashMap<>();
     /**
      * 구독 생성
      * @param memberId : 멤버 Id
@@ -103,6 +104,7 @@ public class ProgressSseEmitter {
         long eventId= Instant.now().toEpochMilli();
         SseEvent event=new SseEvent(eventId,data);
 
+        latestProgressMap.put(jobId,data);//REST API 통신을 위한 임시 메서드
         /**
          * 1. 캐시에 저장.
          */
@@ -170,4 +172,7 @@ public class ProgressSseEmitter {
         return String.format("%s:%s",memberId,jobId);
     }
 
+    public Object getLatestProgress(String jobId) {
+        return latestProgressMap.get(jobId);
+    }
 }
