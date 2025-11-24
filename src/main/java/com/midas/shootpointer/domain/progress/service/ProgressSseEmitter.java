@@ -12,9 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.time.Instant;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -24,16 +22,13 @@ public class ProgressSseEmitter {
     @Value("${sse.ttl}")
     private long ttlMillis;
 
-    @Value("${sse.event-name}")
-    private String name;
-
     //유저당 보관 가능 최대 이벤트 수 : 360(5초당 이벤트 발행 -> 30분 : 360개)
     @Value("${sse.cache-max-size}")
     private int cacheMaxSize;
 
     @PostConstruct
     private void init(){
-        log.info("ProgressSseEmitter start : {} {} {}",ttlMillis,name,cacheMaxSize);
+        log.info("ProgressSseEmitter start : {} {}",ttlMillis,cacheMaxSize);
     }
     //memberId -> emitter
     private static Map<String, SseEmitter> emitters=new ConcurrentHashMap<>();
@@ -41,6 +36,7 @@ public class ProgressSseEmitter {
     //memberId -> 최근 이벤트 (오름차순 : 맨 뒤가 최신)
     private static Map<String, Deque<SseEvent>> eventCache=new ConcurrentHashMap<>();
 
+    private static final Map<String,Object> latestProgressMap=new ConcurrentHashMap<>();
     /**
      * 구독 생성
      * @param memberId : 멤버 Id
@@ -49,7 +45,21 @@ public class ProgressSseEmitter {
     public SseEmitter createEmitter(String memberId, String lastEventId, String jobId){
         SseEmitter emitter=new SseEmitter(ttlMillis);
         String sseKey=buildKey(memberId,jobId);
+        log.info("[SSE-createEmitter] key : {} / memberId = {} / jobId = {} ",sseKey,memberId,jobId);
         emitters.put(sseKey,emitter);
+
+        // 연결 확인용 초기 이벤트 전송
+        try {
+            emitter.send(SseEmitter.event()
+                .data(Map.of(
+                    "type", "CONNECTED",
+                    "jobId", jobId,
+                    "timestamp", Instant.now().toEpochMilli()
+                )));
+            log.info("SSE initial event sent: {}", sseKey);
+        } catch (Exception e) {
+            log.warn("Failed to send initial event: {}", e.getMessage());
+        }
 
         emitter.onCompletion(()-> {
             emitters.remove(sseKey);
@@ -90,9 +100,11 @@ public class ProgressSseEmitter {
     public void sendToClient(String jobId,String memberId,Object data){
         //Event Id는 TimeMillis() 사용
         String sseKey=buildKey(memberId,jobId);
+        log.info("[SSE-sendToClient] key : {} / memberId = {} / jobId = {} ",sseKey,memberId,jobId);
         long eventId= Instant.now().toEpochMilli();
-        SseEvent event=new SseEvent(eventId,name,data);
+        SseEvent event=new SseEvent(eventId,data);
 
+        latestProgressMap.put(jobId,data);//REST API 통신을 위한 임시 메서드
         /**
          * 1. 캐시에 저장.
          */
@@ -121,28 +133,37 @@ public class ProgressSseEmitter {
      * cache 정리
      */
     @Scheduled(fixedRateString = "${sse.clean-up-interval}")
-    public void cleanUp(){
-        long expireBefore=Instant.now().toEpochMilli()-ttlMillis;
-        eventCache.forEach((memberId,deque)->{
-            synchronized (deque){
-                while (!deque.isEmpty() && deque.peekFirst().eventId() < expireBefore){
-                    deque.removeFirst();
-                }
-                if (deque.isEmpty() && !emitters.containsKey(memberId)){
-                    eventCache.remove(memberId);
-                }
+    public void cleanUp() {
+    long expireBefore = Instant.now().toEpochMilli() - ttlMillis;
+
+    // 삭제할 키 임시 보관
+    List<String> keysToRemove = new ArrayList<>();
+
+    eventCache.forEach((key, deque) -> {
+        synchronized (deque) {
+            // 오래된 이벤트 정리
+            while (!deque.isEmpty() && deque.peekFirst().eventId() < expireBefore) {
+                deque.removeFirst();
             }
-        });
-    }
+
+            // emitter도 없고 deque도 비었으면 지우기 대상
+            if (deque.isEmpty() && !emitters.containsKey(key)) {
+                keysToRemove.add(key);
+            }
+        }
+    });
+
+    // forEach 종료 후 삭제
+    keysToRemove.forEach(eventCache::remove);
+}
 
     private void sendToEvent(SseEmitter emitter,SseEvent event){
         try {
             emitter.send(SseEmitter.event()
                     .id(String.valueOf(event.eventId()))
-                    .name(event.name())
                     .data(event.data()));
         } catch (Exception e){
-            log.warn("Failed to send SSE event id = {} name = {} message = {}",event.eventId(),event.name(),e.getMessage());
+            log.warn("Failed to send SSE event id = {} message = {}",event.eventId(),e.getMessage());
             emitter.complete();
         }
     }
@@ -151,4 +172,7 @@ public class ProgressSseEmitter {
         return String.format("%s:%s",memberId,jobId);
     }
 
+    public Object getLatestProgress(String jobId) {
+        return latestProgressMap.get(jobId);
+    }
 }

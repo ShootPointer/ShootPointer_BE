@@ -83,6 +83,7 @@ spring:
       opencv:
         host: ${OPENCV_REDIS_HOST:localhost}
         port: ${OPENCV_REDIS_PORT:6379}
+        password: ${OPENCV_REDIS_PASSWORD:}
         channels:
           upload: opencv-progress-upload:*
           highlight: opencv-progress-highlight:*

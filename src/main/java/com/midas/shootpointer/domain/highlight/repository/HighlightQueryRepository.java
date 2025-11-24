@@ -107,15 +107,15 @@ public interface HighlightQueryRepository extends JpaRepository<HighlightEntity,
 
 
     @Query(value = """
-                SELECT *
+                SELECT h.*
                 FROM
                     highlight AS h
                 INNER JOIN
                     member AS m ON h.member_id = :memberId
                 WHERE
-                    h.job_id = :jobId
+                    h.job_id = :jobId AND m.member_id =:memberId
                 """,nativeQuery = true)
-    List<HighlightEntity> fetchHighlightsByJobId(UUID jobId,UUID memberId);
+    List<HighlightEntity> fetchHighlightsByJobId(String jobId,UUID memberId);
     /**
      * ===========================
      * <p>

@@ -29,5 +29,5 @@ public class HighlightRequest {
     private LocalDateTime createdAt;
 
     @NotNull(message = "하이라이트 JobId는 필수입니다.")
-    private UUID jobId;
+    private String jobId;
 }

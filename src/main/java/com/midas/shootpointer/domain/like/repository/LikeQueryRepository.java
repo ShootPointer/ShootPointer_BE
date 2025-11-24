@@ -18,4 +18,12 @@ public interface LikeQueryRepository extends JpaRepository<LikeEntity,Long> {
             nativeQuery = true
     )
     Optional<LikeEntity> findByPostIdAndMemberId(@Param("postId") Long postId,@Param("memberId") UUID memberId);
+
+
+    @Query(value = """
+            SELECT 1 FROM like_table AS l
+            WHERE l.member_id = :memberId
+                    AND l.post_id = :postId
+     """,nativeQuery = true)
+    Boolean isLiked(UUID memberId,Long postId);
 }
