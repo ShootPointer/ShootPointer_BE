@@ -18,31 +18,16 @@ services:
       - spring-network
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d testdb"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d shootpointer" ]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
 
-  # PgAdmin
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    ports:
-      - "3305:80"
-    networks:
-      - spring-network
-    restart: always
-
   # MongoDB
   mongo:
     image: mongo:8
     container_name: mongo
-    environment:
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     ports:
       - "27017"
     volumes:
@@ -52,87 +37,60 @@ services:
       - spring-network
     restart: always
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 20s
 
-  # Spring Boot Application
-  shootpointer:
-    env_file:
-      - .env
+    # Spring Boot Application
+    # ==========================================
+    # [App 1] API Server (웹 요청 처리)
+    # ==========================================
+  api-server:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: shootpointer
-    command: >
-      java
-      -javaagent:/pinpoint-agent/pinpoint-bootstrap.jar
-      -Dpinpoint.agentId=${PINPOINT_AGENT_ID}
-      -Dpinpoint.applicationName=${PINPOINT_APPLICATION_NAME}
-      -jar /app.jar
-    volumes:
-      - /home/azureuser/pinpoint-agent:/pinpoint-agent
+      args:
+        MODULE_NAME: api-server
+    container_name: shootpointer-api
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
     depends_on:
       postgres:
         condition: service_healthy
       mongo:
         condition: service_healthy
-      elasticsearch:
-        condition: service_healthy
-    environment:
-      SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE}"
-
-      # 서버 포트
-      SERVER_PORT: "9000"
-
-      # 데이터베이스 설정
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
-
-      # JPA 설정
-      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
-      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
-      SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM}
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT}
-      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL}
-
-      # Hikari 연결 풀
-      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE}
-      SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE}
-      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: ${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT}
-      SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT: ${SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT}
-      SPRING_DATASOURCE_HIKARI_MAX_LIFETIME: ${SPRING_DATASOURCE_HIKARI_MAX_LIFETIME}
-
-      # MongoDB
-      SPRING_DATA_MONGODB_URI: ${SPRING_DATA_MONGODB_URI}
-
-      # 타임존
-      TZ: ${TZ}
-
-      # 로깅 레벨
-      LOGGING_LEVEL_ORG_HIBERNATE_SQL: ${LOGGING_LEVEL_ORG_HIBERNATE_SQL}
-      LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER: ${LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER}
-
-      # Elasticsearch
-      SPRING_ELASTICSEARCH_URIS: ${SPRING_ELASTICSEARCH_URIS}
-
-    ports:
-      - "9000:9000"
     networks:
       - spring-network
     restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
+    environment:
+      - SPRING_DATA_REDIS_HOST=host.docker.internal
+      - SPRING_DATA_REDIS_PORT=6379
 
-   # Elasticsearch
+  # ==========================================
+  # [App 2] Batch Server (배치)
+  # ==========================================
+  batch-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MODULE_NAME: batch-server
+    container_name: shootpointer-batch
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - spring-network
+
+  # Elasticsearch
   elasticsearch:
     build:
       context: .
@@ -156,13 +114,12 @@ services:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - /home/azureuser/elasticsearch/esdata:/usr/share/elasticsearch/data
-      - /home/azureuser/elasticsearch/es-logs:/usr/share/elasticsearch/logs
+      - ./esdata:/usr/share/elasticsearch/data
     networks:
       - spring-network
     restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9200/_cluster/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -185,7 +142,7 @@ services:
 
 networks:
   spring-network:
-    external: true
+    driver: bridge
 
 volumes:
   postgres-data:

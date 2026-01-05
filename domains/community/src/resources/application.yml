@@ -1,0 +1,19 @@
+spring:
+  # Data 크기
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5000MB
+      max-request-size: 5000MB
+
+  config:
+    import: -elasticsearch.yml
+
+  #Redis 설정
+  data:
+    redis:
+      custom:
+        ranking:
+          key:
+            weekly: ranking:WEEKLY
+            monthly: ranking:MONTHLY

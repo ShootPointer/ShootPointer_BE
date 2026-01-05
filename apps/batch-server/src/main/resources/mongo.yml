@@ -1,0 +1,5 @@
+ spring:
+  # MongoDB 설정
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/shootpointer}

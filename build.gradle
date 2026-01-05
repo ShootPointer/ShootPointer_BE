@@ -1,132 +1,119 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.4.5'
-	id 'io.spring.dependency-management' version '1.1.7'
-	id 'jacoco'
-	id 'org.jetbrains.kotlin.jvm'
+    id 'java'
+    id 'org.springframework.boot' version '3.4.5'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'jacoco'
 }
 
 group = 'com.midas'
 version = '0.0.1-SNAPSHOT'
 
-test {
-	finalizedBy jacocoTestReport
-}
-
-jacoco {
-	toolVersion = "0.8.11"
-}
-
-//test
-
-jacocoTestReport{
-	dependsOn test
-	reports {
-		xml.required.set(true)
-	}
-	afterEvaluate {
-		classDirectories.setFrom(
-				files(classDirectories.files.collect{
-					fileTree(dir: it, exclude: [
-							"**/global/config/**",
-							"**/global/exception/**",
-							"**/global/dto/**",
-							"**/global/aop/**",
-							"**/global/entity/**",
-							"**/global/common/**",
-							"**/HealthCheckController.class",
-							"ShootPointerApplication.class",
-							"**/domain/**/entity/**",
-							"**/global/annotation/**",
-							"**/test/**",
-							"**/batch/listener/**",
-							"**/batch/config/**",
-							"**/batch/validator/**"
-					])
-				})
-		)
-	}
-}
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
-}
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
-dependencies {
-	// JWT
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-	// PostgreSQL JDBC Driver
-	implementation 'org.postgresql:postgresql'
-	// OAuth2-client, Security
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testImplementation 'org.springframework.security:spring-security-test'
-
-	//Swagger
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
-
-	//WebClient
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.3'
-
-	//H2 DataBase
-	testImplementation 'com.h2database:h2:2.2.224'
-	testRuntimeOnly 'com.h2database:h2'
-
-	//test - log
-	testCompileOnly 'org.projectlombok:lombok'
-	testAnnotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+group = 'com.shootpointer'
+version = '0.0.1-SNAPSHOT'
 
 
-	//redisson
-	implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
+allprojects {
+    group = 'com.shootpointer'
+    version = '0.0.1-SNAPSHOT'
 
-	//ElasticSearch
-	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-	testImplementation "org.testcontainers:elasticsearch"
-	testImplementation "org.testcontainers:junit-jupiter:1.20.6"
-	testImplementation "org.springframework.boot:spring-boot-testcontainers"
-
-	//MongoDB
-	implementation ('org.springframework.boot:spring-boot-starter-data-mongodb')
-
-	//spring-batch
-	implementation 'org.springframework.batch:spring-batch-core'
-	testImplementation 'org.springframework.batch:spring-batch-test'
-	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-	testImplementation 'org.awaitility:awaitility'
+    repositories {
+        mavenCentral()
+    }
 }
+
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        // PostgreSQL JDBC Driver
+        implementation 'org.postgresql:postgresql'
+
+        compileOnly 'org.projectlombok:lombok'
+        runtimeOnly 'com.mysql:mysql-connector-j'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+        //test - log
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+        implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+
+        implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
+        testImplementation "org.testcontainers:junit-jupiter:1.20.6"
+        testImplementation "org.springframework.boot:spring-boot-testcontainers"
+
+        //MongoDB
+        implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
+    }
+}
+
 
 tasks.named('test') {
-	useJUnitPlatform()
-	/**
-	 * 동시성 제어 테스트 제외 - 제외 이유 : PR시 Jacoco 커버리지 측정 시간 대폭 증가.
-	 **/
-	if (System.getenv("CI") == "true") {
-		exclude '**/LikeManagerConcurrencyTest.class'
-	}
+    useJUnitPlatform()
+    /**
+     * 동시성 제어 테스트 제외 - 제외 이유 : PR시 Jacoco 커버리지 측정 시간 대폭 증가.
+     **/
+    if (System.getenv("CI") == "true") {
+        exclude '**/LikeManagerConcurrencyTest.class'
+    }
+}
+//test
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.8.11"
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required.set(true)
+    }
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, exclude: [
+                            "**/global/config/**",
+                            "**/global/exception/**",
+                            "**/global/dto/**",
+                            "**/global/aop/**",
+                            "**/global/entity/**",
+                            "**/global/common/**",
+                            "**/HealthCheckController.class",
+                            "ShootPointerApplication.class",
+                            "**/domain/**/entity/**",
+                            "**/global/annotation/**",
+                            "**/test/**",
+                            "**/batch/listener/**",
+                            "**/batch/config/**",
+                            "**/batch/validator/**"
+                    ])
+                })
+        )
+    }
 }

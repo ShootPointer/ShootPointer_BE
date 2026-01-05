@@ -6,9 +6,17 @@ WORKDIR /shootpointer
 
 COPY build.gradle settings.gradle ./
 COPY gradle gradle
-COPY src src
+COPY gradlew ./
 
-RUN gradle clean bootJar --no-daemon -x test
+COPY apps apps
+COPY domains domains
+
+
+RUN chmod +x gradlew
+
+ARG MODULE_NAME=api-server
+
+RUN ./gradlew :apps:${MODULE_NAME}:bootJar --no-daemon -x test
 
 
 # ==============================
@@ -25,6 +33,8 @@ RUN apk add --no-cache tzdata \
 ENV SPRING_PROFILES_ACTIVE=es,test-real-data,batch,test-highlight-data
 ENV TZ=Asia/Seoul
 
-# ---- Spring Boot JAR 복사 ----
-COPY --from=builder /shootpointer/build/libs/*.jar /app.jar
-ENTRYPOINT ["java","-Duser.timezone=Asia/Seoul","-jar","/app.jar"]
+ARG MODULE_NAME=api-server
+COPY --from=builder /shootpointer/apps/${MODULE_NAME}/build/libs/*.jar app.jar
+
+# 실행
+ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar", "/app/app.jar"]
