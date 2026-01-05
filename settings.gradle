@@ -1,6 +1,9 @@
-pluginManagement {
-    plugins {
-        id 'org.jetbrains.kotlin.jvm' version '2.1.21'
-    }
-}
 rootProject.name = 'shootpointer'
+
+include 'apps:api-server'
+include 'apps:batch-server'
+
+include 'domains:member'
+include 'domains:community'
+include 'domains:global'
+include 'domains:media-processing'
