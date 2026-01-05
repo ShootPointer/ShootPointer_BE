@@ -1,0 +1,24 @@
+# 로깅 설정
+logging:
+  level:
+    org.hibernate.SQL: ${LOGGING_LEVEL_ORG_HIBERNATE_SQL:DEBUG}
+    org.hibernate.type.descriptor.sql.BasicBinder: ${LOGGING_LEVEL_ORG_HIBERNATE_TYPE_DESCRIPTOR_SQL_BASICBINDER:TRACE}
+    org.springframework.data.mongodb: DEBUG
+    redis.clients.jedis: DEBUG
+    org.springframework.batch.item.database: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+p6spy:
+  config:
+    logMessageFormat: com.p6spy.engine.spy.appender.CustomLineFormat
+    customLogMessageFormat: |
+      %(currentTime) | took %(executionTime)ms | category=%(category)
+      %(sqlPretty)
+      -------------------------------------------------------------
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+      log-format: multiline

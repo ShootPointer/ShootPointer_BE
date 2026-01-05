@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.5'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+bootJar {
+    enabled = true
+    archiveFileName = 'app.jar'
+}
+
+jar {
+    enabled = false
+}
+dependencies {
+    implementation project(':domains:member')
+    implementation project(':domains:community')
+    implementation project(':domains:media-processing')
+    implementation project(':domains:global')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}

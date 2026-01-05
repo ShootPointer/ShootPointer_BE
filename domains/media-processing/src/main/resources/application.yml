@@ -1,0 +1,50 @@
+spring:
+  data:
+    redis:
+      #production 환경에서만 활성화
+      opencv:
+        host: ${OPENCV_REDIS_HOST:host.docker.internal}
+        port: ${OPENCV_REDIS_PORT:6379}
+        password: ${OPENCV_REDIS_PASSWORD:}
+        timeout: 2000ms
+        channels:
+          upload: opencv-progress-upload:*
+          highlight: opencv-progress-highlight:*
+      custom:
+        ranking:
+          key:
+            weekly: ranking:WEEKLY
+            monthly: ranking:MONTHLY
+        upload:
+          key:
+            upload: upload:presigned
+
+# SSE 설정
+sse:
+  ttl: 1800000
+  event-name: progress
+  cache-max-size: 360
+  clean-up-interval: 60000
+
+opencv:
+  url: ${OPENCV_URL:http://localhost:8000}
+  api:
+    post:
+      send-image: /api/send-img
+    get:
+      fetch-video: /api/fetch-video
+    proxy:
+      upload-video: upload
+  expire:
+    expiration-time: 1800000 #30분
+  # -------------------------
+  # [Pre-signed Settings]
+  # -------------------------
+  pre-signed:
+    secret:
+      key: ${PRESIGNED_SECRET}
+
+#Video 처리
+video:
+  path: ${VIDEO_PATH:path}
+  max-size: 200MB
