@@ -1085,57 +1085,9 @@ flowchart TD
 
 ### 6-1. 핵심 ERD
 
-```mermaid
-erDiagram
-    MEMBER ||--o{ MEMBER_BACK_NUMBER : maps
-    BACK_NUMBER ||--o{ MEMBER_BACK_NUMBER : assigned
-    MEMBER ||--o{ HIGHLIGHT : owns
-    BACK_NUMBER ||--o{ HIGHLIGHT : tagged
-    MEMBER ||--o{ POST : writes
-    HIGHLIGHT ||--o{ POST : attached
-    POST ||--o{ COMMENT : has
-    MEMBER ||--o{ COMMENT : writes
-    POST ||--o{ LIKE_TABLE : receives
-    MEMBER ||--o{ LIKE_TABLE : presses
 
-    MEMBER {
-        uuid member_id
-        string member_name
-        string email
-        boolean is_aggregation_agreed
-    }
-    BACK_NUMBER {
-        long back_number_id
-        int back_number_value
-    }
-    MEMBER_BACK_NUMBER {
-        long member_back_number_id
-    }
-    HIGHLIGHT {
-        uuid highlight_id
-        uuid highlight_key
-        string highlight_url
-        int two_point_count
-        int three_point_count
-        string job_id
-    }
-    POST {
-        long post_id
-        string title
-        string content
-        string hash_tag
-        long like_cnt
-        boolean is_deleted
-    }
-    COMMENT {
-        long comment_id
-        string content
-        boolean is_deleted
-    }
-    LIKE_TABLE {
-        long like_id
-    }
-```
+<img width="2650" height="1542" alt="ShootPointer_ERD (1)" src="https://github.com/user-attachments/assets/0f81350a-e04c-4148-8fe9-39f5aefa5120" />
+
 
 ### 6-2. 엔티티별 의미
 
