@@ -1,9 +1,8 @@
 # 🏀 ShootPointer Backend
 
-ShootPointer는 농구 영상을 업로드하면 개인 하이라이트를 생성하고, 생성된 결과를 커뮤니티 게시글과 랭킹으로 연결하는 백엔드 서비스입니다.
+ShootPointer는 농구 영상을 업로드하면 개인 하이라이트를 생성하고, 생성된 결과를 커뮤니티 게시글과 랭킹으로 연결하는 서비스입니다.
 
-이 문서는 서비스 구조와 핵심 동작을 정리하기 위해 작성했습니다.  
-단순 기능 나열이 아니라, 실제 코드 기준으로 다음 내용을 자세히 설명합니다.
+
 
 - 이 서비스가 어떤 문제를 해결하려는지
 - 요청이 들어왔을 때 백엔드 내부에서 어떤 계층과 저장소를 거치는지
@@ -1167,7 +1166,6 @@ flowchart TD
 
 ### 8-1. 테스트 범위
 
-현재 `src/test/java` 기준으로 90개가 넘는 테스트 파일이 존재합니다.
 
 대표적으로 아래 영역이 테스트됩니다.
 
@@ -1181,28 +1179,14 @@ flowchart TD
 | 좋아요 | LikeManagerTest, LikeManagerConcurrencyTest |
 | 랭킹 | RankingManagerTest, RankingControllerTest, RankingRedisSchedulerTest |
 
-### 8-2. 인프라 테스트
 
-Testcontainers 기반 테스트 지원 코드도 존재합니다.
-
-- `RedisTestContainer`
-- `ElasticSearchTestContainer`
-
-즉, 외부 인프라 의존성을 가능한 한 테스트 환경 안에서 재현하려는 시도가 포함되어 있습니다.
-
-### 8-3. 품질 관리 포인트
+### 8-2. 품질 관리 포인트
 
 - 컨트롤러 / 비즈니스 / 리포지토리 테스트 분리
 - 동시성 테스트 별도 작성
 - Elasticsearch 연동 테스트 분리
 - JaCoCo 리포트 생성 설정 관리
 
-### 8-4. 좋아요 동시성 테스트가 특히 중요한 이유
-
-이 프로젝트를 설명할 때 단순 CRUD 단위 테스트보다,
-"실제 서비스에서 깨지기 쉬운 정합성 문제를 재현했다"는 점이 더 강합니다.
-
-이 레포지토리에서는 그 대표 사례가 좋아요 동시성 테스트입니다.
 
 <a id="refactoring"></a>
 ## 🧱 9. 멀티모듈 리팩터링
@@ -1263,17 +1247,6 @@ flowchart LR
     D --> D2["support"]
 ```
 
-### 9-4. 현재 가장 진척된 리팩터링 영역: `member-context`
-
-`modules/member-context`는 단순 빈 폴더가 아니라, 실제로 도메인 모델링이 진행된 영역입니다.
-
-- `ApplicationModule` 사용
-- `Member`, `MemberRole`, `MemberState`
-- `MemberId`, `MemberName`, `MemberEmail`, `AgreeInfo`, `MemberInfo`
-- TSID 기반 식별자
-- Value Object 내부 유효성 검증
-
-즉, "엔티티 + 서비스" 수준을 넘어서 도메인 모델과 VO를 의식한 설계로 넘어가고 있습니다.
 
 
 
