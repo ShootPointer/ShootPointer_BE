@@ -29,7 +29,7 @@ http://localhost:8080
 1. Commit and push this repository.
 2. Go to GitHub repository `Settings` > `Pages`.
 3. Set `Source` to `GitHub Actions`.
-4. Run the `Deploy Swagger Docs` workflow, or push to `main`.
+4. Run the `Deploy Swagger Docs` workflow, or push to `dev`.
 5. Open the generated URL:
 
 ```text

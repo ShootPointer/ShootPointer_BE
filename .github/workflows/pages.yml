@@ -3,7 +3,7 @@ name: Deploy Swagger Docs
 on:
   push:
     branches:
-      - main
+      - dev
     paths:
       - ".github/workflows/pages.yml"
       - "docs/.nojekyll"
