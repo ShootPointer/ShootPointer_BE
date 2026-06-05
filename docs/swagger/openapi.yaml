@@ -1,0 +1,1523 @@
+openapi: 3.0.3
+info:
+  title: ShootPointer Backend API
+  version: 1.0.0
+  description: |
+    ShootPointer is a basketball highlight backend that connects video upload, OpenCV highlight generation, community posts, comments, likes, ranking, and realtime progress tracking.
+
+    This OpenAPI document is a static portfolio artifact generated from the controller layer. The backend server, database, Redis, Elasticsearch, MongoDB, and Kakao OAuth infrastructure are not hosted by this page.
+servers:
+  - url: http://localhost:9000
+    description: Local development server
+tags:
+  - name: Health
+    description: Basic health and development helper APIs
+  - name: Auth
+    description: Kakao login and member withdrawal
+  - name: Member
+    description: Member profile and highlight aggregation agreement
+  - name: BackNumber
+    description: Basketball jersey number registration
+  - name: Upload
+    description: Video upload pre-signed URL issuing
+  - name: Highlight
+    description: Highlight creation callback and highlight queries
+  - name: Progress
+    description: OpenCV progress polling and SSE subscription
+  - name: Post
+    description: Community post create, update, delete, read, and search APIs
+  - name: Comment
+    description: Comment create, update, delete, and query APIs
+  - name: Like
+    description: Post like and unlike APIs
+  - name: Ranking
+    description: Weekly and monthly score ranking APIs
+  - name: Admin
+    description: Development token helper APIs
+paths:
+  /api/health-check:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      operationId: healthCheck
+      responses:
+        "200":
+          description: Server is alive
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: health-check
+  /api/test-member:
+    get:
+      tags:
+        - Health
+      summary: Development member token helper
+      operationId: issueTestMemberToken
+      responses:
+        "200":
+          description: JWT token for a local test member
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: eyJhbGciOiJIUzI1NiJ9...
+  /kakao/callback:
+    get:
+      tags:
+        - Auth
+      summary: Kakao social login callback and JWT issuing
+      operationId: kakaoCallback
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Kakao authorization code
+      responses:
+        "200":
+          description: Kakao login succeeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MsgEntity"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /kakao:
+    delete:
+      tags:
+        - Auth
+      summary: Kakao member withdrawal
+      operationId: deleteKakaoMember
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Member deleted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: string
+                        format: uuid
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /member/me:
+    get:
+      tags:
+        - Member
+      summary: Current member profile
+      operationId: getCurrentMember
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Current member information
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/MemberResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /agree/highlight:
+    put:
+      tags:
+        - Member
+      summary: Agree to highlight aggregation
+      operationId: agreeHighlightAggregation
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Agreement updated
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: string
+                        format: uuid
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/backNumber:
+    post:
+      tags:
+        - BackNumber
+      summary: Jersey number registration
+      operationId: createBackNumber
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - backNumberRequestDto
+                - image
+              properties:
+                backNumberRequestDto:
+                  $ref: "#/components/schemas/BackNumberRequest"
+                image:
+                  type: string
+                  format: binary
+                  description: Jersey number image file
+      responses:
+        "200":
+          description: Jersey number registered
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: integer
+                        example: 23
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/pre-signed:
+    post:
+      tags:
+        - Upload
+      summary: Issue video upload pre-signed URL
+      operationId: createPresignedUrl
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FileMetadataRequest"
+      responses:
+        "200":
+          description: Pre-signed URL issued
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/PresignedUrlResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/highlight/upload-result:
+    post:
+      tags:
+        - Highlight
+      summary: Upload highlight result callback from OpenCV
+      operationId: uploadHighlightResult
+      parameters:
+        - name: X-Member-Id
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Member identifier forwarded by the media processing server
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HighlightRequest"
+      responses:
+        "200":
+          description: Highlight result saved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/highlight/list:
+    get:
+      tags:
+        - Highlight
+      summary: Current member highlight list
+      operationId: getHighlightList
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Size"
+      responses:
+        "200":
+          description: Paged highlight list
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/PageHighlightInfoResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/highlight:
+    get:
+      tags:
+        - Highlight
+      summary: Popular highlights by period
+      operationId: getPeriodHighlights
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: period
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - WEEKLY
+              - MONTHLY
+          description: WEEKLY for this week, MONTHLY for this month
+      responses:
+        "200":
+          description: Popular highlights
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/PeriodHighlightResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/highlight/calendar:
+    get:
+      tags:
+        - Highlight
+      summary: Current member monthly highlight calendar
+      operationId: getHighlightCalendar
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 2026
+        - name: month
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 12
+            example: 6
+      responses:
+        "200":
+          description: Highlight calendar
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/HighlightCalendarResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/highlight/latest:
+    get:
+      tags:
+        - Highlight
+      summary: Latest generated highlights by job
+      operationId: getLatestCreatedHighlights
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: jobId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Upload or highlight generation job identifier
+      responses:
+        "200":
+          description: Latest generated highlights
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/HighlightInfoResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/progress/subscribe:
+    get:
+      tags:
+        - Progress
+      summary: Subscribe to progress stream with SSE
+      operationId: subscribeProgress
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: Last-Event-ID
+          in: header
+          required: false
+          schema:
+            type: string
+          description: SSE reconnect cursor
+        - name: jobId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Server-sent event stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                example: "event: progress\ndata: {\"type\":\"UPLOAD\",\"progress\":60}\n\n"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/progress:
+    get:
+      tags:
+        - Progress
+      summary: Poll latest progress state
+      operationId: getProgress
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: jobId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Latest progress payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/post:
+    post:
+      tags:
+        - Post
+      summary: Create post
+      operationId: createPost
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostRequest"
+      responses:
+        "201":
+          description: Post created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: integer
+                        format: int64
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+    get:
+      tags:
+        - Post
+      summary: Read posts with cursor pagination
+      operationId: getPosts
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: postId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 922337203685477580
+          description: Last post id cursor
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - latest
+              - popular
+            default: latest
+      responses:
+        "200":
+          description: Post list
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/PostListResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/post/{postId}:
+    get:
+      tags:
+        - Post
+      summary: Read a single post
+      operationId: getPost
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/PostId"
+      responses:
+        "200":
+          description: Post detail
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/PostResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+    put:
+      tags:
+        - Post
+      summary: Update post
+      operationId: updatePost
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/PostId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostRequest"
+      responses:
+        "200":
+          description: Post updated
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: integer
+                        format: int64
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      tags:
+        - Post
+      summary: Delete post
+      operationId: deletePost
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/PostId"
+      responses:
+        "200":
+          description: Post deleted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: integer
+                        format: int64
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/post/list:
+    get:
+      tags:
+        - Post
+      summary: Search posts with database fallback
+      operationId: searchPosts
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: search
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: postId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 922337203685477580
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Search results
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/PostListResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/post/list-elastic:
+    get:
+      tags:
+        - Post
+      summary: Search posts with Elasticsearch ranking
+      operationId: searchPostsByElastic
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: postId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 922337203685477580
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: _score
+          in: query
+          required: false
+          schema:
+            type: number
+            format: float
+            default: 922337203685477580
+        - name: likeCnt
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 922337203685477580
+      responses:
+        "200":
+          description: Elasticsearch search results
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/PostListResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/post/suggest:
+    get:
+      tags:
+        - Post
+      summary: Post search autocomplete
+      operationId: suggestPosts
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: keyword
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Autocomplete suggestions
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/SearchAutoCompleteResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/post/mypage:
+    get:
+      tags:
+        - Post
+      summary: Current member posts
+      operationId: getMyPosts
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: My posts
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/PostListResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/post/my/like:
+    get:
+      tags:
+        - Post
+      summary: Posts liked by current member
+      operationId: getMyLikedPosts
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: lastPostId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 922337203685477580
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Liked post list
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/PostListResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/comment:
+    post:
+      tags:
+        - Comment
+      summary: Create comment
+      operationId: createComment
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentRequest"
+      responses:
+        "200":
+          description: Comment created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: integer
+                        format: int64
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/comment/{id}:
+    get:
+      tags:
+        - Comment
+      summary: Comments by post
+      operationId: getCommentsByPostId
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Post id
+      responses:
+        "200":
+          description: Comments for the post
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/CommentResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+    patch:
+      tags:
+        - Comment
+      summary: Update comment
+      operationId: updateComment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Comment id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentUpdateRequest"
+      responses:
+        "200":
+          description: Comment updated
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/CommentResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      tags:
+        - Comment
+      summary: Delete comment
+      operationId: deleteComment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Comment id
+      responses:
+        "204":
+          description: Comment deleted
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/like/{postId}:
+    post:
+      tags:
+        - Like
+      summary: Like post
+      operationId: likePost
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/PostId"
+      responses:
+        "201":
+          description: Like created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: integer
+                        format: int64
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      tags:
+        - Like
+      summary: Unlike post
+      operationId: unlikePost
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/PostId"
+      responses:
+        "200":
+          description: Like deleted
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: integer
+                        format: int64
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/rank/last-week:
+    get:
+      tags:
+        - Ranking
+      summary: Last week ranking by request date
+      operationId: getLastWeekRanking
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Date"
+      responses:
+        "200":
+          description: Last week ranking
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/RankingResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/rank/last-month:
+    get:
+      tags:
+        - Ranking
+      summary: Last month ranking by request date
+      operationId: getLastMonthRanking
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/Date"
+      responses:
+        "200":
+          description: Last month ranking
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/RankingResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/rank/this-week:
+    get:
+      tags:
+        - Ranking
+      summary: Current week ranking
+      operationId: getThisWeekRanking
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Current week ranking
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/RankingResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/rank/this-month:
+    get:
+      tags:
+        - Ranking
+      summary: Current month ranking
+      operationId: getThisMonthRanking
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Current month ranking
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/RankingResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /admin/token:
+    get:
+      tags:
+        - Admin
+      summary: Issue development access and refresh tokens
+      operationId: getAdminTokens
+      responses:
+        "200":
+          description: Token pair
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenPair"
+  /admin/token/check:
+    post:
+      tags:
+        - Admin
+      summary: Sync member from access token
+      operationId: syncMemberFromToken
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            example: Bearer eyJhbGciOiJIUzI1NiJ9...
+      responses:
+        "200":
+          description: Member synced
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSyncResponse"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /admin/token/refresh/{email}:
+    get:
+      tags:
+        - Admin
+      summary: Read stored refresh token
+      operationId: getRefreshToken
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+            format: email
+      responses:
+        "200":
+          description: Refresh token lookup result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refreshToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiJ9...
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    PostId:
+      name: postId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+      description: Post id
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 0
+      description: Zero-based page index
+    Size:
+      name: size
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 10
+      description: Page size
+    Date:
+      name: date
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date
+        example: 2026-06-06
+      description: Request date used to resolve the previous period
+  responses:
+    ErrorResponse:
+      description: Request failed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiErrorResponse"
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          nullable: true
+        error:
+          nullable: true
+          $ref: "#/components/schemas/ErrorBody"
+    ApiErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        data:
+          nullable: true
+          example: null
+        error:
+          $ref: "#/components/schemas/ErrorBody"
+    ErrorBody:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 40400
+        message:
+          type: string
+          example: 존재하지 않은 API입니다.
+    MsgEntity:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: Success
+        data:
+          $ref: "#/components/schemas/KakaoDTO"
+    KakaoDTO:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: player@example.com
+        nickname:
+          type: string
+          example: shootpointer
+        accessToken:
+          type: string
+          example: eyJhbGciOiJIUzI1NiJ9...
+        refreshToken:
+          type: string
+          example: eyJhbGciOiJIUzI1NiJ9...
+    MemberResponse:
+      type: object
+      properties:
+        memberId:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+        backNumber:
+          type: integer
+          nullable: true
+        totalTwoPoint:
+          type: integer
+        totalThreePoint:
+          type: integer
+        highlightCount:
+          type: integer
+    BackNumberRequest:
+      type: object
+      required:
+        - backNumber
+      properties:
+        backNumber:
+          type: integer
+          example: 23
+    FileMetadataRequest:
+      type: object
+      required:
+        - fileName
+        - fileSize
+      properties:
+        fileName:
+          type: string
+          example: game-highlight.mp4
+        fileSize:
+          type: integer
+          format: int64
+          example: 104857600
+    PresignedUrlResponse:
+      type: object
+      properties:
+        presignedUrl:
+          type: string
+          format: uri
+        signature:
+          type: string
+        jobId:
+          type: string
+          example: job-20260606-0001
+    HighlightRequest:
+      type: object
+      required:
+        - highlightIdentifier
+        - highlightUrls
+        - createdAt
+        - jobId
+      properties:
+        highlightIdentifier:
+          type: string
+          format: uuid
+        highlightUrls:
+          type: array
+          items:
+            $ref: "#/components/schemas/HighlightInfo"
+        createdAt:
+          type: string
+          format: date-time
+        jobId:
+          type: string
+    HighlightInfo:
+      type: object
+      required:
+        - highlightUrl
+        - twoPointCount
+        - threePointCount
+      properties:
+        highlightUrl:
+          type: string
+          format: uri
+        twoPointCount:
+          type: integer
+        threePointCount:
+          type: integer
+    HighlightInfoResponse:
+      type: object
+      properties:
+        highlightId:
+          type: string
+          format: uuid
+        createdDate:
+          type: string
+          format: date-time
+        totalTwoPoint:
+          type: integer
+        totalThreePoint:
+          type: integer
+        highlightUrl:
+          type: string
+          format: uri
+    PageHighlightInfoResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/HighlightInfoResponse"
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+    PeriodHighlightResponse:
+      type: object
+      properties:
+        highlightUrl:
+          type: string
+          format: uri
+        highlightId:
+          type: string
+          format: uuid
+        postId:
+          type: integer
+          format: int64
+        username:
+          type: string
+        likeCnt:
+          type: integer
+          format: int64
+        periodLikeCnt:
+          type: integer
+          format: int64
+        title:
+          type: string
+    HighlightCalendarResponse:
+      type: object
+      properties:
+        year:
+          type: integer
+        month:
+          type: integer
+        days:
+          type: array
+          items:
+            $ref: "#/components/schemas/HighlightCalendarDay"
+    HighlightCalendarDay:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        highlights:
+          type: array
+          items:
+            $ref: "#/components/schemas/HighlightInfoResponse"
+    ProgressResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          example: UPLOAD
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 60
+        message:
+          type: string
+          nullable: true
+    PostRequest:
+      type: object
+      required:
+        - highlightId
+        - title
+        - content
+        - hashTag
+      properties:
+        highlightId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          example: 오늘 경기 하이라이트
+        content:
+          type: string
+          example: 3점슛 장면 공유합니다.
+        hashTag:
+          type: string
+          example: THREE_POINT
+    PostResponse:
+      type: object
+      properties:
+        postId:
+          type: integer
+          format: int64
+        title:
+          type: string
+        content:
+          type: string
+        highlightUrl:
+          type: string
+          format: uri
+        likeCnt:
+          type: integer
+          format: int64
+        isLiked:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+        hashTag:
+          type: string
+        memberName:
+          type: string
+    PostListResponse:
+      type: object
+      properties:
+        lastPostId:
+          type: integer
+          format: int64
+        postList:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostResponse"
+        sort:
+          $ref: "#/components/schemas/PostSort"
+    PostSort:
+      type: object
+      properties:
+        score:
+          type: number
+          format: float
+        likeCnt:
+          type: integer
+          format: int64
+        postId:
+          type: integer
+          format: int64
+    SearchAutoCompleteResponse:
+      type: object
+      properties:
+        suggest:
+          type: string
+          example: 3점슛
+    CommentRequest:
+      type: object
+      required:
+        - postId
+        - content
+      properties:
+        postId:
+          type: integer
+          format: int64
+        content:
+          type: string
+          example: 멋진 플레이입니다.
+    CommentUpdateRequest:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          example: 수정한 댓글입니다.
+    CommentResponse:
+      type: object
+      properties:
+        commentId:
+          type: integer
+          format: int64
+        content:
+          type: string
+        memberName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    RankingResponse:
+      type: object
+      properties:
+        rankingType:
+          type: string
+          enum:
+            - WEEKLY
+            - MONTHLY
+        rankingList:
+          type: array
+          items:
+            $ref: "#/components/schemas/RankingEntry"
+    RankingEntry:
+      type: object
+      properties:
+        memberId:
+          type: string
+          format: uuid
+        username:
+          type: string
+        backNumber:
+          type: integer
+        score:
+          type: integer
+        totalTwoPoint:
+          type: integer
+        totalThreePoint:
+          type: integer
+    TokenPair:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: eyJhbGciOiJIUzI1NiJ9...
+        refreshToken:
+          type: string
+          example: eyJhbGciOiJIUzI1NiJ9...
+    AdminSyncResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: synced
+        memberId:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        nickname:
+          type: string
